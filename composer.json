@@ -33,13 +33,13 @@
     },
     "scripts": {
         "check-quality-code": [
-            "php-cs-fixer fix --dry-run --config=.php_cs.dist --allow-risky=yes -vvv",
+            "php-cs-fixer fix --dry-run --config=.php-cs-fixer.dist.php --allow-risky=yes -vvv",
             "phpcs --standard=phpcs.xml.dist -s",
             "phpmd lib text ./phpmd.lib.xml",
             "phpmd tests text ./phpmd.test.xml --exclude OrmTestCase.php"
         ],
         "phpcs": "phpcs --standard=phpcs.xml.dist -s",
-        "phpcsfixer": "php-cs-fixer --config=.php_cs.dist fix --allow-risky=yes -vvv",
+        "phpcsfixer": "php-cs-fixer --config=.php-cs-fixer.dist.php fix --allow-risky=yes -vvv",
         "phpmd": [
             "phpmd lib text ./phpmd.lib.xml",
             "phpmd tests text ./phpmd.test.xml --exclude OrmTestCase.php"
