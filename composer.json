@@ -44,7 +44,8 @@
             "phpmd lib text ./phpmd.lib.xml",
             "phpmd tests text ./phpmd.test.xml --exclude OrmTestCase.php"
         ],
-        "test-mysql": "phpunit --configuration phpunit.mysql.xml",
+        "test-mysql5": "phpunit --configuration phpunit.mysql5.xml",
+        "test-mysql8": "phpunit --configuration phpunit.mysql8.xml",
         "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"
     },
     "autoload": {
