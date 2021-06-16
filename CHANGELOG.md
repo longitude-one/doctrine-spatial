@@ -15,9 +15,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - A new documentation hosted on ReadTheDocs.
 - Adding support of PHP7.2, PHP7.3, PHP7.4,
 - Needed PHP extension added in composer.json,
-- Spatial function implementing the ISO/IEC 13249-3:2016 or [OGC Standard](https://www.ogc.org/standards/sfs) are now stored in the [Standard](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/Standard) directory.
-- Specific spatial function of the PostgreSql server are now store in the [PostgreSql](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/PostgreSql) directory.
-- Specific spatial function of the PostgreSql server are now store in the [MySql](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/MySql) directory.
+- Spatial function implementing the ISO/IEC 13249-3:2016 or [OGC Standard](https://www.ogc.org/standards/sfs) are now stored in the [Standard](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard) directory.
+- Specific spatial function of the PostgreSql server are now store in the [PostgreSql](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql) directory.
+- Specific spatial function of the PostgreSql server are now store in the [MySql](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql) directory.
 - Code coverage is now really at 90 percent. (CreOf code coverage was not valid because of AST functions which contained only properties),
 - AST Functions updated to avoid misconfiguration (some properties was missing),
 - AST Functions updated to detect which function was not tested,
@@ -52,7 +52,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - Test for unsupported platforms.
 
 ### Changed
-- Moved database platform classes to namespace CrEOF\Spatial\DBAL\Platform.
+- Moved database platform classes to namespace LongitudeOne\Spatial\DBAL\Platform.
 - Define exception messages where thrown in classes.
 - Pass entity class names to usesEntity() in tests instead of looking them up in an array.
 - Confirm types have not been previously added when setting up tests.

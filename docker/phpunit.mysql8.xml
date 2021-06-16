@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit colors="true"
-         bootstrap="./tests/CrEOF/Spatial/Tests/TestInit.php"
+         bootstrap="./tests/LongitudeOne/Spatial/Tests/TestInit.php"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -15,7 +15,7 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library">
-            <directory>./tests/CrEOF/Spatial/Tests</directory>
+            <directory>./tests/LongitudeOne/Spatial/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -36,7 +36,7 @@
         <whitelist>
             <directory suffix=".php">./lib/</directory>
             <exclude>
-                <directory suffix=".php">./tests/CrEOF/Spatial/Tests</directory>
+                <directory suffix=".php">./tests/LongitudeOne/Spatial/Tests</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -50,7 +50,8 @@
     },
     "autoload": {
         "psr-0": {
-            "CrEOF\\Spatial": "lib/"
+            "LongitudeOne\\Spatial": "lib/",
+            "LongitudeOne\\Spatial\\Tests": "tests/"
         }
     }
 }
