@@ -17,12 +17,12 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Doctrine spatial extension'
-copyright = '2020, Alexandre Tranchant'
+copyright = '2021, Alexandre Tranchant - Longitude One'
 author = 'Alexandre Tranchant'
 master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0.0'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -57,8 +57,8 @@ html_static_path = ['_static']
 # -- GITHUB integration
 html_context = {
     "display_github": True, # Integrate GitHub
-    "github_user": "Alexandre-T", # Username
-    "github_repo": "doctrine2-spatial", # Repo name
+    "github_user": "longitude-one", # Username
+    "github_repo": "doctrine-spatial", # Repo name
     "github_version": "master", # Version
     "conf_py_path": "/docs/source/", # Path in the checkout to the docs root
 }

@@ -57,7 +57,7 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      * Specify data which should be serialized to JSON.
      *
      * @see https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @see https://github.com/creof/doctrine2-spatial/issues/140
+     * @see https://github.com/creof/doctrine-spatial/issues/140
      *
      * @return mixed data which can be serialized by <b>json_encode</b>,
      *               which is a value of any type other than a resource

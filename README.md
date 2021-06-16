@@ -1,19 +1,19 @@
-# Doctrine2-Spatial
+# doctrine-Spatial
 Doctrine2 multi-platform support for spatial types and functions. 
 Currently MySQL and PostgreSQL with PostGIS are supported. 
 Could potentially add support for other platforms if an interest is expressed.
 
 ## Current status
-[![Build Status](https://travis-ci.org/longitude-one/doctrine2-spatial.svg?branch=master)](https://travis-ci.org/longitude-one/doctrine2-spatial)
-[![Code Climate](https://codeclimate.com/github/longitude-one/doctrine2-spatial/badges/gpa.svg)](https://codeclimate.com/github/longitude-one/doctrine2-spatial)
-[![Coverage Status](https://coveralls.io/repos/longitude-one/doctrine2-spatial/badge.svg?branch=master&service=github)](https://coveralls.io/github/longitude-one/doctrine2-spatial?branch=master)
-[![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine2-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine2-spatial)
-[![Documentation Status](https://readthedocs.org/projects/doctrine2-spatial/badge/?version=latest)](https://doctrine2-spatial.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/longitude-one/doctrine-spatial.svg?branch=master)](https://travis-ci.org/longitude-one/doctrine-spatial)
+[![Code Climate](https://codeclimate.com/github/longitude-one/doctrine-spatial/badges/gpa.svg)](https://codeclimate.com/github/longitude-one/doctrine-spatial)
+[![Coverage Status](https://coveralls.io/repos/longitude-one/doctrine-spatial/badge.svg?branch=master&service=github)](https://coveralls.io/github/longitude-one/doctrine-spatial?branch=master)
+[![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
+[![Documentation Status](https://readthedocs.org/projects/doctrine-spatial/badge/?version=latest)](https://doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
 
 Documentation 
 -------------
 
-The [new documentation](https://doctrine2-spatial.readthedocs.io) explain how to:
+The [new documentation](https://doctrine-spatial.readthedocs.io) explain how to:
 
 * install this doctrine extension,
 * configure this extension,
@@ -25,7 +25,7 @@ The documentation contains a glossary of all available types and all available s
 
 ## Project origins
 This useful project was created by Derek J. Lambert. 
-Alexandre Tranchant forked it from [creof/doctrine2-spatial](https://github.com/creof/doctrine2-spatial)
+Alexandre Tranchant forked it from [creof/doctrine-spatial](https://github.com/creof/doctrine-spatial)
 because project seems to be non-active since 2017.
 
 The `dev` branch can be used, but be careful backward compatibility aren't warrantied.

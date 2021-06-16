@@ -4,11 +4,11 @@ Installation
 Installation via composer
 -------------------------
 
-Add the `alexandret/spatial2-doctrine` package in your composer.json.
+Add the `longitude-one/doctrine-spatial` package in your composer.json.
 
 .. code-block:: bash
 
-    $ composer require alexandret/doctrine2-spatial
+    $ composer require longitude-one/doctrine-spatial
 
 Or you can edit directly `composer.json` file by adding this line on your requirements:
 
@@ -16,15 +16,15 @@ Or you can edit directly `composer.json` file by adding this line on your requir
 
     "require": {
     	...
-        "alexandret/doctrine2-spatial": "^2.0"
+        "longitude-one/doctrine-spatial": "^1.0"
 
-Be careful, the version 2.0.0 will only be available at the end of march 2020.
+Be careful, the version 1.0.0 will only be available during summer 2021.
 
 Installation without composer
 -----------------------------
 
 If you're not using composer, you can
-:download:`download the library  <https://github.com/Alexandre-T/doctrine2-spatial/archive/master.zip>`.
+:download:`download the library  <https://github.com/longitude-one/doctrine-spatial/archive/master.zip>`.
 Then copy and paste the lib directory where you store all libraries of your application.
 
 Installation to contribute

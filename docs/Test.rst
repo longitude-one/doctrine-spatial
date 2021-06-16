@@ -46,7 +46,7 @@ If you use an IDE like PHPStorm, you can create configurations to launch the six
 * MySQL, PHP7.4 and PHPUnit 9.0
 * PostgreSQL, PHP7.4 and PHPUnit
 
-In this section, I described an easy way to switch PHP version via console. (But there is a lot of ways to do it.)
+In this section, I described an easy way to switch PHP version via console. (But there are a lot of ways to do it.)
 
 I suppose you have installed all php versions on your dev environment.
 
