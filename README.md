@@ -53,3 +53,8 @@ This spatial library is compatible with PostgreSql9.6, PostgreSql10 and
 PostgreSql11. I tested it with PostgreSql12. But I do not know how to install a PostgreSql 12 and 13 server on travis to
 be sure that library stay compatible. Be careful, this library is only tested with Postgis 2.5+. It is not tested with 
 Postgis3.0, but feel free to contribute by updating the [travis configuration](./.travis.yml)
+
+### Migrating from creof/doctrine2-spatial
+Update your composer.json to replace `creof/doctrine2-spatial` by `longitude-one\doctrine-spatial`.
+
+Update the namespace, each `use CrEOF/Spatial/...` by `use LongitudeOne/Spatial/...`
