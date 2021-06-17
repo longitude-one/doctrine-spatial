@@ -42,7 +42,7 @@ jobs:
       - name: Echo PHP version
         run: php -v
       - name: Echo MySQL version
-        run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+        run: mysql --user=root --password=main -h127.0.0.1 -e 'SELECT version()'
 
       - name: Copy testsuites
         run: cp phpunit.${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
