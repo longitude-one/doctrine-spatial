@@ -1,0 +1,43 @@
+#.github/workflows/php.yml
+name: Library tests on different platform
+on:
+  push: ~
+  pull_request:
+    branches: [ dev, main ]
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-latest ] #, windows-latest ]
+        php: [ '7.4', '8.0' ]
+        database: ['mysql5', 'mysql8', 'postgresql']
+#        exclude:
+#          # excludes mssql-server on windows-latest
+#          - operating-system: windows-latest
+#            database: 'mssql-server'
+    name: PHP${{ matrix.php }}/${{ matrix.database }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Validate composer.json
+        run: composer validate --strict
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.database }}
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Echo PHP version
+        run: php -v
+      - name: Copy testsuites
+        run: cp phpunit.${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
+      - name: Install libraries
+        run: composer update
+      - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
+        run: composer run-script test-${{ matrix.database }}
