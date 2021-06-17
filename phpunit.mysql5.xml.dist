@@ -12,7 +12,8 @@
 
     <php>
         <var name="db_type" value="pdo_mysql"/>
-        <var name="db_host" value="spatial-mysql5" />
+<!--        <var name="db_host" value="spatial-mysql5" />-->
+        <var name="db_host" value="127.0.0.1" />
         <var name="db_username" value="main" />
         <var name="db_password" value="main" /> <!-- Change it -->
         <var name="db_name" value="main" />

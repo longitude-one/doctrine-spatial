@@ -21,7 +21,7 @@ jobs:
           MYSQL_PASSWORD: main
           MYSQL_ROOT_PASSWORD: main
         ports:
-          - 33306:3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@master
