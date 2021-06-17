@@ -49,7 +49,7 @@ jobs:
       - name: Echo PHP version
         run: php -v
       - name: Copy testsuites
-        run: cp phpunit.pgsql.xml.dist phpunit.pgsql.xml
+        run: cp .github/phpunit.pgsql.xml.dist phpunit.pgsql.xml
       - name: Install libraries
         run: composer update -vvv
       - name: Run test suite PHP${{ matrix.php }}/postgis

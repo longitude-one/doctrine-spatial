@@ -47,7 +47,7 @@ jobs:
         run: mysql --user=root --password=main -h127.0.0.1 -e 'SELECT version()'
 
       - name: Copy testsuites
-        run: cp phpunit.mysql.xml.dist phpunit.mysql${{ matrix.database }}.xml
+        run: cp .github/phpunit.mysql.xml.dist phpunit.mysql${{ matrix.database }}.xml
       - name: Install libraries
         run: composer update -vvv
       - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
