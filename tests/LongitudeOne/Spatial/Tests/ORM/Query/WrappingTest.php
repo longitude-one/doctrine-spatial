@@ -87,7 +87,7 @@ class WrappingTest extends OrmTestCase
 
         $regex = preg_quote(sprintf('/.polygon, %s)/', $parameter));
 
-        static::assertRegExp($regex, $result);
+        static::assertMatchesRegularExpression($regex, $result);
     }
 
     // phpcs:enable
@@ -125,6 +125,6 @@ class WrappingTest extends OrmTestCase
 
         $regex = preg_quote(sprintf('/geometry = %s/', $parameter));
 
-        static::assertRegExp($regex, $result);
+        static::assertMatchesRegularExpression($regex, $result);
     }
 }

@@ -83,7 +83,7 @@ class StMLineFromWkbTest extends OrmTestCase
         $result = $query->getResult();
 
         static::assertCount(1, $result);
-        static::assertRegExp('|^MULTILINESTRING\(|', $result[0][1]);
+        static::assertMatchesRegularExpression('|^MULTILINESTRING\(|', $result[0][1]);
     }
 
     /**
