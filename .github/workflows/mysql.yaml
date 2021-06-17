@@ -1,5 +1,5 @@
 #.github/workflows/php.yml
-name: Library tests on different platform
+name: Library tests on PHP${{ matrix.php }}/MySQL${{ matrix.database }}
 on:
   push: ~
   pull_request:
@@ -45,7 +45,7 @@ jobs:
         run: mysql --user=root --password=main -h127.0.0.1 -e 'SELECT version()'
 
       - name: Copy testsuites
-        run: cp phpunit.${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
+        run: cp phpunit.mysql${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
       - name: Install libraries
         run: composer update
       - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
