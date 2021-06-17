@@ -6,17 +6,23 @@ on:
     branches: [ dev, main ]
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        operating-system: [ ubuntu-latest ] #, windows-latest ]
         php: [ '7.4', '8.0' ]
-        database: ['mysql5', 'mysql8', 'postgresql']
-#        exclude:
-#          # excludes mssql-server on windows-latest
-#          - operating-system: windows-latest
-#            database: 'mssql-server'
-    name: PHP${{ matrix.php }}/${{ matrix.database }}
+        database: ['5.7', '8.0']
+    name: PHP${{ matrix.php }}/MySQL${{ matrix.database }}
+    services:
+      mysql:
+        image: mysql:${{ matrix.database }}
+        env:
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@master
       - name: Validate composer.json
@@ -28,16 +34,19 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.database }}
+            ${{ runner.os }}-php-${{ matrix.php }}
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
       - name: Echo PHP version
         run: php -v
+      - name: Echo MySQL version
+        run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+
       - name: Copy testsuites
         run: cp phpunit.${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
       - name: Install libraries
         run: composer update
       - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
-        run: composer run-script test-${{ matrix.database }}
+        run: composer run-script test-mysql${{ matrix.database }}
