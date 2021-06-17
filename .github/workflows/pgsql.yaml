@@ -1,5 +1,5 @@
 #.github/workflows/php.yml
-name: Library tests on different platform
+name: Library tests on PHP/PgSQL
 on:
   push: ~
   pull_request:
@@ -49,7 +49,7 @@ jobs:
       - name: Copy testsuites
         run: cp phpunit.pgsql.xml.dist phpunit.pgsql.xml
       - name: Install libraries
-        run: composer update
+        run: composer update -vvv
       - name: Run test suite PHP${{ matrix.php }}/postgis
         run: composer run-script test-pgsql
 

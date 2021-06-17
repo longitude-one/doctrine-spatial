@@ -1,5 +1,5 @@
 #.github/workflows/php.yml
-name: Library tests on PHP${{ matrix.php }}/MySQL${{ matrix.database }}
+name: Library tests on PHP/MySQL
 on:
   push: ~
   pull_request:
@@ -47,6 +47,6 @@ jobs:
       - name: Copy testsuites
         run: cp phpunit.mysql${{ matrix.database }}.xml.dist phpunit.${{ matrix.database }}.xml
       - name: Install libraries
-        run: composer update
+        run: composer update -vvv
       - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
         run: composer run-script test-mysql${{ matrix.database }}
