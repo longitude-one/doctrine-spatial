@@ -87,7 +87,7 @@ class SchemaTest extends OrmTestCase
     }
 
     /**
-     * Testto reverse shema mapping.
+     * Test to reverse schema mapping.
      *
      * @throws DBALException                when connection failed
      * @throws ORMException                 when cache is not set

@@ -44,7 +44,7 @@
             "phpmd lib text ./phpmd.lib.xml",
             "phpmd tests text ./phpmd.test.xml --exclude OrmTestCase.php"
         ],
-        "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
+        "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml --exclude-group srid",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
         "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"
     },
