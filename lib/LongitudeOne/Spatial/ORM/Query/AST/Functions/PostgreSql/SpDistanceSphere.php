@@ -33,7 +33,9 @@ class SpDistanceSphere extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        return 'ST_Distance_Sphere';
+        //Since Postgis 2.1 ST_Distance_Sphere renamed to ST_DistanceSphere
+        //@see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
+        return 'ST_DistanceSphere';
     }
 
     /**
