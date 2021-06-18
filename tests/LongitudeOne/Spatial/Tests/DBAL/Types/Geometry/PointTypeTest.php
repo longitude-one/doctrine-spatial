@@ -15,15 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine PointType tests.
@@ -41,7 +41,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Setup the test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -54,7 +54,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its geometric.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -80,7 +80,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a null point and find it by its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -105,7 +105,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping

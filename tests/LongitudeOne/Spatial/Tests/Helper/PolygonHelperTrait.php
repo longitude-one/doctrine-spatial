@@ -15,15 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 
 /**
  * TestHelperTrait Trait.
@@ -47,7 +47,7 @@ trait PolygonHelperTrait
      * Square (0 0, 10 10).
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -69,7 +69,7 @@ trait PolygonHelperTrait
      * Square (6 6, 10 10).
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -89,7 +89,7 @@ trait PolygonHelperTrait
      * (Big polygon minus Small Polygon).
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -118,7 +118,7 @@ trait PolygonHelperTrait
      *
      * @param bool $forwardSrid forward SRID for creation
      *
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when geometries are not valid
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported
@@ -147,7 +147,7 @@ trait PolygonHelperTrait
      * Square (15 15, 17 17).
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -168,7 +168,7 @@ trait PolygonHelperTrait
      * Create the W Polygon and persist it in database.
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -191,7 +191,7 @@ trait PolygonHelperTrait
      * SQUARE (5 5, 7 7).
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      * @throws InvalidValueException        when geometries are not valid
      */
@@ -214,7 +214,7 @@ trait PolygonHelperTrait
      * @param array    $lineStrings the array of linestrings
      * @param int|null $srid        Spatial Reference System Identifier
      *
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when geometries are not valid
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported

@@ -15,14 +15,14 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 
 /**
  * LineStringHelperTrait Trait.
@@ -47,7 +47,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createAngularLineString(): LineStringEntity
@@ -65,7 +65,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringA(): LineStringEntity
@@ -83,7 +83,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringB(): LineStringEntity
@@ -102,7 +102,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringC(): LineStringEntity
@@ -118,7 +118,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringX(): LineStringEntity
@@ -134,7 +134,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringY(): LineStringEntity
@@ -150,7 +150,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLineStringZ(): LineStringEntity
@@ -170,7 +170,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createNodeLineString(): LineStringEntity
@@ -190,7 +190,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createRingLineString(): LineStringEntity
@@ -210,7 +210,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createStraightLineString(): LineStringEntity
@@ -229,7 +229,7 @@ trait LineStringHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     private function createLineString(array $points): LineStringEntity

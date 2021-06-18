@@ -15,9 +15,9 @@
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
+use JsonSerializable;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
-use JsonSerializable;
 
 /**
  * Abstract geometry object for spatial types.

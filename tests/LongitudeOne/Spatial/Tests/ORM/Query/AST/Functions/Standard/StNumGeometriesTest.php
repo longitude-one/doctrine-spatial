@@ -15,12 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\MultiPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\ORMException;
 
 /**
  * ST_NumGeometries DQL function tests.
@@ -40,7 +40,7 @@ class StNumGeometriesTest extends OrmTestCase
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -56,7 +56,7 @@ class StNumGeometriesTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -85,7 +85,7 @@ class StNumGeometriesTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -100,7 +100,9 @@ class StNumGeometriesTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT m FROM LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity m WHERE ST_NumGeometries(m.multiPoint) = :p'
+            // phpcs:enable
         );
         $query->setParameter('p', 1);
         $result = $query->getResult();

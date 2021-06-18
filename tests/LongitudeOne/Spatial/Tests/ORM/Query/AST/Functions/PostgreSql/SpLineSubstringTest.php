@@ -15,12 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\ORMException;
 
 /**
  * ST_LineSubstring DQL function tests.
@@ -41,7 +41,7 @@ class SpLineSubstringTest extends OrmTestCase
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -56,7 +56,7 @@ class SpLineSubstringTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -89,7 +89,7 @@ class SpLineSubstringTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid

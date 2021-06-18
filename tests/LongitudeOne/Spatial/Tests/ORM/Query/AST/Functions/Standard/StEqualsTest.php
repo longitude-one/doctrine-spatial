@@ -15,12 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\ORMException;
 
 /**
  * ST_Equals DQL function tests.
@@ -40,7 +40,7 @@ class StEqualsTest extends OrmTestCase
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -56,7 +56,7 @@ class StEqualsTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -70,7 +70,9 @@ class StEqualsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_Equals(l.lineString, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+            // phpcs:enable
         );
         $query->setParameter('p', 'LINESTRING(0 0, 5 5)');
         $result = $query->getResult();

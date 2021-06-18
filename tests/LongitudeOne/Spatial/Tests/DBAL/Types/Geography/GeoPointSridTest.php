@@ -15,15 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine GeographyType tests.
@@ -42,7 +42,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Setup the test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -55,7 +55,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Test a null geography.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -80,7 +80,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Test to store a geographic point.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometry contains an invalid value

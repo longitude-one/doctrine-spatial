@@ -106,7 +106,7 @@ Here is an example of setup, each line is commented to help you to understand ho
     use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
     use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
     use LongitudeOne\Spatial\Tests\OrmTestCase;
-    use Doctrine\DBAL\DBALException;
+    use Doctrine\DBAL\Exception;
     use Doctrine\ORM\ORMException;
 
     /**
@@ -137,7 +137,7 @@ Here is an example of setup, each line is commented to help you to understand ho
         /**
          * Setup the function type test.
          *
-         * @throws DBALException                when connection failed
+         * @throws Exception                when connection failed
          * @throws ORMException                 when cache is not set
          * @throws UnsupportedPlatformException when platform is unsupported
          */
@@ -156,7 +156,7 @@ Here is an example of setup, each line is commented to help you to understand ho
         /**
          * Test a DQL containing function to test in the select.
          *
-         * @throws DBALException                when connection failed
+         * @throws Exception                when connection failed
          * @throws ORMException                 when cache is not set
          * @throws UnsupportedPlatformException when platform is unsupported
          * @throws InvalidValueException        when geometries are not valid

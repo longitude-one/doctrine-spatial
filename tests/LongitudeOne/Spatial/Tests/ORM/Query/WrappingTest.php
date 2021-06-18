@@ -15,16 +15,16 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Version;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Version;
-use Doctrine\ORM\ORMException;
 
 /**
  * DQL type wrapping tests.
@@ -45,7 +45,7 @@ class WrappingTest extends OrmTestCase
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -62,7 +62,7 @@ class WrappingTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -95,7 +95,7 @@ class WrappingTest extends OrmTestCase
     /**
      * @group geometry
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid

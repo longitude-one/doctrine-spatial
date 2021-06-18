@@ -13,14 +13,14 @@
  *
  */
 
-namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\ORMException;
 
 /**
  * ST_GeogFromText DQL function tests.
@@ -30,18 +30,19 @@ use Doctrine\ORM\ORMException;
  * @license https://dlambert.mit-license.org MIT
  *
  * @group dql
+ * @group pgsql-only
  *
  * @internal
  * @coversDefaultClass
  */
-class StGeogFromTextTest extends OrmTestCase
+class SpGeogFromTextTest extends OrmTestCase
 {
     use PointHelperTrait;
 
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -57,7 +58,7 @@ class StGeogFromTextTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -73,7 +74,9 @@ class StGeogFromTextTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g WHERE g.geography = PgSQL_GeogFromText(:g)'
+            // phpcs:enable
         );
         $query->setParameter('g', 'SRID=4326;POINT(-73.938611 40.664167)');
 

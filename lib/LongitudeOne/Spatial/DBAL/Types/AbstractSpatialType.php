@@ -15,13 +15,13 @@
 
 namespace LongitudeOne\Spatial\DBAL\Types;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * Abstract Doctrine GEOMETRY type.

@@ -15,11 +15,11 @@
 
 namespace LongitudeOne\Spatial\Tests\Fixtures;
 
-use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 
 /**
  * Geography point entity specifying SRID.

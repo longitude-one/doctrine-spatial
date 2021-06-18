@@ -15,7 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
@@ -23,9 +26,6 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * PolygonType tests.
@@ -43,7 +43,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Setup the test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -56,7 +56,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon and find it by its geometric.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -89,7 +89,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null polygon and find it by its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -114,7 +114,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring and find it by its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -157,7 +157,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a solid polygon and find it by its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping

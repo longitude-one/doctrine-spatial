@@ -22,19 +22,14 @@ use Doctrine\DBAL\Logging\SQLLogger;
  */
 class FileSQLLogger implements SQLLogger
 {
-    /**
-     * Filename.
-     *
-     * @var string
-     */
-    protected $filename;
+    protected string $filename;
 
     /**
      * FileSQLLogger constructor.
      *
      * @param string $filename the filename
      */
-    public function __construct($filename)
+    public function __construct(string $filename)
     {
         $this->filename = $filename;
     }
@@ -43,7 +38,7 @@ class FileSQLLogger implements SQLLogger
      * Logs a SQL statement somewhere.
      *
      * @param string              $sql    the SQL to be executed
-     * @param mixed[]|null        $params the SQL parameters
+     * @param array|null          $params the SQL parameters
      * @param int[]|string[]|null $types  the SQL parameter types
      */
     public function startQuery($sql, array $params = null, array $types = null)

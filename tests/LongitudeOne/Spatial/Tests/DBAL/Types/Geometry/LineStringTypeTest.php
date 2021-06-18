@@ -15,16 +15,16 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine LineStringType tests.
@@ -40,7 +40,7 @@ use Doctrine\ORM\ORMException;
 class LineStringTypeTest extends OrmTestCase
 {
     /**
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -53,7 +53,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store and find a line string in table.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -88,7 +88,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store and find it by id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -122,7 +122,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store a null line string, then to find it with its id.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping

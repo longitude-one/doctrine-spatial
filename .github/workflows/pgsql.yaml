@@ -56,5 +56,7 @@ jobs:
         run: composer update -vvv
       - name: Run test suite PHP${{ matrix.php }}/postgis
         run: composer run-script test-pgsql
+      - name: Check quality code
+        run: composer run-script check-quality-code
 
 

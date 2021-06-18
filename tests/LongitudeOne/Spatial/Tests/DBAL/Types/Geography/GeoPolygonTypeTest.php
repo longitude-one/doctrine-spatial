@@ -15,6 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
@@ -22,10 +26,6 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * PolygonType tests.
@@ -43,7 +43,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Setup the test.
      *
-     * @throws DBALException                When connection failed
+     * @throws Exception                    When connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -56,7 +56,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test the find by polygon method.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometry contains an invalid value
@@ -92,7 +92,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store an empty polygon.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -117,7 +117,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometry contains an invalid value
@@ -160,7 +160,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store a solid polygon.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometry contains an invalid value

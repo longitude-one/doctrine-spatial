@@ -15,14 +15,14 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Query;
 
 /**
  * GeometryWalker tests.
@@ -43,7 +43,7 @@ class GeometryWalkerTest extends OrmTestCase
     /**
      * Setup the function type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -58,7 +58,7 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid
@@ -113,7 +113,7 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws InvalidValueException        when geometries are not valid

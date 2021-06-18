@@ -15,14 +15,14 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 
 /**
  * MultipointPointHelperTrait Trait.
@@ -46,7 +46,7 @@ trait MultiPointHelperTrait
      *
      * @throws InvalidValueException        when geographies are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createFourPoints(): MultiPointEntity
@@ -65,7 +65,7 @@ trait MultiPointHelperTrait
      *
      * @throws InvalidValueException        when geographies are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createSinglePoint(): MultiPointEntity
@@ -82,7 +82,7 @@ trait MultiPointHelperTrait
      * @param MultiPoint $multipoint Each point could be an array of X, Y or an instance of Point class
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     private function createMultipoint(MultiPoint $multipoint): MultiPointEntity

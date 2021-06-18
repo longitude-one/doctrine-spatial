@@ -17,8 +17,8 @@ namespace LongitudeOne\Spatial\Tests;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,16 +31,13 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class OrmMockTestCase extends TestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $mockEntityManager;
+    protected EntityManagerInterface $mockEntityManager;
 
     /**
      * Setup the mocked entity manager.
      *
-     * @throws DBALException when connection is not successful
-     * @throws ORMException  when cache is not set
+     * @throws Exception    when connection is not successful
+     * @throws ORMException when cache is not set
      */
     protected function setUp(): void
     {
@@ -50,7 +47,7 @@ abstract class OrmMockTestCase extends TestCase
     /**
      * Return the mocked connection.
      *
-     * @throws DBALException when connection is not successful
+     * @throws Exception when connection is not successful
      *
      * @return Connection
      */
@@ -79,8 +76,8 @@ abstract class OrmMockTestCase extends TestCase
     /**
      * Get the mocked entity manager.
      *
-     * @throws DBALException When connection is not successful
-     * @throws ORMException  won't happen because Metadata cache is set
+     * @throws Exception    When connection is not successful
+     * @throws ORMException won't happen because Metadata cache is set
      *
      * @return EntityManagerInterface a mocked entity manager
      */

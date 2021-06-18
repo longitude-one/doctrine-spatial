@@ -15,12 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\ORMException;
+use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
  * Doctrine schema related tests.
@@ -36,7 +36,7 @@ class SchemaTest extends OrmTestCase
     /**
      * Setup the geography type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -63,7 +63,7 @@ class SchemaTest extends OrmTestCase
     /**
      * Test doctrine type mapping.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -89,7 +89,7 @@ class SchemaTest extends OrmTestCase
     /**
      * Test to reverse schema mapping.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -103,7 +103,7 @@ class SchemaTest extends OrmTestCase
     /**
      * All class metadata getter.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      *

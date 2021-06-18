@@ -15,6 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
@@ -23,10 +27,6 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine GeometryType tests.
@@ -44,7 +44,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Setup the geography type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -58,7 +58,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * When I store a bad geometry an Invalid value exception shall be thrown.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws OptimisticLockException      when clear fails
@@ -78,7 +78,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a line string geometry and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -108,7 +108,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a null geometry and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -133,7 +133,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a point geometry and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -160,7 +160,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -191,7 +191,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -222,7 +222,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a polygon geometry and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -259,7 +259,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping

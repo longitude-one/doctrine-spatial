@@ -15,13 +15,13 @@
 
 namespace LongitudeOne\Spatial\ORM\Query;
 
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\AST\SelectExpression;
 use Doctrine\ORM\Query\ParserResult;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\SqlWalker;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
  * GeometryWalker.

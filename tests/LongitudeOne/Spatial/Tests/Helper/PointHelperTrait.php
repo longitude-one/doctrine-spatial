@@ -15,15 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 
 /**
  * PointHelperTrait Trait.
@@ -47,7 +47,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geographies are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createDallasGeography(): GeographyEntity
@@ -60,7 +60,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createDallasGeometry(): PointEntity
@@ -73,7 +73,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geographies are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLosAngelesGeography(): GeographyEntity
@@ -86,7 +86,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createLosAngelesGeometry(): PointEntity
@@ -99,7 +99,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geographies are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createNewYorkGeography(): GeographyEntity
@@ -112,7 +112,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createNewYorkGeometry(): PointEntity
@@ -121,11 +121,31 @@ trait PointHelperTrait
     }
 
     /**
+     * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
+     *
+     * @param bool $setSrid initialize the SRID to 2154 if true
+     *
+     * @throws Exception                    when credentials fail
+     * @throws InvalidValueException        when geometries are not valid
+     * @throws ORMException                 when cache is not created
+     * @throws UnsupportedPlatformException when platform is not supported
+     */
+    protected function createParisLambert93(bool $setSrid = true): PointEntity
+    {
+        $pointEntity = $this->createGeometry(new GeometryPoint(6519, 68624));
+        if ($setSrid) {
+            $pointEntity->getPoint()->setSrid(2154);
+        }
+
+        return $pointEntity;
+    }
+
+    /**
      * Create the point A (1, 2).
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createPointA(): PointEntity
@@ -138,7 +158,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createPointB(): PointEntity
@@ -151,7 +171,7 @@ trait PointHelperTrait
      *
      * @throws InvalidValueException        when geometries are not valid
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createPointE(): PointEntity
@@ -164,7 +184,7 @@ trait PointHelperTrait
      *
      * @param bool $setSrid Set the SRID to zero instead of null
      *
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when geometries are not valid
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported
@@ -184,7 +204,7 @@ trait PointHelperTrait
      *
      * @param bool $setSrid initialize the SRID to 2154 if true
      *
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when geometries are not valid
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported
@@ -200,32 +220,12 @@ trait PointHelperTrait
     }
 
     /**
-     * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
-     *
-     * @param bool $setSrid initialize the SRID to 2154 if true
-     *
-     * @throws DBALException                when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
-     */
-    protected function createParisLambert93(bool $setSrid = true): PointEntity
-    {
-        $pointEntity = $this->createGeometry(new GeometryPoint(6519, 68624));
-        if ($setSrid) {
-            $pointEntity->getPoint()->setSrid(2154);
-        }
-
-        return $pointEntity;
-    }
-
-    /**
      * Create a geographic Point entity from an array of points.
      *
      * @param GeographyPoint|array $point Point could be an array of X, Y or an instance of Point class
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     private function createGeography(GeographyPoint $point): GeographyEntity
@@ -243,7 +243,7 @@ trait PointHelperTrait
      * @param GeometryPoint|array $point Point could be an array of X, Y or an instance of Point class
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     private function createGeometry(GeometryPoint $point): PointEntity

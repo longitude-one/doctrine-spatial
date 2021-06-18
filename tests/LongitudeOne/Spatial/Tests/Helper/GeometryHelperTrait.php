@@ -15,15 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 
 /**
  * GeometryHelperTrait Trait.
@@ -48,7 +48,7 @@ trait GeometryHelperTrait
      * @param GeometryInterface $geometry object implementing Geometry interface
      *
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createGeometry(GeometryInterface $geometry): GeometryEntity
@@ -65,7 +65,7 @@ trait GeometryHelperTrait
      *
      * @param int|null $srid Spatial Reference System Identifier
      *
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when point is an invalid geometry
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported
@@ -85,7 +85,7 @@ trait GeometryHelperTrait
      *
      * @throws InvalidValueException        when linestring is an invalid geometry
      * @throws UnsupportedPlatformException when platform is not supported
-     * @throws DBALException                when credentials fail
+     * @throws Exception                    when credentials fail
      * @throws ORMException                 when cache is not created
      */
     protected function createStraightLineString(): GeometryEntity

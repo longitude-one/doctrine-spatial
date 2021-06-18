@@ -15,11 +15,11 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
  * ST_SnapToGrid DQL function.

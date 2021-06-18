@@ -15,6 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
@@ -22,10 +26,6 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine GeographyType tests.
@@ -40,7 +40,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Setup the geography type test.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -54,7 +54,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a geography composed by a linestring.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -75,7 +75,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a null geography.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -90,7 +90,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a geography composed by a single point.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -108,7 +108,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a geography composed by a polygon.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping
@@ -139,7 +139,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @param GeographyEntity $entity Entity to test
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws MappingException             when mapping

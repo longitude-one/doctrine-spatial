@@ -15,8 +15,7 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions;
 
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\Query\AST\ASTException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -25,6 +24,7 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 
 /**
  * Abstract spatial DQL function.
@@ -58,7 +58,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      * @param SqlWalker $sqlWalker the SQL Walker
      *
      * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws DBALException                when an invalid platform was specified for this connection
+     * @throws Exception                    when an invalid platform was specified for this connection
      * @throws ASTException                 when node cannot dispatch SqlWalker
      */
     public function getSql(SqlWalker $sqlWalker): string

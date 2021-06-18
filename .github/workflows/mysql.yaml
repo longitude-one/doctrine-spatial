@@ -50,5 +50,7 @@ jobs:
         run: cp .github/phpunit.mysql.xml.dist phpunit.mysql${{ matrix.database }}.xml
       - name: Install libraries
         run: composer update -vvv
-      - name: Run test suite PHP${{ matrix.php }}/${{ matrix.database }}
+      - name: Run test suite
         run: composer run-script test-mysql${{ matrix.database }}
+      - name: Check quality code
+        run: composer run-script check-quality-code

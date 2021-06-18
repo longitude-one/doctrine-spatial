@@ -15,13 +15,13 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Platform;
 
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\Tests\OrmMockTestCase;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
+use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 
 /**
  * Spatial platform tests.
@@ -41,8 +41,8 @@ class PlatformTest extends OrmMockTestCase
     /**
      * Setup the test.
      *
-     * @throws DBALException When connection failed
-     * @throws ORMException  when cache is not set
+     * @throws Exception    When connection failed
+     * @throws ORMException when cache is not set
      */
     public function setUp(): void
     {
@@ -56,7 +56,7 @@ class PlatformTest extends OrmMockTestCase
     /**
      * Test non-supported platform.
      *
-     * @throws DBALException  when connection failed
+     * @throws Exception      when connection failed
      * @throws ORMException   when cache is not set
      * @throws ToolsException this should not happen
      */

@@ -15,6 +15,22 @@
 
 namespace LongitudeOne\Spatial\Tests;
 
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySQL57Platform;
+use Doctrine\DBAL\Platforms\MySQL80Platform;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\Tools\ToolsException;
+use Doctrine\Persistence\Mapping\MappingException;
+use InvalidArgumentException;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType as GeographyPolygonType;
@@ -135,22 +151,6 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Persistence\Mapping\MappingException;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Logging\DebugStack;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform;
-use Doctrine\DBAL\Platforms\MySQL80Platform;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\ToolsException;
-use Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -294,7 +294,7 @@ abstract class OrmTestCase extends TestCase
      * Setup connection before class creation.
      *
      * @throws UnsupportedPlatformException this happen when platform is not mysql or postgresql
-     * @throws DBALException                when connection is not successful
+     * @throws Exception                    when connection is not successful
      */
     public static function setUpBeforeClass(): void
     {
@@ -305,7 +305,7 @@ abstract class OrmTestCase extends TestCase
      * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
      *
      * @throws UnsupportedPlatformException this should not happen
-     * @throws DBALException                this can happen when database or credentials are not set
+     * @throws Exception                    this can happen when database or credentials are not set
      * @throws ORMException                 ORM Exception
      */
     protected function setUp(): void
@@ -336,7 +336,7 @@ abstract class OrmTestCase extends TestCase
      * Teardown fixtures.
      *
      * @throws UnsupportedPlatformException this should not happen
-     * @throws DBALException                this can happen when database or credentials are not set
+     * @throws Exception                    this can happen when database or credentials are not set
      * @throws ORMException                 ORM Exception
      * @throws MappingException             Mapping exception when clear fails
      */
@@ -432,12 +432,12 @@ abstract class OrmTestCase extends TestCase
     }
 
     // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
-    // phpcs miss the DBALException
+    // phpcs miss the Exception
 
     /**
      * Establish the connection if it is not already done, then returns it.
      *
-     * @throws DBALException                when connection is not successful
+     * @throws Exception                    when connection is not successful
      * @throws UnsupportedPlatformException when platform is unsupported
      *
      * @return Connection
@@ -471,7 +471,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return connection parameters.
      *
-     * @throws DBALException when connection is not successful
+     * @throws Exception when connection is not successful
      *
      * @return array
      */
@@ -506,7 +506,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the entity manager.
      *
-     * @throws DBALException                when connection is not successful
+     * @throws Exception                    when connection is not successful
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      *
@@ -538,7 +538,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Get platform.
      *
-     * @throws DBALException                this can happen when database or credentials are not set
+     * @throws Exception                    this can happen when database or credentials are not set
      * @throws UnsupportedPlatformException this should not happen
      *
      * @return AbstractPlatform
@@ -551,7 +551,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the platform completed by the version number of the server for mysql.
      *
-     * @throws DBALException                when connection failed
+     * @throws Exception                    when connection failed
      * @throws UnsupportedPlatformException when platform is not supported
      */
     protected function getPlatformAndVersion(): string
@@ -570,7 +570,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the schema tool.
      *
-     * @throws DBALException                this can happen when database or credentials are not set
+     * @throws Exception                    this can happen when database or credentials are not set
      * @throws ORMException                 this can happen when database or credentials are not set
      * @throws UnsupportedPlatformException this should not happen
      *
@@ -600,7 +600,7 @@ abstract class OrmTestCase extends TestCase
      *
      * @param Throwable $throwable the exception
      *
-     * @throws Exception the exception provided by parameter
+     * @throws InvalidArgumentException the exception provided by parameter
      */
     protected function onNotSuccessfulTest(Throwable $throwable): void
     {
@@ -648,7 +648,7 @@ abstract class OrmTestCase extends TestCase
             $message = sprintf("[%s] %s\n\n", get_class($throwable), $throwable->getMessage());
             $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
 
-            throw new Exception($message, (int) $throwable->getCode(), $throwable);
+            throw new InvalidArgumentException($message, (int) $throwable->getCode(), $throwable);
         }
 
         throw $throwable;
@@ -657,7 +657,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Create entities used by tests.
      *
-     * @throws DBALException                when connection is not successful
+     * @throws Exception                    when connection is not successful
      * @throws ORMException                 when cache is not set
      * @throws UnsupportedPlatformException when platform is unsupported
      * @throws ToolsException               when schema cannot be created
@@ -681,7 +681,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Setup DQL functions.
      *
-     * @throws DBALException                when connection is not successful
+     * @throws Exception                    when connection is not successful
      * @throws ORMException                 when
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -705,7 +705,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Add types used by test to DBAL.
      *
-     * @throws DBALException                when credential or connection failed
+     * @throws Exception                    when credential or connection failed
      * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUpTypes()
