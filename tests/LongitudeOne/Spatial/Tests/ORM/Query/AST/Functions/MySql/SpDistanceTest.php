@@ -31,6 +31,7 @@ use Doctrine\ORM\ORMException;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @group dql
+ * @group mysql-only
  *
  * @internal
  * @coversDefaultClass

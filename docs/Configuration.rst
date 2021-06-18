@@ -63,7 +63,7 @@ Declare a new function
             string_functions:
                 #Declare functions returning a string
                 st_envelope: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\STEnvelope
-                #A good practice is to prefix functions with SP when they are not issue from the Standard directory
+                #Prefix functions with SP when they are not issue from the Standard directory is a good practice
                 sp_asgeojson: LongitudeOne\Spatial\ORM\Query\AST\Functions\Postgresql\SpAsGeoJson
                 #You can use the DQL function name you want and then use it in your DQL
                 myDQLFunctionAlias: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StCentroid
@@ -74,11 +74,6 @@ Add only the functions you want to use. The list of available function can be fo
 1. list of :ref:`Standard functions` declared in the `Open Geospatial Consortium standard`_,
 2. list of :ref:`Specific PostGreSQL functions` which are not already declared in the OGC Standard,
 3. list of :ref:`Specific MySQL functions` which are not already declared in the OGC Standard,
-
-Be warned that `MySQL spatial functions have a lot of bugs`_, especially the ```Contains``` function which returns wrong
-results. If you want to store geometric data, please considers to use a good database server such as PostgreSQL Server
-or Microsoft SQL Server. If you want to store geographic data, you have to use PostgreSql server, because MySql
-does not implements geographic data.
 
 Nota: By default, function declared by the `Open Geospatial Consortium`_ in the `standards of SQL Options`_ are prefixed
 by ``ST_``, other functions should not be declared with this prefix. We suggest to use the ``SP_`` prefix (specific).
@@ -134,7 +129,6 @@ You can register functions of the doctrine spatial extension adding them to the 
 
 
 .. _ISO/IEC 13249-3:2016: https://www.iso.org/standard/60343.html
-.. _MySQL spatial functions have a lot of bugs: https://sqlpro.developpez.com/tutoriel/dangers-mysql-mariadb/
 .. _Open Geospatial Consortium: https://www.ogc.org/
 .. _Open Geospatial Consortium standard: https://www.ogc.org/standards/sfs
 .. _standards of SQL Options: https://www.ogc.org/standards/sfs

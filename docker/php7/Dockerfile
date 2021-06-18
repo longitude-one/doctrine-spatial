@@ -1,4 +1,4 @@
-FROM php:8-fpm-alpine
+FROM php:7-fpm-alpine
 
 RUN apk --update --no-cache add bash git postgresql-dev mysql-dev  \
         && docker-php-ext-install pdo_pgsql pdo_mysql  \
@@ -15,6 +15,5 @@ RUN wget https://get.symfony.com/cli/installer -O /tmp/installer && \
 
 WORKDIR /var/www
 
-CMD php-fpm
-
+CMD composer install ;  php-fpm
 EXPOSE 9000

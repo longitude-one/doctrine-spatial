@@ -10,10 +10,15 @@
         </testsuite>
     </testsuites>
 
+    <groups>
+        <exclude>
+            <group>mysql-only</group>
+        </exclude>
+    </groups>
+
     <php>
         <var name="db_type" value="pdo_pgsql"/>
-<!--        <var name="db_host" value="spatial-postgis" />-->
-        <var name="db_host" value="127.0.0.1" />
+        <var name="db_host" value="spatial-postgis" />
         <var name="db_username" value="main" />
         <var name="db_password" value="main" /> <!-- Change it -->
         <var name="db_name" value="main" />

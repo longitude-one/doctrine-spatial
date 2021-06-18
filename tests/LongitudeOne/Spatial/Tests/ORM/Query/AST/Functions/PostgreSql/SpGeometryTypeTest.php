@@ -35,6 +35,7 @@ use Doctrine\ORM\ORMException;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @group dql
+ * @group pgsql-only
  *
  * @internal
  * @coversDefaultClass
