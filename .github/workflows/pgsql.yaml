@@ -1,0 +1,62 @@
+#.github/workflows/php.yml
+name: Library tests on PHP/PgSQL
+on:
+  push: ~
+  pull_request:
+    branches: [ dev, main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+    name: PHP${{ matrix.php }}/PostGreSQL
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgis/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: main
+          POSTGRES_USER: main
+          POSTGRES_DATABASE: main
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@master
+      - name: Validate composer.json
+        run: composer validate --strict
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Echo PHP version
+        run: php -v
+      - name: Copy testsuites
+        run: cp .github/phpunit.pgsql.xml.dist phpunit.pgsql.xml
+      - name: Install libraries
+        run: composer update -vvv
+      - name: Run test suite PHP${{ matrix.php }}/postgis
+        run: composer run-script test-pgsql
+      - name: Check quality code
+        run: composer run-script check-quality-code
+
+

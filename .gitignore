@@ -2,9 +2,9 @@
 .phpcs-cache
 .php_cs.cache
 .php-version
-.phpunit.result.cache
+.phpunit.cache/
 composer.*.lock
 composer.lock
 phpunit.xml
-phpunit.*.xml
+/phpunit.*.xml
 vendor/

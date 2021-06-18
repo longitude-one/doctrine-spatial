@@ -16,9 +16,9 @@ Or you can edit directly `composer.json` file by adding this line on your requir
 
     "require": {
     	...
-        "longitude-one/doctrine-spatial": "^1.0"
+        "longitude-one/doctrine-spatial": "^3.0"
 
-Be careful, the version 1.0.0 will only be available during summer 2021.
+Be careful, the version 3.0.0 will only be available during summer 2021.
 
 Installation without composer
 -----------------------------

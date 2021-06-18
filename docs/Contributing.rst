@@ -27,16 +27,16 @@ It's pretty easy to create a new function. A few lines code are sufficient.
 Where to store your class?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 If your function is described in the `OGC Standards`_ or in the `ISO/IEC 13249-3`_, the class implementing the function
-**shall** be create in the lib/CrEOF/Spatial/ORM/Query/AST/Functions/`Standard directory`_.
+**shall** be create in the lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/`Standard directory`_.
 
 If your spatial function is not described in the OGC Standards nor in the ISO, your class should be prefixed by Sp
 (specific). If your class is specific to MySql, you shall create it in the
-lib/CrEOF/Spatial/ORM/Query/AST/Functions/`MySql directory`_.
+lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/`MySql directory`_.
 If your class is specific to PostgreSQL, you shall create it in the
-lib/CrEOF/Spatial/ORM/Query/AST/Functions/`PostgreSql directory`_.
+lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/`PostgreSql directory`_.
 If your class is not described in the OGC Standards nor in the ISO norm, but exists in MySQL and in PostgreSQL, accepts
 the same number of arguments and returns the same results (which is rarely the case), then you shall create it in the
-lib/CrEOF/Spatial/ORM/Query/AST/Functions/`Common directory`_.
+lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/`Common directory`_.
 
 Which name for your function?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -102,11 +102,11 @@ Here is an example of setup, each line is commented to help you to understand ho
 
     <?php
 
-    use CrEOF\Spatial\Exception\InvalidValueException;
-    use CrEOF\Spatial\Exception\UnsupportedPlatformException;
-    use CrEOF\Spatial\Tests\Helper\PointHelperTrait;
-    use CrEOF\Spatial\Tests\OrmTestCase;
-    use Doctrine\DBAL\DBALException;
+    use LongitudeOne\Spatial\Exception\InvalidValueException;
+    use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+    use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+    use LongitudeOne\Spatial\Tests\OrmTestCase;
+    use Doctrine\DBAL\Exception;
     use Doctrine\ORM\ORMException;
 
     /**
@@ -137,7 +137,7 @@ Here is an example of setup, each line is commented to help you to understand ho
         /**
          * Setup the function type test.
          *
-         * @throws DBALException                when connection failed
+         * @throws Exception                when connection failed
          * @throws ORMException                 when cache is not set
          * @throws UnsupportedPlatformException when platform is unsupported
          */
@@ -156,7 +156,7 @@ Here is an example of setup, each line is commented to help you to understand ho
         /**
          * Test a DQL containing function to test in the select.
          *
-         * @throws DBALException                when connection failed
+         * @throws Exception                when connection failed
          * @throws ORMException                 when cache is not set
          * @throws UnsupportedPlatformException when platform is unsupported
          * @throws InvalidValueException        when geometries are not valid
@@ -173,7 +173,7 @@ Here is an example of setup, each line is commented to help you to understand ho
 
             //We create a query using your new DQL function SpFoo
             $query = $this->getEntityManager()->createQuery(
-                'SELECT p, ST_AsText(SpFoo(p.point, :p) FROM CrEOF\Spatial\Tests\Fixtures\PointEntity p'
+                'SELECT p, ST_AsText(SpFoo(p.point, :p) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
             );
             //Optionnaly, you can use parameter
             $query->setParameter('p', 'bar', 'string');
@@ -228,13 +228,13 @@ You can launch PHP Mess Detector only with:
 
     composer phpmd
 
-.. _Common directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/CrEOF/Spatial/ORM/Query/AST/Functions/Common
-.. _MySql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/CrEOF/Spatial/ORM/Query/AST/Functions/MySql
-.. _PostgreSql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/CrEOF/Spatial/ORM/Query/AST/Functions/PostgreSql
-.. _Standard directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/CrEOF/Spatial/ORM/Query/AST/Functions/Standard
+.. _Common directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Common
+.. _MySql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql
+.. _PostgreSql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql
+.. _Standard directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard
 .. _ISO/IEC 13249-3: https://www.iso.org/standard/60343.html
 .. _OGC standards: https://www.ogc.org/standards/sfs
 .. _ST_Polygonize: https://postgis.net/docs/manual-2.5/ST_Polygonize.html
-.. _SnapToGrid: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/CrEOF/Spatial/ORM/Query/AST/Functions/PostgreSql/SpSnapToGrid.php
-.. _functions test directory: https://github.com/longitude-one/doctrine-spatial/tree/master/tests/CrEOF/Spatial/ORM/Query/AST/Functions/
-.. _OrmTestCase.php file: https://github.com/longitude-one/doctrine-spatial/blob/master/tests/CrEOF/Spatial/Tests/OrmTestCase.php
+.. _SnapToGrid: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql/SpSnapToGrid.php
+.. _functions test directory: https://github.com/longitude-one/doctrine-spatial/tree/master/tests/LongitudeOne/Spatial/ORM/Query/AST/Functions/
+.. _OrmTestCase.php file: https://github.com/longitude-one/doctrine-spatial/blob/master/tests/LongitudeOne/Spatial/Tests/OrmTestCase.php

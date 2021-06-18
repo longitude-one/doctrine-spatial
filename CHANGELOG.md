@@ -2,22 +2,41 @@
 All notable changes to this project will be documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [2.0.0] Version 2 - 2020-04-01
+## LongitudeOne/doctrine-spatial [3.0.0-dev]
 
-## [2.0.0-RC1] Release candidat - 2020-03-26
+### TODO
+- Support of CircleCI on Github actions (help is welcomed)
+- Support for code coverage on Github Actions (help is welcomed)
+
+### Added
+- longitude-one/doctrine-spatial replaces CrEOF/doctrine2-spatial
+- Support of PHP8.0
+- Support for Postgis2.1, PostGis3.0, PostGis3.1
+- Namespaces have been updated from CrEOF/Spatial to LongitudeOne/Spatial
+- Github actions added for our internal test
+
+### Removed
+- Removing support of PHP7.2, PHP7.3
+- Removing compatibility with Postgis 2.0. Some spatial functions have been renamed to their 
+new names (example: ST_Line_Interpolate_Point has been renamed to ST_Line_Interpolate_Point).
+- Removing test on Travis
+
+## CrEOF/doctrine2-spatial [2.0.0] Version 2 - 2020-04-01
+
+## CrEOF/doctrine2-spatial [2.0.0-RC1] Release candidat - 2020-03-26
 
 ### Added
 - Geometric and geographic entities implements JsonSerialization.
 
-## [2.0.0-RC0] Release candidat - 2020-03-18
+## CrEOF/doctrine2-spatial[2.0.0-RC0] Release candidat - 2020-03-18
 
 ### Added
 - A new documentation hosted on ReadTheDocs.
 - Adding support of PHP7.2, PHP7.3, PHP7.4,
 - Needed PHP extension added in composer.json,
-- Spatial function implementing the ISO/IEC 13249-3:2016 or [OGC Standard](https://www.ogc.org/standards/sfs) are now stored in the [Standard](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/Standard) directory.
-- Specific spatial function of the PostgreSql server are now store in the [PostgreSql](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/PostgreSql) directory.
-- Specific spatial function of the PostgreSql server are now store in the [MySql](./lib/CrEOF/Spatial/ORM/Query/AST/Functions/MySql) directory.
+- Spatial function implementing the ISO/IEC 13249-3:2016 or [OGC Standard](https://www.ogc.org/standards/sfs) are now stored in the [Standard](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard) directory.
+- Specific spatial function of the PostgreSql server are now store in the [PostgreSql](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql) directory.
+- Specific spatial function of the PostgreSql server are now store in the [MySql](lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql) directory.
 - Code coverage is now really at 90 percent. (CreOf code coverage was not valid because of AST functions which contained only properties),
 - AST Functions updated to avoid misconfiguration (some properties was missing),
 - AST Functions updated to detect which function was not tested,
@@ -29,7 +48,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 - Removing support of PHP5.*, PHP7.0, PHP7.1
 
-## [1.1.1] - 2020-02-21 
+## CrEOF/doctrine2-spatial [1.1.1] - 2020-02-21 
 Nota: This version was never published by creof. But the fork begins at this date.
 ### Added
 - Added support for PostgreSql ST_MakeEnvelope function.
@@ -41,7 +60,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 ### Removed
 - Unused imports from a number of classes.
 
-## [1.1] - 2015-12-20
+## CrEOF/doctrine2-spatial [1.1] - 2015-12-20
 ### Added
 - Local phpdocs to database platform classes.
 - getMappedDatabaseTypes() method to PlatformInterface returning a unique type name used in type mapping.
@@ -52,7 +71,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - Test for unsupported platforms.
 
 ### Changed
-- Moved database platform classes to namespace CrEOF\Spatial\DBAL\Platform.
+- Moved database platform classes to namespace LongitudeOne\Spatial\DBAL\Platform.
 - Define exception messages where thrown in classes.
 - Pass entity class names to usesEntity() in tests instead of looking them up in an array.
 - Confirm types have not been previously added when setting up tests.
@@ -68,7 +87,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - Dependency on ramsey/array_column package.
 - Empty test classes.
 
-## [1.0.1] - 2015-12-18
+## CrEOF/doctrine2-spatial [1.0.1] - 2015-12-18
 ### Added
 - Dependency on creof/geo-parser.
 - Dependency on creof/wkt-parser.
@@ -85,7 +104,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - BinaryReader, BinaryParser, and Utils classes no longer needed.
 - Unused expection methods from InvalidValueException.
 
-## [1.0.0] - 2015-11-09
+## CrEOF/doctrine2-spatial [1.0.0] - 2015-11-09
 ### Added
 - Change log file to chronicle changes.
 - Stub TODO.md file.
@@ -111,4 +130,3 @@ Nota: This version was never published by creof. But the fork begins at this dat
 
 ### Removed
 - AbstractDualGeometryDQLFunction, AbstractDualGeometryOptionalParameterDQLFunction, AbstractGeometryDQLFunction, AbstractSingleGeometryDQLFunction, AbstractTripleGeometryDQLFunction, and AbstractVariableGeometryDQLFunction classes.
-
