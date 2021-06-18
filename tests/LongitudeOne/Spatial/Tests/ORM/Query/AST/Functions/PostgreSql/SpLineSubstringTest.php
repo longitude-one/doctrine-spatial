@@ -76,7 +76,7 @@ class SpLineSubstringTest extends OrmTestCase
         );
 
         $query->setParameter('p', 'LINESTRING(0 0, 2 2, 10 10)', 'string');
-        $query->setParameter('start', 0);
+        $query->setParameter('start', 0.0);
         $query->setParameter('end', 0.5);
 
         $result = $query->getResult();
