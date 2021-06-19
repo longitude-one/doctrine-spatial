@@ -11,10 +11,7 @@ Could potentially add support for other platforms if an interest is expressed.
 [![Main Status](https://travis-ci.com/longitude-one/doctrine-spatial.svg?branch=main)](https://travis-ci.com/longitude-one/doctrine-spatial)
 [![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
 [![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
-
-[comment]: <> ([![Code Climate]&#40;https://codeclimate.com/github/longitude-one/doctrine-spatial/badges/gpa.svg&#41;]&#40;https://codeclimate.com/github/longitude-one/doctrine-spatial&#41;)
-
-[comment]: <> ([![Coverage Status]&#40;https://coveralls.io/repos/longitude-one/doctrine-spatial/badge.svg?branch=master&service=github&#41;]&#40;https://coveralls.io/github/longitude-one/doctrine-spatial?branch=master&#41;)
+[![Coverage Status](https://coveralls.io/repos/github/longitude-one/doctrine-spatial/badge.svg)](https://coveralls.io/github/longitude-one/doctrine-spatial)
 
 Documentation 
 -------------
