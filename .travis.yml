@@ -7,9 +7,6 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
   - composer config -g  discard-changes 1 # because we used travis cache and, sometimes, packages change
   - mkdir -p ./build/coverage
   - composer install --prefer-source
@@ -17,9 +14,9 @@ install:
 script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
-       ./vendor/bin/phpunit -v --configuration ./tests/travis/$DB.travis.xml --coverage-php .tests/travis/build/coverage/coverage-$DB-$TRAVIS_PHP_VERSION-2.7.cov
+       ./vendor/bin/phpunit -v --configuration tests/travis/$DB.travis.xml --coverage-php tests/travis/build/coverage/coverage-$DB-$TRAVIS_PHP_VERSION-2.7.cov
     else
-       ./vendor/bin/phpunit -v --configuration ./tests/travis/$DB.travis.xml
+       ./vendor/bin/phpunit -v --configuration tests/travis/$DB.travis.xml
     fi
   # Code shall respect rules
   - composer check-quality-code
@@ -27,11 +24,9 @@ script:
 after_script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
-       ./vendor/bin/phpcov merge --clover .tests/travis/build/logs/clover.xml .tests/travis/build/coverage
-       ./vendor/bin/coveralls -v --exclude-no-stmt
+       ./vendor/bin/phpcov merge --clover tests/travis/build/logs/clover.xml tests/travis/build/coverage
+       ./vendor/bin/php-coveralls -v --exclude-no-stmt
     fi
-  #Push code climate coverage
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 notifications:
   webhooks: https://coveralls.io/webhook?repo_token=$COVERALLS_WEBHOOK
