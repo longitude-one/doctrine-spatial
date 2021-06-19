@@ -38,17 +38,6 @@ notifications:
 
 jobs:
   include:
-    #PostgreSQL11 PHP 7.3 Postgis 2.5
-    - stage: Test PostgreSQL
-      php: 7.3
-      env: DB=pgsql POSTGRESQL_VERSION=11.0
-      sudo: required
-      addons:
-        postgresql: "11"
-        apt:
-          packages:
-            - postgis
-            - postgresql-11-postgis-2.5
     #MySQL 5.7 PHP 7.4
     - stage: Test MySQL
       php: 7.4
