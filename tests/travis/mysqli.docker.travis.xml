@@ -30,6 +30,7 @@
         <exclude>
             <group>srid</group>              <!-- Tests for SRID functionality -->
             <group>mysql5</group>
+            <group>pgsql-only</group>
         </exclude>
     </groups>
 

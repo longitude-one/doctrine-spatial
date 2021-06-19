@@ -8,7 +8,7 @@ Could potentially add support for other platforms if an interest is expressed.
 ## Current status
 [![Test on PHP/MySQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml)
 [![Test on PHP/PgSQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml)
-[![Build Status](https://travis-ci.com/longitude-one/doctrine-spatial.svg?branch=main)](https://travis-ci.com/longitude-one/doctrine-spatial)
+[![Main Status](https://travis-ci.com/longitude-one/doctrine-spatial.svg?branch=main)](https://travis-ci.com/longitude-one/doctrine-spatial)
 [![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
 [![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
 
@@ -24,7 +24,7 @@ The [new documentation](https://doctrine-spatial.readthedocs.io) explain how to:
 * install this doctrine extension,
 * configure this extension,
 * create spatial entities,
-* use spatial functions into your repositories,
+* use spatial functions in your repositories,
 * contribute (and test)
 
 The documentation contains a glossary of all available types and all available spatial functions.
@@ -55,10 +55,8 @@ This version is **NOT** compatible with MariaDB version. Some spatial functions 
 different from MySQL version (StContains function is a good example). 
 
 ### PostgreSQL
-This spatial library is compatible with PostgreSql9.6, PostgreSql10 and 
-PostgreSql11. I tested it with PostgreSql12. But I do not know how to install a PostgreSql 12 and 13 server on travis to
-be sure that library stay compatible. Be careful, this library is only tested with Postgis 2.5+. It is not tested with 
-Postgis3.0, but feel free to contribute by updating the [travis configuration](./.travis.yml)
+This spatial library is compatible with PostgreSql13. 
+This library is tested with Postgis 3.1.
 
 ### Migrating from creof/doctrine2-spatial
 Update your composer.json to replace `creof/doctrine2-spatial` by `longitude-one\doctrine-spatial`.

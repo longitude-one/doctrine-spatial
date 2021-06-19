@@ -23,7 +23,7 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library test suite for PgSQL">
-            <directory>../LongitudeOne/Spatial/Tests</directory>
+            <directory>../LongitudeOne/Spatial/Tests/DBAL</directory>
         </testsuite>
     </testsuites>
 
