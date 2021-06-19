@@ -9,12 +9,13 @@ cache:
 install:
   - composer config -g  discard-changes 1 # because we used travis cache and, sometimes, packages change
   - mkdir -p ./build/coverage
+  - mkdir -p ./build/logs
   - composer install --prefer-source
 
 script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
-       ./vendor/bin/phpunit -v --configuration tests/travis/$DB.travis.xml --coverage-php tests/travis/build/coverage/coverage-$DB-$TRAVIS_PHP_VERSION-2.7.cov
+       ./vendor/bin/phpunit -v --configuration tests/travis/$DB.travis.xml --coverage-php build/coverage/coverage-$DB-$TRAVIS_PHP_VERSION-2.7.cov
     else
        ./vendor/bin/phpunit -v --configuration tests/travis/$DB.travis.xml
     fi
@@ -24,8 +25,7 @@ script:
 after_script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
-       ./vendor/bin/phpcov merge --clover tests/travis/build/logs/clover.xml tests/travis/build/coverage
-       cat tests/travis/build/logs/clover.xml
+       ./vendor/bin/phpcov merge --clover build/logs/clover.xml build/coverage
        ./vendor/bin/php-coveralls -vvv --exclude-no-stmt
     fi
 
