@@ -25,7 +25,8 @@ after_script:
   - |
     if [ "x$COVERAGE" == "xyes" ]; then
        ./vendor/bin/phpcov merge --clover tests/travis/build/logs/clover.xml tests/travis/build/coverage
-       ./vendor/bin/php-coveralls -v --exclude-no-stmt
+       cat tests/travis/build/logs/clover.xml
+       ./vendor/bin/php-coveralls -vvv --exclude-no-stmt
     fi
 
 notifications:
