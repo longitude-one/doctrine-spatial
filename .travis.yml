@@ -127,7 +127,7 @@ jobs:
       before_script:
         - bash ./tests/travis/install-mysql-8.0.sh
     #PostgreSQL11 PHP 8.0 Postgis 2.5
-    - stage: PHP8.0
+    - stage: PHP8
       name: PostgreSQL11 Postgis 2.5
       php: 8.0
       env: DB=pgsql POSTGRESQL_VERSION=11.0
