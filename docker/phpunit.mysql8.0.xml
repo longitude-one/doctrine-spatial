@@ -33,7 +33,7 @@
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">lib</directory>
+            <directory suffix=".php">../../lib</directory>
         </include>
     </coverage>
 </phpunit>
