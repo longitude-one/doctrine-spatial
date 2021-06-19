@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="../../vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          colors="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
@@ -22,23 +22,16 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library tests for MySQL using mysqli">
-            <directory>../Doctrine/Tests/DBAL</directory>
+            <directory>../LongitudeOne/Spatial/Tests/DBAL</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory suffix=".php">../../lib/</directory>
-            <exclude>
-                <directory suffix=".php">../LongitudeOne/Spatial/Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 
     <groups>
         <exclude>
             <group>srid</group>              <!-- Tests for SRID functionality -->
             <group>mysql8</group>
+            <group>pgsql-only</group>
         </exclude>
     </groups>
+
 </phpunit>

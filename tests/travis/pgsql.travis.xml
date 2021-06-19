@@ -4,7 +4,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.0/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
 >
 
     <php>
@@ -23,16 +23,16 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library test suite for PgSQL">
-            <directory>../LongitudeOne/Spatial/Tests</directory>
+            <directory>../LongitudeOne/Spatial/Tests/DBAL</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory suffix=".php">../../lib/</directory>
-            <exclude>
-                <directory suffix=".php">../LongitudeOne/Spatial/Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+    <groups>
+        <exclude>
+            <group>srid</group>              <!-- Tests for SRID functionality -->
+            <group>mysql-only</group>
+            <group>mysql5</group>
+            <group>mysql8</group>
+        </exclude>
+    </groups>
 </phpunit>
