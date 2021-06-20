@@ -23,7 +23,7 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library test suite for PgSQL">
-            <directory>../LongitudeOne/Spatial/Tests/DBAL</directory>
+            <directory>../LongitudeOne/Spatial/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -36,8 +36,7 @@
         </exclude>
     </groups>
 
-    <coverage cacheDirectory="tests/travis/build/cache/"
-              processUncoveredFiles="true">
+    <coverage cacheDirectory="build/cache/" processUncoveredFiles="true">
         <include>
             <directory suffix=".php">../../lib</directory>
         </include>

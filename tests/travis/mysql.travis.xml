@@ -34,7 +34,7 @@
         </exclude>
     </groups>
 
-    <coverage cacheDirectory="tests/travis/build/cache/"
+    <coverage cacheDirectory="build/cache/"
               processUncoveredFiles="true">
         <include>
             <directory suffix=".php">../../lib</directory>
