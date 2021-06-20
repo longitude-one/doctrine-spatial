@@ -35,4 +35,11 @@
             <group>mysql8</group>
         </exclude>
     </groups>
+
+    <coverage cacheDirectory="tests/travis/build/cache/"
+              processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">../../lib</directory>
+        </include>
+    </coverage>
 </phpunit>
