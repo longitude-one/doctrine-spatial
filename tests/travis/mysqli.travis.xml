@@ -22,7 +22,7 @@
 
     <testsuites>
         <testsuite name="Doctrine spatial library tests for MySQL using mysqli">
-            <directory>../LongitudeOne/Spatial/Tests/DBAL</directory>
+            <directory>../LongitudeOne/Spatial/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -34,7 +34,7 @@
         </exclude>
     </groups>
 
-    <coverage cacheDirectory="tests/travis/build/cache/"
+    <coverage cacheDirectory="build/cache/"
               processUncoveredFiles="true">
         <include>
             <directory suffix=".php">../../lib</directory>
