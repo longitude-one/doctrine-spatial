@@ -648,7 +648,7 @@ abstract class OrmTestCase extends TestCase
             $message = sprintf("[%s] %s\n\n", get_class($throwable), $throwable->getMessage());
             $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
 
-            throw new InvalidArgumentException($message, (int) $throwable->getCode(), $throwable);
+            throw new InvalidArgumentException($message, $throwable->getCode(), $throwable);
         }
 
         throw $throwable;
