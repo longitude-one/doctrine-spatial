@@ -345,7 +345,7 @@ abstract class OrmTestCase extends TestCase
         $this->sqlLoggerStack->enabled = false;
 
         foreach (array_keys($this->usedEntities) as $entityName) {
-            static::getConnection()->executeUpdate(sprintf(
+            static::getConnection()->executeStatement(sprintf(
                 'DELETE FROM %s',
                 static::$entities[$entityName]['table']
             ));
@@ -452,7 +452,7 @@ abstract class OrmTestCase extends TestCase
 
         switch ($connection->getDatabasePlatform()->getName()) {
             case 'postgresql':
-                $connection->exec('CREATE EXTENSION postgis');
+                $connection->executeStatement('CREATE EXTENSION postgis');
                 break;
             case 'mysql':
                 break;
