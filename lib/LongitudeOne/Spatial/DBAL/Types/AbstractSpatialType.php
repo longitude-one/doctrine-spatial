@@ -65,7 +65,7 @@ abstract class AbstractSpatialType extends Type
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (null === $value) {
-            return $value;
+            return null;
         }
 
         if (!($value instanceof GeometryInterface)) {
