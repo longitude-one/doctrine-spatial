@@ -55,11 +55,11 @@ abstract class OrmMockTestCase extends TestCase
     {
         /** @var Driver|MockObject $driver */
         $driver = $this->getMockBuilder('Doctrine\DBAL\Driver\PDOSqlite\Driver')
-            ->setMethods(['getDatabasePlatform'])
+            ->onlyMethods(['getDatabasePlatform'])
             ->getMock()
         ;
         $platform = $this->getMockBuilder('Doctrine\DBAL\Platforms\SqlitePlatform')
-            ->setMethods(['getName'])
+            ->onlyMethods(['getName'])
             ->getMock()
         ;
 
