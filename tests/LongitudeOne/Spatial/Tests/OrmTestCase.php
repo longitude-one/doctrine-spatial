@@ -15,7 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Doctrine\Common\Cache\ArrayCache;
+use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -526,7 +526,7 @@ abstract class OrmTestCase extends TestCase
         $realPaths = [realpath(__DIR__.'/Fixtures')];
         $config = new Configuration();
 
-        $config->setMetadataCacheImpl(new ArrayCache());
+        $config->setMetadataCache(new ArrayCachePool());
         $config->setProxyDir(__DIR__.'/Proxies');
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         //TODO WARNING: a non-expected parameter is provided.
