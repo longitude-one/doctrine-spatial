@@ -28,7 +28,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * @var array[]
      */
-    protected $polygons = [];
+    protected array $polygons = [];
 
     /**
      * AbstractMultiPolygon constructor.
@@ -40,7 +40,8 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      */
     public function __construct(array $polygons, $srid = null)
     {
-        $this->setPolygons($polygons)
+        $this
+            ->setPolygons($polygons)
             ->setSrid($srid)
         ;
     }
@@ -50,12 +51,20 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @param AbstractPolygon|array[] $polygon polygon to add
      *
-     * @throws InvalidValueException when polygon is invalid
-     *
-     * @return self
+     * @throws InvalidValueException when polygon is not an array nor an AbstractPolygon
      */
-    public function addPolygon($polygon)
+    public function addPolygon($polygon): self
     {
+        if ($polygon instanceof AbstractPolygon) {
+            $polygon = $polygon->toArray();
+        }
+
+        if (!is_array($polygon)) {
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
+            throw new InvalidValueException('AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter');
+            // phpcs:enable
+        }
+
         $this->polygons[] = $this->validatePolygonValue($polygon);
 
         return $this;
@@ -65,10 +74,8 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      * Polygon getter.
      *
      * @param int $index Index of polygon, use -1 to get last one
-     *
-     * @return AbstractPolygon
      */
-    public function getPolygon($index)
+    public function getPolygon(int $index): AbstractPolygon
     {
         //TODO replace by a function to be compliant with -1, -2, etc.
         if (-1 == $index) {
