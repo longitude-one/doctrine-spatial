@@ -58,7 +58,7 @@ This library is tested with Postgis 3.1.
 ### Migrating from creof/doctrine2-spatial
 Update your composer.json to replace `creof/doctrine2-spatial` by `longitude-one/doctrine-spatial`.
 
-Update the namespace, each `use CrEOF/Spatial/...` by `use LongitudeOne/Spatial/...`
+Update the namespace, each `use CrEOF\Spatial\...` by `use LongitudeOne\Spatial\...`
 
 ## Help wanted
 
