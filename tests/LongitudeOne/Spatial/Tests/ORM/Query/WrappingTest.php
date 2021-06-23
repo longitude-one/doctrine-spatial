@@ -17,7 +17,6 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Version;
 use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
@@ -117,11 +116,7 @@ class WrappingTest extends OrmTestCase
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
-        $parameter = '?';
-
-        if (Version::compare('2.5') <= 0) {
-            $parameter = Type::getType('point')->convertToDatabaseValueSql($parameter, $this->getPlatform());
-        }
+        $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
 
         $regex = preg_quote(sprintf('/geometry = %s/', $parameter));
 
