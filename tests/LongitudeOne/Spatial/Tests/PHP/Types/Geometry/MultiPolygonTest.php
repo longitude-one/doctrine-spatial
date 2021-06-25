@@ -36,6 +36,34 @@ use PHPUnit\Framework\TestCase;
 class MultiPolygonTest extends TestCase
 {
     /**
+     * @throws InvalidValueException this exception should happen
+     */
+    public function testAddInvalidPolygon(): void
+    {
+        $expected = 'AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter';
+
+        $polygon = new Polygon(
+            [
+                new LineString(
+                    [
+                        new Point(0, 0),
+                        new Point(10, 0),
+                        new Point(10, 10),
+                        new Point(0, 10),
+                        new Point(0, 0),
+                    ]
+                ),
+            ]
+        );
+
+        $multiPolygon = new MultiPolygon([$polygon]);
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage($expected);
+        $multiPolygon->addPolygon('foo');
+    }
+
+    /**
      * Test an empty polygon.
      *
      * @throws InvalidValueException This should not happen because of selected value
@@ -200,6 +228,19 @@ class MultiPolygonTest extends TestCase
                     ),
                 ]
             ),
+            new Polygon(
+                [
+                    new LineString(
+                        [
+                            new Point(1, 1),
+                            new Point(2, 1),
+                            new Point(2, 2),
+                            new Point(1, 2),
+                            new Point(1, 1),
+                        ]
+                    ),
+                ]
+            ),
         ];
 
         $polygon = new Polygon(
@@ -229,6 +270,22 @@ class MultiPolygonTest extends TestCase
                 ],
             ]
         );
+
+        $polygonObject = new Polygon(
+            [
+                new LineString(
+                    [
+                        new Point(1, 1),
+                        new Point(2, 1),
+                        new Point(2, 2),
+                        new Point(1, 2),
+                        new Point(1, 1),
+                    ]
+                ),
+            ]
+        );
+
+        $multiPolygon->addPolygon($polygonObject);
 
         static::assertEquals($expected, $multiPolygon->getPolygons());
     }
