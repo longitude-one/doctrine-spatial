@@ -271,7 +271,7 @@ class MultiPolygonTest extends TestCase
             ]
         );
 
-        $polygon2 = new Polygon(
+        $polygonObject = new Polygon(
             [
                 new LineString(
                     [
@@ -285,7 +285,7 @@ class MultiPolygonTest extends TestCase
             ]
         );
 
-        $multiPolygon->addPolygon($polygon2);
+        $multiPolygon->addPolygon($polygonObject);
 
         static::assertEquals($expected, $multiPolygon->getPolygons());
     }
