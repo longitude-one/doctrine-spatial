@@ -67,8 +67,8 @@ class StContainsTest extends OrmTestCase
      */
     public function testSelectStContains()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -101,8 +101,8 @@ class StContainsTest extends OrmTestCase
      */
     public function testStContainsWhereParameter()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

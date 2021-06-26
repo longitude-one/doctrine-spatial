@@ -105,8 +105,8 @@ class SpClosestPointTest extends OrmTestCase
      */
     public function testFunctionWithPolygonInSelect()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

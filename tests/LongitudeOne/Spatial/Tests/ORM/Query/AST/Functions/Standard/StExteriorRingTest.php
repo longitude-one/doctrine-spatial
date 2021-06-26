@@ -65,8 +65,8 @@ class StExteriorRingTest extends OrmTestCase
      */
     public function testSelectStExteriorRing()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

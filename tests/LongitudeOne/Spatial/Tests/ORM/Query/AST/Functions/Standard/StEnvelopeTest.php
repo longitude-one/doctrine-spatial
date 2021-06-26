@@ -66,8 +66,8 @@ class StEnvelopeTest extends OrmTestCase
      */
     public function testSelectStEnvelope()
     {
-        $this->createBigPolygon();
-        $this->createHoleyPolygon();
+        $this->persistBigPolygon();
+        $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -101,8 +101,8 @@ class StEnvelopeTest extends OrmTestCase
      */
     public function testStEnvelopeWhereParameter()
     {
-        $holeyPolygon = $this->createHoleyPolygon();
-        $this->createSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
+        $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -66,7 +66,7 @@ class SpMakeEnvelopeTest extends OrmTestCase
      */
     public function testSelectStMakeEnvelope()
     {
-        $this->createBigPolygon();
+        $this->persistBigPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

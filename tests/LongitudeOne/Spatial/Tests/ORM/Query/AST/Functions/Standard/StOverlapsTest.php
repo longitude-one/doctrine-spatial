@@ -65,10 +65,10 @@ class StOverlapsTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $this->createSmallPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
-        $polygonW = $this->createPolygonW();
+        $bigPolygon = $this->persistBigPolygon();
+        $this->persistSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
+        $polygonW = $this->persistPolygonW();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -104,10 +104,10 @@ class StOverlapsTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $bigPolyon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $polygonW = $this->createPolygonW();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolyon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $polygonW = $this->persistPolygonW();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

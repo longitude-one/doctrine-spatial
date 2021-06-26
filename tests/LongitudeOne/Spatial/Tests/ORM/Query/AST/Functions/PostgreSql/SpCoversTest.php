@@ -65,8 +65,8 @@ class SpCoversTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,8 +94,8 @@ class SpCoversTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

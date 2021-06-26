@@ -65,10 +65,10 @@ class StWithinTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $this->createHoleyPolygon();
-        $this->createPolygonW();
+        $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $this->persistHoleyPolygon();
+        $this->persistPolygonW();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -96,10 +96,10 @@ class StWithinTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $bigPolyon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $polygonW = $this->createPolygonW();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolyon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $polygonW = $this->persistPolygonW();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

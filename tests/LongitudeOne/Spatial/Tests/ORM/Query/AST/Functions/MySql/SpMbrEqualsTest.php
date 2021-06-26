@@ -65,9 +65,9 @@ class SpMbrEqualsTest extends OrmTestCase
      */
     public function testMbrEqualsWhereParameter()
     {
-        $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -111,9 +111,9 @@ class SpMbrEqualsTest extends OrmTestCase
      */
     public function testSelectMbrEquals()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

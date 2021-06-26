@@ -64,10 +64,10 @@ class StPerimeterTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $this->createSmallPolygon();
-        $this->createHoleyPolygon();
-        $this->createPolygonW();
+        $bigPolygon = $this->persistBigPolygon();
+        $this->persistSmallPolygon();
+        $this->persistHoleyPolygon();
+        $this->persistPolygonW();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -95,9 +95,9 @@ class StPerimeterTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $bigPolyon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolyon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

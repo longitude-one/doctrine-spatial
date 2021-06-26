@@ -66,10 +66,10 @@ class StAreaTest extends OrmTestCase
      */
     public function testFunctionInPredicat()
     {
-        $this->createBigPolygon();
-        $this->createHoleyPolygon();
-        $this->createPolygonW();
-        $smallPolygon = $this->createSmallPolygon();
+        $this->persistBigPolygon();
+        $this->persistHoleyPolygon();
+        $this->persistPolygonW();
+        $smallPolygon = $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,10 +94,10 @@ class StAreaTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $this->createBigPolygon();
-        $this->createHoleyPolygon();
-        $this->createPolygonW();
-        $this->createSmallPolygon();
+        $this->persistBigPolygon();
+        $this->persistHoleyPolygon();
+        $this->persistPolygonW();
+        $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

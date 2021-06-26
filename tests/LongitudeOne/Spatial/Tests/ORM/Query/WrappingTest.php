@@ -70,7 +70,7 @@ class WrappingTest extends OrmTestCase
      */
     public function testTypeWrappingSelect()
     {
-        $this->createBigPolygon();
+        $this->persistBigPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

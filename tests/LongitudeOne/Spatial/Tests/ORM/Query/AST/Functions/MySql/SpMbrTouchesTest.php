@@ -65,8 +65,8 @@ class SpMbrTouchesTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $this->createSmallPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,8 +94,8 @@ class SpMbrTouchesTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $this->createBigPolygon();
-        $this->createSmallPolygon();
+        $this->persistBigPolygon();
+        $this->persistSmallPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -66,9 +66,9 @@ class SpMbrDisjointTest extends OrmTestCase
      */
     public function testMbrDisjointWhereParameter()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -113,9 +113,9 @@ class SpMbrDisjointTest extends OrmTestCase
      */
     public function testSelectMbrDisjoint()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

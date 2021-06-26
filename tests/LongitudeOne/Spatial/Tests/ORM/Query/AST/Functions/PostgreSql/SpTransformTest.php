@@ -66,7 +66,7 @@ class SpTransformTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $massachusetts = $this->createMassachusettsState();
+        $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
         $query = $this->getEntityManager()->createQuery(
@@ -97,7 +97,7 @@ class SpTransformTest extends OrmTestCase
     public function testFunctionInSelectWith3Parameters()
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $massachusetts = $this->createMassachusettsState(false);
+        $massachusetts = $this->persistMassachusettsState(false);
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
         $query = $this->getEntityManager()->createQuery(
@@ -125,7 +125,7 @@ class SpTransformTest extends OrmTestCase
      */
     public function testFunctionInSelectWithSrid()
     {
-        $massachusetts = $this->createMassachusettsState();
+        $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

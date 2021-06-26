@@ -46,12 +46,9 @@ trait PolygonHelperTrait
      * Create the BIG Polygon and persist it in database.
      * Square (0 0, 10 10).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createBigPolygon(): PolygonEntity
+    protected function createBigPolygon(): Polygon
     {
         return $this->createPolygon([
             new LineString([
@@ -65,15 +62,12 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create an eccentric polygon and persist it in database.
+     * Create an eccentric polygon.
      * Square (6 6, 10 10).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createEccentricPolygon(): PolygonEntity
+    protected function createEccentricPolygon(): Polygon
     {
         return $this->createPolygon([new LineString([
             new Point(6, 6),
@@ -85,15 +79,12 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create the HOLEY Polygon and persist it in database.
+     * Create the HOLEY Polygon.
      * (Big polygon minus Small Polygon).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createHoleyPolygon(): PolygonEntity
+    protected function createHoleyPolygon(): Polygon
     {
         return $this->createPolygon([
             new LineString([
@@ -114,16 +105,13 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create the Massachusetts state plane US feet geometry and persist it in database.
+     * Create the Massachusetts state plane US feet geometry.
      *
      * @param bool $forwardSrid forward SRID for creation
      *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createMassachusettsState(bool $forwardSrid = true): PolygonEntity
+    protected function createMassachusettsState(bool $forwardSrid = true): Polygon
     {
         $srid = null;
 
@@ -146,12 +134,9 @@ trait PolygonHelperTrait
      * Create the Outer Polygon and persist it in database.
      * Square (15 15, 17 17).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createOuterPolygon(): PolygonEntity
+    protected function createOuterPolygon(): Polygon
     {
         return $this->createPolygon([
             new LineString([
@@ -165,14 +150,11 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create the W Polygon and persist it in database.
+     * Create the W Polygon.
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createPolygonW(): PolygonEntity
+    protected function createPolygonW(): Polygon
     {
         return $this->createPolygon([
             new LineString([
@@ -187,15 +169,12 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create the SMALL Polygon and persist it in database.
+     * Create the SMALL Polygon.
      * SQUARE (5 5, 7 7).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createSmallPolygon(): PolygonEntity
+    protected function createSmallPolygon(): Polygon
     {
         return $this->createPolygon([
             new LineString([
@@ -209,21 +188,132 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create a Polygon from an array of linestrings.
+     * Create the BIG Polygon and persist it in database.
+     * Square (0 0, 10 10).
      *
-     * @param array    $lineStrings the array of linestrings
-     * @param int|null $srid        Spatial Reference System Identifier
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistBigPolygon(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createBigPolygon());
+    }
+
+    /**
+     * Create an eccentric polygon and persist it in database.
+     * Square (6 6, 10 10).
+     *
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistEccentricPolygon(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createEccentricPolygon());
+    }
+
+    /**
+     * Create the HOLEY Polygon and persist it in database.
+     * (Big polygon minus Small Polygon).
+     *
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistHoleyPolygon(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createHoleyPolygon());
+    }
+
+    /**
+     * Create the Massachusetts state plane US feet geometry and persist it in database.
+     *
+     * @param bool $forwardSrid forward SRID for creation
      *
      * @throws Exception                    when credentials fail
      * @throws InvalidValueException        when geometries are not valid
      * @throws ORMException                 when cache is not created
      * @throws UnsupportedPlatformException when platform is not supported
      */
-    private function createPolygon(array $lineStrings, int $srid = null): PolygonEntity
+    protected function persistMassachusettsState(bool $forwardSrid = true): PolygonEntity
+    {
+        return $this->persistPolygon($this->createMassachusettsState($forwardSrid));
+    }
+
+    /**
+     * Create the Outer Polygon and persist it in database.
+     * Square (15 15, 17 17).
+     *
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistOuterPolygon(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createOuterPolygon());
+    }
+
+    /**
+     * Create the W Polygon and persist it in database.
+     *
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistPolygonW(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createPolygonW());
+    }
+
+    /**
+     * Create the SMALL Polygon and persist it in database.
+     * SQUARE (5 5, 7 7).
+     *
+     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException        when geometries are not valid
+     */
+    protected function persistSmallPolygon(): PolygonEntity
+    {
+        return $this->persistPolygon($this->createSmallPolygon());
+    }
+
+    /**
+     * Create a Polygon from an array of linestrings.
+     *
+     * @param array    $lineStrings the array of linestrings
+     * @param int|null $srid        Spatial Reference System Identifier
+     *
+     * @throws InvalidValueException when geometries are not valid
+     */
+    private function createPolygon(array $lineStrings, int $srid = null): Polygon
     {
         $polygon = new Polygon($lineStrings);
         if (null !== $srid) {
             $polygon->setSrid($srid);
+        }
+
+        return $polygon;
+    }
+
+    /**
+     * Persist a polygon.
+     *
+     * @throws Exception                    when credentials fail
+     * @throws ORMException                 when cache is not created
+     * @throws UnsupportedPlatformException when platform is not supported
+     */
+    private function persistPolygon(Polygon $polygon): PolygonEntity
+    {
+        if (!$this->getEntityManager() instanceof EntityManagerInterface) {
+            static::fail("The entity manager isn't created. Did you miss to create EntityManager in your setup method?");
         }
 
         $polygonEntity = new PolygonEntity();

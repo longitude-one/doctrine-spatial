@@ -65,9 +65,9 @@ class StInteriorRingNTest extends OrmTestCase
      */
     public function testSelectStInteriorRingN()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

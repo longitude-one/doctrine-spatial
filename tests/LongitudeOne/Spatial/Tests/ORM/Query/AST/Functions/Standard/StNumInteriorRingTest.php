@@ -65,9 +65,9 @@ class StNumInteriorRingTest extends OrmTestCase
      */
     public function testSelectStNumInteriorRing()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -97,9 +97,9 @@ class StNumInteriorRingTest extends OrmTestCase
      */
     public function testStNumInteriorRingInPredicate()
     {
-        $this->createBigPolygon();
-        $this->createSmallPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $this->persistBigPolygon();
+        $this->persistSmallPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

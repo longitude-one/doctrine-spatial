@@ -65,7 +65,7 @@ class StPolyFromWkbTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        $bigPolygon = $this->createBigPolygon();
+        $bigPolygon = $this->persistBigPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,7 +94,7 @@ class StPolyFromWkbTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createBigPolygon(); // Unused fake polygon
+        $this->persistBigPolygon(); // Unused fake polygon
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

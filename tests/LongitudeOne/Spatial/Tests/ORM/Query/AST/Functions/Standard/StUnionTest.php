@@ -65,8 +65,8 @@ class StUnionTest extends OrmTestCase
      */
     public function testSelectStUnion()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $holeyPolygon = $this->createHoleyPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $holeyPolygon = $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -99,8 +99,8 @@ class StUnionTest extends OrmTestCase
      */
     public function testStUnionWhereParameter()
     {
-        $this->createBigPolygon();
-        $this->createHoleyPolygon();
+        $this->persistBigPolygon();
+        $this->persistHoleyPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

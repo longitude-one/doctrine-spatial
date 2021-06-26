@@ -65,9 +65,9 @@ class SpMbrIntersectsTest extends OrmTestCase
      */
     public function testSelectStDisjoint()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -102,9 +102,9 @@ class SpMbrIntersectsTest extends OrmTestCase
      */
     public function testStDisjointWhereParameter()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
 
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
