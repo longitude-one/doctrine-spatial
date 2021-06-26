@@ -66,7 +66,7 @@ class SpSimplifyTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $pointO = $this->createPointO();
+        $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

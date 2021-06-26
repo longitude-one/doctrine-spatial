@@ -65,7 +65,7 @@ class SpPointTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createNewYorkGeometry(); // Unused fake point
+        $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

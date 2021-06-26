@@ -15,11 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
@@ -32,22 +29,19 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
  *
  * Methods beginning with create will store a geo* entity in database.
  *
- * @see /doc/test.md
+ * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @method EntityManagerInterface getEntityManager Return the entity interface
+ * @method EntityManagerInterface getEntityManager the entity interface
  */
 trait MultiPointHelperTrait
 {
     /**
      * Create A Multipoint entity entity composed of four points and store it in database.
      *
-     * @throws InvalidValueException        when geographies are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geographies are not valid
      */
     protected function createFourPoints(): MultiPointEntity
     {
@@ -63,10 +57,7 @@ trait MultiPointHelperTrait
     /**
      * Create A Multipoint entity entity composed of one point and store it in database.
      *
-     * @throws InvalidValueException        when geographies are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geographies are not valid
      */
     protected function createSinglePoint(): MultiPointEntity
     {
@@ -80,10 +71,6 @@ trait MultiPointHelperTrait
      * Create a geometric MultiPoint entity from an array of geometric points.
      *
      * @param MultiPoint $multipoint Each point could be an array of X, Y or an instance of Point class
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
      */
     private function createMultipoint(MultiPoint $multipoint): MultiPointEntity
     {

@@ -33,7 +33,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
  *
  * Methods beginning with create will store a geo* entity in database.
  *
- * @see /doc/test.md
+ * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT

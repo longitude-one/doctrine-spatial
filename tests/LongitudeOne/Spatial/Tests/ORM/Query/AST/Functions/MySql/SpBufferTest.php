@@ -67,7 +67,7 @@ class SpBufferTest extends OrmTestCase
      */
     public function testSelectSpBuffer()
     {
-        $pointO = $this->createPointO();
+        $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -65,8 +65,8 @@ class CoordinateTest extends OrmTestCase
      */
     public function testSelectCoordinates()
     {
-        $pointO = $this->createPointO();
-        $pointA = $this->createPointA();
+        $pointO = $this->persistPointO();
+        $pointA = $this->persistPointA();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

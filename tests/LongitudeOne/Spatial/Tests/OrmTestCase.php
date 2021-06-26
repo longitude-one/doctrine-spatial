@@ -26,6 +26,7 @@ use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
@@ -261,7 +262,7 @@ abstract class OrmTestCase extends TestCase
     ];
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
@@ -292,66 +293,66 @@ abstract class OrmTestCase extends TestCase
 
     /**
      * Setup connection before class creation.
-     *
-     * @throws UnsupportedPlatformException this happen when platform is not mysql or postgresql
-     * @throws Exception                    when connection is not successful
      */
     public static function setUpBeforeClass(): void
     {
-        static::$connection = static::getConnection();
+        try {
+            static::$connection = static::getConnection();
+        } catch (UnsupportedPlatformException | Exception $e) {
+            static::fail(sprintf('Unable to establish connection in %s: %s', __FILE__, $e->getMessage()));
+        }
     }
 
     /**
      * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
-     *
-     * @throws UnsupportedPlatformException this should not happen
-     * @throws Exception                    this can happen when database or credentials are not set
-     * @throws ORMException                 ORM Exception
      */
     protected function setUp(): void
     {
-        if (count($this->supportedPlatforms) && !isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
-            static::markTestSkipped(sprintf(
-                'No support for platform %s in test class %s.',
-                $this->getPlatform()->getName(),
-                get_class($this)
-            ));
+        try {
+            if (count($this->supportedPlatforms) && !isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
+                static::markTestSkipped(sprintf(
+                    'No support for platform %s in test class %s.',
+                    $this->getPlatform()->getName(),
+                    get_class($this)
+                ));
+            }
+
+            $this->entityManager = $this->getEntityManager();
+            $this->schemaTool = $this->getSchemaTool();
+
+            if ($GLOBALS['opt_mark_sql']) {
+                static::getConnection()->executeQuery(sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName()));
+            }
+
+            $this->sqlLoggerStack->enabled = $GLOBALS['opt_use_debug_stack'];
+
+            $this->setUpTypes();
+            $this->setUpEntities();
+            $this->setUpFunctions();
+        } catch (ORMException | UnsupportedPlatformException | Exception $e) {
+            static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
-
-        $this->entityManager = $this->getEntityManager();
-        $this->schemaTool = $this->getSchemaTool();
-
-        if ($GLOBALS['opt_mark_sql']) {
-            static::getConnection()->executeQuery(sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName()));
-        }
-
-        $this->sqlLoggerStack->enabled = $GLOBALS['opt_use_debug_stack'];
-
-        $this->setUpTypes();
-        $this->setUpEntities();
-        $this->setUpFunctions();
     }
 
     /**
      * Teardown fixtures.
-     *
-     * @throws UnsupportedPlatformException this should not happen
-     * @throws Exception                    this can happen when database or credentials are not set
-     * @throws ORMException                 ORM Exception
-     * @throws MappingException             Mapping exception when clear fails
      */
     protected function tearDown(): void
     {
         $this->sqlLoggerStack->enabled = false;
 
-        foreach (array_keys($this->usedEntities) as $entityName) {
-            static::getConnection()->executeStatement(sprintf(
-                'DELETE FROM %s',
-                static::$entities[$entityName]['table']
-            ));
-        }
+        try {
+            foreach (array_keys($this->usedEntities) as $entityName) {
+                static::getConnection()->executeStatement(sprintf(
+                    'DELETE FROM %s',
+                    static::$entities[$entityName]['table']
+                ));
+            }
 
-        $this->getEntityManager()->clear();
+            $this->getEntityManager()->clear();
+        } catch (Exception | MappingException | UnsupportedPlatformException $e) {
+            static::fail(sprintf('Unable to clear table after test: %s', $e->getMessage()));
+        }
     }
 
     /**
@@ -506,10 +507,6 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the entity manager.
      *
-     * @throws Exception                    when connection is not successful
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return EntityManager
      */
     protected function getEntityManager()
@@ -521,18 +518,21 @@ abstract class OrmTestCase extends TestCase
         $this->sqlLoggerStack = new DebugStack();
         $this->sqlLoggerStack->enabled = false;
 
-        static::getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
+        try {
+            static::getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
+            $realPaths = [realpath(__DIR__.'/Fixtures')];
+            $config = new Configuration();
 
-        $realPaths = [realpath(__DIR__.'/Fixtures')];
-        $config = new Configuration();
+            $config->setMetadataCache(new ArrayCachePool());
+            $config->setProxyDir(__DIR__.'/Proxies');
+            $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
+            //TODO WARNING: a non-expected parameter is provided.
+            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($realPaths, true));
 
-        $config->setMetadataCache(new ArrayCachePool());
-        $config->setProxyDir(__DIR__.'/Proxies');
-        $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
-        //TODO WARNING: a non-expected parameter is provided.
-        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($realPaths, true));
-
-        return EntityManager::create(static::getConnection(), $config);
+            return EntityManager::create(static::getConnection(), $config);
+        } catch (ORMException | Exception | UnsupportedPlatformException $e) {
+            static::fail(sprintf('Unable to init the EntityManager: %s', $e->getMessage()));
+        }
     }
 
     /**
@@ -570,10 +570,6 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the schema tool.
      *
-     * @throws Exception                    this can happen when database or credentials are not set
-     * @throws ORMException                 this can happen when database or credentials are not set
-     * @throws UnsupportedPlatformException this should not happen
-     *
      * @return SchemaTool
      */
     protected function getSchemaTool()
@@ -600,7 +596,7 @@ abstract class OrmTestCase extends TestCase
      *
      * @param Throwable $throwable the exception
      *
-     * @throws InvalidArgumentException the exception provided by parameter
+     * @throws InvalidArgumentException|Throwable the exception provided by parameter
      */
     protected function onNotSuccessfulTest(Throwable $throwable): void
     {

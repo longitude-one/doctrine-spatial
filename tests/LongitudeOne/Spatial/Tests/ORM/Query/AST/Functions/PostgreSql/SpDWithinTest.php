@@ -66,9 +66,9 @@ class SpDWithinTest extends OrmTestCase
      */
     public function testSelectGeography()
     {
-        $newYork = $this->createNewYorkGeography();
-        $losAngeles = $this->createLosAngelesGeography();
-        $dallas = $this->createDallasGeography();
+        $newYork = $this->persistNewYorkGeography();
+        $losAngeles = $this->persistLosAngelesGeography();
+        $dallas = $this->persistDallasGeography();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -105,9 +105,9 @@ class SpDWithinTest extends OrmTestCase
      */
     public function testSelectGeometry()
     {
-        $newYork = $this->createNewYorkGeometry();
-        $losAngeles = $this->createLosAngelesGeometry();
-        $dallas = $this->createDallasGeometry();
+        $newYork = $this->persistNewYorkGeometry();
+        $losAngeles = $this->persistLosAngelesGeometry();
+        $dallas = $this->persistDallasGeometry();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

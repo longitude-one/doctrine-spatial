@@ -67,9 +67,9 @@ class SpGeogFromTextTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        $newYork = $this->createNewYorkGeography();
-        $this->createLosAngelesGeography();
-        $this->createPointA();
+        $newYork = $this->persistNewYorkGeography();
+        $this->persistLosAngelesGeography();
+        $this->persistPointA();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

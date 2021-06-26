@@ -66,9 +66,9 @@ class SpDistanceSphereTest extends OrmTestCase
      */
     public function testSelectStDistanceSphereGeometry()
     {
-        $newYork = $this->createNewYorkGeometry();
-        $losAngeles = $this->createLosAngelesGeometry();
-        $dallas = $this->createDallasGeometry();
+        $newYork = $this->persistNewYorkGeometry();
+        $losAngeles = $this->persistLosAngelesGeometry();
+        $dallas = $this->persistDallasGeometry();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

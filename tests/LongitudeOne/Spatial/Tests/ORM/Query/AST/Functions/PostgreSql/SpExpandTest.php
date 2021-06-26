@@ -65,7 +65,7 @@ class SpExpandTest extends OrmTestCase
      */
     public function testInSelect()
     {
-        $pointO = $this->createPointO();
+        $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

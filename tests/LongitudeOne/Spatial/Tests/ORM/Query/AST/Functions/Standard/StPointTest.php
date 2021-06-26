@@ -66,10 +66,10 @@ class StPointTest extends OrmTestCase
     public function testPredicate()
     {
         //FIX: we cannot use SRID of Tours
-        $this->createToursLambert93(false);
-        $pointO = $this->createPointO();
-        $this->createPointA();
-        $this->createPointB();
+        $this->persistToursLambert93(false);
+        $pointO = $this->persistPointO();
+        $this->persistPointA();
+        $this->persistPointB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -99,8 +99,8 @@ class StPointTest extends OrmTestCase
      */
     public function testSelectWithSrid()
     {
-        $tours = $this->createToursLambert93();
-        $this->createParisLambert93();
+        $tours = $this->persistToursLambert93();
+        $this->persistParisLambert93();
 
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();

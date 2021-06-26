@@ -65,9 +65,9 @@ class SpAzimuthTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $pointA = $this->createPointA();
-        $pointO = $this->createPointO();
-        $pointE = $this->createPointE();
+        $pointA = $this->persistPointA();
+        $pointO = $this->persistPointO();
+        $pointE = $this->persistPointE();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -15,11 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
@@ -29,11 +26,13 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
  * PointHelperTrait Trait.
  *
  * This helper provides some methods to generates point entities.
- * All of these points are defined in test documentation.
  *
- * Methods beginning with create will store a geo* entity in database.
+ * TODO All of these points will be defined in test documentation.
  *
- * @see /doc/test.md
+ * Methods beginning with create will create a geo* entity in database, but won't store it in database.
+ * Methods beginning with persist will store a geo* entity in database.
+ *
+ * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -45,79 +44,61 @@ trait PointHelperTrait
     /**
      * Create Dallas geography Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geographies are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geographies are not valid
      */
-    protected function createDallasGeography(): GeographyEntity
+    protected function persistDallasGeography(): GeographyEntity
     {
-        return $this->createGeography(new GeographyPoint(-96.803889, 32.782778));
+        return $this->persistGeography(new GeographyPoint(-96.803889, 32.782778));
     }
 
     /**
      * Create Dallas geometry Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createDallasGeometry(): PointEntity
+    protected function persistDallasGeometry(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(-96.803889, 32.782778));
+        return $this->persistGeometry(new GeometryPoint(-96.803889, 32.782778));
     }
 
     /**
      * Create Los Angeles geography Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geographies are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geographies are not valid
      */
-    protected function createLosAngelesGeography(): GeographyEntity
+    protected function persistLosAngelesGeography(): GeographyEntity
     {
-        return $this->createGeography(new GeographyPoint(-118.2430, 34.0522));
+        return $this->persistGeography(new GeographyPoint(-118.2430, 34.0522));
     }
 
     /**
      * Create Los Angeles geometry Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLosAngelesGeometry(): PointEntity
+    protected function persistLosAngelesGeometry(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(-118.2430, 34.0522));
+        return $this->persistGeometry(new GeometryPoint(-118.2430, 34.0522));
     }
 
     /**
      * Create New York geography Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geographies are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geographies are not valid
      */
-    protected function createNewYorkGeography(): GeographyEntity
+    protected function persistNewYorkGeography(): GeographyEntity
     {
-        return $this->createGeography(new GeographyPoint(-73.938611, 40.664167));
+        return $this->persistGeography(new GeographyPoint(-73.938611, 40.664167));
     }
 
     /**
      * Create New York geometry Point entity and store it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createNewYorkGeometry(): PointEntity
+    protected function persistNewYorkGeometry(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(-73.938611, 40.664167));
+        return $this->persistGeometry(new GeometryPoint(-73.938611, 40.664167));
     }
 
     /**
@@ -125,14 +106,11 @@ trait PointHelperTrait
      *
      * @param bool $setSrid initialize the SRID to 2154 if true
      *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createParisLambert93(bool $setSrid = true): PointEntity
+    protected function persistParisLambert93(bool $setSrid = true): PointEntity
     {
-        $pointEntity = $this->createGeometry(new GeometryPoint(6519, 68624));
+        $pointEntity = $this->persistGeometry(new GeometryPoint(6519, 68624));
         if ($setSrid) {
             $pointEntity->getPoint()->setSrid(2154);
         }
@@ -143,40 +121,31 @@ trait PointHelperTrait
     /**
      * Create the point A (1, 2).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createPointA(): PointEntity
+    protected function persistPointA(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(1, 2));
+        return $this->persistGeometry(new GeometryPoint(1, 2));
     }
 
     /**
      * Create the point B (-2, 3).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createPointB(): PointEntity
+    protected function persistPointB(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(-2, 3));
+        return $this->persistGeometry(new GeometryPoint(-2, 3));
     }
 
     /**
      * Create the point E (5, 5).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createPointE(): PointEntity
+    protected function persistPointE(): PointEntity
     {
-        return $this->createGeometry(new GeometryPoint(5, 5));
+        return $this->persistGeometry(new GeometryPoint(5, 5));
     }
 
     /**
@@ -184,14 +153,11 @@ trait PointHelperTrait
      *
      * @param bool $setSrid Set the SRID to zero instead of null
      *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createPointO(bool $setSrid = false): PointEntity
+    protected function persistPointO(bool $setSrid = false): PointEntity
     {
-        $geometryEntity = $this->createGeometry(new GeometryPoint(0, 0));
+        $geometryEntity = $this->persistGeometry(new GeometryPoint(0, 0));
         if ($setSrid) {
             $geometryEntity->getPoint()->setSrid(0);
         }
@@ -204,14 +170,11 @@ trait PointHelperTrait
      *
      * @param bool $setSrid initialize the SRID to 2154 if true
      *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createToursLambert93(bool $setSrid = true): PointEntity
+    protected function persistToursLambert93(bool $setSrid = true): PointEntity
     {
-        $pointEntity = $this->createGeometry(new GeometryPoint(525375.21, 6701871.83));
+        $pointEntity = $this->persistGeometry(new GeometryPoint(525375.21, 6701871.83));
         if ($setSrid) {
             $pointEntity->getPoint()->setSrid(2154);
         }
@@ -223,12 +186,8 @@ trait PointHelperTrait
      * Create a geographic Point entity from an array of points.
      *
      * @param GeographyPoint|array $point Point could be an array of X, Y or an instance of Point class
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
      */
-    private function createGeography(GeographyPoint $point): GeographyEntity
+    private function persistGeography(GeographyPoint $point): GeographyEntity
     {
         $pointEntity = new GeographyEntity();
         $pointEntity->setGeography($point);
@@ -241,12 +200,8 @@ trait PointHelperTrait
      * Create a geometric Point entity from an array of points.
      *
      * @param GeometryPoint|array $point Point could be an array of X, Y or an instance of Point class
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
      */
-    private function createGeometry(GeometryPoint $point): PointEntity
+    private function persistGeometry(GeometryPoint $point): PointEntity
     {
         $pointEntity = new PointEntity();
         $pointEntity->setPoint($point);

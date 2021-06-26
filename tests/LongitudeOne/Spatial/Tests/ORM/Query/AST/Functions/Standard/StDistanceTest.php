@@ -67,9 +67,9 @@ class StDistanceTest extends OrmTestCase
      */
     public function testSelectStDistanceGeographyCartesian()
     {
-        $newYork = $this->createNewYorkGeography();
-        $losAngeles = $this->createLosAngelesGeography();
-        $dallas = $this->createDallasGeography();
+        $newYork = $this->persistNewYorkGeography();
+        $losAngeles = $this->persistLosAngelesGeography();
+        $dallas = $this->persistDallasGeography();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -108,9 +108,9 @@ class StDistanceTest extends OrmTestCase
      */
     public function testSelectStDistanceGeographySpheroid()
     {
-        $newYork = $this->createNewYorkGeography();
-        $losAngeles = $this->createLosAngelesGeography();
-        $dallas = $this->createDallasGeography();
+        $newYork = $this->persistNewYorkGeography();
+        $losAngeles = $this->persistLosAngelesGeography();
+        $dallas = $this->persistDallasGeography();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -146,9 +146,9 @@ class StDistanceTest extends OrmTestCase
      */
     public function testSelectStDistanceGeometryCartesian()
     {
-        $newYork = $this->createNewYorkGeometry();
-        $losAngeles = $this->createLosAngelesGeometry();
-        $dallas = $this->createDallasGeometry();
+        $newYork = $this->persistNewYorkGeometry();
+        $losAngeles = $this->persistLosAngelesGeometry();
+        $dallas = $this->persistDallasGeometry();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -65,7 +65,7 @@ class StPointFromWkbTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createNewYorkGeometry(); // Unused fake point
+        $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,7 +94,7 @@ class StPointFromWkbTest extends OrmTestCase
      */
     public function testSelectWithSrid()
     {
-        $this->createNewYorkGeometry(); // Unused fake point
+        $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -29,87 +29,105 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
  * TestHelperTrait Trait.
  *
  * This helper provides some methods to generates polygons, linestring and point.
- * All of these polygonal geometries are defined in test documentation.
+ *
+ * TODO All of these polygonal geometries will bo defined in test documentation.
  *
  * Methods beginning with create will store a geo* entity in database.
  *
- * @see /doc/test.md
+ * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @method EntityManagerInterface getEntityManager Return the entity interface
+ * @method EntityManagerInterface getEntityManager the entity interface
  */
 trait PolygonHelperTrait
 {
     /**
-     * Create the BIG Polygon and persist it in database.
+     * Create the BIG Polygon.
      * Square (0 0, 10 10).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createBigPolygon(): Polygon
     {
-        return $this->createPolygon([
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-        ]);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(0, 0),
+                    new Point(10, 0),
+                    new Point(10, 10),
+                    new Point(0, 10),
+                    new Point(0, 0),
+                ]),
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the big polygon (0, 10): %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create an eccentric polygon.
      * Square (6 6, 10 10).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createEccentricPolygon(): Polygon
     {
-        return $this->createPolygon([new LineString([
-            new Point(6, 6),
-            new Point(10, 6),
-            new Point(10, 10),
-            new Point(6, 10),
-            new Point(6, 6),
-        ])]);
+        try {
+            return $this->createPolygon([new LineString([
+                new Point(6, 6),
+                new Point(10, 6),
+                new Point(10, 10),
+                new Point(6, 10),
+                new Point(6, 6),
+            ])]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the square(6 6, 10 10): %s', $e->getMessage()));
+        }
+    }
+
+    /**
+     * Create the BIG Polygon and persist it in database.
+     * Square (0 0, 10 10).
+     */
+    protected function createEmptyPolygon(): Polygon
+    {
+        try {
+            return $this->createPolygon([]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create an empty polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the HOLEY Polygon.
      * (Big polygon minus Small Polygon).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createHoleyPolygon(): Polygon
     {
-        return $this->createPolygon([
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-            new LineString([
-                new Point(5, 5),
-                new Point(7, 5),
-                new Point(7, 7),
-                new Point(5, 7),
-                new Point(5, 5),
-            ]),
-        ]);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(0, 0),
+                    new Point(10, 0),
+                    new Point(10, 10),
+                    new Point(0, 10),
+                    new Point(0, 0),
+                ]),
+                new LineString([
+                    new Point(5, 5),
+                    new Point(7, 5),
+                    new Point(7, 7),
+                    new Point(5, 7),
+                    new Point(5, 5),
+                ]),
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the holey polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the Massachusetts state plane US feet geometry.
      *
      * @param bool $forwardSrid forward SRID for creation
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createMassachusettsState(bool $forwardSrid = true): Polygon
     {
@@ -119,82 +137,87 @@ trait PolygonHelperTrait
             $srid = 2249;
         }
 
-        return $this->createPolygon([
-            new LineString([
-                new Point(743238, 2967416),
-                new Point(743238, 2967450),
-                new Point(743265, 2967450),
-                new Point(743265.625, 2967416),
-                new Point(743238, 2967416),
-            ]),
-        ], $srid);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(743238, 2967416),
+                    new Point(743238, 2967450),
+                    new Point(743265, 2967450),
+                    new Point(743265.625, 2967416),
+                    new Point(743238, 2967416),
+                ]),
+            ], $srid);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the massachusetts polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the Outer Polygon and persist it in database.
      * Square (15 15, 17 17).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createOuterPolygon(): Polygon
     {
-        return $this->createPolygon([
-            new LineString([
-                new Point(15, 15),
-                new Point(17, 15),
-                new Point(17, 17),
-                new Point(15, 17),
-                new Point(15, 15),
-            ]),
-        ]);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(15, 15),
+                    new Point(17, 15),
+                    new Point(17, 17),
+                    new Point(15, 17),
+                    new Point(15, 15),
+                ]),
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the outer polygon (15 15, 17 17): %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the W Polygon.
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createPolygonW(): Polygon
     {
-        return $this->createPolygon([
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 20),
-                new Point(0, 20),
-                new Point(10, 10),
-                new Point(0, 0),
-            ]),
-        ]);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(0, 0),
+                    new Point(10, 0),
+                    new Point(10, 20),
+                    new Point(0, 20),
+                    new Point(10, 10),
+                    new Point(0, 0),
+                ]),
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the W polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the SMALL Polygon.
      * SQUARE (5 5, 7 7).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function createSmallPolygon(): Polygon
     {
-        return $this->createPolygon([
-            new LineString([
-                new Point(5, 5),
-                new Point(7, 5),
-                new Point(7, 7),
-                new Point(5, 7),
-                new Point(5, 5),
-            ]),
-        ]);
+        try {
+            return $this->createPolygon([
+                new LineString([
+                    new Point(5, 5),
+                    new Point(7, 5),
+                    new Point(7, 7),
+                    new Point(5, 7),
+                    new Point(5, 5),
+                ]),
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create the small polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
      * Create the BIG Polygon and persist it in database.
      * Square (0 0, 10 10).
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
      */
     protected function persistBigPolygon(): PolygonEntity
     {
@@ -205,10 +228,7 @@ trait PolygonHelperTrait
      * Create an eccentric polygon and persist it in database.
      * Square (6 6, 10 10).
      *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
+     * DO NOT REMOVE THIS UNUSED method, it will be used soon.
      */
     protected function persistEccentricPolygon(): PolygonEntity
     {
@@ -218,11 +238,6 @@ trait PolygonHelperTrait
     /**
      * Create the HOLEY Polygon and persist it in database.
      * (Big polygon minus Small Polygon).
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
      */
     protected function persistHoleyPolygon(): PolygonEntity
     {
@@ -233,11 +248,6 @@ trait PolygonHelperTrait
      * Create the Massachusetts state plane US feet geometry and persist it in database.
      *
      * @param bool $forwardSrid forward SRID for creation
-     *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
      */
     protected function persistMassachusettsState(bool $forwardSrid = true): PolygonEntity
     {
@@ -247,11 +257,6 @@ trait PolygonHelperTrait
     /**
      * Create the Outer Polygon and persist it in database.
      * Square (15 15, 17 17).
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
      */
     protected function persistOuterPolygon(): PolygonEntity
     {
@@ -260,11 +265,6 @@ trait PolygonHelperTrait
 
     /**
      * Create the W Polygon and persist it in database.
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
      */
     protected function persistPolygonW(): PolygonEntity
     {
@@ -274,11 +274,6 @@ trait PolygonHelperTrait
     /**
      * Create the SMALL Polygon and persist it in database.
      * SQUARE (5 5, 7 7).
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws InvalidValueException        when geometries are not valid
      */
     protected function persistSmallPolygon(): PolygonEntity
     {
@@ -305,21 +300,21 @@ trait PolygonHelperTrait
 
     /**
      * Persist a polygon.
-     *
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
      */
     private function persistPolygon(Polygon $polygon): PolygonEntity
     {
-        if (!$this->getEntityManager() instanceof EntityManagerInterface) {
-            static::fail("The entity manager isn't created. Did you miss to create EntityManager in your setup method?");
+        try {
+            if (!$this->getEntityManager() instanceof EntityManagerInterface) {
+                static::fail('The entity manager is unavailable. Did you miss to create when setting up your test?');
+            }
+
+            $polygonEntity = new PolygonEntity();
+            $polygonEntity->setPolygon($polygon);
+
+            $this->getEntityManager()->persist($polygonEntity);
+        } catch (ORMException | Exception | UnsupportedPlatformException $e) {
+            static::fail(sprintf('Unable to persist polygon: %s', $e->getMessage()));
         }
-
-        $polygonEntity = new PolygonEntity();
-        $polygonEntity->setPolygon($polygon);
-
-        $this->getEntityManager()->persist($polygonEntity);
 
         return $polygonEntity;
     }

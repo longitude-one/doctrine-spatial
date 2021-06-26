@@ -19,6 +19,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,12 +32,14 @@ use PHPUnit\Framework\TestCase;
  */
 class PolygonTest extends TestCase
 {
+    use PolygonHelperTrait;
+
     /**
      * Test an empty polygon.
      */
-    public function testEmptyPolygon()
+    public function testEmptyPolygon(): void
     {
-        $polygon = new Polygon([]);
+        $polygon = $this->createEmptyPolygon();
 
         static::assertEmpty($polygon->getRings());
     }
@@ -44,7 +47,7 @@ class PolygonTest extends TestCase
     /**
      * Test to export json.
      */
-    public function testJson()
+    public function testJson(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":null}';

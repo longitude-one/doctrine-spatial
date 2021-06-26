@@ -64,7 +64,7 @@ class StBufferTest extends OrmTestCase
      */
     public function testSelectStBuffer()
     {
-        $pointO = $this->createPointO();
+        $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

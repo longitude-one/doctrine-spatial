@@ -99,7 +99,7 @@ class StGeomFromTextTest extends OrmTestCase
      */
     public function testPoint()
     {
-        $pointA = $this->createPointA();
+        $pointA = $this->persistPointA();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

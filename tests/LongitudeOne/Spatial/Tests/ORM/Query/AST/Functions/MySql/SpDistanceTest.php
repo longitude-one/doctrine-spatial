@@ -67,9 +67,9 @@ class SpDistanceTest extends OrmTestCase
      */
     public function testSelectStDistanceGeometry()
     {
-        $pointO = $this->createPointO();
-        $pointA = $this->createPointA();
-        $pointB = $this->createPointB();
+        $pointO = $this->persistPointO();
+        $pointA = $this->persistPointA();
+        $pointB = $this->persistPointB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -66,7 +66,7 @@ class StConvexHullTest extends OrmTestCase
     public function testSelectStConvexHull()
     {
         static::markTestIncomplete('ST_COLLECT should be implement');
-        $origin = $this->createPointO();
+        $origin = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
