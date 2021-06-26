@@ -17,6 +17,7 @@ namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,6 +30,8 @@ use PHPUnit\Framework\TestCase;
  */
 class PointTest extends TestCase
 {
+    use PointHelperTrait;
+
     /**
      * Test bad string parameters - latitude degrees greater that 90.
      */
@@ -126,7 +129,7 @@ class PointTest extends TestCase
      */
     public function testGetType()
     {
-        $point = new Point(10, 10);
+        $point = $this->createPointOrigin();
         $result = $point->getType();
 
         static::assertEquals('Point', $result);
@@ -137,18 +140,22 @@ class PointTest extends TestCase
      */
     public function testGoodNumericPoint()
     {
-        $point = new Point(-73.7562317, 42.6525793);
+        $point = $this->createLosAngelesGeometry();
 
-        static::assertEquals(42.6525793, $point->getLatitude());
-        static::assertEquals(-73.7562317, $point->getLongitude());
+        static::assertEquals(34.0522, $point->getLatitude());
+        static::assertEquals(-118.2430, $point->getLongitude());
 
-        $point
-            ->setLatitude(40.446111111111)
-            ->setLongitude(-79.948611111111)
-        ;
+        try {
+            $point
+                ->setLatitude(32.782778)
+                ->setLongitude(-96.803889)
+            ;
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to update geometry point: %s', $e->getMessage()));
+        }
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEquals(32.782778, $point->getLatitude());
+        static::assertEquals(-96.803889, $point->getLongitude());
     }
 
     /**
@@ -198,7 +205,7 @@ class PointTest extends TestCase
     public function testJson()
     {
         $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
-        $point = new Point([5, 5]);
+        $point = $this->createPointE();
 
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
@@ -228,9 +235,9 @@ class PointTest extends TestCase
     public function testPointFromArrayToString()
     {
         $expected = '5 5';
-        $point = new Point([5, 5]);
+        $point = $this->createPointE();
 
-        static::assertEquals($expected, (string) $point);
+        static::assertSame($expected, (string) $point);
     }
 
     /**
@@ -251,10 +258,10 @@ class PointTest extends TestCase
      */
     public function testPointWithSrid()
     {
-        $point = new Point(10, 10, 2154);
+        $point = $this->createPointWithSrid(2154);
         $result = $point->getSrid();
 
-        static::assertEquals(2154, $result);
+        static::assertSame(2154, $result);
     }
 
     /**
@@ -275,11 +282,11 @@ class PointTest extends TestCase
      */
     public function testToArray()
     {
-        $expected = [10, 10];
-        $point = new Point(10, 10);
+        $expected = [0.0, 0.0];
+        $point = $this->createPointOrigin();
         $result = $point->toArray();
 
-        static::assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     /**

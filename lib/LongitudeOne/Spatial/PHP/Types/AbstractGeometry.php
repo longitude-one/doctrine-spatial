@@ -196,10 +196,8 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
         switch (true) {
             case $point instanceof AbstractPoint:
                 return $point->toArray();
-                break;
             case is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1]):
                 return array_values($point);
-                break;
             default:
                 throw new InvalidValueException(sprintf(
                     'Invalid %s Point value of type "%s"',

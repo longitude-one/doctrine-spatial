@@ -18,6 +18,7 @@ namespace LongitudeOne\Spatial\Tests\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
@@ -28,6 +29,12 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
  * This helper provides some methods to generates point entities.
  *
  * TODO All of these points will be defined in test documentation.
+ * Point Origin (0 0)
+ * Point A (1 1)
+ * Point B (2 2)
+ * Point C (3 3)
+ * Point D (4 4)
+ * Point E (5 5)
  *
  * Methods beginning with create will create a geo* entity in database, but won't store it in database.
  * Methods beginning with persist will store a geo* entity in database.
@@ -41,6 +48,66 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
  */
 trait PointHelperTrait
 {
+    /**
+     * Create Point Origin O (0 0).
+     */
+    protected function createPointOrigin(): Point
+    {
+        return $this->createPoint('O', 0, 0);
+    }
+
+    /**
+     * Create Point A (1 1).
+     */
+    protected function createPointA(): Point
+    {
+        return $this->createPoint('a', 1, 1);
+    }
+
+    /**
+     * Create Point B (2 2).
+     */
+    protected function createPointB(): Point
+    {
+        return $this->createPoint('B', 2, 2);
+    }
+
+    /**
+     * Create Point C (3 3).
+     */
+    protected function createPointC(): Point
+    {
+        return $this->createPoint('C', 3, 3);
+    }
+
+    /**
+     * Create Point D (4 4).
+     */
+    protected function createPointD(): Point
+    {
+        return $this->createPoint('D', 4, 4);
+    }
+
+    /**
+     * Create Point E (5 5).
+     */
+    protected function createPointE(): Point
+    {
+        return $this->createPoint('E', 5, 5);
+    }
+
+    /**
+     * Create Point with SRID.
+     */
+    protected function createPointWithSrid(int $srid): Point
+    {
+        try {
+            return new Point(5, 5, $srid);
+        } catch (InvalidValueException $e) {
+            static::fail("Unable to create point E (5 5) with srid $srid: ".$e->getMessage());
+        }
+    }
+
     /**
      * Create Dallas geography Point entity and store it in database.
      *
@@ -72,13 +139,23 @@ trait PointHelperTrait
     }
 
     /**
-     * Create Los Angeles geometry Point entity and store it in database.
-     *
-     * @throws InvalidValueException when geometries are not valid
+     * Create Los Angeles geometry Point entity.
+     */
+    protected function createLosAngelesGeometry(): GeometryPoint
+    {
+        try {
+            return new GeometryPoint(-118.2430, 34.0522);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create Los Angeles Geometry point: %s', $e->getMessage()));
+        }
+    }
+
+    /**
+     * Create Los Angeles geometry Point entity and persist it in database.
      */
     protected function persistLosAngelesGeometry(): PointEntity
     {
-        return $this->persistGeometry(new GeometryPoint(-118.2430, 34.0522));
+        return $this->persistGeometry($this->createLosAngelesGeometry());
     }
 
     /**
@@ -208,5 +285,14 @@ trait PointHelperTrait
         $this->getEntityManager()->persist($pointEntity);
 
         return $pointEntity;
+    }
+
+    private function createPoint(string $name, int $x, int $y): Point
+    {
+        try {
+            return new Point($x, $y);
+        } catch (InvalidValueException $e) {
+            static::fail("Unable to create point $name($x $y): ".$e->getMessage());
+        }
     }
 }
