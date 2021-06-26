@@ -68,8 +68,8 @@ class SpAsGeoJsonTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

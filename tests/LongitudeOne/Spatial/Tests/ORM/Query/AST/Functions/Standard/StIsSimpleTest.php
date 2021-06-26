@@ -66,8 +66,8 @@ class StIsSimpleTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

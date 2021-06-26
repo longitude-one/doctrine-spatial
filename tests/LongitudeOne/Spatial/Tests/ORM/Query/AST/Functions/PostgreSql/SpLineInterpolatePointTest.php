@@ -65,9 +65,9 @@ class SpLineInterpolatePointTest extends OrmTestCase
      */
     public function testInSelect()
     {
-        $lineStringX = $this->createLineStringX();
-        $lineStringY = $this->createLineStringY();
-        $straightLineString = $this->createStraightLineString();
+        $lineStringX = $this->persistLineStringX();
+        $lineStringY = $this->persistLineStringY();
+        $straightLineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

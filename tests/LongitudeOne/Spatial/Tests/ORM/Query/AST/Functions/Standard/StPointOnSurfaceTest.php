@@ -64,9 +64,9 @@ class StPointOnSurfaceTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $straightLineString = $this->createStraightLineString();
-        $angularLineString = $this->createAngularLineString();
-        $ringLineString = $this->createRingLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $angularLineString = $this->persistAngularLineString();
+        $ringLineString = $this->persistRingLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -99,9 +99,9 @@ class StPointOnSurfaceTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $straightLineString = $this->createStraightLineString();
-        $this->createAngularLineString();
-        $this->createRingLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $this->persistAngularLineString();
+        $this->persistRingLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

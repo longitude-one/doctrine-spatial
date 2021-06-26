@@ -70,7 +70,7 @@ class SpSplitTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $straightLineString = $this->createStraightLineString();
+        $straightLineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

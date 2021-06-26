@@ -69,9 +69,9 @@ class SpClosestPointTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $straight = $this->createStraightLineString();
-        $lineC = $this->createLineStringC();
-        $ring = $this->createRingLineString();
+        $straight = $this->persistStraightLineString();
+        $lineC = $this->persistLineStringC();
+        $ring = $this->persistRingLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

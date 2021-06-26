@@ -65,8 +65,8 @@ class GeometryWalkerTest extends OrmTestCase
      */
     public function testGeometryWalkerBinary()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -120,8 +120,8 @@ class GeometryWalkerTest extends OrmTestCase
      */
     public function testGeometryWalkerText()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

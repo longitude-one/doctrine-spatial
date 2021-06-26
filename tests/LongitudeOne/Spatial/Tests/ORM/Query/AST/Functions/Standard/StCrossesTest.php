@@ -66,9 +66,9 @@ class StCrossesTest extends OrmTestCase
      */
     public function testSelectStCrosses()
     {
-        $lineStringA = $this->createLineStringA();
-        $lineStringB = $this->createLineStringB();
-        $lineStringC = $this->createLineStringC();
+        $lineStringA = $this->persistLineStringA();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -103,9 +103,9 @@ class StCrossesTest extends OrmTestCase
      */
     public function testStCrossesWhereParameter()
     {
-        $this->createLineStringA();
-        $lineStringB = $this->createLineStringB();
-        $this->createLineStringC();
+        $this->persistLineStringA();
+        $lineStringB = $this->persistLineStringB();
+        $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

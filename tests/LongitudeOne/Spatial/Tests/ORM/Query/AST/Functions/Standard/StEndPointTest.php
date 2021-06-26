@@ -66,7 +66,7 @@ class StEndPointTest extends OrmTestCase
      */
     public function testStEndPointSelect()
     {
-        $this->createStraightLineString();
+        $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -91,8 +91,8 @@ class StEndPointTest extends OrmTestCase
      */
     public function testStEndPointWhereCompareLineString()
     {
-        $this->createStraightLineString();
-        $angularLineString = $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -122,8 +122,8 @@ class StEndPointTest extends OrmTestCase
      */
     public function testStEndPointWhereComparePoint()
     {
-        $straightLineString = $this->createStraightLineString();
-        $this->createAngularLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $this->persistAngularLineString();
 
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();

@@ -66,9 +66,9 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      */
     public function testInPredicate()
     {
-        $this->createLineStringX();
-        $lineStringY = $this->createLineStringY();
-        $this->createLineStringZ();
+        $this->persistLineStringX();
+        $lineStringY = $this->persistLineStringY();
+        $this->persistLineStringZ();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -98,9 +98,9 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      */
     public function testInSelect()
     {
-        $lineStringX = $this->createLineStringX();
-        $lineStringY = $this->createLineStringY();
-        $lineStringZ = $this->createLineStringZ();
+        $lineStringX = $this->persistLineStringX();
+        $lineStringY = $this->persistLineStringY();
+        $lineStringZ = $this->persistLineStringZ();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

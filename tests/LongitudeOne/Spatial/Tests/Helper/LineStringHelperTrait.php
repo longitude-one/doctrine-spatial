@@ -15,11 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
@@ -45,14 +42,11 @@ trait LineStringHelperTrait
      * Create a broken linestring and persist it in database.
      * Line is created with three aligned points: (3 3) (4 15) (5 22).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createAngularLineString(): LineStringEntity
+    protected function persistAngularLineString(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(3, 3),
             new Point(4, 15),
             new Point(5, 22),
@@ -63,14 +57,11 @@ trait LineStringHelperTrait
      * Create a linestring A and persist it in database.
      * Line is created with two points: (0 0, 10 10).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringA(): LineStringEntity
+    protected function persistLineStringA(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(0, 0),
             new Point(10, 10),
         ]);
@@ -81,14 +72,11 @@ trait LineStringHelperTrait
      * Line B crosses lines A and C.
      * Line is created with two points: (0 10, 15 0).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringB(): LineStringEntity
+    protected function persistLineStringB(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(0, 10),
             new Point(15, 0),
         ]);
@@ -100,14 +88,11 @@ trait LineStringHelperTrait
      * Linestring C crosses linestring B.
      * Line is created with two points: (2 0, 12 10).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringC(): LineStringEntity
+    protected function persistLineStringC(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(2, 0),
             new Point(12, 10),
         ]);
@@ -116,14 +101,11 @@ trait LineStringHelperTrait
     /**
      * Create a linestring X and persist it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringX(): LineStringEntity
+    protected function persistLineStringX(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(8, 15),
             new Point(4, 8),
         ]);
@@ -132,14 +114,11 @@ trait LineStringHelperTrait
     /**
      * Create a linestring Y and persist it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringY(): LineStringEntity
+    protected function persistLineStringY(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(12, 14),
             new Point(3, 4),
         ]);
@@ -148,14 +127,11 @@ trait LineStringHelperTrait
     /**
      * Create a linestring Z and persist it in database.
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createLineStringZ(): LineStringEntity
+    protected function persistLineStringZ(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(2, 5),
             new Point(3, 6),
             new Point(12, 8),
@@ -168,14 +144,11 @@ trait LineStringHelperTrait
      * Create a node linestring and persist it in database.
      * Line is created with three aligned points: (0 0) (1 0) (0 1) (1 1) (0 0).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createNodeLineString(): LineStringEntity
+    protected function persistNodeLineString(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(0, 0),
             new Point(1, 0),
             new Point(0, 1),
@@ -188,14 +161,11 @@ trait LineStringHelperTrait
      * Create a ring linestring and persist it in database.
      * Line is created with three aligned points: (0 0) (1 0) (1 1) (0 1) (0 0).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createRingLineString(): LineStringEntity
+    protected function persistRingLineString(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(0, 0),
             new Point(1, 0),
             new Point(1, 1),
@@ -208,14 +178,11 @@ trait LineStringHelperTrait
      * Create a straight linestring and persist it in database.
      * Line is created with three aligned points: (0 0) (2 2) (5 5).
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    protected function createStraightLineString(): LineStringEntity
+    protected function persistStraightLineString(): LineStringEntity
     {
-        return $this->createLineString([
+        return $this->persistLineString([
             new Point(0, 0),
             new Point(2, 2),
             new Point(5, 5),
@@ -223,16 +190,25 @@ trait LineStringHelperTrait
     }
 
     /**
+     * Create an empty linestring.
+     */
+    private function createEmptyLineString(): LineString
+    {
+        try {
+            return new LineString([]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create empty linestring: %s', $e->getMessage()));
+        }
+    }
+
+    /**
      * Create a LineString entity from an array of points.
      *
      * @param Point[] $points the array of points
      *
-     * @throws InvalidValueException        when geometries are not valid
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * @throws InvalidValueException when geometries are not valid
      */
-    private function createLineString(array $points): LineStringEntity
+    private function persistLineString(array $points): LineStringEntity
     {
         $lineStringEntity = new LineStringEntity();
         $lineStringEntity->setLineString(new LineString($points));

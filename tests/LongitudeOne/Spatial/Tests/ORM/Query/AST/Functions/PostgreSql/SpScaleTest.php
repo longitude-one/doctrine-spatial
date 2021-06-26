@@ -68,8 +68,8 @@ class SpScaleTest extends OrmTestCase
      */
     public function testFunctionInSelect()
     {
-        $straightLineString = $this->createStraightLineString();
-        $angularLineString = $this->createAngularLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

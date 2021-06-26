@@ -66,8 +66,8 @@ class StDimensionTest extends OrmTestCase
      */
     public function testStAsText()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

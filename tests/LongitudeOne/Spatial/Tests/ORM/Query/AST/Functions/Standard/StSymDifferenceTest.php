@@ -65,9 +65,9 @@ class StSymDifferenceTest extends OrmTestCase
      */
     public function testSelectStDifference()
     {
-        $lineStringA = $this->createLineStringA();
-        $lineStringB = $this->createLineStringB();
-        $lineStringC = $this->createLineStringC();
+        $lineStringA = $this->persistLineStringA();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -112,9 +112,9 @@ class StSymDifferenceTest extends OrmTestCase
      */
     public function testStDifferenceWhereParameter()
     {
-        $this->createLineStringA();
-        $lineStringB = $this->createLineStringB();
-        $lineStringC = $this->createLineStringC();
+        $this->persistLineStringA();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

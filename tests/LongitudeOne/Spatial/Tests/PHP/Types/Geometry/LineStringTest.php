@@ -18,6 +18,7 @@ namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,6 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 class LineStringTest extends TestCase
 {
+    use LineStringHelperTrait;
+
     /**
      * Test LineString bad parameter.
      */
@@ -46,7 +49,7 @@ class LineStringTest extends TestCase
      */
     public function testEmptyLineString()
     {
-        $lineString = new LineString([]);
+        $lineString = $this->createEmptyLineString();
 
         static::assertEmpty($lineString->getPoints());
     }

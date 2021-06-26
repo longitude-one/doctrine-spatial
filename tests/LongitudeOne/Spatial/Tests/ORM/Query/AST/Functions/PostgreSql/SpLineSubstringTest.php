@@ -65,8 +65,8 @@ class SpLineSubstringTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        $straightLineString = $this->createStraightLineString();
-        $this->createAngularLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -98,9 +98,9 @@ class SpLineSubstringTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createStraightLineString();
-        $this->createLineStringA();
-        $this->createLineStringB();
+        $this->persistStraightLineString();
+        $this->persistLineStringA();
+        $this->persistLineStringB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

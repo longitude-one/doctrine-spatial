@@ -66,8 +66,8 @@ class StAsBinaryTest extends OrmTestCase
      */
     public function testStAsBinary()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

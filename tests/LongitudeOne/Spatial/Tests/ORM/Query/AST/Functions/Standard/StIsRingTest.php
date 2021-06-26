@@ -64,9 +64,9 @@ class StIsRingTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $straight = $this->createStraightLineString();
-        $ring = $this->createRingLineString();
-        $node = $this->createNodeLineString();
+        $straight = $this->persistStraightLineString();
+        $ring = $this->persistRingLineString();
+        $node = $this->persistNodeLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

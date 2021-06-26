@@ -66,9 +66,9 @@ class StIntersectionTest extends OrmTestCase
      */
     public function testSelectStIntersection()
     {
-        $lineStringA = $this->createLineStringA();
-        $lineStringB = $this->createLineStringB();
-        $lineStringC = $this->createLineStringC();
+        $lineStringA = $this->persistLineStringA();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -103,9 +103,9 @@ class StIntersectionTest extends OrmTestCase
      */
     public function testStIntersectionWhereParameter()
     {
-        $lineStringA = $this->createLineStringA();
-        $this->createLineStringB();
-        $this->createLineStringC();
+        $lineStringA = $this->persistLineStringA();
+        $this->persistLineStringB();
+        $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -68,7 +68,7 @@ class StLengthTest extends OrmTestCase
      */
     public function testSelectStLength()
     {
-        $angularLineString = $this->createAngularLineString();
+        $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -94,7 +94,7 @@ class StLengthTest extends OrmTestCase
      */
     public function testStLengthWhereParameter()
     {
-        $angularLineString = $this->createAngularLineString();
+        $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

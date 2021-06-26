@@ -65,9 +65,9 @@ class SpLineLocatePointTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        $this->createStraightLineString();
-        $lineA = $this->createLineStringA();
-        $lineB = $this->createLineStringB();
+        $this->persistStraightLineString();
+        $lineA = $this->persistLineStringA();
+        $lineB = $this->persistLineStringB();
 
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
@@ -100,9 +100,9 @@ class SpLineLocatePointTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createStraightLineString();
-        $this->createLineStringA();
-        $this->createLineStringB();
+        $this->persistStraightLineString();
+        $this->persistLineStringA();
+        $this->persistLineStringB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

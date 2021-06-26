@@ -69,7 +69,7 @@ class StGeomFromTextTest extends OrmTestCase
      */
     public function testLineString()
     {
-        $lineString = $this->createStraightLineString();
+        $lineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

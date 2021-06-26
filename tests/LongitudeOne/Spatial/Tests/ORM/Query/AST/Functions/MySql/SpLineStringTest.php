@@ -65,8 +65,8 @@ class SpLineStringTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        $lineStringA = $this->createLineStringA();
-        $this->createLineStringB();
+        $lineStringA = $this->persistLineStringA();
+        $this->persistLineStringB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -96,7 +96,7 @@ class SpLineStringTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->createLineStringA();
+        $this->persistLineStringA();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

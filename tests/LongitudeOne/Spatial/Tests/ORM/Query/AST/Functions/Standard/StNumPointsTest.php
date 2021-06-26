@@ -65,9 +65,9 @@ class StNumPointsTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $straightLineString = $this->createStraightLineString();
-        $angularLineString = $this->createAngularLineString();
-        $ringLineString = $this->createRingLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $angularLineString = $this->persistAngularLineString();
+        $ringLineString = $this->persistRingLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -98,9 +98,9 @@ class StNumPointsTest extends OrmTestCase
      */
     public function testFunctionInPredicate()
     {
-        $this->createStraightLineString();
-        $this->createAngularLineString();
-        $ringLineString = $this->createRingLineString();
+        $this->persistStraightLineString();
+        $this->persistAngularLineString();
+        $ringLineString = $this->persistRingLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
