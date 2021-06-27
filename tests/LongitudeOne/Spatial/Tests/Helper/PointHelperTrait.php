@@ -116,7 +116,7 @@ trait PointHelperTrait
         try {
             return new Point(5, 5, $srid);
         } catch (InvalidValueException $e) {
-            static::fail("Unable to create point E (5 5) with srid {$srid}: ".$e->getMessage());
+            static::fail(sprintf('Unable to create point E (5 5) with srid %d: %s', $srid, $e->getMessage()));
         }
     }
 
@@ -264,7 +264,7 @@ trait PointHelperTrait
         try {
             return new Point($x, $y);
         } catch (InvalidValueException $e) {
-            static::fail("Unable to create point {$name}({$x} {$y}): ".$e->getMessage());
+            static::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
         }
     }
 

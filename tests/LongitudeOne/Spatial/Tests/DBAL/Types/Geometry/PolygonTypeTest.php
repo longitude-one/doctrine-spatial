@@ -15,16 +15,9 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
+use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -40,12 +33,11 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class PolygonTypeTest extends OrmTestCase
 {
+    use LineStringHelperTrait;
+    use PolygonHelperTrait;
+
     /**
      * Setup the test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -55,45 +47,19 @@ class PolygonTypeTest extends OrmTestCase
 
     /**
      * Test to store a polygon and find it by its geometric.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testFindByPolygon()
     {
-        $rings = [
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-        ];
-        $entity = new PolygonEntity();
+        $polygon = $this->createBigPolygon();
+        $entity = $this->persistPolygon($polygon);
+        $result = $this->getEntityManager()->getRepository(PolygonEntity::class)->findByPolygon($polygon);
 
-        $entity->setPolygon(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
-
-        $result = $this->getEntityManager()->getRepository(self::POLYGON_ENTITY)->findByPolygon(new Polygon($rings));
-
+        static::assertCount(1, $result);
         static::assertEquals($entity, $result[0]);
     }
 
     /**
      * Test to store a null polygon and find it by its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullPolygon()
     {
@@ -104,8 +70,6 @@ class PolygonTypeTest extends OrmTestCase
 
         $id = $entity->getId();
 
-        $this->getEntityManager()->clear();
-
         $queryEntity = $this->getEntityManager()->getRepository(self::POLYGON_ENTITY)->find($id);
 
         static::assertEquals($entity, $queryEntity);
@@ -113,42 +77,11 @@ class PolygonTypeTest extends OrmTestCase
 
     /**
      * Test to store a polygon ring and find it by its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testPolygonRing()
     {
-        $rings = [
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-            new LineString([
-                new Point(5, 5),
-                new Point(7, 5),
-                new Point(7, 7),
-                new Point(5, 7),
-                new Point(5, 5),
-            ]),
-        ];
-        $entity = new PolygonEntity();
-
-        $entity->setPolygon(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
+        $entity = $this->persistHoleyPolygon();
         $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
         $queryEntity = $this->getEntityManager()->getRepository(self::POLYGON_ENTITY)->find($id);
 
         static::assertEquals($entity, $queryEntity);
@@ -156,35 +89,11 @@ class PolygonTypeTest extends OrmTestCase
 
     /**
      * Test to store a solid polygon and find it by its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testSolidPolygon()
     {
-        $rings = [
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-        ];
-        $entity = new PolygonEntity();
-
-        $entity->setPolygon(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
+        $entity = $this->persistBigPolygon();
         $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
         $queryEntity = $this->getEntityManager()->getRepository(self::POLYGON_ENTITY)->find($id);
 
         static::assertEquals($entity, $queryEntity);
