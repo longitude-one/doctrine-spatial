@@ -210,7 +210,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Validate arguments.
      *
-     * @param array $argv list of arguments
+     * @param ?array $argv list of arguments
      *
      * @throws InvalidValueException when an argument is not valid
      *

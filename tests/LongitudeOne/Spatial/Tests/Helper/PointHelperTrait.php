@@ -182,12 +182,10 @@ trait PointHelperTrait
      * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
      *
      * @param bool $setSrid initialize the SRID to 2154 if true
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function persistParisLambert93(bool $setSrid = true): PointEntity
     {
-        $pointEntity = $this->persistGeometry(new GeometryPoint(6519, 68624));
+        $pointEntity = $this->persistGeometryPoint('Paris', 6519, 68624);
         if ($setSrid) {
             $pointEntity->getPoint()->setSrid(2154);
         }
@@ -196,45 +194,37 @@ trait PointHelperTrait
     }
 
     /**
-     * Create the point A (1, 2).
-     *
-     * @throws InvalidValueException when geometries are not valid
+     * Create and persist the point A (1, 2).
      */
     protected function persistPointA(): PointEntity
     {
-        return $this->persistGeometry(new GeometryPoint(1, 2));
+        return $this->persistGeometryPoint('A', 1, 2);
     }
 
     /**
      * Create the point B (-2, 3).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function persistPointB(): PointEntity
     {
-        return $this->persistGeometry(new GeometryPoint(-2, 3));
+        return $this->persistGeometryPoint('B', -2, 3);
     }
 
     /**
      * Create the point E (5, 5).
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function persistPointE(): PointEntity
     {
-        return $this->persistGeometry(new GeometryPoint(5, 5));
+        return $this->persistGeometryPoint('E', 5, 5);
     }
 
     /**
-     * Create the point origin (0, 0).
+     * Create the point origin O(0, 0).
      *
      * @param bool $setSrid Set the SRID to zero instead of null
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function persistPointO(bool $setSrid = false): PointEntity
     {
-        $geometryEntity = $this->persistGeometry(new GeometryPoint(0, 0));
+        $geometryEntity = $this->persistGeometryPoint('O', 0, 0);
         if ($setSrid) {
             $geometryEntity->getPoint()->setSrid(0);
         }
@@ -246,12 +236,10 @@ trait PointHelperTrait
      * Create Tours city in Lambert93 (French SRID) as geometry Point entity and store it in database.
      *
      * @param bool $setSrid initialize the SRID to 2154 if true
-     *
-     * @throws InvalidValueException when geometries are not valid
      */
     protected function persistToursLambert93(bool $setSrid = true): PointEntity
     {
-        $pointEntity = $this->persistGeometry(new GeometryPoint(525375.21, 6701871.83));
+        $pointEntity = $this->persistGeometryPoint('Tours', 525375.21, 6701871.83);
         if ($setSrid) {
             $pointEntity->getPoint()->setSrid(2154);
         }
@@ -259,7 +247,7 @@ trait PointHelperTrait
         return $pointEntity;
     }
 
-    private function createPoint(string $name, int $x, int $y): Point
+    private function createPoint(string $name, float $x, float $y): Point
     {
         try {
             return new Point($x, $y);
@@ -294,5 +282,17 @@ trait PointHelperTrait
         $this->getEntityManager()->persist($pointEntity);
 
         return $pointEntity;
+    }
+
+    /**
+     * Persist a geometry point (x y).
+     *
+     * @param string $name name of the point
+     * @param float  $x    coordinate x
+     * @param float  $y    coordinate y
+     */
+    private function persistGeometryPoint(string $name, float $x, float $y): PointEntity
+    {
+        return $this->persistGeometry($this->createPoint($name, $x, $y));
     }
 }

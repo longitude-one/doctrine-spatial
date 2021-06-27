@@ -90,11 +90,6 @@ class StPointTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectWithSrid()

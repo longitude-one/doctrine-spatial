@@ -39,10 +39,6 @@ class GeographyTypeTest extends OrmTestCase
 {
     /**
      * Setup the geography type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -139,11 +135,9 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @param GeographyEntity $entity Entity to test
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
+     * @throws ORMException            when cache is not set
+     * @throws MappingException        when mapping
+     * @throws OptimisticLockException when clear fails
      */
     private function storeAndRetrieve(GeographyEntity $entity)
     {
