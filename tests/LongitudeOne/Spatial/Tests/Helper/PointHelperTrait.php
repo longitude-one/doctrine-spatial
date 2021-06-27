@@ -49,11 +49,15 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 trait PointHelperTrait
 {
     /**
-     * Create Point Origin O (0 0).
+     * Create Los Angeles geometry Point entity.
      */
-    protected function createPointOrigin(): Point
+    protected function createLosAngelesGeometry(): GeometryPoint
     {
-        return $this->createPoint('O', 0, 0);
+        try {
+            return new GeometryPoint(-118.2430, 34.0522);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create Los Angeles Geometry point: %s', $e->getMessage()));
+        }
     }
 
     /**
@@ -97,6 +101,14 @@ trait PointHelperTrait
     }
 
     /**
+     * Create Point Origin O (0 0).
+     */
+    protected function createPointOrigin(): Point
+    {
+        return $this->createPoint('O', 0, 0);
+    }
+
+    /**
      * Create Point with SRID.
      */
     protected function createPointWithSrid(int $srid): Point
@@ -104,7 +116,7 @@ trait PointHelperTrait
         try {
             return new Point(5, 5, $srid);
         } catch (InvalidValueException $e) {
-            static::fail("Unable to create point E (5 5) with srid $srid: ".$e->getMessage());
+            static::fail("Unable to create point E (5 5) with srid {$srid}: ".$e->getMessage());
         }
     }
 
@@ -136,18 +148,6 @@ trait PointHelperTrait
     protected function persistLosAngelesGeography(): GeographyEntity
     {
         return $this->persistGeography(new GeographyPoint(-118.2430, 34.0522));
-    }
-
-    /**
-     * Create Los Angeles geometry Point entity.
-     */
-    protected function createLosAngelesGeometry(): GeometryPoint
-    {
-        try {
-            return new GeometryPoint(-118.2430, 34.0522);
-        } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create Los Angeles Geometry point: %s', $e->getMessage()));
-        }
     }
 
     /**
@@ -259,6 +259,15 @@ trait PointHelperTrait
         return $pointEntity;
     }
 
+    private function createPoint(string $name, int $x, int $y): Point
+    {
+        try {
+            return new Point($x, $y);
+        } catch (InvalidValueException $e) {
+            static::fail("Unable to create point {$name}({$x} {$y}): ".$e->getMessage());
+        }
+    }
+
     /**
      * Create a geographic Point entity from an array of points.
      *
@@ -285,14 +294,5 @@ trait PointHelperTrait
         $this->getEntityManager()->persist($pointEntity);
 
         return $pointEntity;
-    }
-
-    private function createPoint(string $name, int $x, int $y): Point
-    {
-        try {
-            return new Point($x, $y);
-        } catch (InvalidValueException $e) {
-            static::fail("Unable to create point $name($x $y): ".$e->getMessage());
-        }
     }
 }

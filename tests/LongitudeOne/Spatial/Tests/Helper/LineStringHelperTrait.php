@@ -178,7 +178,7 @@ trait LineStringHelperTrait
 
     /**
      * Create a ring linestring.
-     * Line is like a square (0 0, 11) with 4 points: (0 0) (1 0) (1 1) (0 1) (0 0).
+     * Line is like a square (0 0, 1 1) with 4 points: (0 0) (1 0) (1 1) (0 1) (0 0).
      */
     protected function createRingLineString(): LineString
     {

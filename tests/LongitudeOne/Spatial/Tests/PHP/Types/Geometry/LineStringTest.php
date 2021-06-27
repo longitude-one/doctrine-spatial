@@ -31,8 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 class LineStringTest extends TestCase
 {
-    use PointHelperTrait;
     use LineStringHelperTrait;
+    use PointHelperTrait;
 
     /**
      * Test LineString bad parameter.

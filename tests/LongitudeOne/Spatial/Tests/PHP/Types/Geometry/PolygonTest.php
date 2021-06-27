@@ -19,6 +19,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +33,20 @@ use PHPUnit\Framework\TestCase;
  */
 class PolygonTest extends TestCase
 {
+    use LineStringHelperTrait;
     use PolygonHelperTrait;
+
+    /**
+     * Test to get last ring.
+     */
+    public function testAddPolygonToPolygon()
+    {
+        static::expectExceptionMessage('You cannot add a Polygon to another one. Use a Multipolygon.');
+        static::expectException(InvalidValueException::class);
+        $ringA = $this->createBigPolygon();
+        $polygon = $this->createEmptyPolygon();
+        $polygon->addRing($ringA);
+    }
 
     /**
      * Test an empty polygon.
@@ -50,30 +64,14 @@ class PolygonTest extends TestCase
     public function testJson(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":null}';
+        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":null}';
         // phpcs:enable
-        $rings = [
-            [
-                [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
-                [0, 0],
-            ],
-            [
-                [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
-                [0, 0],
-            ],
-        ];
-        $polygon = new Polygon($rings);
+        $polygon = $this->createHoleyPolygon();
         static::assertEquals($expected, $polygon->toJson());
         static::assertEquals($expected, json_encode($polygon));
 
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":4326}';
+        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":4326}';
         // phpcs:enable
         $polygon->setSrid(4326);
         static::assertEquals($expected, $polygon->toJson());
@@ -105,25 +103,15 @@ class PolygonTest extends TestCase
      */
     public function testRingPolygonFromObjectsGetLastRing()
     {
-        $ringA = new LineString(
-            [
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]
-        );
-        $ringB = new LineString(
-            [
-                new Point(5, 5),
-                new Point(7, 5),
-                new Point(7, 7),
-                new Point(5, 7),
-                new Point(5, 5),
-            ]
-        );
-        $polygon = new Polygon([$ringA, $ringB]);
+        $ringA = $this->createRingLineString();
+        $ringB = $this->createNodeLineString();
+        $polygon = $this->createEmptyPolygon();
+        try {
+            $polygon->addRing($ringA);
+            $polygon->addRing($ringB);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to add ring to polygon: %s', $e->getMessage()));
+        }
 
         static::assertEquals($ringB, $polygon->getRing(-1));
     }
@@ -133,80 +121,52 @@ class PolygonTest extends TestCase
      */
     public function testRingPolygonFromObjectsGetSingleRing()
     {
-        $ringA = new LineString(
-            [
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]
-        );
-        $ringB = new LineString(
-            [
-                new Point(5, 5),
-                new Point(7, 5),
-                new Point(7, 7),
-                new Point(5, 7),
-                new Point(5, 5),
-            ]
-        );
-        $polygon = new Polygon([$ringA, $ringB]);
+        $ringA = $this->createRingLineString();
+        $ringB = $this->createNodeLineString();
+        $polygon = $this->createEmptyPolygon();
+        try {
+            $polygon->addRing($ringA);
+            $polygon->addRing($ringB);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to add ring to polygon: %s', $e->getMessage()));
+        }
 
         static::assertEquals($ringA, $polygon->getRing(0));
     }
 
     /**
      * Test a solid polygon from array add rings.
-     *
-     * @throws InvalidValueException This should not happen
      */
     public function testSolidPolygonFromArrayAddRings()
     {
-        $expected = [
-            new LineString(
-                [
-                    new Point(0, 0),
-                    new Point(10, 0),
-                    new Point(10, 10),
-                    new Point(0, 10),
-                    new Point(0, 0),
-                ]
-            ),
-            new LineString(
-                [
-                    new Point(2, 2),
-                    new Point(10, 0),
-                    new Point(10, 10),
-                    new Point(0, 10),
-                    new Point(2, 2),
-                ]
-            ),
-        ];
-
-        $rings = [
+        $expected = [$this->createRingLineString(), $this->createNodeLineString()];
+        $ring = [
             [
                 [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
+                [1, 0],
+                [1, 1],
+                [0, 1],
                 [0, 0],
             ],
         ];
 
-        $polygon = new Polygon($rings);
+        try {
+            $polygon = new Polygon($ring);
 
-        $polygon->addRing(
-            [
-                [2, 2],
-                [10, 0],
-                [10, 10],
-                [0, 10],
-                [2, 2],
-            ]
-        );
+            $polygon->addRing(
+                [
+                    [0, 0],
+                    [1, 0],
+                    [0, 1],
+                    [1, 1],
+                    [0, 0],
+                ]
+            );
 
-        static::assertEquals($expected, $polygon->getRings());
+            static::assertEquals($expected, $polygon->getRings());
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to add ring to polygon: %s', $e->getMessage()));
+        }
     }
 
     /**
@@ -217,23 +177,19 @@ class PolygonTest extends TestCase
         $expected = [
             [
                 [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
+                [1, 0],
+                [1, 1],
+                [0, 1],
                 [0, 0],
             ],
         ];
-        $rings = [
-            [
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ],
-        ];
+        $rings = $this->createRingLineString();
 
-        $polygon = new Polygon($rings);
+        try {
+            $polygon = new Polygon([$rings]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create polygon from ring linestring: %s', $e->getMessage()));
+        }
 
         static::assertEquals($expected, $polygon->toArray());
     }
@@ -241,30 +197,24 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from an array of rings.
      */
-    public function testSolidPolygonFromArraysGetRings()
+    public function testSolidPolygonFromArraysOfRings()
     {
-        $expected = [
-            new LineString(
-                [
-                    new Point(0, 0),
-                    new Point(10, 0),
-                    new Point(10, 10),
-                    new Point(0, 10),
-                    new Point(0, 0),
-                ]
-            ),
-        ];
+        $expected = [$this->createRingLineString()];
         $rings = [
             [
                 [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
+                [1, 0],
+                [1, 1],
+                [0, 1],
                 [0, 0],
             ],
         ];
 
-        $polygon = new Polygon($rings);
+        try {
+            $polygon = new Polygon($rings);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create polygon from ring linestring: %s', $e->getMessage()));
+        }
 
         static::assertEquals($expected, $polygon->getRings());
     }
@@ -291,10 +241,14 @@ class PolygonTest extends TestCase
                 [0, 0],
             ],
         ];
-        $polygon = new Polygon($rings);
-        $result = (string) $polygon;
+        try {
+            $polygon = new Polygon($rings);
+            $result = (string) $polygon;
 
-        static::assertEquals($expected, $result);
+            static::assertSame($expected, $result);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create polygon from array: %s', $e->getMessage()));
+        }
     }
 
     /**
@@ -305,25 +259,19 @@ class PolygonTest extends TestCase
         $expected = [
             [
                 [0, 0],
-                [10, 0],
-                [10, 10],
-                [0, 10],
+                [1, 0],
+                [1, 1],
+                [0, 1],
                 [0, 0],
             ],
         ];
-        $rings = [
-            new LineString(
-                [
-                    new Point(0, 0),
-                    new Point(10, 0),
-                    new Point(10, 10),
-                    new Point(0, 10),
-                    new Point(0, 0),
-                ]
-            ),
-        ];
+        $rings = [$this->createRingLineString()];
 
-        $polygon = new Polygon($rings);
+        try {
+            $polygon = new Polygon($rings);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create polygon from ring linestring: %s', $e->getMessage()));
+        }
 
         static::assertEquals($expected, $polygon->toArray());
     }
