@@ -40,6 +40,22 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 trait GeometryHelperTrait
 {
     /**
+     * Create a geometry point (x y).
+     *
+     * @param string $name name of the point
+     * @param float  $x    coordinate x
+     * @param float  $y    coordinate y
+     */
+    private static function createGeometryPoint(string $name, float $x, float $y): Point
+    {
+        try {
+            return new Point($x, $y);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
+        }
+    }
+
+    /**
      * Create a geometric Point entity from an array of points.
      *
      * @param GeometryInterface $geometry object implementing Geometry interface
@@ -69,9 +85,24 @@ trait GeometryHelperTrait
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
+    protected function persistPointA(int $srid = null): GeometryEntity
+    {
+        $point = static::createGeometryPoint('A', 1, 1);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeometry($point);
+    }
+
+    /**
+     * Create a geometric point at origin.
+     *
+     * @param int|null $srid Spatial Reference System Identifier
+     */
     protected function persistPointO(int $srid = null): GeometryEntity
     {
-        $point = $this->createGeometryPoint('O', 0, 0);
+        $point = static::createGeometryPoint('O', 0, 0);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -95,21 +126,5 @@ trait GeometryHelperTrait
         }
 
         return $this->persistGeometry($straightLineString);
-    }
-
-    /**
-     * Create a geometry point (x y).
-     *
-     * @param string $name name of the point
-     * @param float  $x    coordinate x
-     * @param float  $y    coordinate y
-     */
-    private function createGeometryPoint(string $name, float $x, float $y): Point
-    {
-        try {
-            return new Point($x, $y);
-        } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
-        }
     }
 }

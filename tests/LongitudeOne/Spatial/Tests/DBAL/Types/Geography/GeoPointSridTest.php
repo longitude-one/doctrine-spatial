@@ -47,6 +47,23 @@ class GeoPointSridTest extends OrmTestCase
     }
 
     /**
+     * Test to persist a geographic point then find it by its geography.
+     */
+    public function testFindGeographyBy(): void
+    {
+        try {
+            $point = new Point(11, 11);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create a geography point (11 11): %s', $e->getMessage()));
+        }
+        $entity = new GeoPointSridEntity();
+        $entity->setPoint($point);
+
+        $queryEntity = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
+        static::assertEquals(4326, $queryEntity[0]->getPoint()->getSrid());
+    }
+
+    /**
      * Test a null geography.
      */
     public function testNullGeography()
@@ -56,9 +73,9 @@ class GeoPointSridTest extends OrmTestCase
     }
 
     /**
-     * Test to store a geographic point.
+     * Test to persist a geographic point then find it by its id.
      */
-    public function testPointGeography()
+    public function testPointGeographyById()
     {
         $entity = new GeoPointSridEntity();
 
@@ -70,6 +87,4 @@ class GeoPointSridTest extends OrmTestCase
         $queryEntity = static::assertIsRetrievableById($this->getEntityManager(), $entity);
         static::assertEquals(4326, $queryEntity->getPoint()->getSrid());
     }
-
-    //TODO test to find all null GeoPointSridEntity
 }

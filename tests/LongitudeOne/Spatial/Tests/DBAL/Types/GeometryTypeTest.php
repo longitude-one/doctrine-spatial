@@ -54,7 +54,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * When I store a bad geometry an Invalid value exception shall be thrown.
      */
-    public function testBadGeometryValue()
+    public function testBadGeometryValue(): void
     {
         static::expectException(InvalidValueException::class);
         static::expectExceptionMessage('Geometry column values must implement GeometryInterface');
@@ -68,7 +68,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a line string geometry and retrieve it by its identifier.
      */
-    public function testLineStringGeometry()
+    public function testLineStringGeometry(): void
     {
         $entity = $this->persistStraightLineString();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -77,7 +77,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a null geometry and retrieve it by its identifier.
      */
-    public function testNullGeometry()
+    public function testNullGeometry(): void
     {
         $entity = $this->persistNullGeometry();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -86,7 +86,7 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a point geometry and retrieve it by its identifier.
      */
-    public function testPointGeometry()
+    public function testPointGeometry(): void
     {
         $entity = $this->persistPointO();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -95,17 +95,11 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group srid
      */
-    public function testPointGeometryWithSrid()
+    public function testPointGeometryWithSrid(): void
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
-
-        $point->setSrid(200);
-        $entity->setGeometry($point);
+        $entity = $this->persistPointA(200);
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
@@ -116,7 +110,7 @@ class GeometryTypeTest extends OrmTestCase
      *
      * @group srid
      */
-    public function testPointGeometryWithZeroSrid()
+    public function testPointGeometryWithZeroSrid(): void
     {
         $entity = new GeometryEntity();
         $point = new Point(1, 1);
@@ -131,7 +125,7 @@ class GeometryTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPolygonGeometry()
+    public function testPolygonGeometry(): void
     {
         $entity = new GeometryEntity();
 
@@ -156,7 +150,7 @@ class GeometryTypeTest extends OrmTestCase
      *
      * @group srid
      */
-    public function testPolygonGeometryWithSrid()
+    public function testPolygonGeometryWithSrid(): void
     {
         $entity = new GeometryEntity();
 

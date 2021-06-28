@@ -47,6 +47,40 @@ class GeometryWalkerTest extends OrmTestCase
         parent::setUp();
     }
 
+    private static function test(
+        EntityManagerInterface $entityManager,
+        string $convert,
+        string $startPoint,
+        string $envelope
+    ): void {
+        $queryString = sprintf(
+            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
+            $convert,
+            $startPoint
+        );
+        $query = $entityManager->createQuery($queryString);
+        $query->setHint(
+            Query::HINT_CUSTOM_OUTPUT_WALKER,
+            'LongitudeOne\Spatial\ORM\Query\GeometryWalker'
+        );
+
+        $result = $query->getResult();
+        static::assertEquals(static::createPointOrigin(), $result[0][1]);
+        static::assertEquals(static::createPointC(), $result[1][1]);
+
+        $queryString = sprintf(
+            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
+            $convert,
+            $envelope
+        );
+        $query = $entityManager->createQuery($queryString);
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
+
+        $result = $query->getResult();
+        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
+        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
+    }
+
     /**
      * Test the geometry walker binary.
      *
@@ -91,39 +125,5 @@ class GeometryWalkerTest extends OrmTestCase
         }
 
         static::test($this->getEntityManager(), $asText, $startPoint, $envelope);
-    }
-
-    private static function test(
-        EntityManagerInterface $entityManager,
-        string $convert,
-        string $startPoint,
-        string $envelope
-    ): void {
-        $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $convert,
-            $startPoint
-        );
-        $query = $entityManager->createQuery($queryString);
-        $query->setHint(
-            Query::HINT_CUSTOM_OUTPUT_WALKER,
-            'LongitudeOne\Spatial\ORM\Query\GeometryWalker'
-        );
-
-        $result = $query->getResult();
-        static::assertEquals(static::createPointOrigin(), $result[0][1]);
-        static::assertEquals(static::createPointC(), $result[1][1]);
-
-        $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $convert,
-            $envelope
-        );
-        $query = $entityManager->createQuery($queryString);
-        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
-
-        $result = $query->getResult();
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
     }
 }

@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * PersistHelper Trait.
  *
- * This helper provides some methods to persist entity then to .
+ * This helper provides some methods to persist entity then it test to find it.
  * All of these points are defined in test documentation.
  *
  * Methods beginning with create will store a geo* entity in database.
@@ -37,7 +37,34 @@ use Doctrine\ORM\EntityManagerInterface;
 trait PersistHelperTrait
 {
     /**
-     * Store and retrieve geography entity in database.
+     * Store and retrieve geography entity in database and retrieve it by its geometry (or geography).
+     *
+     * Then assert data are equals, not same.
+     *
+     * @param EntityManagerInterface $entityManager Entity manager to persist data
+     * @param object                 $entity        Entity to test
+     * @param object                 $geo           Geography or geometry object (non-persisted object)
+     * @param string                 $method        the method name to retrieve object
+     */
+    private static function assertIsRetrievableByGeo(
+        EntityManagerInterface $entityManager,
+        object $entity,
+        object $geo,
+        string $method
+    ): array {
+        $entityManager->persist($entity);
+        $entityManager->flush();
+
+        $queryEntity = $entityManager->getRepository(get_class($entity))->{$method}($geo);
+
+        static::assertCount(1, $queryEntity);
+        static::assertEquals($entity, $queryEntity[0]);
+
+        return $queryEntity;
+    }
+
+    /**
+     * Store geography entity in database and retrieve it by its id.
      *
      * Then assert data are equals, not same.
      *
