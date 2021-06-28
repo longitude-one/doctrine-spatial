@@ -15,13 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,13 +36,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class GeometryWalkerTest extends OrmTestCase
 {
     use LineStringHelperTrait;
+    use PointHelperTrait;
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -57,18 +51,11 @@ class GeometryWalkerTest extends OrmTestCase
      * Test the geometry walker binary.
      *
      * @group geometry
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testGeometryWalkerBinary()
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
@@ -80,50 +67,18 @@ class GeometryWalkerTest extends OrmTestCase
                 break;
         }
 
-        $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $asBinary,
-            $startPoint
-        );
-        $query = $this->getEntityManager()->createQuery($queryString);
-        $query->setHint(
-            Query::HINT_CUSTOM_OUTPUT_WALKER,
-            'LongitudeOne\Spatial\ORM\Query\GeometryWalker'
-        );
-
-        $result = $query->getResult();
-        static::assertEquals(new Point(0, 0), $result[0][1]);
-        static::assertEquals(new Point(3, 3), $result[1][1]);
-
-        $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $asBinary,
-            $envelope
-        );
-        $query = $this->getEntityManager()->createQuery($queryString);
-        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
-
-        $result = $query->getResult();
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
+        static::test($this->getEntityManager(), $asBinary, $startPoint, $envelope);
     }
 
     /**
      * Test the geometry walker.
      *
      * @group geometry
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testGeometryWalkerText()
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
@@ -135,24 +90,36 @@ class GeometryWalkerTest extends OrmTestCase
                 break;
         }
 
+        static::test($this->getEntityManager(), $asText, $startPoint, $envelope);
+    }
+
+    private static function test(
+        EntityManagerInterface $entityManager,
+        string $convert,
+        string $startPoint,
+        string $envelope
+    ): void {
         $queryString = sprintf(
             'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $asText,
+            $convert,
             $startPoint
         );
-        $query = $this->getEntityManager()->createQuery($queryString);
-        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
+        $query = $entityManager->createQuery($queryString);
+        $query->setHint(
+            Query::HINT_CUSTOM_OUTPUT_WALKER,
+            'LongitudeOne\Spatial\ORM\Query\GeometryWalker'
+        );
 
         $result = $query->getResult();
-        static::assertEquals(new Point(0, 0), $result[0][1]);
-        static::assertEquals(new Point(3, 3), $result[1][1]);
+        static::assertEquals(static::createPointOrigin(), $result[0][1]);
+        static::assertEquals(static::createPointC(), $result[1][1]);
 
         $queryString = sprintf(
             'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
-            $asText,
+            $convert,
             $envelope
         );
-        $query = $this->getEntityManager()->createQuery($queryString);
+        $query = $entityManager->createQuery($queryString);
         $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
 
         $result = $query->getResult();

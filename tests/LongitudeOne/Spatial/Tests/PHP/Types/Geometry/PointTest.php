@@ -129,7 +129,7 @@ class PointTest extends TestCase
      */
     public function testGetType()
     {
-        $point = $this->createPointOrigin();
+        $point = static::createPointOrigin();
         $result = $point->getType();
 
         static::assertEquals('Point', $result);
@@ -205,7 +205,7 @@ class PointTest extends TestCase
     public function testJson()
     {
         $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
-        $point = $this->createPointE();
+        $point = static::createPointE();
 
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
@@ -235,7 +235,7 @@ class PointTest extends TestCase
     public function testPointFromArrayToString()
     {
         $expected = '5 5';
-        $point = $this->createPointE();
+        $point = static::createPointE();
 
         static::assertSame($expected, (string) $point);
     }
@@ -258,7 +258,7 @@ class PointTest extends TestCase
      */
     public function testPointWithSrid()
     {
-        $point = $this->createPointWithSrid(2154);
+        $point = static::createPointWithSrid(2154);
         $result = $point->getSrid();
 
         static::assertSame(2154, $result);
@@ -283,7 +283,7 @@ class PointTest extends TestCase
     public function testToArray()
     {
         $expected = [0.0, 0.0];
-        $point = $this->createPointOrigin();
+        $point = static::createPointOrigin();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);

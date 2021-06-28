@@ -15,10 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
@@ -43,10 +39,6 @@ class SpSnapToGridTest extends OrmTestCase
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -58,11 +50,6 @@ class SpSnapToGridTest extends OrmTestCase
 
     /**
      * Test a DQL containing function with 2 parameters to test in the select.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
      *
      * @group geometry
      */
@@ -89,11 +76,6 @@ class SpSnapToGridTest extends OrmTestCase
 
     /**
      * Test a DQL containing function with three parameters to test in the select.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
      *
      * @group geometry
      */
@@ -123,11 +105,6 @@ class SpSnapToGridTest extends OrmTestCase
     /**
      * Test a DQL containing function with five parameters to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectStSnapToGridSignature5Parameters()
@@ -155,11 +132,6 @@ class SpSnapToGridTest extends OrmTestCase
 
     /**
      * Test a DQL containing function with six paramters to test in the select.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
      *
      * @group geometry
      */

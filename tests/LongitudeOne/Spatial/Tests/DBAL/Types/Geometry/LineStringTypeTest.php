@@ -15,15 +15,11 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,11 +35,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class LineStringTypeTest extends OrmTestCase
 {
-    /**
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     */
+    use PersistHelperTrait;
+
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
@@ -53,12 +46,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store and find a line string in table.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testFindByLineString()
     {
@@ -72,28 +60,13 @@ class LineStringTypeTest extends OrmTestCase
         $entity = new LineStringEntity();
 
         $entity->setLineString($lineString);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $this->getEntityManager()->clear();
-
-        $result = $this->getEntityManager()
-            ->getRepository(self::LINESTRING_ENTITY)
-            ->findByLineString($lineString)
-        ;
-
-        static::assertEquals($entity, $result[0]);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store and find it by id.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testLineString()
     {
@@ -107,41 +80,16 @@ class LineStringTypeTest extends OrmTestCase
         $entity = new LineStringEntity();
 
         $entity->setLineString($lineString);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::LINESTRING_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a null line string, then to find it with its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullLineStringType()
     {
         $entity = new LineStringEntity();
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::LINESTRING_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     //TODO test to find all null linestring

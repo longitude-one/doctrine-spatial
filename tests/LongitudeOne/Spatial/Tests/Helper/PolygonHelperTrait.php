@@ -40,6 +40,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @method EntityManagerInterface getEntityManager the entity interface
+ *
+ * @internal
  */
 trait PolygonHelperTrait
 {

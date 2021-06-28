@@ -15,14 +15,9 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -38,12 +33,11 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class PointTypeTest extends OrmTestCase
 {
+    use PersistHelperTrait;
+    use PointHelperTrait;
+
     /**
      * Setup the test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -53,24 +47,15 @@ class PointTypeTest extends OrmTestCase
 
     /**
      * Test to store a point and find it by its geometric.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testFindByPoint()
     {
-        $point = new Point(1, 1);
+        $point = static::createPointA();
         $entity = new PointEntity();
 
         $entity->setPoint($point);
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
-
-        $this->getEntityManager()->clear();
 
         $result = $this->getEntityManager()->getRepository(self::POINT_ENTITY)->findByPoint($point);
 
@@ -79,55 +64,20 @@ class PointTypeTest extends OrmTestCase
 
     /**
      * Test to store a null point and find it by its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullPoint()
     {
         $entity = new PointEntity();
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::POINT_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point and find it by its id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
     public function testPoint()
     {
-        $point = new Point(1, 1);
-        $entity = new PointEntity();
-
-        $entity->setPoint($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::POINT_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $entity = $this->persistPointA();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     //TODO test to find a null geometry

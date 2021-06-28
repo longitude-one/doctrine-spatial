@@ -45,6 +45,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @method EntityManagerInterface getEntityManager Return the entity interface
+ *
+ * @internal
  */
 trait PointHelperTrait
 {
@@ -63,55 +65,55 @@ trait PointHelperTrait
     /**
      * Create Point A (1 1).
      */
-    protected function createPointA(): Point
+    protected static function createPointA(): Point
     {
-        return $this->createPoint('a', 1, 1);
+        return static::createPoint('a', 1, 1);
     }
 
     /**
      * Create Point B (2 2).
      */
-    protected function createPointB(): Point
+    protected static function createPointB(): Point
     {
-        return $this->createPoint('B', 2, 2);
+        return static::createPoint('B', 2, 2);
     }
 
     /**
      * Create Point C (3 3).
      */
-    protected function createPointC(): Point
+    protected static function createPointC(): Point
     {
-        return $this->createPoint('C', 3, 3);
+        return static::createPoint('C', 3, 3);
     }
 
     /**
      * Create Point D (4 4).
      */
-    protected function createPointD(): Point
+    protected static function createPointD(): Point
     {
-        return $this->createPoint('D', 4, 4);
+        return static::createPoint('D', 4, 4);
     }
 
     /**
      * Create Point E (5 5).
      */
-    protected function createPointE(): Point
+    protected static function createPointE(): Point
     {
-        return $this->createPoint('E', 5, 5);
+        return static::createPoint('E', 5, 5);
     }
 
     /**
      * Create Point Origin O (0 0).
      */
-    protected function createPointOrigin(): Point
+    protected static function createPointOrigin(): Point
     {
-        return $this->createPoint('O', 0, 0);
+        return static::createPoint('O', 0, 0);
     }
 
     /**
-     * Create Point with SRID.
+     * Create Point E (5 5) with SRID.
      */
-    protected function createPointWithSrid(int $srid): Point
+    protected static function createPointWithSrid(int $srid): Point
     {
         try {
             return new Point(5, 5, $srid);
@@ -247,7 +249,7 @@ trait PointHelperTrait
         return $pointEntity;
     }
 
-    private function createPoint(string $name, float $x, float $y): Point
+    private static function createPoint(string $name, float $x, float $y): Point
     {
         try {
             return new Point($x, $y);
@@ -293,6 +295,6 @@ trait PointHelperTrait
      */
     private function persistGeometryPoint(string $name, float $x, float $y): PointEntity
     {
-        return $this->persistGeometry($this->createPoint($name, $x, $y));
+        return $this->persistGeometry(static::createPoint($name, $x, $y));
     }
 }

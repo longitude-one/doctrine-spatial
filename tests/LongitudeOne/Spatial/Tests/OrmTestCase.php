@@ -261,35 +261,26 @@ abstract class OrmTestCase extends TestCase
         'geopolygon' => GeographyPolygonType::class,
     ];
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var bool[]
      */
-    protected $supportedPlatforms = [];
+    protected array $supportedPlatforms = [];
 
     /**
      * @var bool[]
      */
-    protected $usedEntities = [];
+    protected array $usedEntities = [];
 
     /**
      * @var bool[]
      */
-    protected $usedTypes = [];
+    protected array $usedTypes = [];
 
-    /**
-     * @var SchemaTool
-     */
-    private $schemaTool;
+    private SchemaTool $schemaTool;
 
-    /**
-     * @var DebugStack
-     */
-    private $sqlLoggerStack;
+    private DebugStack $sqlLoggerStack;
 
     /**
      * Setup connection before class creation.
@@ -329,7 +320,7 @@ abstract class OrmTestCase extends TestCase
             $this->setUpTypes();
             $this->setUpEntities();
             $this->setUpFunctions();
-        } catch (ORMException | UnsupportedPlatformException | Exception $e) {
+        } catch (UnsupportedPlatformException | Exception $e) {
             static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
     }
@@ -538,21 +529,19 @@ abstract class OrmTestCase extends TestCase
     /**
      * Get platform.
      *
-     * @throws Exception                    this can happen when database or credentials are not set
-     * @throws UnsupportedPlatformException this should not happen
-     *
      * @return AbstractPlatform
      */
-    protected function getPlatform()
+    protected function getPlatform(): ?AbstractPlatform
     {
-        return static::getConnection()->getDatabasePlatform();
+        try {
+            return static::getConnection()->getDatabasePlatform();
+        } catch (UnsupportedPlatformException | Exception $e) {
+            static::fail('Unable to get database platform: '.$e->getMessage());
+        }
     }
 
     /**
      * Return the platform completed by the version number of the server for mysql.
-     *
-     * @throws Exception                    when connection failed
-     * @throws UnsupportedPlatformException when platform is not supported
      */
     protected function getPlatformAndVersion(): string
     {
@@ -652,11 +641,6 @@ abstract class OrmTestCase extends TestCase
 
     /**
      * Create entities used by tests.
-     *
-     * @throws Exception                    when connection is not successful
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws ToolsException               when schema cannot be created
      */
     protected function setUpEntities()
     {
@@ -670,16 +654,16 @@ abstract class OrmTestCase extends TestCase
         }
 
         if ($classes) {
-            $this->getSchemaTool()->createSchema($classes);
+            try {
+                $this->getSchemaTool()->createSchema($classes);
+            } catch (ToolsException $e) {
+                static::fail('Unable to create schema: '.$e->getMessage());
+            }
         }
     }
 
     /**
      * Setup DQL functions.
-     *
-     * @throws Exception                    when connection is not successful
-     * @throws ORMException                 when
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUpFunctions()
     {
@@ -700,22 +684,27 @@ abstract class OrmTestCase extends TestCase
 
     /**
      * Add types used by test to DBAL.
-     *
-     * @throws Exception                    when credential or connection failed
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUpTypes()
     {
         foreach (array_keys($this->usedTypes) as $typeName) {
             if (!isset(static::$addedTypes[$typeName]) && !Type::hasType($typeName)) {
-                Type::addType($typeName, static::$types[$typeName]);
+                try {
+                    Type::addType($typeName, static::$types[$typeName]);
+                } catch (Exception $e) {
+                    static::fail(sprintf('Unable to add type %s: %s', $typeName, $e->getMessage()));
+                }
 
-                $type = Type::getType($typeName);
+                try {
+                    $type = Type::getType($typeName);
 
-                // Since doctrineTypeComments may already be initialized check if added type requires comment
-                $platform = $this->getPlatform();
-                if ($type->requiresSQLCommentHint($platform) && !$platform->isCommentedDoctrineType($type)) {
-                    $this->getPlatform()->markDoctrineTypeCommented(Type::getType($typeName));
+                    // Since doctrineTypeComments may already be initialized check if added type requires comment
+                    $platform = $this->getPlatform();
+                    if ($type->requiresSQLCommentHint($platform) && !$platform->isCommentedDoctrineType($type)) {
+                        $this->getPlatform()->markDoctrineTypeCommented(Type::getType($typeName));
+                    }
+                } catch (Exception $e) {
+                    static::fail(sprintf('Unable to get type %s: %s', $typeName, $e->getMessage()));
                 }
 
                 static::$addedTypes[$typeName] = true;
@@ -728,7 +717,7 @@ abstract class OrmTestCase extends TestCase
      *
      * @param string $platform the platform to support
      */
-    protected function supportsPlatform($platform)
+    protected function supportsPlatform(string $platform): void
     {
         $this->supportedPlatforms[$platform] = true;
     }
@@ -738,7 +727,7 @@ abstract class OrmTestCase extends TestCase
      *
      * @param string $entityClass the entity class
      */
-    protected function usesEntity($entityClass)
+    protected function usesEntity(string $entityClass): void
     {
         $this->usedEntities[$entityClass] = true;
 
@@ -752,7 +741,7 @@ abstract class OrmTestCase extends TestCase
      *
      * @param string $typeName the type name
      */
-    protected function usesType($typeName)
+    protected function usesType(string $typeName): void
     {
         $this->usedTypes[$typeName] = true;
     }

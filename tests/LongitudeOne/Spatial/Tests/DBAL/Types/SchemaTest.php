@@ -18,8 +18,6 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -35,10 +33,6 @@ class SchemaTest extends OrmTestCase
 {
     /**
      * Setup the geography type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -63,9 +57,7 @@ class SchemaTest extends OrmTestCase
     /**
      * Test doctrine type mapping.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
+     * @throws Exception when connection failed
      */
     public function testDoctrineTypeMapping()
     {
@@ -88,12 +80,8 @@ class SchemaTest extends OrmTestCase
 
     /**
      * Test to reverse schema mapping.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function testSchemaReverseMapping()
+    public function testSchemaReverseMapping(): void
     {
         $result = $this->getSchemaTool()->getUpdateSchemaSql($this->getAllClassMetadata(), true);
 
@@ -103,13 +91,9 @@ class SchemaTest extends OrmTestCase
     /**
      * All class metadata getter.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return ClassMetadata[]
      */
-    private function getAllClassMetadata()
+    private function getAllClassMetadata(): array
     {
         $metadata = [];
 

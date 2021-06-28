@@ -22,6 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -38,6 +39,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class GeometryTypeTest extends OrmTestCase
 {
     use GeometryHelperTrait;
+    use PersistHelperTrait;
 
     /**
      * Setup the geography type test.
@@ -69,10 +71,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testLineStringGeometry()
     {
         $entity = $this->persistStraightLineString();
-        $id = $entity->getId();
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
@@ -81,10 +80,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testNullGeometry()
     {
         $entity = $this->persistNullGeometry();
-        $id = $entity->getId();
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
@@ -93,16 +89,13 @@ class GeometryTypeTest extends OrmTestCase
     public function testPointGeometry()
     {
         $entity = $this->persistPointO();
-        $id = $entity->getId();
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      *
      * @group srid
      */
@@ -113,22 +106,13 @@ class GeometryTypeTest extends OrmTestCase
 
         $point->setSrid(200);
         $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      *
      * @group srid
      */
@@ -139,22 +123,13 @@ class GeometryTypeTest extends OrmTestCase
 
         $point->setSrid(0);
         $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a polygon geometry and retrieve it by its identifier.
      *
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testPolygonGeometry()
     {
@@ -171,22 +146,13 @@ class GeometryTypeTest extends OrmTestCase
         ];
 
         $entity->setGeometry(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      *
      * @group srid
      */
@@ -207,15 +173,6 @@ class GeometryTypeTest extends OrmTestCase
         $polygon = new Polygon($rings);
         $polygon->setSrid(4326);
         $entity->setGeometry($polygon);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 }

@@ -327,6 +327,7 @@ trait LineStringHelperTrait
         $lineStringEntity = new LineStringEntity();
         $lineStringEntity->setLineString($linestring);
         $this->getEntityManager()->persist($lineStringEntity);
+        $this->getEntityManager()->flush();
 
         return $lineStringEntity;
     }

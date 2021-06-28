@@ -75,7 +75,7 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysGetLastPoint()
     {
-        $expected = $this->createPointE();
+        $expected = static::createPointE();
         $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoint(-1);
 
@@ -88,9 +88,9 @@ class LineStringTest extends TestCase
     public function testLineStringFromArraysGetPoints()
     {
         $expected = [
-            $this->createPointOrigin(),
-            $this->createPointB(),
-            $this->createPointE(),
+            static::createPointOrigin(),
+            static::createPointB(),
+            static::createPointE(),
         ];
         $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoints();
@@ -104,7 +104,7 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysGetSinglePoint()
     {
-        $expected = $this->createPointB();
+        $expected = static::createPointB();
         $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoint(1);
 

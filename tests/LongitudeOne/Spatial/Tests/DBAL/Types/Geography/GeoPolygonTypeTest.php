@@ -15,16 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -40,12 +36,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeoPolygonTypeTest extends OrmTestCase
 {
+    use PersistHelperTrait;
+
     /**
      * Setup the test.
-     *
-     * @throws Exception                    When connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -56,12 +50,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test the find by polygon method.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometry contains an invalid value
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
+     * @throws InvalidValueException when geometry contains an invalid value
      */
     public function testFindByPolygon()
     {
@@ -82,7 +71,7 @@ class GeoPolygonTypeTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $result = $this->getEntityManager()
-            ->getRepository(self::GEO_POLYGON_ENTITY)
+            ->getRepository(get_class($entity))
             ->findByPolygon(new Polygon($rings))
         ;
 
@@ -91,16 +80,11 @@ class GeoPolygonTypeTest extends OrmTestCase
 
     /**
      * Test to store an empty polygon.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullPolygon()
     {
         $entity = new GeoPolygonEntity();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
 
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
@@ -117,12 +101,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometry contains an invalid value
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
+     * @throws InvalidValueException when geometry contains an invalid value
      */
     public function testPolygonRing()
     {
@@ -145,27 +124,13 @@ class GeoPolygonTypeTest extends OrmTestCase
         $entity = new GeoPolygonEntity();
 
         $entity->setPolygon(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEO_POLYGON_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a solid polygon.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometry contains an invalid value
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
+     * @throws InvalidValueException when geometry contains an invalid value
      */
     public function testSolidPolygon()
     {
@@ -181,15 +146,6 @@ class GeoPolygonTypeTest extends OrmTestCase
         $entity = new GeoPolygonEntity();
 
         $entity->setPolygon(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEO_POLYGON_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 }
