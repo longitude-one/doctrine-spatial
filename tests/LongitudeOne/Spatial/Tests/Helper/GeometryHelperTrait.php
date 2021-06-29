@@ -46,7 +46,7 @@ trait GeometryHelperTrait
      * @param float  $x    coordinate x
      * @param float  $y    coordinate y
      */
-    private static function createGeometryPoint(string $name, float $x, float $y): Point
+    protected static function createGeometryPoint(string $name, float $x, float $y): Point
     {
         try {
             return new Point($x, $y);

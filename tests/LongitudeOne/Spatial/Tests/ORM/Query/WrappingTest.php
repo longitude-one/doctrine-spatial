@@ -17,7 +17,6 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
@@ -90,7 +89,7 @@ class WrappingTest extends OrmTestCase
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g WHERE g.geometry = :geometry'
         );
 
-        $query->setParameter('geometry', new Point(5, 5), 'point');
+        $query->setParameter('geometry', $this->createGeometryPoint('E', 5, 5), 'point');
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();

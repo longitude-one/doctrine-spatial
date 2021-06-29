@@ -37,6 +37,9 @@ class LineStringTypeTest extends OrmTestCase
 {
     use PersistHelperTrait;
 
+    /**
+     * Setup the test.
+     */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);

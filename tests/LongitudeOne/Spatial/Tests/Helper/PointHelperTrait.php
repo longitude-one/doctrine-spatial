@@ -116,6 +116,8 @@ trait PointHelperTrait
 
     /**
      * Create Point E (5 5) with SRID.
+     *
+     * @param int $srid SRID of geometry point E
      */
     protected static function createPointWithSrid(int $srid): GeometryPoint
     {
@@ -126,6 +128,13 @@ trait PointHelperTrait
         }
     }
 
+    /**
+     * Create a geography point.
+     *
+     * @param string $name name is only used when an exception is thrown
+     * @param float  $x    X coordinate
+     * @param float  $y    Y coordinate
+     */
     private static function createGeographyPoint(string $name, float $x, float $y): GeographyPoint
     {
         try {
@@ -135,6 +144,13 @@ trait PointHelperTrait
         }
     }
 
+    /**
+     * Create a geometry point.
+     *
+     * @param string $name name is only used when an exception is thrown
+     * @param float  $x    X coordinate
+     * @param float  $y    Y coordinate
+     */
     private static function createGeometryPoint(string $name, float $x, float $y): GeometryPoint
     {
         try {
@@ -144,11 +160,17 @@ trait PointHelperTrait
         }
     }
 
+    /**
+     * Create New York geography point.
+     */
     private static function createNewYorkGeography(): GeographyPoint
     {
         return static::createGeographyPoint('New-York', -73.938611, 40.664167);
     }
 
+    /**
+     * Create New York geometry point.
+     */
     private static function createNewYorkGeometry(): GeometryPoint
     {
         return static::createGeometryPoint('New-York', -73.938611, 40.664167);
@@ -264,6 +286,8 @@ trait PointHelperTrait
 
     /**
      * Create and persist the point A (1, 2).
+     *
+     * @param ?int $srid If srid is missing, no SRID is set
      */
     protected function persistPointA(?int $srid = null): GeometryPointEntity
     {

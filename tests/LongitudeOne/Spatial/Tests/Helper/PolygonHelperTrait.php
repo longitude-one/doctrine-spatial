@@ -302,6 +302,8 @@ trait PolygonHelperTrait
 
     /**
      * Persist a polygon.
+     *
+     * @param Polygon $polygon Geometric polygon to persist
      */
     private function persistPolygon(Polygon $polygon): PolygonEntity
     {

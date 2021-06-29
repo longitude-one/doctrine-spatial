@@ -47,6 +47,14 @@ class GeometryWalkerTest extends OrmTestCase
         parent::setUp();
     }
 
+    /**
+     * Start the test.
+     *
+     * @param EntityManagerInterface $entityManager Entity manager that persists data
+     * @param string                 $convert       convert function name (ST_AsBinary, ST_AsText)
+     * @param string                 $startPoint    start point function name (ST_StartPoint)
+     * @param string                 $envelope      envelope function name (ST_Envelop)
+     */
     private static function test(
         EntityManagerInterface $entityManager,
         string $convert,

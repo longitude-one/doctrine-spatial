@@ -156,6 +156,9 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
+// phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
+// phpcs miss the Exception
+
 /**
  * Abstract ORM test class.
  */
@@ -300,7 +303,7 @@ abstract class OrmTestCase extends TestCase
     protected function setUp(): void
     {
         try {
-            if (count($this->supportedPlatforms) && !isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
+            if (!isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
                 static::markTestSkipped(sprintf(
                     'No support for platform %s in test class %s.',
                     $this->getPlatform()->getName(),
@@ -312,7 +315,8 @@ abstract class OrmTestCase extends TestCase
             $this->schemaTool = $this->getSchemaTool();
 
             if ($GLOBALS['opt_mark_sql']) {
-                static::getConnection()->executeQuery(sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName()));
+                $query = sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName());
+                static::getConnection()->executeQuery($query);
             }
 
             $this->sqlLoggerStack->enabled = $GLOBALS['opt_use_debug_stack'];
@@ -330,7 +334,7 @@ abstract class OrmTestCase extends TestCase
      */
     protected function tearDown(): void
     {
-        //$this->sqlLoggerStack->enabled = false;
+        $this->sqlLoggerStack->enabled = false;
 
         try {
             foreach (array_keys($this->usedEntities) as $entityName) {
@@ -423,9 +427,6 @@ abstract class OrmTestCase extends TestCase
         return $connectionParams;
     }
 
-    // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
-    // phpcs miss the Exception
-
     /**
      * Establish the connection if it is not already done, then returns it.
      *
@@ -457,8 +458,6 @@ abstract class OrmTestCase extends TestCase
 
         return $connection;
     }
-
-    // phpcs:enable
 
     /**
      * Return connection parameters.
@@ -585,7 +584,8 @@ abstract class OrmTestCase extends TestCase
      *
      * @param Throwable $throwable the exception
      *
-     * @throws InvalidArgumentException|Throwable the exception provided by parameter
+     * @throws InvalidArgumentException the formatted exception when sql logger is on
+     * @throws Throwable                the exception provided as parameter
      */
     protected function onNotSuccessfulTest(Throwable $throwable): void
     {
