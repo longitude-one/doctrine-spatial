@@ -52,13 +52,10 @@ class StPointTest extends OrmTestCase
      */
     public function testPredicate()
     {
-        //FIX: we cannot use SRID of Tours
         $this->persistToursLambert93(false);
         $pointO = $this->persistPointO();
         $this->persistPointA();
         $this->persistPointB();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -81,11 +78,8 @@ class StPointTest extends OrmTestCase
      */
     public function testSelectWithSrid()
     {
-        $tours = $this->persistToursLambert93();
-        $this->persistParisLambert93();
-
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $tours = $this->persistToursLambert93(true);
+        $this->persistGeometryParisLambert93(true);
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

@@ -15,8 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -55,12 +53,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature2Parameters()
     {
-        $entity = new PointEntity();
-        $entity->setPoint(new Point(1.25, 2.55));
-        $this->getEntityManager()->persist($entity);
-
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryPoint('in grid', 1.25, 2.55);
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 0.5)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
@@ -81,12 +74,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature3Parameters()
     {
-        $entity = new PointEntity();
-        $entity->setPoint(new Point(1.25, 2.55));
-        $this->getEntityManager()->persist($entity);
-
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryPoint('in grid', 1.25, 2.55);
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -109,12 +97,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature5Parameters()
     {
-        $entity = new PointEntity();
-        $entity->setPoint(new Point(5.25, 6.55));
-        $this->getEntityManager()->persist($entity);
-
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryPoint('in grid', 5.25, 6.55);
 
         $query = $this->getEntityManager()->createQuery(
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -137,12 +120,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature6Parameters()
     {
-        $entity = new PointEntity();
-        $entity->setPoint(new Point(5.25, 6.55));
-        $this->getEntityManager()->persist($entity);
-
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryPoint('in grid', 5.25, 6.55);
 
         $query = $this->getEntityManager()->createQuery(
         // phpcs:disable Generic.Files.LineLength.MaxExceeded

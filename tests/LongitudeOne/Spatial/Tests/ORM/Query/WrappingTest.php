@@ -17,9 +17,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
+use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -37,6 +36,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class WrappingTest extends OrmTestCase
 {
+    use GeometryHelperTrait;
     use PolygonHelperTrait;
 
     /**
@@ -50,8 +50,6 @@ class WrappingTest extends OrmTestCase
         parent::setUp();
     }
 
-    //phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
-
     /**
      * Test a DQL containing function to test in the predicate.
      *
@@ -60,40 +58,33 @@ class WrappingTest extends OrmTestCase
     public function testTypeWrappingSelect()
     {
         $this->persistBigPolygon();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $smallPolygon = $this->createSmallPolygon();
 
         $dql = 'SELECT p, ST_Contains(p.polygon, :geometry) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p';
 
         $query = $this->getEntityManager()->createQuery($dql);
-        $query->setParameter('geometry', new Point(2, 2), 'point');
+        $query->setParameter('geometry', $smallPolygon, 'point');
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
 
-        $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
+        try {
+            $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
+        } catch (Exception $e) {
+            static::fail(sprintf('Unable to get type point: %s', $e->getMessage()));
+        }
 
         $regex = preg_quote(sprintf('/.polygon, %s)/', $parameter));
 
         static::assertMatchesRegularExpression($regex, $result);
     }
 
-    // phpcs:enable
-
     /**
      * @group geometry
-     *
-     * @throws Exception             when connection failed
-     * @throws InvalidValueException when geometries are not valid
-     *     */
+     */
     public function testTypeWrappingWhere()
     {
-        $entity = new GeometryEntity();
-
-        $entity->setGeometry(new Point(5, 5));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryE();
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g WHERE g.geometry = :geometry'
@@ -103,7 +94,11 @@ class WrappingTest extends OrmTestCase
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
-        $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
+        try {
+            $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
+        } catch (Exception $e) {
+            static::fail(sprintf('Unable to get type point: %s', $e->getMessage()));
+        }
 
         $regex = preg_quote(sprintf('/geometry = %s/', $parameter));
 

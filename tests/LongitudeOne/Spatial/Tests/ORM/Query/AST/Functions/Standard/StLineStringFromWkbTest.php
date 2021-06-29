@@ -52,7 +52,7 @@ class StLineStringFromWkbTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->persistStraightLineString();
+        $this->persistGeometryStraightLine();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -75,7 +75,7 @@ class StLineStringFromWkbTest extends OrmTestCase
      */
     public function testSelectWithSrid()
     {
-        $this->persistStraightLineString();
+        $this->persistGeometryStraightLine();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

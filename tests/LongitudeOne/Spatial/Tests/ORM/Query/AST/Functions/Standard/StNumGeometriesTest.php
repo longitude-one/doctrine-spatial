@@ -52,10 +52,8 @@ class StNumGeometriesTest extends OrmTestCase
      */
     public function testSelectStNumGeometries()
     {
-        $four = $this->createFourPoints();
-        $single = $this->createSinglePoint();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $four = $this->persistFourPoints();
+        $single = $this->persistSinglePoint();
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT m, ST_NumGeometries(m.multiPoint) FROM LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity m'
@@ -76,10 +74,8 @@ class StNumGeometriesTest extends OrmTestCase
      */
     public function testStNumGeometriesInPredicate()
     {
-        $this->createFourPoints();
-        $single = $this->createSinglePoint();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistFourPoints();
+        $single = $this->persistSinglePoint();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

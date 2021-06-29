@@ -15,7 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -51,8 +50,6 @@ class SpGeogFromTextTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group geometry
      */
     public function testPredicate()
@@ -60,8 +57,6 @@ class SpGeogFromTextTest extends OrmTestCase
         $newYork = $this->persistNewYorkGeography();
         $this->persistLosAngelesGeography();
         $this->persistPointA();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

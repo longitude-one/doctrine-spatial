@@ -56,8 +56,6 @@ class SchemaTest extends OrmTestCase
 
     /**
      * Test doctrine type mapping.
-     *
-     * @throws Exception when connection failed
      */
     public function testDoctrineTypeMapping()
     {
@@ -66,13 +64,20 @@ class SchemaTest extends OrmTestCase
         foreach ($this->getAllClassMetadata() as $metadata) {
             foreach ($metadata->getFieldNames() as $fieldName) {
                 $doctrineType = $metadata->getTypeOfField($fieldName);
-                $type = Type::getType($doctrineType);
+                try {
+                    $type = Type::getType($doctrineType);
+                } catch (Exception $e) {
+                    static::fail(sprintf('Unable to get doctrine type %s: %s', $doctrineType, $e->getMessage()));
+                }
                 $databaseTypes = $type->getMappedDatabaseTypes($platform);
 
                 foreach ($databaseTypes as $databaseType) {
-                    $typeMapping = $this->getPlatform()->getDoctrineTypeMapping($databaseType);
-
-                    static::assertEquals($doctrineType, $typeMapping);
+                    try {
+                        $typeMapping = $this->getPlatform()->getDoctrineTypeMapping($databaseType);
+                        static::assertEquals($doctrineType, $typeMapping);
+                    } catch (Exception $e) {
+                        static::fail(sprintf('Unable to get doctrine type mapping: %s', $e->getMessage()));
+                    }
                 }
             }
         }

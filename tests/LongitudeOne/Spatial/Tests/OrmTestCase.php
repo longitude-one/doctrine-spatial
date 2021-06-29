@@ -330,7 +330,7 @@ abstract class OrmTestCase extends TestCase
      */
     protected function tearDown(): void
     {
-        $this->sqlLoggerStack->enabled = false;
+        //$this->sqlLoggerStack->enabled = false;
 
         try {
             foreach (array_keys($this->usedEntities) as $entityName) {

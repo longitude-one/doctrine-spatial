@@ -65,27 +65,17 @@ trait GeometryHelperTrait
         $entity = new GeometryEntity();
         $entity->setGeometry($geometry);
         $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
         return $entity;
     }
 
     /**
-     * Persist an entity with null as geometry.
-     */
-    protected function persistNullGeometry(): GeometryEntity
-    {
-        $entity = new GeometryEntity();
-        $this->getEntityManager()->persist($entity);
-
-        return $entity;
-    }
-
-    /**
-     * Create a geometric point at origin.
+     * Create a geometric point at A (1 1).
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
-    protected function persistPointA(int $srid = null): GeometryEntity
+    protected function persistGeometryA(int $srid = null): GeometryEntity
     {
         $point = static::createGeometryPoint('A', 1, 1);
         if (null !== $srid) {
@@ -96,11 +86,26 @@ trait GeometryHelperTrait
     }
 
     /**
+     * Create a geometric point E (5 5).
+     *
+     * @param int|null $srid Spatial Reference System Identifier
+     */
+    protected function persistGeometryE(int $srid = null): GeometryEntity
+    {
+        $point = static::createGeometryPoint('E', 5, 5);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeometry($point);
+    }
+
+    /**
      * Create a geometric point at origin.
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
-    protected function persistPointO(int $srid = null): GeometryEntity
+    protected function persistGeometryO(int $srid = null): GeometryEntity
     {
         $point = static::createGeometryPoint('O', 0, 0);
         if (null !== $srid) {
@@ -111,9 +116,9 @@ trait GeometryHelperTrait
     }
 
     /**
-     * Create a geometric straight linestring.
+     * Create a straight linestring in a geometry entity.
      */
-    protected function persistStraightLineString(): GeometryEntity
+    protected function persistGeometryStraightLine(): GeometryEntity
     {
         try {
             $straightLineString = new LineString([
@@ -126,5 +131,17 @@ trait GeometryHelperTrait
         }
 
         return $this->persistGeometry($straightLineString);
+    }
+
+    /**
+     * Persist an entity with null as geometry.
+     */
+    protected function persistNullGeometry(): GeometryEntity
+    {
+        $entity = new GeometryEntity();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+
+        return $entity;
     }
 }

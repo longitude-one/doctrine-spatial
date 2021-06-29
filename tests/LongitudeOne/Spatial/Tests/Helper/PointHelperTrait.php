@@ -171,6 +171,66 @@ trait PointHelperTrait
     }
 
     /**
+     * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
+     *
+     * @param bool $setSrid initialize the SRID to 2154 if true
+     */
+    protected function persistGeographyLosAngeles(bool $setSrid = true): GeographyEntity
+    {
+        $srid = $setSrid ? 4326 : null;
+
+        return $this->persistGeographyPoint('Los Angeles', -118.2430, 34.0522, $srid);
+    }
+
+    /**
+     * Persist a geometry point (x y).
+     *
+     * @param string $name name of the point
+     * @param float  $x    coordinate x
+     * @param float  $y    coordinate y
+     * @param ?int   $srid SRID
+     */
+    protected function persistGeographyPoint(string $name, float $x, float $y, ?int $srid = null): GeographyEntity
+    {
+        $point = static::createGeographyPoint($name, $x, $y);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeography($point);
+    }
+
+    /**
+     * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
+     *
+     * @param bool $setSrid initialize the SRID to 2154 if true
+     */
+    protected function persistGeometryParisLambert93(bool $setSrid = true): GeometryPointEntity
+    {
+        $srid = $setSrid ? 2154 : null;
+
+        return $this->persistGeometryPoint('Paris', 6519, 68624, $srid);
+    }
+
+    /**
+     * Persist a geometry point (x y).
+     *
+     * @param string $name name of the point
+     * @param float  $x    coordinate x
+     * @param float  $y    coordinate y
+     * @param ?int   $srid SRID
+     */
+    protected function persistGeometryPoint(string $name, float $x, float $y, ?int $srid = null): GeometryPointEntity
+    {
+        $point = static::createGeometryPoint($name, $x, $y);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeometry($point);
+    }
+
+    /**
      * Create Los Angeles geography Point entity and store it in database.
      */
     protected function persistLosAngelesGeography(): GeographyEntity
@@ -203,26 +263,11 @@ trait PointHelperTrait
     }
 
     /**
-     * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
-     *
-     * @param bool $setSrid initialize the SRID to 2154 if true
-     */
-    protected function persistParisLambert93(bool $setSrid = true): GeometryPointEntity
-    {
-        $pointEntity = $this->persistGeometryPoint('Paris', 6519, 68624);
-        if ($setSrid) {
-            $pointEntity->getPoint()->setSrid(2154);
-        }
-
-        return $pointEntity;
-    }
-
-    /**
      * Create and persist the point A (1, 2).
      */
-    protected function persistPointA(): GeometryPointEntity
+    protected function persistPointA(?int $srid = null): GeometryPointEntity
     {
-        return $this->persistGeometryPoint('A', 1, 2);
+        return $this->persistGeometryPoint('A', 1, 2, $srid);
     }
 
     /**
@@ -248,12 +293,9 @@ trait PointHelperTrait
      */
     protected function persistPointO(bool $setSrid = false): GeometryPointEntity
     {
-        $geometryEntity = $this->persistGeometryPoint('O', 0, 0);
-        if ($setSrid) {
-            $geometryEntity->getPoint()->setSrid(0);
-        }
+        $srid = $setSrid ? 0 : null;
 
-        return $geometryEntity;
+        return $this->persistGeometryPoint('O', 0, 0, $srid);
     }
 
     /**
@@ -263,12 +305,9 @@ trait PointHelperTrait
      */
     protected function persistToursLambert93(bool $setSrid = true): GeometryPointEntity
     {
-        $pointEntity = $this->persistGeometryPoint('Tours', 525375.21, 6701871.83);
-        if ($setSrid) {
-            $pointEntity->getPoint()->setSrid(2154);
-        }
+        $srid = $setSrid ? 2154 : null;
 
-        return $pointEntity;
+        return $this->persistGeometryPoint('Tours', 525375.21, 6701871.83, $srid);
     }
 
     /**
@@ -281,6 +320,7 @@ trait PointHelperTrait
         $pointEntity = new GeographyEntity();
         $pointEntity->setGeography($point);
         $this->getEntityManager()->persist($pointEntity);
+        $this->getEntityManager()->flush();
 
         return $pointEntity;
     }
@@ -295,19 +335,8 @@ trait PointHelperTrait
         $pointEntity = new GeometryPointEntity();
         $pointEntity->setPoint($point);
         $this->getEntityManager()->persist($pointEntity);
+        $this->getEntityManager()->flush();
 
         return $pointEntity;
-    }
-
-    /**
-     * Persist a geometry point (x y).
-     *
-     * @param string $name name of the point
-     * @param float  $x    coordinate x
-     * @param float  $y    coordinate y
-     */
-    private function persistGeometryPoint(string $name, float $x, float $y): GeometryPointEntity
-    {
-        return $this->persistGeometry(static::createGeometryPoint($name, $x, $y));
     }
 }

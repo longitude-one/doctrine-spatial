@@ -15,7 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -50,8 +49,6 @@ class SpDistanceSphereTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectStDistanceSphereGeometry()
@@ -59,8 +56,6 @@ class SpDistanceSphereTest extends OrmTestCase
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();
         $dallas = $this->persistDallasGeometry();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

@@ -18,7 +18,6 @@ namespace LongitudeOne\Spatial\Tests\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
 
 /**
@@ -35,35 +34,42 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @method EntityManagerInterface getEntityManager the entity interface
- * @internal*
+ *
+ * @internal
  */
 trait MultiPointHelperTrait
 {
+    use PointHelperTrait;
+
     /**
-     * Create A Multipoint entity entity composed of four points and store it in database.
-     *
-     * @throws InvalidValueException when geographies are not valid
+     * Create A Multipoint entity entity composed of four points and persist it in database.
      */
-    protected function createFourPoints(): MultiPointEntity
+    protected function persistFourPoints(): MultiPointEntity
     {
-        $multipoint = new MultiPoint([]);
-        $multipoint->addPoint(new GeometryPoint(0, 0));
-        $multipoint->addPoint(new GeometryPoint(0, 1));
-        $multipoint->addPoint(new GeometryPoint(1, 0));
-        $multipoint->addPoint(new GeometryPoint(1, 1));
+        try {
+            $multipoint = new MultiPoint([]);
+            $multipoint->addPoint(static::createGeometryPoint('0 0', 0, 0));
+            $multipoint->addPoint(static::createGeometryPoint('0 1', 0, 1));
+            $multipoint->addPoint(static::createGeometryPoint('1 0', 1, 0));
+            $multipoint->addPoint(static::createGeometryPoint('1 1', 0, 1));
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
+        }
 
         return $this->createMultipoint($multipoint);
     }
 
     /**
-     * Create A Multipoint entity entity composed of one point and store it in database.
-     *
-     * @throws InvalidValueException when geographies are not valid
+     * Create A Multipoint entity entity composed of one point and persist it in database.
      */
-    protected function createSinglePoint(): MultiPointEntity
+    protected function persistSinglePoint(): MultiPointEntity
     {
-        $multipoint = new MultiPoint([]);
-        $multipoint->addPoint(new GeometryPoint(0, 0));
+        try {
+            $multipoint = new MultiPoint([]);
+            $multipoint->addPoint(static::createGeometryPoint('0 0', 0, 0));
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
+        }
 
         return $this->createMultipoint($multipoint);
     }
@@ -78,6 +84,7 @@ trait MultiPointHelperTrait
         $multiPointEntity = new MultiPointEntity();
         $multiPointEntity->setMultiPoint($multipoint);
         $this->getEntityManager()->persist($multiPointEntity);
+        $this->getEntityManager()->flush();
 
         return $multiPointEntity;
     }

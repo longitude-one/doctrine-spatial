@@ -60,8 +60,6 @@ class StDistanceTest extends OrmTestCase
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
         $dallas = $this->persistDallasGeography();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -88,8 +86,6 @@ class StDistanceTest extends OrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @throws InvalidValueException when geometries are not valid
      *
      * @group geography
      */

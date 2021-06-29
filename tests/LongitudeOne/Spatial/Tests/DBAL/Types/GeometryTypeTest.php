@@ -23,6 +23,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -40,6 +41,7 @@ class GeometryTypeTest extends OrmTestCase
 {
     use GeometryHelperTrait;
     use PersistHelperTrait;
+    use PolygonHelperTrait;
 
     /**
      * Setup the geography type test.
@@ -70,7 +72,7 @@ class GeometryTypeTest extends OrmTestCase
      */
     public function testLineStringGeometry(): void
     {
-        $entity = $this->persistStraightLineString();
+        $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
@@ -84,11 +86,11 @@ class GeometryTypeTest extends OrmTestCase
     }
 
     /**
-     * Test to store a point geometry and retrieve it by its identifier.
+     * Test to persist a point geometry and retrieve it by its identifier.
      */
     public function testPointGeometry(): void
     {
-        $entity = $this->persistPointO();
+        $entity = $this->persistGeometryO();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
@@ -99,36 +101,30 @@ class GeometryTypeTest extends OrmTestCase
      */
     public function testPointGeometryWithSrid(): void
     {
-        $entity = $this->persistPointA(200);
+        $entity = $this->persistGeometryA(200);
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group srid
      */
     public function testPointGeometryWithZeroSrid(): void
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
+        $entity = $this->persistGeometryA(0);
 
-        $point->setSrid(0);
-        $entity->setGeometry($point);
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
-     * Test to store a polygon geometry and retrieve it by its identifier.
+     * Test to persist a polygon geometry and retrieve it by its identifier.
      *
      * @throws InvalidValueException when geometries are not valid
      */
     public function testPolygonGeometry(): void
     {
         $entity = new GeometryEntity();
-
         $rings = [
             new LineString([
                 new Point(0, 0),
@@ -146,27 +142,16 @@ class GeometryTypeTest extends OrmTestCase
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group srid
      */
     public function testPolygonGeometryWithSrid(): void
     {
         $entity = new GeometryEntity();
 
-        $rings = [
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-        ];
-
-        $polygon = new Polygon($rings);
+        $polygon = $this->createBigPolygon();
         $polygon->setSrid(4326);
         $entity->setGeometry($polygon);
+
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 }

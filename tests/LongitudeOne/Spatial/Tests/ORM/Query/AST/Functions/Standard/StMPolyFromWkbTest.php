@@ -56,7 +56,7 @@ class StMPolyFromWkbTest extends OrmTestCase
      */
     public function testSelect()
     {
-        $this->persistPointO(); // Unused fake point
+        $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -80,7 +80,7 @@ class StMPolyFromWkbTest extends OrmTestCase
      */
     public function testSelectWithSrid()
     {
-        $this->persistPointO(); // Unused fake point
+        $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

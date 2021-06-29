@@ -57,8 +57,6 @@ class SpScaleTest extends OrmTestCase
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

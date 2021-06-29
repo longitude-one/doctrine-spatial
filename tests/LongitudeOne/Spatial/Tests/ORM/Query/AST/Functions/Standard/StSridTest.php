@@ -15,9 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -34,13 +33,14 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class StSridTest extends OrmTestCase
 {
     use LineStringHelperTrait;
+    use PointHelperTrait;
 
     /**
      * Setup the function type test.
      */
     protected function setUp(): void
     {
-        $this->usesEntity(self::GEOMETRY_ENTITY);
+        $this->usesEntity(self::POINT_ENTITY);
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
         $this->supportsPlatform('postgresql');
         $this->supportsPlatform('mysql');
@@ -55,27 +55,20 @@ class StSridTest extends OrmTestCase
      */
     public function testFunctionWithGeography()
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
-        $point->setSrid(2154); //Lambert93
-        $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeographyLosAngeles();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.geometry) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g'
+            'SELECT ST_SRID(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertIsArray($result[0]);
-        static::assertCount(1, $result[0]);
+        static::assertCount(1, $result);
         if ('mysql' == $this->getPlatform()->getName()) {
             //TODO MySQL is returning 0 insteadof 2154
             static::markTestIncomplete('SRID not implemented in Abstraction of MySQL');
         }
-        static::assertSame(2154, $result[0][1]);
+        static::assertSame(4326, $result[0][1]);
     }
 
     /**
@@ -85,16 +78,10 @@ class StSridTest extends OrmTestCase
      */
     public function testFunctionWithGeometry()
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
-        $point->setSrid(2154); //Lambert93
-        $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeometryPoint('A', 1, 1, 2154);
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.geometry) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g'
+            'SELECT ST_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
         );
         $result = $query->getResult();
 
