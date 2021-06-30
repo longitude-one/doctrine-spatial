@@ -58,8 +58,7 @@ abstract class AbstractSpatialType extends Type
      * @param GeometryInterface $value    the value to convert
      * @param AbstractPlatform  $platform the database platform
      *
-     * @throws InvalidValueException        when value is not of type Geometry interface
-     * @throws UnsupportedPlatformException when platform is not declared in constant
+     * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      *
      * @return string|null
      */
