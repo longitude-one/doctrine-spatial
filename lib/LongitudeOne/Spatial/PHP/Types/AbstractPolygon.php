@@ -58,6 +58,9 @@ abstract class AbstractPolygon extends AbstractGeometry
      */
     public function addRing($ring)
     {
+        if ($ring instanceof AbstractPolygon) {
+            throw new InvalidValueException('You cannot add a Polygon to another one. Use a Multipolygon.');
+        }
         $this->rings[] = $this->validateRingValue($ring);
 
         return $this;

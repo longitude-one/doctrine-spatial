@@ -150,9 +150,7 @@ abstract class AbstractPoint extends AbstractGeometry
 
         try {
             $this->x = (float) $parser->parse();
-        } catch (RangeException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
-        } catch (UnexpectedValueException $e) {
+        } catch (RangeException | UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
@@ -174,9 +172,7 @@ abstract class AbstractPoint extends AbstractGeometry
 
         try {
             $this->y = (float) $parser->parse();
-        } catch (RangeException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
-        } catch (UnexpectedValueException $e) {
+        } catch (RangeException | UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
@@ -214,7 +210,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Validate arguments.
      *
-     * @param array $argv list of arguments
+     * @param ?array $argv list of arguments
      *
      * @throws InvalidValueException when an argument is not valid
      *

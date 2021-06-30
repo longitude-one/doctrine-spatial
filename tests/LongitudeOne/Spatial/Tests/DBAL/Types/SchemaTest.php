@@ -18,8 +18,6 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -35,10 +33,6 @@ class SchemaTest extends OrmTestCase
 {
     /**
      * Setup the geography type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -62,10 +56,6 @@ class SchemaTest extends OrmTestCase
 
     /**
      * Test doctrine type mapping.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function testDoctrineTypeMapping()
     {
@@ -74,13 +64,20 @@ class SchemaTest extends OrmTestCase
         foreach ($this->getAllClassMetadata() as $metadata) {
             foreach ($metadata->getFieldNames() as $fieldName) {
                 $doctrineType = $metadata->getTypeOfField($fieldName);
-                $type = Type::getType($doctrineType);
+                try {
+                    $type = Type::getType($doctrineType);
+                } catch (Exception $e) {
+                    static::fail(sprintf('Unable to get doctrine type %s: %s', $doctrineType, $e->getMessage()));
+                }
                 $databaseTypes = $type->getMappedDatabaseTypes($platform);
 
                 foreach ($databaseTypes as $databaseType) {
-                    $typeMapping = $this->getPlatform()->getDoctrineTypeMapping($databaseType);
-
-                    static::assertEquals($doctrineType, $typeMapping);
+                    try {
+                        $typeMapping = $this->getPlatform()->getDoctrineTypeMapping($databaseType);
+                        static::assertEquals($doctrineType, $typeMapping);
+                    } catch (Exception $e) {
+                        static::fail(sprintf('Unable to get doctrine type mapping: %s', $e->getMessage()));
+                    }
                 }
             }
         }
@@ -88,12 +85,8 @@ class SchemaTest extends OrmTestCase
 
     /**
      * Test to reverse schema mapping.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function testSchemaReverseMapping()
+    public function testSchemaReverseMapping(): void
     {
         $result = $this->getSchemaTool()->getUpdateSchemaSql($this->getAllClassMetadata(), true);
 
@@ -103,13 +96,9 @@ class SchemaTest extends OrmTestCase
     /**
      * All class metadata getter.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return ClassMetadata[]
      */
-    private function getAllClassMetadata()
+    private function getAllClassMetadata(): array
     {
         $metadata = [];
 

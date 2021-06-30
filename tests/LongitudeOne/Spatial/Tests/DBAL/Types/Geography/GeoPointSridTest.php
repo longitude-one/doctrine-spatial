@@ -15,14 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,12 +35,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeoPointSridTest extends OrmTestCase
 {
+    use PersistHelperTrait;
+
     /**
      * Setup the test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -53,57 +47,44 @@ class GeoPointSridTest extends OrmTestCase
     }
 
     /**
+     * Test to persist a geographic point then find it by its geography.
+     */
+    public function testFindGeographyBy(): void
+    {
+        try {
+            $point = new Point(11, 11);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create a geography point (11 11): %s', $e->getMessage()));
+        }
+        $entity = new GeoPointSridEntity();
+        $entity->setPoint($point);
+
+        $queryEntity = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
+        static::assertEquals(4326, $queryEntity[0]->getPoint()->getSrid());
+    }
+
+    /**
      * Test a null geography.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullGeography()
     {
         $entity = new GeoPointSridEntity();
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEO_POINT_SRID_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
-     * Test to store a geographic point.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometry contains an invalid value
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
+     * Test to persist a geographic point then find it by its id.
      */
-    public function testPointGeography()
+    public function testPointGeographyById()
     {
         $entity = new GeoPointSridEntity();
 
-        $entity->setPoint(new Point(11, 11));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEO_POINT_SRID_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        try {
+            $entity->setPoint(new Point(11, 11));
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create a point (11 11): %s', $e->getMessage()));
+        }
+        $queryEntity = static::assertIsRetrievableById($this->getEntityManager(), $entity);
         static::assertEquals(4326, $queryEntity->getPoint()->getSrid());
     }
-
-    //TODO test to find all null GeoPointSridEntity
 }
