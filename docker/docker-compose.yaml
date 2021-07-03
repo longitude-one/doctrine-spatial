@@ -46,3 +46,12 @@ services:
       MYSQL_PORT: 3306
     ports:
       - "3380:3306"
+  service_doc:
+    container_name: "spatial-doc"
+    build:
+      context: ./sphinx
+    volumes:
+      - ${APP_FOLDER}/docs:/etc/Sphinx/source
+      - ${APP_FOLDER}/docs/build:/etc/Sphinx/build
+    ports:
+      - 8100:80
