@@ -15,10 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -43,10 +39,6 @@ class StMPolyFromWkbTest extends OrmTestCase
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -60,16 +52,11 @@ class StMPolyFromWkbTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelect()
     {
-        $this->createPointO(); // Unused fake point
+        $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -89,16 +76,11 @@ class StMPolyFromWkbTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectWithSrid()
     {
-        $this->createPointO(); // Unused fake point
+        $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

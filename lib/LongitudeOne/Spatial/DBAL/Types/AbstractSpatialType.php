@@ -58,14 +58,14 @@ abstract class AbstractSpatialType extends Type
      * @param GeometryInterface $value    the value to convert
      * @param AbstractPlatform  $platform the database platform
      *
-     * @throws InvalidValueException when value is not of type Geometry interface
+     * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      *
      * @return string|null
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (null === $value) {
-            return $value;
+            return null;
         }
 
         if (!($value instanceof GeometryInterface)) {

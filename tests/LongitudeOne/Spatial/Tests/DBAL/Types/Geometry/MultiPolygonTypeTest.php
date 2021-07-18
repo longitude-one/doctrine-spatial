@@ -15,17 +15,13 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -41,12 +37,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class MultiPolygonTypeTest extends OrmTestCase
 {
+    use PersistHelperTrait;
+
     /**
      * Setup the test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -55,69 +49,9 @@ class MultiPolygonTypeTest extends OrmTestCase
     }
 
     /**
-     * Test to store and find it its by geometry.
+     * Test to store and find it by id then by polygon.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
-     */
-    public function testFindByMultiPolygon()
-    {
-        $polygons = [
-            new Polygon(
-                [
-                    new LineString(
-                        [
-                            new Point(0, 0),
-                            new Point(10, 0),
-                            new Point(10, 10),
-                            new Point(0, 10),
-                            new Point(0, 0),
-                        ]
-                    ),
-                ]
-            ),
-            new Polygon(
-                [
-                    new LineString(
-                        [
-                            new Point(5, 5),
-                            new Point(7, 5),
-                            new Point(7, 7),
-                            new Point(5, 7),
-                            new Point(5, 5),
-                        ]
-                    ),
-                ]
-            ),
-        ];
-        $entity = new MultiPolygonEntity();
-
-        $entity->setMultiPolygon(new MultiPolygon($polygons));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
-
-        $result = $this->getEntityManager()
-            ->getRepository(self::MULTIPOLYGON_ENTITY)
-            ->findByMultiPolygon(new MultiPolygon($polygons))
-        ;
-
-        static::assertEquals($entity, $result[0]);
-    }
-
-    /**
-     * Test to store and find it by id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testMultiPolygon()
     {
@@ -152,41 +86,23 @@ class MultiPolygonTypeTest extends OrmTestCase
         $entity = new MultiPolygonEntity();
 
         $entity->setMultiPolygon(new MultiPolygon($polygons));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
 
-        $id = $entity->getId();
+        $result = $this->getEntityManager()
+            ->getRepository(self::MULTIPOLYGON_ENTITY)
+            ->findByMultiPolygon(new MultiPolygon($polygons))
+        ;
 
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::MULTIPOLYGON_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertEquals($entity, $result[0]);
     }
 
     /**
      * Test to store a null multipolygon and find it by id.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullMultiPolygon()
     {
         $entity = new MultiPolygonEntity();
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::MULTIPOLYGON_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     //TODO Try to find a null multiploygon

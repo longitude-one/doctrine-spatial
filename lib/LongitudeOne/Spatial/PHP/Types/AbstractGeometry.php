@@ -50,12 +50,12 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      * @see https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @see https://github.com/creof/doctrine-spatial/issues/140
      *
-     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * @return array data which can be serialized by <b>json_encode</b>,
      *               which is a value of any type other than a resource
      *
      * @since 2.0.0.rc-1
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'type' => $this->getType(),
@@ -196,10 +196,8 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
         switch (true) {
             case $point instanceof AbstractPoint:
                 return $point->toArray();
-                break;
             case is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1]):
                 return array_values($point);
-                break;
             default:
                 throw new InvalidValueException(sprintf(
                     'Invalid %s Point value of type "%s"',

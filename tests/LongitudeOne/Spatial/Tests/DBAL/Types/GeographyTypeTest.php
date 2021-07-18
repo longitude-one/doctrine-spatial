@@ -15,16 +15,12 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -37,12 +33,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeographyTypeTest extends OrmTestCase
 {
+    use PersistHelperTrait;
+
     /**
      * Setup the geography type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -54,12 +48,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a geography composed by a linestring.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testLineStringGeography()
     {
@@ -69,51 +58,35 @@ class GeographyTypeTest extends OrmTestCase
             new Point(0, 0),
             new Point(1, 1),
         ]));
-        $this->storeAndRetrieve($entity);
+        $this->assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store and retrieve a null geography.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
     public function testNullGeography()
     {
         $entity = new GeographyEntity();
-        $this->storeAndRetrieve($entity);
+        $this->assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store and retrieve a geography composed by a single point.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testPointGeography()
     {
         $entity = new GeographyEntity();
 
         $entity->setGeography(new Point(1, 1));
-        $this->storeAndRetrieve($entity);
+        $this->assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store and retrieve a geography composed by a polygon.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
     public function testPolygonGeography()
     {
@@ -130,32 +103,6 @@ class GeographyTypeTest extends OrmTestCase
         ];
 
         $entity->setGeography(new Polygon($rings));
-        $this->storeAndRetrieve($entity);
-    }
-
-    /**
-     * Store and retrieve geography entity in database.
-     * Then assert data are equals, not same.
-     *
-     * @param GeographyEntity $entity Entity to test
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     */
-    private function storeAndRetrieve(GeographyEntity $entity)
-    {
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOGRAPHY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $this->assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 }

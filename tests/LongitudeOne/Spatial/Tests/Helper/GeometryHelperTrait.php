@@ -15,11 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
@@ -33,7 +30,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
  *
  * Methods beginning with create will store a geo* entity in database.
  *
- * @see /doc/test.md
+ * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -43,59 +40,108 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 trait GeometryHelperTrait
 {
     /**
+     * Create a geometry point (x y).
+     *
+     * @param string $name name of the point
+     * @param float  $x    coordinate x
+     * @param float  $y    coordinate y
+     */
+    protected static function createGeometryPoint(string $name, float $x, float $y): Point
+    {
+        try {
+            return new Point($x, $y);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
+        }
+    }
+
+    /**
      * Create a geometric Point entity from an array of points.
      *
      * @param GeometryInterface $geometry object implementing Geometry interface
-     *
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
      */
-    protected function createGeometry(GeometryInterface $geometry): GeometryEntity
+    protected function persistGeometry(GeometryInterface $geometry): GeometryEntity
     {
         $entity = new GeometryEntity();
         $entity->setGeometry($geometry);
         $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
         return $entity;
+    }
+
+    /**
+     * Create a geometric point at A (1 1).
+     *
+     * @param int|null $srid Spatial Reference System Identifier
+     */
+    protected function persistGeometryA(int $srid = null): GeometryEntity
+    {
+        $point = static::createGeometryPoint('A', 1, 1);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeometry($point);
+    }
+
+    /**
+     * Create a geometric point E (5 5).
+     *
+     * @param int|null $srid Spatial Reference System Identifier
+     */
+    protected function persistGeometryE(int $srid = null): GeometryEntity
+    {
+        $point = static::createGeometryPoint('E', 5, 5);
+        if (null !== $srid) {
+            $point->setSrid($srid);
+        }
+
+        return $this->persistGeometry($point);
     }
 
     /**
      * Create a geometric point at origin.
      *
      * @param int|null $srid Spatial Reference System Identifier
-     *
-     * @throws Exception                    when credentials fail
-     * @throws InvalidValueException        when point is an invalid geometry
-     * @throws ORMException                 when cache is not created
-     * @throws UnsupportedPlatformException when platform is not supported
      */
-    protected function createPointO(int $srid = null): GeometryEntity
+    protected function persistGeometryO(int $srid = null): GeometryEntity
     {
-        $point = new Point([0, 0]);
+        $point = static::createGeometryPoint('O', 0, 0);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
 
-        return $this->createGeometry($point);
+        return $this->persistGeometry($point);
     }
 
     /**
-     * Create a geometric straight linestring.
-     *
-     * @throws InvalidValueException        when linestring is an invalid geometry
-     * @throws UnsupportedPlatformException when platform is not supported
-     * @throws Exception                    when credentials fail
-     * @throws ORMException                 when cache is not created
+     * Create a straight linestring in a geometry entity.
      */
-    protected function createStraightLineString(): GeometryEntity
+    protected function persistGeometryStraightLine(): GeometryEntity
     {
-        $straightLineString = new LineString([
-            [1, 1],
-            [2, 2],
-            [5, 5],
-        ]);
+        try {
+            $straightLineString = new LineString([
+                [1, 1],
+                [2, 2],
+                [5, 5],
+            ]);
+        } catch (InvalidValueException $e) {
+            static::fail(sprintf('Unable to create linestring Y (1 1, 2 2, 5 5): %s', $e->getMessage()));
+        }
 
-        return $this->createGeometry($straightLineString);
+        return $this->persistGeometry($straightLineString);
+    }
+
+    /**
+     * Persist an entity with null as geometry.
+     */
+    protected function persistNullGeometry(): GeometryEntity
+    {
+        $entity = new GeometryEntity();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+
+        return $entity;
     }
 }

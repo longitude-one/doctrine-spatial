@@ -15,17 +15,15 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
+use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -41,12 +39,12 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeometryTypeTest extends OrmTestCase
 {
+    use GeometryHelperTrait;
+    use PersistHelperTrait;
+    use PolygonHelperTrait;
+
     /**
      * Setup the geography type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -57,19 +55,13 @@ class GeometryTypeTest extends OrmTestCase
 
     /**
      * When I store a bad geometry an Invalid value exception shall be thrown.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws OptimisticLockException      when clear fails
      */
-    public function testBadGeometryValue()
+    public function testBadGeometryValue(): void
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Geometry column values must implement GeometryInterface');
+        static::expectException(InvalidValueException::class);
+        static::expectExceptionMessage('Geometry column values must implement GeometryInterface');
 
         $entity = new NoHintGeometryEntity();
-
         $entity->setGeometry('POINT(0 0)');
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
@@ -77,162 +69,62 @@ class GeometryTypeTest extends OrmTestCase
 
     /**
      * Test to store a line string geometry and retrieve it by its identifier.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
      */
-    public function testLineStringGeometry()
+    public function testLineStringGeometry(): void
     {
-        $entity = new GeometryEntity();
-
-        $entity->setGeometry(new LineString([
-            new Point(0, 0),
-            new Point(1, 1),
-        ]));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $entity = $this->persistGeometryStraightLine();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a null geometry and retrieve it by its identifier.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
      */
-    public function testNullGeometry()
+    public function testNullGeometry(): void
     {
-        $entity = new GeometryEntity();
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $entity = $this->persistNullGeometry();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
-     * Test to store a point geometry and retrieve it by its identifier.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * Test to persist a point geometry and retrieve it by its identifier.
      */
-    public function testPointGeometry()
+    public function testPointGeometry(): void
     {
-        $entity = new GeometryEntity();
-
-        $entity->setGeometry(new Point(1, 1));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $entity = $this->persistGeometryO();
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group srid
      */
-    public function testPointGeometryWithSrid()
+    public function testPointGeometryWithSrid(): void
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
-
-        $point->setSrid(200);
-        $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        $entity = $this->persistGeometryA(200);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group srid
      */
-    public function testPointGeometryWithZeroSrid()
+    public function testPointGeometryWithZeroSrid(): void
     {
-        $entity = new GeometryEntity();
-        $point = new Point(1, 1);
+        $entity = $this->persistGeometryA(0);
 
-        $point->setSrid(0);
-        $entity->setGeometry($point);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
-     * Test to store a polygon geometry and retrieve it by its identifier.
+     * Test to persist a polygon geometry and retrieve it by its identifier.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      */
-    public function testPolygonGeometry()
+    public function testPolygonGeometry(): void
     {
         $entity = new GeometryEntity();
-
         $rings = [
             new LineString([
                 new Point(0, 0),
@@ -244,56 +136,22 @@ class GeometryTypeTest extends OrmTestCase
         ];
 
         $entity->setGeometry(new Polygon($rings));
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group srid
      */
-    public function testPolygonGeometryWithSrid()
+    public function testPolygonGeometryWithSrid(): void
     {
         $entity = new GeometryEntity();
 
-        $rings = [
-            new LineString([
-                new Point(0, 0),
-                new Point(10, 0),
-                new Point(10, 10),
-                new Point(0, 10),
-                new Point(0, 0),
-            ]),
-        ];
-
-        $polygon = new Polygon($rings);
+        $polygon = $this->createBigPolygon();
         $polygon->setSrid(4326);
         $entity->setGeometry($polygon);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
 
-        $id = $entity->getId();
-
-        $this->getEntityManager()->clear();
-
-        $queryEntity = $this->getEntityManager()->getRepository(self::GEOMETRY_ENTITY)->find($id);
-
-        static::assertEquals($entity, $queryEntity);
+        static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 }

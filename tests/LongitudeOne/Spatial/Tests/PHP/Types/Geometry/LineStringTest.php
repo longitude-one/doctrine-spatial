@@ -17,7 +17,8 @@ namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,6 +31,9 @@ use PHPUnit\Framework\TestCase;
  */
 class LineStringTest extends TestCase
 {
+    use LineStringHelperTrait;
+    use PointHelperTrait;
+
     /**
      * Test LineString bad parameter.
      */
@@ -46,7 +50,7 @@ class LineStringTest extends TestCase
      */
     public function testEmptyLineString()
     {
-        $lineString = new LineString([]);
+        $lineString = $this->createEmptyLineString();
 
         static::assertEmpty($lineString->getPoints());
     }
@@ -56,19 +60,11 @@ class LineStringTest extends TestCase
      */
     public function testJson()
     {
-        $expected = '{"type":"LineString","coordinates":[[0,0],[0,5],[5,0],[0,0]],"srid":null}';
-
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [0, 5],
-                [5, 0],
-                [0, 0],
-            ]
-        );
+        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":null}';
+        $lineString = $this->createRingLineString();
         static::assertEquals($expected, $lineString->toJson());
 
-        $expected = '{"type":"LineString","coordinates":[[0,0],[0,5],[5,0],[0,0]],"srid":4326}';
+        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":4326}';
         $lineString->setSrid(4326);
         static::assertEquals($expected, $lineString->toJson());
         static::assertEquals($expected, json_encode($lineString));
@@ -79,15 +75,8 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysGetLastPoint()
     {
-        $expected = new Point(3, 3);
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [3, 3],
-            ]
-        );
+        $expected = static::createPointE();
+        $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoint(-1);
 
         static::assertEquals($expected, $actual);
@@ -99,22 +88,14 @@ class LineStringTest extends TestCase
     public function testLineStringFromArraysGetPoints()
     {
         $expected = [
-            new Point(0, 0),
-            new Point(1, 1),
-            new Point(2, 2),
-            new Point(3, 3),
+            static::createPointOrigin(),
+            static::createPointB(),
+            static::createPointE(),
         ];
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [3, 3],
-            ]
-        );
+        $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoints();
 
-        static::assertCount(4, $actual);
+        static::assertCount(3, $actual);
         static::assertEquals($expected, $actual);
     }
 
@@ -123,15 +104,8 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysGetSinglePoint()
     {
-        $expected = new Point(1, 1);
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [3, 3],
-            ]
-        );
+        $expected = static::createPointB();
+        $lineString = $this->createStraightLineString();
         $actual = $lineString->getPoint(1);
 
         static::assertEquals($expected, $actual);
@@ -142,14 +116,7 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysIsClosed()
     {
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [0, 5],
-                [5, 0],
-                [0, 0],
-            ]
-        );
+        $lineString = $this->createRingLineString();
 
         static::assertTrue($lineString->isClosed());
     }
@@ -159,14 +126,7 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysIsOpen()
     {
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [3, 3],
-            ]
-        );
+        $lineString = $this->createStraightLineString();
 
         static::assertFalse($lineString->isClosed());
     }
@@ -176,17 +136,10 @@ class LineStringTest extends TestCase
      */
     public function testLineStringFromArraysToString()
     {
-        $expected = '0 0,0 5,5 0,0 0';
-        $lineString = new LineString(
-            [
-                [0, 0],
-                [0, 5],
-                [5, 0],
-                [0, 0],
-            ]
-        );
+        $expected = '0 0,1 0,1 1,0 1,0 0';
+        $lineString = $this->createRingLineString();
 
-        static::assertEquals($expected, (string) $lineString);
+        static::assertSame($expected, (string) $lineString);
     }
 
     /**
@@ -196,18 +149,12 @@ class LineStringTest extends TestCase
     {
         $expected = [
             [0, 0],
-            [1, 1],
             [2, 2],
-            [3, 3],
+            [5, 5],
         ];
-        $lineString = new LineString([
-            new Point(0, 0),
-            new Point(1, 1),
-            new Point(2, 2),
-            new Point(3, 3),
-        ]);
+        $lineString = $this->createStraightLineString();
 
-        static::assertCount(4, $lineString->getPoints());
+        static::assertCount(3, $lineString->getPoints());
         static::assertEquals($expected, $lineString->toArray());
     }
 }

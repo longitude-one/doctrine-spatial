@@ -15,10 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -40,10 +37,6 @@ class StDistanceTest extends OrmTestCase
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -58,20 +51,15 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws InvalidValueException when geometries are not valid
      *
      * @group geography
      */
     public function testSelectStDistanceGeographyCartesian()
     {
-        $newYork = $this->createNewYorkGeography();
-        $losAngeles = $this->createLosAngelesGeography();
-        $dallas = $this->createDallasGeography();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $newYork = $this->persistNewYorkGeography();
+        $losAngeles = $this->persistLosAngelesGeography();
+        $dallas = $this->persistDallasGeography();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -99,18 +87,13 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geography
      */
     public function testSelectStDistanceGeographySpheroid()
     {
-        $newYork = $this->createNewYorkGeography();
-        $losAngeles = $this->createLosAngelesGeography();
-        $dallas = $this->createDallasGeography();
+        $newYork = $this->persistNewYorkGeography();
+        $losAngeles = $this->persistLosAngelesGeography();
+        $dallas = $this->persistDallasGeography();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -137,18 +120,13 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectStDistanceGeometryCartesian()
     {
-        $newYork = $this->createNewYorkGeometry();
-        $losAngeles = $this->createLosAngelesGeometry();
-        $dallas = $this->createDallasGeometry();
+        $newYork = $this->persistNewYorkGeometry();
+        $losAngeles = $this->persistLosAngelesGeometry();
+        $dallas = $this->persistDallasGeometry();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

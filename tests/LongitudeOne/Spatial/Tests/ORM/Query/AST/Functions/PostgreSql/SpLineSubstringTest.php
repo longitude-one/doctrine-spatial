@@ -15,10 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -40,10 +36,6 @@ class SpLineSubstringTest extends OrmTestCase
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -56,17 +48,12 @@ class SpLineSubstringTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testPredicate()
     {
-        $straightLineString = $this->createStraightLineString();
-        $this->createAngularLineString();
+        $straightLineString = $this->persistStraightLineString();
+        $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -89,18 +76,13 @@ class SpLineSubstringTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelect()
     {
-        $this->createStraightLineString();
-        $this->createLineStringA();
-        $this->createLineStringB();
+        $this->persistStraightLineString();
+        $this->persistLineStringA();
+        $this->persistLineStringB();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -15,10 +15,6 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\ORMException;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -40,10 +36,6 @@ class SpMbrEqualsTest extends OrmTestCase
 
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -56,18 +48,13 @@ class SpMbrEqualsTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testMbrEqualsWhereParameter()
     {
-        $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -102,18 +89,13 @@ class SpMbrEqualsTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws InvalidValueException        when geometries are not valid
-     *
      * @group geometry
      */
     public function testSelectMbrEquals()
     {
-        $bigPolygon = $this->createBigPolygon();
-        $smallPolygon = $this->createSmallPolygon();
-        $outerPolygon = $this->createOuterPolygon();
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

@@ -15,12 +15,10 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon as GeographyPolygon;
@@ -48,10 +46,6 @@ class SpSummaryTest extends OrmTestCase
 {
     /**
      * Setup the function type test.
-     *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
      */
     protected function setUp(): void
     {
@@ -65,12 +59,10 @@ class SpSummaryTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select with a geography.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws ORMException            when cache is not set
+     * @throws MappingException        when mapping
+     * @throws OptimisticLockException when clear fails
+     * @throws InvalidValueException   when geometries are not valid
      *
      * @group geography
      */
@@ -117,12 +109,10 @@ class SpSummaryTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select with a geometry.
      *
-     * @throws Exception                    when connection failed
-     * @throws ORMException                 when cache is not set
-     * @throws UnsupportedPlatformException when platform is unsupported
-     * @throws MappingException             when mapping
-     * @throws OptimisticLockException      when clear fails
-     * @throws InvalidValueException        when geometries are not valid
+     * @throws ORMException            when cache is not set
+     * @throws MappingException        when mapping
+     * @throws OptimisticLockException when clear fails
+     * @throws InvalidValueException   when geometries are not valid
      *
      * @group geometry
      */
