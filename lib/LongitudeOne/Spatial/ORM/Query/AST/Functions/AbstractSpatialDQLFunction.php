@@ -79,6 +79,8 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      * @param Parser $parser parser
      *
      * @throws QueryException Query exception
+     *
+     * @return void
      */
     public function parse(Parser $parser)
     {
