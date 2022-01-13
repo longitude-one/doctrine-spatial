@@ -369,7 +369,7 @@ abstract class OrmTestCase extends TestCase
             default:
                 //Here is the good result.
                 // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertSame('POLYGON((0 0,0 10,10 10,10 0,0 0))', $value);
+                static::assertSame('POLYGON((0 10,10 10,10 0,0 0,0 10))', $value);
         }
     }
 

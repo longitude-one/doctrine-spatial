@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Platform;
 
+use DG\BypassFinals;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\ORMException;
@@ -46,6 +47,8 @@ class PlatformTest extends OrmMockTestCase
      */
     public function setUp(): void
     {
+        BypassFinals::enable();
+
         if (!Type::hasType('point')) {
             Type::addType('point', 'LongitudeOne\Spatial\DBAL\Types\Geometry\PointType');
         }
