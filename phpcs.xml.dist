@@ -489,7 +489,7 @@
     <!--
       Ensures that operators have one space surrounding them.
     -->
-    <!-- This rule is already checked by PHPCSFIXER.
+    <!-- This rule is already checked by PHPCSFIXER. -->
     <!-- <rule ref="Squiz.WhiteSpace.OperatorSpacing"/> -->
 
     <!--
