@@ -17,7 +17,7 @@ namespace LongitudeOne\Spatial\Tests\Helper;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;

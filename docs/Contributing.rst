@@ -115,7 +115,7 @@ Here is an example of setup, each line is commented to help you to understand ho
     use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
     use LongitudeOne\Spatial\Tests\OrmTestCase;
     use Doctrine\DBAL\Exception;
-    use Doctrine\ORM\ORMException;
+    use Doctrine\ORM\Exception\ORMException;
 
     /**
      * Foo DQL functions tests.
