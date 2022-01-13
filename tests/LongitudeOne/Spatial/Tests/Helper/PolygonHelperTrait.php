@@ -317,7 +317,7 @@ trait PolygonHelperTrait
 
             $this->getEntityManager()->persist($polygonEntity);
             $this->getEntityManager()->flush();
-        } catch (ORMException | Exception | UnsupportedPlatformException $e) {
+        } catch (ORMException|Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to persist polygon: %s', $e->getMessage()));
         }
 

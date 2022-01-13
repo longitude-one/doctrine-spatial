@@ -489,7 +489,8 @@
     <!--
       Ensures that operators have one space surrounding them.
     -->
-    <rule ref="Squiz.WhiteSpace.OperatorSpacing"/>
+    <!-- This rule is already checked by PHPCSFIXER. -->
+    <!-- <rule ref="Squiz.WhiteSpace.OperatorSpacing"/> -->
 
     <!--
       Ensures that the closing braces of scopes are on a new line
