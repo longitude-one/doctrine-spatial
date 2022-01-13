@@ -54,7 +54,7 @@ abstract class OrmMockTestCase extends TestCase
     protected function getMockConnection()
     {
         /** @var Driver|MockObject $driver */
-        $driver = $this->getMockBuilder('Doctrine\DBAL\Driver\PDOSqlite\Driver')
+        $driver = $this->getMockBuilder('Doctrine\DBAL\Driver\PDO\SQLite\Driver')
             ->onlyMethods(['getDatabasePlatform'])
             ->getMock()
         ;

@@ -36,4 +36,8 @@
             <directory suffix=".php">lib</directory>
         </include>
     </coverage>
+
+    <extensions>
+        <extension class="LongitudeOne\Spatial\Tests\Hook\BypassFinalHook"/>
+    </extensions>
 </phpunit>

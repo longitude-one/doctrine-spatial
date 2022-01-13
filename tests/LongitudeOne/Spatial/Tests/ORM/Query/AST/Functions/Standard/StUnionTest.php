@@ -63,7 +63,7 @@ class StUnionTest extends OrmTestCase
             // phpcs:enable
         );
 
-        $query->setParameter('p', 'POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 'string');
+        $query->setParameter('p', 'POLYGON((0 10,10 10,10 0,0 0,0 10))', 'string');
 
         $result = $query->getResult();
 

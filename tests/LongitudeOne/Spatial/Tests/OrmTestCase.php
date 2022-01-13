@@ -363,13 +363,13 @@ abstract class OrmTestCase extends TestCase
         switch ($platform->getName()) {
             case 'mysql':
                 //MySQL does not respect creation order of points composing a Polygon.
-                static::assertSame('POLYGON((0 10,0 0,10 0,10 10,0 10))', $value);
+                static::assertSame('POLYGON((10 10,0 10,0 0,10 0,10 10))', $value);
                 break;
             case 'postgresl':
             default:
                 //Here is the good result.
                 // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertSame('POLYGON((0 0,0 10,10 10,10 0,0 0))', $value);
+                static::assertSame('POLYGON((0 10,10 10,10 0,0 0,0 10))', $value);
         }
     }
 
