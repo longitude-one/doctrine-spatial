@@ -18,7 +18,7 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Platform;
 use DG\BypassFinals;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
