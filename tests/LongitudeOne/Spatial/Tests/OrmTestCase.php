@@ -369,7 +369,7 @@ abstract class OrmTestCase extends TestCase
             default:
                 //Here is the good result.
                 // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertSame('POLYGON((0 0,0 10,10 10,10 0,0 0))', $value);
+                static::assertSame('POLYGON((0 10,10 10,10 0,0 0,0 10))', $value);
         }
     }
 
@@ -383,13 +383,17 @@ abstract class OrmTestCase extends TestCase
      */
     protected static function assertEmptyGeometry($value, AbstractPlatform $platform = null): void
     {
-        $expected = 'GEOMETRYCOLLECTION EMPTY';
+        $expected = 'EMPTY';
+        $method = 'assertStringEndsWith';
+
         if ($platform instanceof MySQL57Platform && !$platform instanceof MySQL80Platform) {
             //MySQL5 does not return the standard answer
             //This bug was solved in MySQL8
             $expected = 'GEOMETRYCOLLECTION()';
+            $method = 'assertSame';
         }
-        static::assertSame($expected, $value);
+
+        static::$method($expected, $value);
     }
 
     /**
