@@ -13,6 +13,11 @@
             "email": "alexandre.tranchant@gmail.com"
         }
     ],
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
     "license": "MIT",
     "replace": {
         "creof/doctrine2-spatial": "*"
