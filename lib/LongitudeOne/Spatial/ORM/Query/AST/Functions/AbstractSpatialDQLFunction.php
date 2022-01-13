@@ -33,14 +33,14 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * This spatial class is updated to avoid non-covered code. A lot of PostgreSQL was not tested, but that tha was not
+ * This spatial class is updated to avoid non-covered code. A lot of PostgreSQL was not tested, but that was not
  * displayed by coverage rapport. Some MySQL methods generates bug since MySQL 8.0 because their name was updated.
  *
  * It is not possible to evaluate which function is tested or not with a children containing only protected methods.
- * The new pattern consists to create an abstract method for each removed property.
+ * The new pattern consists of create an abstract method for each removed property.
  * Then, if function is not tested, the code coverage tools will report this information.
  *
- * Thus if we analyse platform version, we can implements the getFunctionName method to return geomfromtext for
+ * Thus, if we analyse platform version, we can implement the getFunctionName method to return geomfromtext for
  * MySQL Version 5.7 and return st_geomfromtext for version 8.0
  *
  * @see https://stackoverflow.com/questions/60377271/why-some-spatial-functions-does-not-exists-on-my-mysql-server
