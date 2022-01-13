@@ -157,7 +157,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      *
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
-     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     * @return int the inherited methods shall NOT return a null, but 0 when function has no parameter
      */
     abstract protected function getMaxParameter(): int;
 
@@ -166,7 +166,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      *
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
-     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     * @return int the inherited methods shall NOT return a null, but 0 when function has no parameter
      */
     abstract protected function getMinParameter(): int;
 
