@@ -292,7 +292,7 @@ abstract class OrmTestCase extends TestCase
     {
         try {
             static::$connection = static::getConnection();
-        } catch (UnsupportedPlatformException | Exception $e) {
+        } catch (UnsupportedPlatformException|Exception $e) {
             static::fail(sprintf('Unable to establish connection in %s: %s', __FILE__, $e->getMessage()));
         }
     }
@@ -324,7 +324,7 @@ abstract class OrmTestCase extends TestCase
             $this->setUpTypes();
             $this->setUpEntities();
             $this->setUpFunctions();
-        } catch (UnsupportedPlatformException | Exception $e) {
+        } catch (UnsupportedPlatformException|Exception $e) {
             static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
     }
@@ -345,7 +345,7 @@ abstract class OrmTestCase extends TestCase
             }
 
             $this->getEntityManager()->clear();
-        } catch (Exception | MappingException | UnsupportedPlatformException $e) {
+        } catch (Exception|MappingException|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to clear table after test: %s', $e->getMessage()));
         }
     }
@@ -524,7 +524,7 @@ abstract class OrmTestCase extends TestCase
             $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($realPaths, true));
 
             return EntityManager::create(static::getConnection(), $config);
-        } catch (ORMException | Exception | UnsupportedPlatformException $e) {
+        } catch (ORMException|Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to init the EntityManager: %s', $e->getMessage()));
         }
     }
@@ -538,7 +538,7 @@ abstract class OrmTestCase extends TestCase
     {
         try {
             return static::getConnection()->getDatabasePlatform();
-        } catch (UnsupportedPlatformException | Exception $e) {
+        } catch (UnsupportedPlatformException|Exception $e) {
             static::fail('Unable to get database platform: '.$e->getMessage());
         }
     }

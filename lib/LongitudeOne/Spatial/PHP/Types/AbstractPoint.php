@@ -150,7 +150,7 @@ abstract class AbstractPoint extends AbstractGeometry
 
         try {
             $this->x = (float) $parser->parse();
-        } catch (RangeException | UnexpectedValueException $e) {
+        } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
@@ -172,7 +172,7 @@ abstract class AbstractPoint extends AbstractGeometry
 
         try {
             $this->y = (float) $parser->parse();
-        } catch (RangeException | UnexpectedValueException $e) {
+        } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
