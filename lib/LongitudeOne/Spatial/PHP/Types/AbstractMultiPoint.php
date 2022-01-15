@@ -31,7 +31,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      * Abstract multipoint constructor.
      *
      * @param PointInterface[]|array[]|int[] $points array of point
-     * @param int|null                $srid   Spatial Reference System Identifier
+     * @param int|null                       $srid   Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a point is not valid
      */
