@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class GeoLineStringEntity
 {
