@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class MultiLineStringEntity
 {

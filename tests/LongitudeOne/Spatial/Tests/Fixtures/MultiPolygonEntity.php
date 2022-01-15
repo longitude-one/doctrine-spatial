@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class MultiPolygonEntity
 {

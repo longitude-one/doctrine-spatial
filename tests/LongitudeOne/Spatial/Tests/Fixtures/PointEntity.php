@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class PointEntity
 {
