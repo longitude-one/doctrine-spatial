@@ -16,13 +16,11 @@
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractMultiPoint;
+use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
 
 /**
  * MultiPoint object for MULTIPOINT geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class MultiPoint extends AbstractMultiPoint
+class MultiPoint extends AbstractMultiPoint implements GeometryInterface, MultiPointInterface
 {
 }

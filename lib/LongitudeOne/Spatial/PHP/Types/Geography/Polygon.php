@@ -16,13 +16,11 @@
 namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractPolygon;
+use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
 
 /**
  * Polygon object for POLYGON geography type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class Polygon extends AbstractPolygon implements GeographyInterface
+class Polygon extends AbstractPolygon implements GeographyInterface, PolygonInterface
 {
 }

@@ -15,16 +15,16 @@
 
 namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
+
 /**
  * Geography interface for Geography objects.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-interface GeographyInterface
+interface GeographyInterface extends SpatialInterface
 {
-    public const GEOGRAPHY = 'Geography';
-
     /**
      * Spatial Reference System Identifier getter.
      *

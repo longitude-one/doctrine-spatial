@@ -22,6 +22,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Abstract Doctrine GEOMETRY type.
@@ -55,8 +56,8 @@ abstract class AbstractSpatialType extends Type
     /**
      * Converts a value from its PHP representation to its database representation of this type.
      *
-     * @param GeometryInterface $value    the value to convert
-     * @param AbstractPlatform  $platform the database platform
+     * @param SpatialInterface $value    the value to convert
+     * @param AbstractPlatform $platform the database platform
      *
      * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      *
@@ -68,8 +69,8 @@ abstract class AbstractSpatialType extends Type
             return null;
         }
 
-        if (!($value instanceof GeometryInterface)) {
-            throw new InvalidValueException('Geometry column values must implement GeometryInterface');
+        if (!($value instanceof SpatialInterface)) {
+            throw new InvalidValueException('Spatial column values must implement SpatialInterface');
         }
 
         return $this->getSpatialPlatform($platform)->convertToDatabaseValue($this, $value);

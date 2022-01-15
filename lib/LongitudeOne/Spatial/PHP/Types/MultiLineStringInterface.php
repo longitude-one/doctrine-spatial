@@ -13,14 +13,8 @@
  *
  */
 
-namespace LongitudeOne\Spatial\PHP\Types\Geometry;
+namespace LongitudeOne\Spatial\PHP\Types;
 
-use LongitudeOne\Spatial\PHP\Types\AbstractMultiLineString;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-
-/**
- * MultiLineString object for MULTILINESTRING geometry type.
- */
-class MultiLineString extends AbstractMultiLineString implements GeometryInterface, MultiLineStringInterface
+interface MultiLineStringInterface extends SpatialInterface
 {
 }

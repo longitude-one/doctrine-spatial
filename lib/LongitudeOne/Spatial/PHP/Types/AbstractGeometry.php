@@ -25,7 +25,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
+abstract class AbstractGeometry implements JsonSerializable, SpatialInterface
 {
     /**
      * Spatial Reference System Identifier.

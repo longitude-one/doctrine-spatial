@@ -19,9 +19,6 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract MultiPoint object for MULTIPOINT spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractMultiPoint extends AbstractGeometry
 {
@@ -33,7 +30,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Abstract multipoint constructor.
      *
-     * @param AbstractPoint[]|array[] $points array of point
+     * @param PointInterface[]|array[]|int[] $points array of point
      * @param int|null                $srid   Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a point is not valid

@@ -17,6 +17,7 @@ namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Spatial platform interface.
@@ -47,11 +48,11 @@ interface PlatformInterface
      * Convert to database value.
      *
      * @param AbstractSpatialType $type  The spatial type
-     * @param GeometryInterface   $value The geometry interface
+     * @param SpatialInterface    $value The geometry or geographic interface
      *
      * @return string
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, GeometryInterface $value);
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value);
 
     /**
      * Convert to database value to SQL.

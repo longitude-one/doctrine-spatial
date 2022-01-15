@@ -16,13 +16,11 @@
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
  * Point object for POINT geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class Point extends AbstractPoint
+class Point extends AbstractPoint implements GeometryInterface, PointInterface
 {
 }

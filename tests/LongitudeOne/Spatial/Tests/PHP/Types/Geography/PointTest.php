@@ -16,11 +16,20 @@
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
+use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
+use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Point object tests.
+ * Point geographic object tests.
  *
  * @group php
  *
@@ -245,6 +254,24 @@ class PointTest extends TestCase
 
         static::assertEquals(33.45, $point->getLatitude());
         static::assertEquals(-112.06666666667, $point->getLongitude());
+    }
+
+    /**
+     * Geographic point shall implement SpatialTypeInterface, GeographyInterface and PointInterface.
+     */
+    public function testInterface()
+    {
+        $point = new Point('112:4:0W', '33:27:0N');
+
+        static::assertInstanceOf(SpatialInterface::class, $point);
+        static::assertInstanceOf(GeographyInterface::class, $point);
+        static::assertInstanceOf(PointInterface::class, $point);
+        static::assertNotInstanceOf(LineStringInterface::class, $point);
+        static::assertNotInstanceOf(PolygonInterface::class, $point);
+        static::assertNotInstanceOf(MultiPointInterface::class, $point);
+        static::assertNotInstanceOf(MultiLineStringInterface::class, $point);
+        static::assertNotInstanceOf(MultiPolygonInterface::class, $point);
+        static::assertNotInstanceOf(GeometryInterface::class, $point);
     }
 
     /**

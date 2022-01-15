@@ -16,13 +16,11 @@
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractLineString;
+use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
 
 /**
  * LineString object for LINESTRING geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class LineString extends AbstractLineString
+class LineString extends AbstractLineString implements GeometryInterface, LineStringInterface
 {
 }

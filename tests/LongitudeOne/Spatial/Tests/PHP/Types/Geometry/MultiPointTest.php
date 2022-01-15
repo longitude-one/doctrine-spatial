@@ -16,8 +16,17 @@
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
+use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
+use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
+use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -56,6 +65,26 @@ class MultiPointTest extends TestCase
         $multiPoint = new MultiPoint([]);
 
         static::assertEmpty($multiPoint->getPoints());
+    }
+
+    /**
+     * Test interfaces.
+     *
+     * @throws InvalidValueException This should not happen because of selected value
+     */
+    public function testInterface()
+    {
+        $multiPoint = new MultiPoint([]);
+
+        static::assertInstanceOf(SpatialInterface::class, $multiPoint);
+        static::assertInstanceOf(GeometryInterface::class, $multiPoint);
+        static::assertInstanceOf(MultiPointInterface::class, $multiPoint);
+        static::assertNotInstanceOf(PointInterface::class, $multiPoint);
+        static::assertNotInstanceOf(LineStringInterface::class, $multiPoint);
+        static::assertNotInstanceOf(PolygonInterface::class, $multiPoint);
+        static::assertNotInstanceOf(MultiLineStringInterface::class, $multiPoint);
+        static::assertNotInstanceOf(MultiPolygonInterface::class, $multiPoint);
+        static::assertNotInstanceOf(GeographyInterface::class, $multiPoint);
     }
 
     /**

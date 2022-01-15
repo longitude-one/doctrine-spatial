@@ -19,6 +19,7 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * PostgreSql spatial platform.
@@ -55,11 +56,11 @@ class PostgreSql extends AbstractPlatform
      * Convert to database value.
      *
      * @param AbstractSpatialType $type  The spatial type
-     * @param GeometryInterface   $value The geometry interface
+     * @param SpatialInterface    $value The geometry interface
      *
      * @return string
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, GeometryInterface $value)
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
     {
         $sridSQL = null;
 

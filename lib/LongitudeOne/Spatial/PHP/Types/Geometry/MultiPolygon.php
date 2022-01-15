@@ -16,13 +16,11 @@
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractMultiPolygon;
+use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
 
 /**
  * MultiPolygon object for MULTIPOLYGON geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class MultiPolygon extends AbstractMultiPolygon
+class MultiPolygon extends AbstractMultiPolygon implements GeometryInterface, MultiPolygonInterface
 {
 }

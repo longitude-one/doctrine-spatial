@@ -15,23 +15,13 @@
 
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
+
 /**
  * Geometry interface for Geometry objects.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-interface GeometryInterface
+interface GeometryInterface extends SpatialInterface
 {
-    public const GEOMETRY = 'Geometry';
-    public const GEOMETRYCOLLECTION = 'GeometryCollection';
-    public const LINESTRING = 'LineString';
-    public const MULTILINESTRING = 'MultiLineString';
-    public const MULTIPOINT = 'MultiPoint';
-    public const MULTIPOLYGON = 'MultiPolygon';
-    public const POINT = 'Point';
-    public const POLYGON = 'Polygon';
-
     /**
      * @return string
      */

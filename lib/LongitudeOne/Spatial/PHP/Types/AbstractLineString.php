@@ -17,9 +17,6 @@ namespace LongitudeOne\Spatial\PHP\Types;
 
 /**
  * Abstract LineString object for LINESTRING spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractLineString extends AbstractMultiPoint
 {

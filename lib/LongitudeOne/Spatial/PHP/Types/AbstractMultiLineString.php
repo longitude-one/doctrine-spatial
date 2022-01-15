@@ -19,9 +19,6 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract MultiLineString object for MULTILINESTRING spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractMultiLineString extends AbstractGeometry
 {

@@ -21,6 +21,7 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Abstract spatial platform.
@@ -71,11 +72,11 @@ abstract class AbstractPlatform implements PlatformInterface
      * Convert binary data to a php value.
      *
      * @param AbstractSpatialType $type  The spatial type
-     * @param GeometryInterface   $value The geometry object
+     * @param SpatialInterface    $value The geometry object
      *
      * @return string
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, GeometryInterface $value)
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
     {
         //the unused variable $type is used by overriding method
         return sprintf('%s(%s)', mb_strtoupper($value->getType()), $value);
@@ -116,7 +117,7 @@ abstract class AbstractPlatform implements PlatformInterface
         $typeFamily = $type->getTypeFamily();
         $typeName = mb_strtoupper($value['type']);
 
-        $constName = sprintf('%s::%s', GeometryInterface::class, $typeName);
+        $constName = sprintf('%s::%s', SpatialInterface::class, $typeName);
 
         if (!defined($constName)) {
             throw new InvalidValueException(sprintf('Unsupported %s type "%s".', $typeFamily, $typeName));

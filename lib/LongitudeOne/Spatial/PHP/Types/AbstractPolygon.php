@@ -19,9 +19,6 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract Polygon object for POLYGON spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractPolygon extends AbstractGeometry
 {
@@ -50,7 +47,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param AbstractLineString|array[] $ring Ring to add to geometry
+     * @param LineStringInterface|PolygonInterface|array[] $ring Ring to add to geometry
      *
      * @throws InvalidValueException when a ring is invalid
      *

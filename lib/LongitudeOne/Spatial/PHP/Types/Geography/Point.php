@@ -20,14 +20,12 @@ use CrEOF\Geo\String\Exception\UnexpectedValueException;
 use CrEOF\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
  * Point object for POINT geography type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
-class Point extends AbstractPoint implements GeographyInterface
+class Point extends AbstractPoint implements GeographyInterface, PointInterface
 {
     /**
      * X setter.
