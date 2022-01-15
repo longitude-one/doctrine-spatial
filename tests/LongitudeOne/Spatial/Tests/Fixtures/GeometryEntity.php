@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class GeometryEntity
 {

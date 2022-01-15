@@ -28,6 +28,8 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
  * @license https://dlambert.mit-license.org MIT
  *
  * @Entity
+ *
+ * @internal
  */
 class GeographyEntity
 {

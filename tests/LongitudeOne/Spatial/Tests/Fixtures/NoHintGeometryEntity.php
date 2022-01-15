@@ -29,6 +29,8 @@ use Doctrine\ORM\Mapping\Table;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class NoHintGeometryEntity
 {

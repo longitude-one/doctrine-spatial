@@ -30,6 +30,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
  *
  * @Entity
  * @Table
+ *
+ * @internal
  */
 class MultiPointEntity
 {
