@@ -18,6 +18,8 @@ namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 /**
  * Geometry interface for Geometry objects.
  *
+ * Geometry assumes that your data live on a cartesian plane, like a map projection.
+ *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */

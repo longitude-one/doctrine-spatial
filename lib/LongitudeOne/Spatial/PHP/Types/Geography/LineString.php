@@ -25,4 +25,5 @@ use LongitudeOne\Spatial\PHP\Types\AbstractLineString;
  */
 class LineString extends AbstractLineString implements GeographyInterface
 {
+    use GeographyTrait;
 }
