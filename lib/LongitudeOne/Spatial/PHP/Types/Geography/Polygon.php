@@ -25,5 +25,4 @@ use LongitudeOne\Spatial\PHP\Types\AbstractPolygon;
  */
 class Polygon extends AbstractPolygon implements GeographyInterface
 {
-    use GeographyTrait;
 }

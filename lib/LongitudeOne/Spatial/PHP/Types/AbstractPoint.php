@@ -19,13 +19,12 @@ use CrEOF\Geo\String\Exception\RangeException;
 use CrEOF\Geo\String\Exception\UnexpectedValueException;
 use CrEOF\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 
 /**
  * Abstract point object for POINT spatial types.
  *
- * @see https://stackoverflow.com/questions/7309121/preferred-order-of-writing-latitude-longitude-tuples
- * @see https://docs.geotools.org/latest/userguide/library/referencing/order.html
+ * https://stackoverflow.com/questions/7309121/preferred-order-of-writing-latitude-longitude-tuples
+ * https://docs.geotools.org/latest/userguide/library/referencing/order.html
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
@@ -33,18 +32,14 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 abstract class AbstractPoint extends AbstractGeometry
 {
     /**
-     * The first point.
-     *
-     * Internally, longitude is stored as X, latitude as Y.
-     *
-     * In constructor, developer could switch them easily.
+     * The longitude.
      *
      * @var float
      */
     protected $x;
 
     /**
-     * The second point.
+     * The Latitude.
      *
      * @var float
      */
@@ -65,8 +60,6 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude getter.
      *
-     * Internally, longitude is stored as X, latitude as Y.
-     *
      * @return float
      */
     public function getLatitude()
@@ -76,8 +69,6 @@ abstract class AbstractPoint extends AbstractGeometry
 
     /**
      * Longitude getter.
-     *
-     * Internally, longitude is stored as X, latitude as Y.
      *
      * @return float
      */
@@ -119,8 +110,6 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude fluent setter.
      *
-     * Internally, longitude is stored as X, latitude as Y.
-     *
      * @param mixed $latitude the new latitude of point
      *
      * @throws InvalidValueException when latitude is not valid
@@ -149,8 +138,6 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X setter. (Latitude setter).
      *
-     * Internally, longitude is stored as X, latitude as Y.
-     *
      * @param mixed $x the new X
      *
      * @throws InvalidValueException when x is not valid
@@ -171,9 +158,7 @@ abstract class AbstractPoint extends AbstractGeometry
     }
 
     /**
-     * Y setter. Latitude Setter.
-     *
-     * Internally, longitude is stored as X, latitude as Y.
+     * Y setter. Longitude Setter.
      *
      * @param mixed $y the new Y value
      *
@@ -195,22 +180,32 @@ abstract class AbstractPoint extends AbstractGeometry
     }
 
     /**
-     * Convert point into an array X, Y, latitude/longitude or longitude/latitude.
+     * Convert point into an array X, Y.
+     * Latitude, longitude.
      *
      * @return array
      */
-    abstract public function toArray();
+    public function toArray()
+    {
+        return [$this->x, $this->y];
+    }
 
     /**
      * Abstract point constructor.
      *
-     * @param string|int|float $x    X, latitude
-     * @param string|int|float $y    Y, longitude
-     * @param int|null         $srid Spatial Reference System Identifier
+     * @param int      $x    X, latitude
+     * @param int      $y    Y, longitude
+     * @param int|null $srid Spatial Reference System Identifier
      *
      * @throws InvalidValueException if x or y are invalid
      */
-    abstract protected function construct($x, $y, $srid = null);
+    protected function construct($x, $y, $srid = null)
+    {
+        $this->setX($x)
+            ->setY($y)
+            ->setSrid($srid)
+        ;
+    }
 
     /**
      * Validate arguments.

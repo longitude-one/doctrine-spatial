@@ -15,7 +15,6 @@
 
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
 
 /**
@@ -26,30 +25,4 @@ use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
  */
 class Point extends AbstractPoint
 {
-    /**
-     * Abstract point constructor.
-     *
-     * @param int      $x    X, latitude
-     * @param int      $y    Y, longitude
-     * @param int|null $srid Spatial Reference System Identifier
-     *
-     * @throws InvalidValueException if x or y are invalid
-     */
-    protected function construct($x, $y, $srid = null)
-    {
-        $this->setX($x)
-            ->setY($y)
-            ->setSrid($srid)
-        ;
-    }
-
-    /**
-     * Convert point into an array X, Y, latitude/longitude or longitude/latitude.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return [$this->x, $this->y];
-    }
 }

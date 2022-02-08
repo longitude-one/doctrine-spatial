@@ -29,12 +29,6 @@ use PHPUnit\Framework\TestCase;
  */
 class PointTest extends TestCase
 {
-//    protected function setUp(): void
-//    {
-//        parent::setUp();
-//        Point::setLatitudeBeforeLongitude();
-//    }
-
     /**
      * Test bad string parameters - latitude degrees greater that 90.
      */
@@ -137,20 +131,6 @@ class PointTest extends TestCase
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid latitude value "190", must be in range -90 to 90.');
 
-        new Point(190, 55);
-    }
-
-    /**
-     * Test bad numeric parameters - latitude greater than 90.
-     *
-     * @throws InvalidValueException it should happen
-     */
-    public function testBadNumericGreaterThanLatitudeNonIso()
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid latitude value "190", must be in range -90 to 90.');
-
-        Point::setLongitudeBeforeLatitude();
         new Point(55, 190);
     }
 
@@ -224,7 +204,6 @@ class PointTest extends TestCase
      */
     public function testGoodStringPoints()
     {
-        Point::setLongitudeBeforeLatitude();
         $point = new Point('79:56:55W', '40:26:46N');
         $expected = '{"type":"Point","coordinates":[-79.9486111111111,40.44611111111111],"srid":null}';
 
@@ -342,31 +321,5 @@ class PointTest extends TestCase
         $result = $point->toArray();
 
         static::assertEquals($expected, $result);
-    }
-
-    /**
-     * Fix the Bug#19.
-     *
-     * @see https://github.com/longitude-one/doctrine-spatial/issues/19
-     * @throws InvalidValueException it should happen
-     */
-    public function testLatitudeLongitudeIssue(): void
-    {
-        Point::setLatitudeBeforeLongitude();
-        $latitude = 52.092876;
-        $longitude = 5.104480;
-        $point = new Point($latitude, $longitude);
-        self::assertSame($latitude, $point->getLatitude());
-        self::assertSame($longitude, $point->getLongitude());
-
-        Point::setLongitudeBeforeLatitude();
-        $point = new Point($longitude, $latitude);
-        self::assertSame($latitude, $point->getLatitude());
-        self::assertSame($longitude, $point->getLongitude());
-
-        Point::setLatitudeBeforeLongitude();
-        $point = new Point($latitude, $longitude);
-        self::assertSame($latitude, $point->getLatitude());
-        self::assertSame($longitude, $point->getLongitude());
     }
 }

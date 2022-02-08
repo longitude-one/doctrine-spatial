@@ -56,11 +56,7 @@
         ],
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
-        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml",
-        "debug": [
-          "php-cs-fixer --config=.php-cs-fixer.dist.php fix --allow-risky=yes -vvv lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard/*",
-          "php-cs-fixer --config=.php-cs-fixer.dist.php fix --allow-risky=yes -vvv tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/Standard/*"
-        ]
+        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"
     },
     "autoload": {
         "psr-0": {

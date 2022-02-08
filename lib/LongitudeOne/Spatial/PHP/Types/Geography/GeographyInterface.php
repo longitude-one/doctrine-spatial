@@ -18,33 +18,12 @@ namespace LongitudeOne\Spatial\PHP\Types\Geography;
 /**
  * Geography interface for Geography objects.
  *
- * Geography assumes that your data is made up of points on the earth's surface as specified by latitude and longitude.
- *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
 interface GeographyInterface
 {
     public const GEOGRAPHY = 'Geography';
-
-    /**
-     * Helper to know orders of Point constructors.
-     *
-     * @return bool
-     */
-    public static function isLatitudeBeforeLongitude(): bool;
-
-    /**
-     * Set order of point constructors.
-     * Latitude is now the first parameter, longitude the second.
-     */
-    public static function setLatitudeBeforeLongitude(): void;
-
-    /**
-     * Set order of point constructors.
-     * Latitude is now the first parameter, longitude the second.
-     */
-    public static function setLongitudeBeforeLatitude(): void;
 
     /**
      * Spatial Reference System Identifier getter.

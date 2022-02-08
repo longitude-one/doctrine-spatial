@@ -29,8 +29,6 @@ use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
  */
 class Point extends AbstractPoint implements GeographyInterface
 {
-    use GeographyTrait;
-
     /**
      * X setter.
      *
@@ -85,42 +83,5 @@ class Point extends AbstractPoint implements GeographyInterface
         $this->y = $y;
 
         return $this;
-    }
-
-    /**
-     * Abstract point constructor.
-     *
-     * @param int      $x    X, latitude
-     * @param int      $y    Y, longitude
-     * @param int|null $srid Spatial Reference System Identifier
-     *
-     * @throws InvalidValueException if x or y are invalid
-     */
-    protected function construct($x, $y, $srid = null)
-    {
-        if (self::isLatitudeBeforeLongitude()) {
-            $tmp = $x;
-            $x = $y;
-            $y = $tmp;
-        }
-
-        $this->setX($x)
-            ->setY($y)
-            ->setSrid($srid)
-        ;
-    }
-
-    /**
-     * Convert point into an array X, Y, latitude/longitude or longitude/latitude.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        if (self::isLatitudeBeforeLongitude()) {
-            return [$this->getLatitude(), $this->getLongitude()];
-        }
-
-        return [$this->getLongitude(), $this->getLatitude()];
     }
 }
