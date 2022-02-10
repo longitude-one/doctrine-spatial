@@ -45,12 +45,15 @@ jobs:
         run: php -v
       - name: Echo MySQL version
         run: mysql --user=root --password=main -h127.0.0.1 -e 'SELECT version()'
-
       - name: Copy testsuites
         run: cp .github/phpunit.mysql.xml.dist phpunit.mysql${{ matrix.database }}.xml
       - name: Install libraries
         run: composer update -vvv
-      - name: Run test suite
-        run: composer run-script test-mysql${{ matrix.database }}
+      - name: Run test suite and covergage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+           coverageCommand: composer run-script test-mysql${{ matrix.database }}
       - name: Check quality code
         run: composer run-script check-quality-code
