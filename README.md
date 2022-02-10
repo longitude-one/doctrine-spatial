@@ -8,7 +8,7 @@ Could potentially add support for other platforms if an interest is expressed.
 ## Current status
 [![Test on PHP/MySQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml)
 [![Test on PHP/PgSQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml)
-[![Main Status](https://travis-ci.com/longitude-one/doctrine-spatial.svg?branch=main)](https://travis-ci.com/longitude-one/doctrine-spatial)
+[![Maintainability](https://api.codeclimate.com/v1/badges/92b245a85ab4fbaca5d2/maintainability)](https://codeclimate.com/github/longitude-one/doctrine-spatial/maintainability)
 [![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
 [![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
 [![Coverage Status](https://coveralls.io/repos/github/longitude-one/doctrine-spatial/badge.svg)](https://coveralls.io/github/longitude-one/doctrine-spatial)
