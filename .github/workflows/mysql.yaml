@@ -55,5 +55,6 @@ jobs:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
            coverageCommand: composer run-script test-mysql${{ matrix.database }}
+           coverageLocations: ${{github.workspace}}/.phpunit.cache/clover*.xml:clover
       - name: Check quality code
         run: composer run-script check-quality-code
