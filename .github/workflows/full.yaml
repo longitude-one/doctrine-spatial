@@ -70,9 +70,9 @@ jobs:
       - name: Echo PHP version
         run: php -v
       - name: Echo MySQL5.7 version
-        run: mysql --user=root --password=main -h127.0.0.1 -p3357 -e 'SELECT version()'
+        run: mysql --user=root --password=main -h127.0.0.1 -P3357 -e 'SELECT version()'
       - name: Echo MySQL8.0 version
-        run: mysql --user=root --password=main -h127.0.0.1 -p3380 -e 'SELECT version()'
+        run: mysql --user=root --password=main -h127.0.0.1 -P3380 -e 'SELECT version()'
       - name: Copy testsuites
         run: cp .github/phpunit.*.xml.dist .
       - name: Install libraries
