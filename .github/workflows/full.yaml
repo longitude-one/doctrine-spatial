@@ -31,7 +31,7 @@ jobs:
           MYSQL_PASSWORD: main
           MYSQL_ROOT_PASSWORD: main
         ports:
-          - 3357:3357
+          - 3380:3380
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         # Docker Hub image
