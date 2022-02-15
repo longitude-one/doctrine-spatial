@@ -38,9 +38,4 @@
             <clover outputFile=".phpunit.cache/clover-pgsql.xml"/>
         </report>
     </coverage>
-    <logging>
-        <junit outputFile=".phpunit.cache/junit.xml"/>
-        <testdoxXml outputFile=".phpunit.cache/code-coverage.xml"/>
-        <testdoxHtml outputFile=".phpunit.cache/code-coverage.html" />
-    </logging>
 </phpunit>
