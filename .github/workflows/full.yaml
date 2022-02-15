@@ -70,7 +70,7 @@ jobs:
       - name: Echo PHP version
         run: php -v
       - name: Copy testsuites
-        run: cp .github/phpunit.*.xml.dist .
+        run: cp .github/phpunit.*.xml .
       - name: Install libraries
         run: composer update -vvv
       - name: Run test suite and covergage
