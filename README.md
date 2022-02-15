@@ -6,8 +6,7 @@ Currently, MySQL and PostgreSQL with PostGIS are supported.
 Could potentially add support for other platforms if an interest is expressed.
 
 ## Current status
-[![Test on PHP/MySQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/mysql.yaml)
-[![Test on PHP/PgSQL](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/pgsql.yaml)
+[![Last integration test](https://github.com/longitude-one/doctrine-spatial/actions/workflows/full.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/full.yaml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/92b245a85ab4fbaca5d2/maintainability)](https://codeclimate.com/github/longitude-one/doctrine-spatial/maintainability)
 [![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
 [![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
@@ -33,7 +32,8 @@ because project seems to be non-active since 2017.
 
 The `dev` branch can be used, but be careful backward compatibility aren't warrantied.
 The `main` branch will be dedicated to fix issue.
-The release 3.0 will be published during summer 2021.
+The release 3.0 has been published during summer 2021.
+The release 3.1 will published during spring 2022.
 The release 4.0 will be published during winter 2022 and compatibility with PHP7.4 will be abandoned because of 
 [PHP roadmap](https://www.php.net/supported-versions.php)
 
