@@ -1,5 +1,4 @@
-#.github/workflows/php.yml
-name: Library tests on PHP/MySQL
+name: Doctrine spatial test
 on:
   push: ~
   pull_request:
