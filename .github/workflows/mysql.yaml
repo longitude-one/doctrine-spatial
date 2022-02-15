@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: test
+    environment: 'Test environment'
     strategy:
       matrix:
         php: [ '7.4', '8.0' ]
