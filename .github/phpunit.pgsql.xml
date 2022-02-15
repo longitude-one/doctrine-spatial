@@ -30,10 +30,12 @@
         <var name="opt_use_debug_stack" value="true" />
     </php>
 
-    <coverage cacheDirectory=".phpunit.cache/code-coverage"
-              processUncoveredFiles="true">
+    <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
         <include>
             <directory suffix=".php">lib</directory>
         </include>
+        <report>
+            <clover outputFile=".phpunit.cache/clover-pgsql.xml"/>
+        </report>
     </coverage>
 </phpunit>
