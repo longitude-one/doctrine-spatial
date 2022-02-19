@@ -127,6 +127,13 @@ You can register functions of the doctrine spatial extension adding them to the 
     // This is another example to declare a Postgresql specific function which is returning a string
     $config->addCustomNumericFunction('SP_GeoJson', 'LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeoJson');
 
+Coordinates order
+-----------------
+
+In point constructor, the order is the same as the spatial database.
+It means:
+ * longitude shall be set before latitude in point constructor,
+ * X shall be set before Y.
 
 .. _ISO/IEC 13249-3:2016: https://www.iso.org/standard/60343.html
 .. _Open Geospatial Consortium: https://www.ogc.org/

@@ -32,14 +32,14 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 abstract class AbstractPoint extends AbstractGeometry
 {
     /**
-     * The longitude.
+     * The X coordinate or the longitude.
      *
      * @var float
      */
     protected $x;
 
     /**
-     * The Latitude.
+     * The Y coordinate or the latitude.
      *
      * @var float
      */
@@ -193,8 +193,8 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Abstract point constructor.
      *
-     * @param int      $x    X, latitude
-     * @param int      $y    Y, longitude
+     * @param int      $x    X, longitude
+     * @param int      $y    Y, latitude
      * @param int|null $srid Spatial Reference System Identifier
      *
      * @throws InvalidValueException if x or y are invalid
