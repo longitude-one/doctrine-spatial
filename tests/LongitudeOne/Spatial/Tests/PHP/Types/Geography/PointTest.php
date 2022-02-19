@@ -174,6 +174,20 @@ class PointTest extends TestCase
     }
 
     /**
+     * We already have fixed bug19, but we have to verify that a bug won't appear.
+     *
+     * @throws InvalidValueException It should not happen
+     */
+    public function testFix19(): void
+    {
+        $lat = 52.092876;
+        $lon = 5.104480;
+        $point = new Point($lon, $lat);
+        static::assertSame($lat, $point->getLatitude());
+        static::assertSame($lon, $point->getLongitude());
+    }
+
+    /**
      * Test getType method.
      *
      * @throws InvalidValueException it should NOT happen
