@@ -176,7 +176,7 @@ class PointTest extends TestCase
     /**
      * We already have fixed bug19, but we have to verify that a bug won't appear.
      *
-     * @throws InvalidValueException
+     * @throws InvalidValueException It should not happen
      */
     public function testFix19(): void
     {
