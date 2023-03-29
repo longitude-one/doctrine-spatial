@@ -27,7 +27,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "creof/geo-parser": "~2.2",
-        "creof/wkt-parser": "~2.2",
+        "creof/wkt-parser": "dev-master",
         "creof/wkb-parser": "~2.3",
         "doctrine/orm": "^2.8.0"
     },
@@ -68,5 +68,11 @@
             "LongitudeOne\\Spatial": "lib/",
             "LongitudeOne\\Spatial\\Tests": "tests/"
         }
-    }
+    },
+    "repositories" : [
+        {
+            "type" : "git",
+            "url" : "https://github.com/axi/wkt-parser.git"
+        }
+    ]
 }
