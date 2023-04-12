@@ -16,7 +16,7 @@
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use CrEOF\Geo\WKB\Parser as BinaryParser;
-use CrEOF\Geo\WKT\Parser as StringParser;
+use LongitudeOne\Geo\WKT\Parser as StringParser;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
