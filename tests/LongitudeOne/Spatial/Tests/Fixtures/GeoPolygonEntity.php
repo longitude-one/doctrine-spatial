@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class GeoPolygonEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var Polygon
-     *
-     * @Column(type="geopolygon", nullable=true)
      */
+    #[Column(type: 'geopolygon', nullable: true)]
     protected $polygon;
 
     /**

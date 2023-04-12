@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class MultiPolygonEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var MultiPolygon
-     *
-     * @Column(type="multipolygon", nullable=true)
      */
+    #[Column(type: 'multipolygon', nullable: true)]
     protected $multiPolygon;
 
     /**

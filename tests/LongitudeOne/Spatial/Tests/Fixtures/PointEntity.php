@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class PointEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var Point
-     *
-     * @Column(type="point", nullable=true)
      */
+    #[Column(type: 'point', nullable: true)]
     protected $point;
 
     /**

@@ -27,26 +27,24 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
  *
  * @internal
  */
+#[Entity]
 class GeographyEntity
 {
     /**
      * @var GeographyInterface
-     *
-     * @Column(type="geography", nullable=true)
      */
+    #[Column(type: 'geography', nullable: true)]
     protected $geography;
 
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**

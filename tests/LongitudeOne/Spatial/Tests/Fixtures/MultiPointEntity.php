@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class MultiPointEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var MultiPoint
-     *
-     * @Column(type="multipoint", nullable=true)
      */
+    #[Column(type: 'multipoint', nullable: true)]
     protected $multiPoint;
 
     /**

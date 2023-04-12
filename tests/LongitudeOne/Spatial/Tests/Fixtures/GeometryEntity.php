@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class GeometryEntity
 {
     /**
      * @var GeometryInterface
-     *
-     * @Column(type="geometry", nullable=true)
      */
+    #[Column(type: 'geometry', nullable: true)]
     protected $geometry;
 
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**

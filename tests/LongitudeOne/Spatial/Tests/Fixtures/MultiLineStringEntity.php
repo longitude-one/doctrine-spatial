@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class MultiLineStringEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var MultiLineString
-     *
-     * @Column(type="multilinestring", nullable=true)
      */
+    #[Column(type: 'multilinestring', nullable: true)]
     protected $multiLineString;
 
     /**

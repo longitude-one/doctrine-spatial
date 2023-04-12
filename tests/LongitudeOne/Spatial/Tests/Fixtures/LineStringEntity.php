@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class LineStringEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var LineString
-     *
-     * @Column(type="linestring", nullable=true)
      */
+    #[Column(type: 'linestring', nullable: true)]
     protected $lineString;
 
     /**

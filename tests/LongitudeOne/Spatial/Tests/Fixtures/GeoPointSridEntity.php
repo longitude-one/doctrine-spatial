@@ -27,26 +27,24 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
  *
  * @internal
  */
+#[Entity]
 class GeoPointSridEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var Point
-     *
-     * @Column(type="geopoint", nullable=true, options={"srid": "4326"})
      */
+    #[Column(type: 'geopoint', nullable: true, options: ['srid' => 4326])]
     protected $point;
 
     /**

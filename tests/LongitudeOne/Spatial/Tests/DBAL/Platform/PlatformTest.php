@@ -23,6 +23,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 
 /**
  * Spatial platform tests.
@@ -50,7 +51,7 @@ class PlatformTest extends OrmMockTestCase
         BypassFinals::enable();
 
         if (!Type::hasType('point')) {
-            Type::addType('point', 'LongitudeOne\Spatial\DBAL\Types\Geometry\PointType');
+            Type::addType('point', PointType::class);
         }
 
         parent::setUp();

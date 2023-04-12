@@ -28,27 +28,25 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @Entity
- * @Table
  *
  * @internal
  */
+#[Table]
+#[Entity]
 class GeoLineStringEntity
 {
     /**
      * @var int
-     *
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
      */
+    #[Id]
+    #[GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: 'integer')]
     protected $id;
 
     /**
      * @var LineString
-     *
-     * @Column(type="geolinestring", nullable=true)
      */
+    #[Column(type: 'geolinestring', nullable: true)]
     protected $lineString;
 
     /**
