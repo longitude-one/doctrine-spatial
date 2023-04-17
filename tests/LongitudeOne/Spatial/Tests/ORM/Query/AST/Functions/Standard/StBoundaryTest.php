@@ -67,8 +67,8 @@ class StBoundaryTest extends OrmTestCase
         static::assertCount(2, $result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        static::assertSame('MULTIPOINT(0 0,5 5)', $result[0][1]);
+        static::assertSame('MULTIPOINT((0 0),(5 5))', $result[0][1]);
         static::assertCount(1, $result[1]);
-        static::assertSame('MULTIPOINT(3 3,5 22)', $result[1][1]);
+        static::assertSame('MULTIPOINT((3 3),(5 22))', $result[1][1]);
     }
 }

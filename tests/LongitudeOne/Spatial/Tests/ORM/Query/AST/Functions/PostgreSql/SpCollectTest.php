@@ -77,7 +77,7 @@ class SpCollectTest extends OrmTestCase
         $result = $query->getResult();
 
         $expected = [
-            [1 => 'MULTIPOINT(1 2,-2 3)'],
+            [1 => 'MULTIPOINT((1 2),(-2 3))'],
         ];
 
         static::assertEquals($expected, $result);
