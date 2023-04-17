@@ -73,7 +73,7 @@ jobs:
       - name: Install libraries
         run: composer update -vvv
       - name: Run test suite and covergage
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
