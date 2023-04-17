@@ -69,7 +69,7 @@ class SpAzimuthTest extends OrmTestCase
         static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($pointA, $result[0][0]);
-        static::assertEquals(5.96143475278294, $result[0][1]);
+        static::assertEqualsWithDelta(5.96143475278294, $result[0][1], 0.000000000001);
         static::assertEquals($pointO, $result[1][0]);
         static::assertEquals(0, $result[1][1]);
         static::assertEquals($pointE, $result[2][0]);

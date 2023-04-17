@@ -66,7 +66,7 @@ class StLengthTest extends OrmTestCase
 
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0][0]);
-        static::assertEquals(19.1126623906578, $result[0][1]);
+        static::assertEqualsWithDelta(19.1126623906578, $result[0][1], 0.000000000001);
     }
 
     /**

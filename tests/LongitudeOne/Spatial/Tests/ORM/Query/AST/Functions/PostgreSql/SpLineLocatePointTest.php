@@ -98,6 +98,6 @@ class SpLineLocatePointTest extends OrmTestCase
 
         static::assertEquals(0.7, $result[0][1]);
         static::assertEquals(0.35, $result[1][1]);
-        static::assertEquals(0.4, $result[2][1]);
+        static::assertEqualsWithDelta(0.4, $result[2][1], 0.000000000001);
     }
 }
