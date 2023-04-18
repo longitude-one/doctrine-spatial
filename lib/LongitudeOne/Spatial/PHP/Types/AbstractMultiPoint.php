@@ -50,9 +50,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param AbstractPoint|array $point Point to add to geometry
      *
-     * @throws InvalidValueException when the point is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when the point is not valid
      */
     public function addPoint($point)
     {
@@ -115,9 +115,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param AbstractPoint[]|array[] $points the points
      *
-     * @throws InvalidValueException when a point is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a point is invalid
      */
     public function setPoints($points)
     {

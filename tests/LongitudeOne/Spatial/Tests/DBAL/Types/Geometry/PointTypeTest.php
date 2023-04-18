@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geometry
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
  */
 class PointTypeTest extends OrmTestCase
@@ -80,5 +81,5 @@ class PointTypeTest extends OrmTestCase
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
-    //TODO test to find a null geometry
+    // TODO test to find a null geometry
 }

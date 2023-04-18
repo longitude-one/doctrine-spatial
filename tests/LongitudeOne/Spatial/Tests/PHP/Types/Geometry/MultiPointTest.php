@@ -29,6 +29,7 @@ use PHPUnit\Framework\TestCase;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class MultiPointTest extends TestCase

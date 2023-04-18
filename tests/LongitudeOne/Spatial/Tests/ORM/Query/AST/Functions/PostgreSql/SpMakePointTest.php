@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group pgsql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpMakePointTest extends OrmTestCase

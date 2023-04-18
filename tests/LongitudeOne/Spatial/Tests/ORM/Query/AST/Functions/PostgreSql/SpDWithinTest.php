@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group pgsql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpDWithinTest extends OrmTestCase
@@ -64,7 +65,7 @@ class SpDWithinTest extends OrmTestCase
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');
-        $query->setParameter('d', 2000000.0); //2.000.000m=2.000km
+        $query->setParameter('d', 2000000.0); // 2.000.000m=2.000km
         $query->setParameter('spheroid', true, 'boolean');
 
         $result = $query->getResult();

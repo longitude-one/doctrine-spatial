@@ -52,9 +52,9 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @param AbstractLineString|array[] $ring Ring to add to geometry
      *
-     * @throws InvalidValueException when a ring is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a ring is invalid
      */
     public function addRing($ring)
     {
@@ -115,9 +115,9 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @param AbstractLineString[] $rings Rings to set
      *
-     * @throws InvalidValueException when a ring is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a ring is invalid
      */
     public function setRings(array $rings)
     {

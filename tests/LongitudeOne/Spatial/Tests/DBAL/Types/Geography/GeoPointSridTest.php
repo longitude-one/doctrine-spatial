@@ -31,6 +31,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group srid
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PointType
  */
 class GeoPointSridTest extends OrmTestCase

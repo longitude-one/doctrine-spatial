@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StEqualsTest extends OrmTestCase
@@ -52,7 +53,7 @@ class StEqualsTest extends OrmTestCase
      */
     public function testFunction()
     {
-        $this->persistStraightLineString(); //Linestring has three points (0 0, 2 2, 5 5)
+        $this->persistStraightLineString(); // Linestring has three points (0 0, 2 2, 5 5)
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 

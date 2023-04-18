@@ -25,6 +25,7 @@ use PHPUnit\Framework\TestCase;
  * @group php
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class PointTest extends TestCase
@@ -301,7 +302,7 @@ class PointTest extends TestCase
 
         static::assertEquals(4326, $result);
 
-        //Lambert
+        // Lambert
         $point = new Point(10, 10, 2154);
         $result = $point->getSrid();
 

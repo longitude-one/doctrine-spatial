@@ -40,6 +40,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group pgsql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpSummaryTest extends OrmTestCase

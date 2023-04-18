@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StContainsTest extends OrmTestCase
@@ -117,7 +118,7 @@ class StContainsTest extends OrmTestCase
 
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
-                //MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
+                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
                 break;
             case 'postgresql':
             default:

@@ -35,6 +35,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geometry
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
 class GeometryTypeTest extends OrmTestCase

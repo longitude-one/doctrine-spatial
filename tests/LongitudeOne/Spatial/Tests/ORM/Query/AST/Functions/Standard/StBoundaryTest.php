@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StBoundaryTest extends OrmTestCase
@@ -41,7 +42,7 @@ class StBoundaryTest extends OrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform('postgresql');
-        //This function is not supported by mysql
+        // This function is not supported by mysql
 
         parent::setUp();
     }

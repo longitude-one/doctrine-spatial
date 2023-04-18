@@ -27,7 +27,6 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- *
  * @internal
  */
 #[Entity]

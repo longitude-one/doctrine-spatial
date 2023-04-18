@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
  * @group php
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class MultiLineStringTest extends TestCase

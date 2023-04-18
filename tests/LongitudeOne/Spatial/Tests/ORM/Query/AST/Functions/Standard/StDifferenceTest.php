@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StDifferenceTest extends OrmTestCase
@@ -74,12 +75,12 @@ class StDifferenceTest extends OrmTestCase
         static::assertEquals($lineStringB, $result[1][0]);
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
-                //MySQL failed ST_Difference implementation, so I test the bad result.
+                // MySQL failed ST_Difference implementation, so I test the bad result.
                 static::assertEquals('LINESTRING(0 0,12 12)', $result[1][1]);
                 break;
             case 'postgresl':
             default:
-                //Here is the good result.
+                // Here is the good result.
                 // A linestring minus another crossing linestring returns initial linestring splited
                 static::assertEquals('MULTILINESTRING((0 0,6 6),(6 6,12 12))', $result[1][1]);
         }

@@ -31,6 +31,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group mysql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpGeometryTypeTest extends OrmTestCase

@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StOverlapsTest extends OrmTestCase
@@ -71,7 +72,7 @@ class StOverlapsTest extends OrmTestCase
         static::assertEquals($bigPolygon, $result[0]);
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
-                //MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
+                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
                 break;
             case 'postgresql':
                 static::assertEquals($holeyPolygon, $result[1]);

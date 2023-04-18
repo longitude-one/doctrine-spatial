@@ -28,7 +28,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group pgsql-only
  *
  * @internal
+ *
  * @translateDefaultClass
+ *
  * @coversNothing
  */
 class SpTranslateTest extends OrmTestCase

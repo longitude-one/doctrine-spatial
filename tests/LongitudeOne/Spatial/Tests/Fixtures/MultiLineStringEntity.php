@@ -28,7 +28,6 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- *
  * @internal
  */
 #[Table]

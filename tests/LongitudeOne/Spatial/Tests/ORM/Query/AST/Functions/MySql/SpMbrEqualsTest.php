@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group mysql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpMbrEqualsTest extends OrmTestCase
@@ -59,9 +60,9 @@ class SpMbrEqualsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySql_MBREquals(p.polygon, ST_GeomFromText(:p)) = 1'
-        // phpcs:enable
+            // phpcs:enable
         );
 
         $query->setParameter('p', 'LINESTRING(5 5,7 7,6 5)', 'string');
@@ -73,9 +74,9 @@ class SpMbrEqualsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySql_MBREquals(p.polygon, ST_GeomFromText(:p)) = 1'
-        // phpcs:enable
+            // phpcs:enable
         );
 
         $query->setParameter('p', 'LINESTRING(15 15,17 17)', 'string');

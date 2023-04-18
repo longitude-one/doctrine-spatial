@@ -33,8 +33,8 @@ class SpLineLocatePoint extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        //since Postgis 2.1 ST_Line_Locate_Point renamed to ST_LineLocatePoint
-        //@see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
+        // since Postgis 2.1 ST_Line_Locate_Point renamed to ST_LineLocatePoint
+        // @see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
         return 'ST_LineLocatePoint';
     }
 

@@ -15,14 +15,12 @@
 
 namespace LongitudeOne\Spatial\Exception;
 
-use Exception;
-
 /**
  * UnsupportedPlatformException class.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-class UnsupportedPlatformException extends Exception
+class UnsupportedPlatformException extends \Exception
 {
 }

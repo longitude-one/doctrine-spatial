@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group mysql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpPointTest extends OrmTestCase

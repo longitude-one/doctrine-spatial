@@ -30,6 +30,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group mysql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpBufferTest extends OrmTestCase

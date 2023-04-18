@@ -31,6 +31,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geometry
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType
  */
 class LineStringTypeTest extends OrmTestCase
@@ -95,5 +96,5 @@ class LineStringTypeTest extends OrmTestCase
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
-    //TODO test to find all null linestring
+    // TODO test to find all null linestring
 }

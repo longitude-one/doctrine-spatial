@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geography
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
 class GeographyTypeTest extends OrmTestCase

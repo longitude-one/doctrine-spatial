@@ -44,8 +44,8 @@ class SpExpand extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        //This should be upgrade to 4 when third coordinate will be implemented
-        //This should be upgrade to 5 when fourth coordinate will be implemented
+        // This should be upgrade to 4 when third coordinate will be implemented
+        // This should be upgrade to 5 when fourth coordinate will be implemented
         return 3;
     }
 

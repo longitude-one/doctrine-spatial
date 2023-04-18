@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StEnvelopeTest extends OrmTestCase
@@ -65,7 +66,7 @@ class StEnvelopeTest extends OrmTestCase
 
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
-                //polygon is equals, but not the same
+                // polygon is equals, but not the same
                 $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
                 break;
             case 'postgresql':

@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StDistanceTest extends OrmTestCase
@@ -71,7 +72,7 @@ class StDistanceTest extends OrmTestCase
 
         $result = $query->getResult();
 
-        //TODO: Test should be fixed, distance are differents on Windows and on Linux.
+        // TODO: Test should be fixed, distance are differents on Windows and on Linux.
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
@@ -97,7 +98,7 @@ class StDistanceTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        //TODO This test should be moved to a class implementing only PgSQL
+        // TODO This test should be moved to a class implementing only PgSQL
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'

@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
  * @group php
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class PointTest extends TestCase

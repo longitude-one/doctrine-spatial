@@ -33,6 +33,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geometry
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType
  */
 class MultiPolygonTypeTest extends OrmTestCase
@@ -105,5 +106,5 @@ class MultiPolygonTypeTest extends OrmTestCase
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
 
-    //TODO Try to find a null multiploygon
+    // TODO Try to find a null multiploygon
 }

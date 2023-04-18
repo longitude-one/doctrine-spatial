@@ -21,9 +21,9 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
-use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 
 /**
  * Spatial platform tests.

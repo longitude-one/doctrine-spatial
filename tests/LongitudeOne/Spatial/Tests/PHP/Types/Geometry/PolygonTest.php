@@ -29,6 +29,7 @@ use PHPUnit\Framework\TestCase;
  * @group php
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class PolygonTest extends TestCase

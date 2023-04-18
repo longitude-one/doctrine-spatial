@@ -34,9 +34,9 @@ class Point extends AbstractPoint implements GeographyInterface
      *
      * @param mixed $x X coordinate
      *
-     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
     public function setX($x)
     {
@@ -62,9 +62,9 @@ class Point extends AbstractPoint implements GeographyInterface
      *
      * @param mixed $y the Y coordinate
      *
-     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
     public function setY($y)
     {

@@ -32,6 +32,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group geography
  *
  * @internal
+ *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType
  */
 class GeoPolygonTypeTest extends OrmTestCase

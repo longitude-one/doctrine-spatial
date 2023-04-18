@@ -52,9 +52,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param AbstractLineString|array[] $lineString the line string to add to Geometry
      *
-     * @throws InvalidValueException when linestring is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when linestring is not valid
      */
     public function addLineString($lineString)
     {
@@ -112,9 +112,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param AbstractLineString[] $lineStrings array of LineString
      *
-     * @throws InvalidValueException when a linestring is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a linestring is not valid
      */
     public function setLineStrings(array $lineStrings)
     {

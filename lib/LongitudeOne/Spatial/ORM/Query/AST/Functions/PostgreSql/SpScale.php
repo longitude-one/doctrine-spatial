@@ -45,8 +45,8 @@ class SpScale extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        //TODO When third dimension will be implemented, this function will be able to accept 4 parameters
-        //TODO When fourth dimension will be implemented, this function will be able to accept 5 parameters
+        // TODO When third dimension will be implemented, this function will be able to accept 4 parameters
+        // TODO When fourth dimension will be implemented, this function will be able to accept 5 parameters
         return 3;
     }
 

@@ -36,9 +36,9 @@ class PostgreSql extends AbstractPlatform
      * @param AbstractSpatialType $type    Spatial type
      * @param string              $sqlExpr Sql expression
      *
-     * @throws InvalidValueException when SQL expression is not a resource
-     *
      * @return GeometryInterface
+     *
+     * @throws InvalidValueException when SQL expression is not a resource
      */
     public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
     {
