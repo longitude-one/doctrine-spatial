@@ -33,14 +33,13 @@ because project seems to be non-active since 2017.
 The `dev` branch can be used, but be careful backward compatibility aren't warrantied.
 The `main` branch will be dedicated to fix issue.
 The release 3.0 has been published during summer 2021.
-The release 3.1 will published during spring 2022.
-The release 4.0 will be published during winter 2022 and compatibility with PHP7.4 will be abandoned because of 
+The release 4.0 will be published during spring 2023 and compatibility with PHP7.4 and 8.0 will be abandoned because of 
 [PHP roadmap](https://www.php.net/supported-versions.php)
 
 Compatibility
 -------------
 ### PHP
-This doctrine extension is compatible with PHP 7.4+ and PHP 8.0
+This doctrine extension is compatible with PHP 8.1+
 Security fixes will follow the [PHP Roadmap](https://www.php.net/supported-versions.php).
 
 ### MySQL 5.7 and 8.0

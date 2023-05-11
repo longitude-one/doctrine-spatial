@@ -6,12 +6,6 @@ services:
       context: ./php8
     volumes:
       - ${APP_FOLDER}:/var/www
-  php7:
-    container_name: "spatial-php7"
-    build:
-      context: ./php7
-    volumes:
-      - ${APP_FOLDER}:/var/www
   database-pgsql:
     container_name: "spatial-postgis"
     image: postgis/postgis

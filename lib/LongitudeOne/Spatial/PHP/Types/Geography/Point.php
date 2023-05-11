@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -34,9 +34,9 @@ class Point extends AbstractPoint implements GeographyInterface
      *
      * @param mixed $x X coordinate
      *
-     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
     public function setX($x)
     {
@@ -62,9 +62,9 @@ class Point extends AbstractPoint implements GeographyInterface
      *
      * @param mixed $y the Y coordinate
      *
-     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
     public function setY($y)
     {

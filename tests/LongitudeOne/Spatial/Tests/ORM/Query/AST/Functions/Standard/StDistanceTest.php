@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StDistanceTest extends OrmTestCase
@@ -71,7 +72,7 @@ class StDistanceTest extends OrmTestCase
 
         $result = $query->getResult();
 
-        //TODO: Test should be fixed, distance are differents on Windows and on Linux.
+        // TODO: Test should be fixed, distance are differents on Windows and on Linux.
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
@@ -97,7 +98,7 @@ class StDistanceTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        //TODO This test should be moved to a class implementing only PgSQL
+        // TODO This test should be moved to a class implementing only PgSQL
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
@@ -142,10 +143,10 @@ class StDistanceTest extends OrmTestCase
 
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
-        static::assertEquals(15.646934398128, $result[0][1]);
+        static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);
         static::assertEquals($losAngeles, $result[1][0]);
-        static::assertEquals(30.2188561049899, $result[1][1]);
+        static::assertEqualsWithDelta(30.2188561049899, $result[1][1], 0.000000000001);
         static::assertEquals($dallas, $result[2][0]);
-        static::assertEquals(12.6718564262953, $result[2][1]);
+        static::assertEqualsWithDelta(12.6718564262953, $result[2][1], 0.000000000001);
     }
 }

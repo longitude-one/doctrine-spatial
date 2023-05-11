@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -16,7 +16,7 @@
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use CrEOF\Geo\WKB\Parser as BinaryParser;
-use CrEOF\Geo\WKT\Parser as StringParser;
+use LongitudeOne\Geo\WKT\Parser as StringParser;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -37,9 +37,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
      *
-     * @throws InvalidValueException when the provided type is not supported
-     *
      * @return GeometryInterface
+     *
+     * @throws InvalidValueException when the provided type is not supported
      */
     public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
     {
@@ -54,9 +54,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
      *
-     * @throws InvalidValueException when the provided type is not supported
-     *
      * @return GeometryInterface
+     *
+     * @throws InvalidValueException when the provided type is not supported
      */
     public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr)
     {
@@ -77,7 +77,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function convertToDatabaseValue(AbstractSpatialType $type, GeometryInterface $value)
     {
-        //the unused variable $type is used by overriding method
+        // the unused variable $type is used by overriding method
         return sprintf('%s(%s)', mb_strtoupper($value->getType()), $value);
     }
 
@@ -107,9 +107,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type  The type spatial type
      * @param array               $value The value of the spatial object
      *
-     * @throws InvalidValueException when the provided type is not supported
-     *
      * @return GeometryInterface
+     *
+     * @throws InvalidValueException when the provided type is not supported
      */
     private function newObjectFromValue(AbstractSpatialType $type, $value)
     {

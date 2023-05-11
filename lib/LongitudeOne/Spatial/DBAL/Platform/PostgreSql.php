@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -36,9 +36,9 @@ class PostgreSql extends AbstractPlatform
      * @param AbstractSpatialType $type    Spatial type
      * @param string              $sqlExpr Sql expression
      *
-     * @throws InvalidValueException when SQL expression is not a resource
-     *
      * @return GeometryInterface
+     *
+     * @throws InvalidValueException when SQL expression is not a resource
      */
     public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
     {

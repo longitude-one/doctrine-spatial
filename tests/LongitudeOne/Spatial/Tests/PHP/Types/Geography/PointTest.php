@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -25,6 +25,7 @@ use PHPUnit\Framework\TestCase;
  * @group php
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class PointTest extends TestCase
@@ -221,8 +222,8 @@ class PointTest extends TestCase
         $point = new Point('79:56:55W', '40:26:46N');
         $expected = '{"type":"Point","coordinates":[-79.9486111111111,40.44611111111111],"srid":null}';
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
 
@@ -230,35 +231,35 @@ class PointTest extends TestCase
         $point->setSrid(4326);
         $expected = '{"type":"Point","coordinates":[-79.9486111111111,40.44611111111111],"srid":4326}';
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
 
         $point = new Point('79° 56\' 55" W', '40° 26\' 46" N');
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
 
         $point = new Point('79°56′55″W', '40°26′46″N');
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
 
         $point = new Point('79° 56′ 55″ W', '40° 26′ 46″ N');
 
-        static::assertEquals(40.446111111111, $point->getLatitude());
-        static::assertEquals(-79.948611111111, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
 
         $point = new Point('79:56:55.832W', '40:26:46.543N');
 
-        static::assertEquals(40.446261944444, $point->getLatitude());
-        static::assertEquals(-79.948842222222, $point->getLongitude());
+        static::assertEqualsWithDelta(40.446261944444, $point->getLatitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-79.948842222222, $point->getLongitude(), 0.000000000001);
 
         $point = new Point('112:4:0W', '33:27:0N');
 
         static::assertEquals(33.45, $point->getLatitude());
-        static::assertEquals(-112.06666666667, $point->getLongitude());
+        static::assertEqualsWithDelta(-112.06666666666666, $point->getLongitude(), 0.00000000001);
     }
 
     /**
@@ -301,7 +302,7 @@ class PointTest extends TestCase
 
         static::assertEquals(4326, $result);
 
-        //Lambert
+        // Lambert
         $point = new Point(10, 10, 2154);
         $result = $point->getSrid();
 

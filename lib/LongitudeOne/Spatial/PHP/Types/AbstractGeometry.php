@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -25,7 +25,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
+abstract class AbstractGeometry implements \JsonSerializable, GeometryInterface
 {
     /**
      * Spatial Reference System Identifier.
@@ -112,9 +112,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractLineString|AbstractPoint[]|array[] $lineString line string to validate
      *
-     * @throws InvalidValueException when a point of line string is not valid
-     *
      * @return array[]
+     *
+     * @throws InvalidValueException when a point of line string is not valid
      */
     protected function validateLineStringValue($lineString)
     {
@@ -126,9 +126,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractLineString[] $lineStrings the array of line strings to validate
      *
-     * @throws InvalidValueException as soon as a point of a line string is not valid
-     *
      * @return array
+     *
+     * @throws InvalidValueException as soon as a point of a line string is not valid
      */
     protected function validateMultiLineStringValue(array $lineStrings)
     {
@@ -144,9 +144,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractLineString|AbstractPoint[]|array[] $points array of geometric data to validate
      *
-     * @throws InvalidValueException when one point is not valid
-     *
      * @return array[]
+     *
+     * @throws InvalidValueException when one point is not valid
      */
     protected function validateMultiPointValue($points)
     {
@@ -166,9 +166,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractPolygon[] $polygons the array of polygons to validate
      *
-     * @throws InvalidValueException when one polygon is not valid
-     *
      * @return array the validated polygons
+     *
+     * @throws InvalidValueException when one polygon is not valid
      */
     protected function validateMultiPolygonValue(array $polygons)
     {
@@ -187,9 +187,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractPoint|array $point the geometric point(s) to validate
      *
-     * @throws InvalidValueException as soon as one point is not valid
-     *
      * @return array
+     *
+     * @throws InvalidValueException as soon as one point is not valid
      */
     protected function validatePointValue($point)
     {
@@ -202,7 +202,7 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
                 throw new InvalidValueException(sprintf(
                     'Invalid %s Point value of type "%s"',
                     $this->getType(),
-                    (is_object($point) ? get_class($point) : gettype($point))
+                    is_object($point) ? get_class($point) : gettype($point)
                 ));
         }
     }
@@ -212,9 +212,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractLineString[] $rings the array of rings
      *
-     * @throws InvalidValueException when ring is not valid
-     *
      * @return array the validated rings
+     *
+     * @throws InvalidValueException when ring is not valid
      */
     protected function validatePolygonValue(array $rings)
     {
@@ -230,9 +230,9 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
      *
      * @param AbstractLineString|array[] $ring the ring or a ring converted to array
      *
-     * @throws InvalidValueException when the ring is not an abstract line string or is not closed
-     *
      * @return array[] the validate ring
+     *
+     * @throws InvalidValueException when the ring is not an abstract line string or is not closed
      */
     protected function validateRingValue($ring)
     {
@@ -246,7 +246,7 @@ abstract class AbstractGeometry implements GeometryInterface, JsonSerializable
                 throw new InvalidValueException(sprintf(
                     'Invalid %s LineString value of type "%s"',
                     $this->getType(),
-                    (is_object($ring) ? get_class($ring) : gettype($ring))
+                    is_object($ring) ? get_class($ring) : gettype($ring)
                 ));
         }
 

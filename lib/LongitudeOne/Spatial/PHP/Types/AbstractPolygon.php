@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -52,9 +52,9 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @param AbstractLineString|array[] $ring Ring to add to geometry
      *
-     * @throws InvalidValueException when a ring is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a ring is invalid
      */
     public function addRing($ring)
     {
@@ -115,9 +115,9 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @param AbstractLineString[] $rings Rings to set
      *
-     * @throws InvalidValueException when a ring is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a ring is invalid
      */
     public function setRings(array $rings)
     {
