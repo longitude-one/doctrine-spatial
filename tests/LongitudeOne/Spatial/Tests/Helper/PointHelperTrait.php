@@ -212,7 +212,7 @@ trait PointHelperTrait
      * @param float  $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeographyPoint(string $name, float $x, float $y, ?int $srid = null): GeographyEntity
+    protected function persistGeographyPoint(string $name, float $x, float $y, int $srid = null): GeographyEntity
     {
         $point = static::createGeographyPoint($name, $x, $y);
         if (null !== $srid) {
@@ -242,7 +242,7 @@ trait PointHelperTrait
      * @param float  $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeometryPoint(string $name, float $x, float $y, ?int $srid = null): GeometryPointEntity
+    protected function persistGeometryPoint(string $name, float $x, float $y, int $srid = null): GeometryPointEntity
     {
         $point = static::createGeometryPoint($name, $x, $y);
         if (null !== $srid) {
@@ -289,7 +289,7 @@ trait PointHelperTrait
      *
      * @param ?int $srid If srid is missing, no SRID is set
      */
-    protected function persistPointA(?int $srid = null): GeometryPointEntity
+    protected function persistPointA(int $srid = null): GeometryPointEntity
     {
         return $this->persistGeometryPoint('A', 1, 2, $srid);
     }
