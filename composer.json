@@ -27,7 +27,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "creof/geo-parser": "~2.2",
-        "longitude-one/wkt-parser": "dev-main",
+        "longitude-one/wkt-parser": "~1.0",
         "creof/wkb-parser": "~2.3",
         "doctrine/orm": "^2.8.0"
     },
