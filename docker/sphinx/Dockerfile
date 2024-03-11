@@ -3,7 +3,9 @@ WORKDIR /etc/
 RUN mkdir -p /etc/Sphinx/build
 
 RUN apk add --no-cache python3 make git py3-pip
-RUN pip3 install git+https://github.com/sphinx-doc/sphinx && \
+RUN python3 -m venv .venv && \
+    source .venv/bin/activate && \
+    pip install -U sphinx && \
     pip3 uninstall sphinx_rtd_theme && \
     pip3 install sphinx_rtd_theme sphinx-autobuild
 
