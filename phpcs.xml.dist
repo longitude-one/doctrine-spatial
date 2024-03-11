@@ -229,16 +229,6 @@
     </rule>
 
     <!--
-      Classes must have their opening brace on a new line and
-      must indeted by $indent spaces.
-    -->
-    <rule ref="PEAR.Classes.ClassDeclaration">
-        <properties>
-            <property name="indent" value="4"/>
-        </properties>
-    </rule>
-
-    <!--
       Ensure that parameters defined for a function that have a default value
       come at the end of the function signature.
     -->
