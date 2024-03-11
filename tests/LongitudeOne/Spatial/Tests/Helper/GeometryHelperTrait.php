@@ -75,7 +75,7 @@ trait GeometryHelperTrait
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
-    protected function persistGeometryA(int $srid = null): GeometryEntity
+    protected function persistGeometryA(?int $srid = null): GeometryEntity
     {
         $point = static::createGeometryPoint('A', 1, 1);
         if (null !== $srid) {
@@ -90,7 +90,7 @@ trait GeometryHelperTrait
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
-    protected function persistGeometryE(int $srid = null): GeometryEntity
+    protected function persistGeometryE(?int $srid = null): GeometryEntity
     {
         $point = static::createGeometryPoint('E', 5, 5);
         if (null !== $srid) {
@@ -105,7 +105,7 @@ trait GeometryHelperTrait
      *
      * @param int|null $srid Spatial Reference System Identifier
      */
-    protected function persistGeometryO(int $srid = null): GeometryEntity
+    protected function persistGeometryO(?int $srid = null): GeometryEntity
     {
         $point = static::createGeometryPoint('O', 0, 0);
         if (null !== $srid) {

@@ -290,7 +290,7 @@ trait PolygonHelperTrait
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    private function createPolygon(array $lineStrings, int $srid = null): Polygon
+    private function createPolygon(array $lineStrings, ?int $srid = null): Polygon
     {
         $polygon = new Polygon($lineStrings);
         if (null !== $srid) {

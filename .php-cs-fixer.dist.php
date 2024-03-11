@@ -20,18 +20,18 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 $header = <<<'EOF'
-    This file is part of the doctrine spatial extension.
+This file is part of the doctrine spatial extension.
 
-    PHP 8.1
+PHP 8.1
 
-    (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
-    (c) Longitude One 2020 - 2022 
-    (c) 2015 Derek J. Lambert
+(c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
+(c) Longitude One 2020 - 2022 
+(c) 2015 Derek J. Lambert
 
-    For the full copyright and license information, please view the LICENSE
-    file that was distributed with this source code.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 
-    EOF;
+EOF;
 
 return (new PhpCsFixer\Config())
 //    ->setCacheFile(__DIR__.'/.php_cs.cache')
@@ -43,6 +43,7 @@ return (new PhpCsFixer\Config())
         '@PHP70Migration' => true,
         '@PHP71Migration' => true,
         '@PHP73Migration' => true,
+        '@PHP74Migration' => true,
         //        'strict_param' => true,
         'array_syntax' => ['syntax' => 'short'],
         'dir_constant' => true,
