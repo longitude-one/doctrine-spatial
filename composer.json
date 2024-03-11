@@ -23,11 +23,11 @@
         "creof/doctrine2-spatial": "*"
     },
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "ext-mbstring": "*",
         "creof/geo-parser": "~2.2",
-        "creof/wkt-parser": "~2.2",
+        "longitude-one/wkt-parser": "~1.0",
         "creof/wkb-parser": "~2.3",
         "doctrine/orm": "^2.8.4"
     },
@@ -68,5 +68,7 @@
             "LongitudeOne\\Spatial": "lib/",
             "LongitudeOne\\Spatial\\Tests": "tests/"
         }
-    }
+    },
+    "repositories" : [
+    ]
 }

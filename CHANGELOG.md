@@ -2,11 +2,20 @@
 All notable changes to this project will be documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## LongitudeOne/doctrine-spatial [3.0.0-dev]
+## LongitudeOne/doctrine-spatial [4.0.0-dev]
+
+### Changed
+- longitude-one/wkt-parser replaces creof/wkt-parser
+
+### Removed
+- Removing support of PHP7.4, PHP8.0
 
 ### TODO
 - Support of CircleCI on Github actions (help is welcomed)
 - Support for code coverage on Github Actions (help is welcomed)
+
+
+## LongitudeOne/doctrine-spatial [3.0.2] - 2022-02-16
 
 ### Added
 - longitude-one/doctrine-spatial replaces CrEOF/doctrine2-spatial

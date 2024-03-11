@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group mysql-only
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SpMbrContainsTest extends OrmTestCase
@@ -100,9 +101,9 @@ class SpMbrContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, MySql_MBRContains(p.polygon, ST_GeomFromText(:p1)), MySql_MBRContains(p.polygon, ST_GeomFromText(:p2)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-        // phpcs:enable
+            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(2 2)', 'string');

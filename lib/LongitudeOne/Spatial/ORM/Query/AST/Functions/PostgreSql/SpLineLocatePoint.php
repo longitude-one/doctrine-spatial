@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -33,8 +33,8 @@ class SpLineLocatePoint extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        //since Postgis 2.1 ST_Line_Locate_Point renamed to ST_LineLocatePoint
-        //@see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
+        // since Postgis 2.1 ST_Line_Locate_Point renamed to ST_LineLocatePoint
+        // @see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
         return 'ST_LineLocatePoint';
     }
 

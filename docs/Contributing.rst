@@ -94,7 +94,7 @@ Don't forget to check your code respect our standard of quality:
 
 .. code-block:: bash
 
-    docker exec spatial-php7 composer check-quality-code
+    docker exec spatial-php8 composer check-quality-code
 
 How to test your new function?
 ------------------------------

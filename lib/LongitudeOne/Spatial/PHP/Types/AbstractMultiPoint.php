@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -47,9 +47,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param AbstractPoint|array $point Point to add to geometry
      *
-     * @throws InvalidValueException when the point is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when the point is not valid
      */
     public function addPoint($point)
     {
@@ -112,9 +112,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param AbstractPoint[]|array[] $points the points
      *
-     * @throws InvalidValueException when a point is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a point is invalid
      */
     public function setPoints($points)
     {

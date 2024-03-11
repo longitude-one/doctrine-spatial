@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -21,6 +21,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 
@@ -50,7 +51,7 @@ class PlatformTest extends OrmMockTestCase
         BypassFinals::enable();
 
         if (!Type::hasType('point')) {
-            Type::addType('point', 'LongitudeOne\Spatial\DBAL\Types\Geometry\PointType');
+            Type::addType('point', PointType::class);
         }
 
         parent::setUp();

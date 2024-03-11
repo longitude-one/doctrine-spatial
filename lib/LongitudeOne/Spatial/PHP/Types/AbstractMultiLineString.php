@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -49,9 +49,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param AbstractLineString|array[] $lineString the line string to add to Geometry
      *
-     * @throws InvalidValueException when linestring is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when linestring is not valid
      */
     public function addLineString($lineString)
     {
@@ -109,9 +109,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param AbstractLineString[] $lineStrings array of LineString
      *
-     * @throws InvalidValueException when a linestring is not valid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a linestring is not valid
      */
     public function setLineStrings(array $lineStrings)
     {

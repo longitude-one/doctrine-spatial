@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class SchemaTest extends OrmTestCase
@@ -43,7 +44,7 @@ class SchemaTest extends OrmTestCase
         $this->usesEntity(self::MULTIPOINT_ENTITY);
         $this->usesEntity(self::MULTIPOLYGON_ENTITY);
 
-        //TODO : Verify what MySQL can do with geography
+        // TODO : Verify what MySQL can do with geography
         if ('postgresql' === $this->getPlatform()->getName()) {
             $this->usesEntity(self::GEOGRAPHY_ENTITY);
             $this->usesEntity(self::GEO_POINT_SRID_ENTITY);

@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -45,8 +45,8 @@ class SpScale extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        //TODO When third dimension will be implemented, this function will be able to accept 4 parameters
-        //TODO When fourth dimension will be implemented, this function will be able to accept 5 parameters
+        // TODO When third dimension will be implemented, this function will be able to accept 4 parameters
+        // TODO When fourth dimension will be implemented, this function will be able to accept 5 parameters
         return 3;
     }
 

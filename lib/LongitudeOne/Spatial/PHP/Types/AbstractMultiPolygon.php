@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -74,7 +74,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      */
     public function getPolygon(int $index): AbstractPolygon
     {
-        //TODO replace by a function to be compliant with -1, -2, etc.
+        // TODO replace by a function to be compliant with -1, -2, etc.
         if (-1 == $index) {
             $index = count($this->polygons) - 1;
         }
@@ -115,9 +115,9 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @param AbstractPolygon[] $polygons polygons to set
      *
-     * @throws InvalidValueException when a polygon is invalid
-     *
      * @return self
+     *
+     * @throws InvalidValueException when a polygon is invalid
      */
     public function setPolygons(array $polygons)
     {

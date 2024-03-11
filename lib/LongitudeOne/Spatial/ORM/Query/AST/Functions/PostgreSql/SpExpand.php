@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -44,8 +44,8 @@ class SpExpand extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        //This should be upgrade to 4 when third coordinate will be implemented
-        //This should be upgrade to 5 when fourth coordinate will be implemented
+        // This should be upgrade to 4 when third coordinate will be implemented
+        // This should be upgrade to 5 when fourth coordinate will be implemented
         return 3;
     }
 

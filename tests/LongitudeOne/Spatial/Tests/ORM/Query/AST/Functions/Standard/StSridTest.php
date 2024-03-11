@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StSridTest extends OrmTestCase
@@ -65,7 +66,7 @@ class StSridTest extends OrmTestCase
         static::assertIsArray($result);
         static::assertCount(1, $result);
         if ('mysql' == $this->getPlatform()->getName()) {
-            //TODO MySQL is returning 0 insteadof 2154
+            // TODO MySQL is returning 0 insteadof 2154
             static::markTestIncomplete('SRID not implemented in Abstraction of MySQL');
         }
         static::assertSame(4326, $result[0][1]);
@@ -89,7 +90,7 @@ class StSridTest extends OrmTestCase
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
         if ('mysql' == $this->getPlatform()->getName()) {
-            //TODO MySQL is returning 0 insteadof 2154
+            // TODO MySQL is returning 0 insteadof 2154
             static::markTestIncomplete('SRID not implemented in Abstraction of MySQL');
         }
         static::assertSame(2154, $result[0][1]);

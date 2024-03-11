@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @group dql
  *
  * @internal
+ *
  * @coversDefaultClass
  */
 class StOverlapsTest extends OrmTestCase
@@ -71,7 +72,7 @@ class StOverlapsTest extends OrmTestCase
         static::assertEquals($bigPolygon, $result[0]);
         switch ($this->getPlatform()->getName()) {
             case 'mysql':
-                //MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
+                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
                 break;
             case 'postgresql':
                 static::assertEquals($holeyPolygon, $result[1]);

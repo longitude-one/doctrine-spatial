@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -212,7 +212,7 @@ trait PointHelperTrait
      * @param float  $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeographyPoint(string $name, float $x, float $y, ?int $srid = null): GeographyEntity
+    protected function persistGeographyPoint(string $name, float $x, float $y, int $srid = null): GeographyEntity
     {
         $point = static::createGeographyPoint($name, $x, $y);
         if (null !== $srid) {
@@ -242,7 +242,7 @@ trait PointHelperTrait
      * @param float  $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeometryPoint(string $name, float $x, float $y, ?int $srid = null): GeometryPointEntity
+    protected function persistGeometryPoint(string $name, float $x, float $y, int $srid = null): GeometryPointEntity
     {
         $point = static::createGeometryPoint($name, $x, $y);
         if (null !== $srid) {
@@ -289,7 +289,7 @@ trait PointHelperTrait
      *
      * @param ?int $srid If srid is missing, no SRID is set
      */
-    protected function persistPointA(?int $srid = null): GeometryPointEntity
+    protected function persistPointA(int $srid = null): GeometryPointEntity
     {
         return $this->persistGeometryPoint('A', 1, 2, $srid);
     }

@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 7.4 | 8.0 | 8.1
+ * PHP 8.1
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017 - 2022
  * (c) Longitude One 2020 - 2022
@@ -59,9 +59,9 @@ abstract class AbstractSpatialType extends Type
      * @param SpatialInterface $value    the value to convert
      * @param AbstractPlatform $platform the database platform
      *
-     * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
-     *
      * @return string|null
+     *
+     * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -82,9 +82,9 @@ abstract class AbstractSpatialType extends Type
      * @param string           $sqlExpr  the SQL expression
      * @param AbstractPlatform $platform the database platform
      *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return string
+     *
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function convertToDatabaseValueSql($sqlExpr, AbstractPlatform $platform)
     {
@@ -99,9 +99,9 @@ abstract class AbstractSpatialType extends Type
      * @param resource|string|null $value    value to convert to PHP
      * @param AbstractPlatform     $platform platform database
      *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return GeometryInterface|null
+     *
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -124,9 +124,9 @@ abstract class AbstractSpatialType extends Type
      * @param string           $sqlExpr  SQL expression
      * @param AbstractPlatform $platform platform database
      *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return string
+     *
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function convertToPhpValueSql($sqlExpr, $platform)
     {
@@ -138,9 +138,9 @@ abstract class AbstractSpatialType extends Type
      *
      * @param AbstractPlatform $platform platform database
      *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return array
+     *
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function getMappedDatabaseTypes(AbstractPlatform $platform)
     {
@@ -163,9 +163,9 @@ abstract class AbstractSpatialType extends Type
      * @param array            $fieldDeclaration the field declaration
      * @param AbstractPlatform $platform         database platform
      *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     *
      * @return string
+     *
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -223,9 +223,9 @@ abstract class AbstractSpatialType extends Type
      *
      * @param AbstractPlatform $platform the database platform
      *
-     * @throws UnsupportedPlatformException when platform is not declared in constant
-     *
      * @return PlatformInterface
+     *
+     * @throws UnsupportedPlatformException when platform is not declared in constant
      */
     private function getSpatialPlatform(AbstractPlatform $platform)
     {
