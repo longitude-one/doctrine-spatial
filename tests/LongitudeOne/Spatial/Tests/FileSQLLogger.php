@@ -41,7 +41,7 @@ class FileSQLLogger implements SQLLogger
      * @param array|null          $params the SQL parameters
      * @param int[]|string[]|null $types  the SQL parameter types
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null)
     {
         file_put_contents($this->filename, $sql.PHP_EOL, FILE_APPEND);
 
