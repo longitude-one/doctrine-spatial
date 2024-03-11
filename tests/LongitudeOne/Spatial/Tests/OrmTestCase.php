@@ -357,7 +357,7 @@ abstract class OrmTestCase extends TestCase
      * @param mixed                 $value    Value to test
      * @param AbstractPlatform|null $platform the platform
      */
-    protected static function assertBigPolygon($value, AbstractPlatform $platform = null): void
+    protected static function assertBigPolygon($value, ?AbstractPlatform $platform = null): void
     {
         switch ($platform->getName()) {
             case 'mysql':
@@ -380,7 +380,7 @@ abstract class OrmTestCase extends TestCase
      * @param mixed                 $value    Value to test
      * @param AbstractPlatform|null $platform the platform
      */
-    protected static function assertEmptyGeometry($value, AbstractPlatform $platform = null): void
+    protected static function assertEmptyGeometry($value, ?AbstractPlatform $platform = null): void
     {
         $expected = 'EMPTY';
         $method = 'assertStringEndsWith';
@@ -529,8 +529,6 @@ abstract class OrmTestCase extends TestCase
 
     /**
      * Get platform.
-     *
-     * @return AbstractPlatform
      */
     protected function getPlatform(): ?AbstractPlatform
     {

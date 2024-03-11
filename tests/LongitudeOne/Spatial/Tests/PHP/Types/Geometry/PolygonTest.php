@@ -75,7 +75,7 @@ class PolygonTest extends TestCase
      */
     public function testInterface()
     {
-        $polygon = new polygon([]);
+        $polygon = new Polygon([]);
 
         static::assertInstanceOf(SpatialInterface::class, $polygon);
         static::assertInstanceOf(GeometryInterface::class, $polygon);

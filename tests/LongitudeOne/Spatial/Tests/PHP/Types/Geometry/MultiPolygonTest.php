@@ -92,7 +92,7 @@ class MultiPolygonTest extends TestCase
      */
     public function testInterface()
     {
-        $multiPolygon = new multiPolygon([]);
+        $multiPolygon = new MultiPolygon([]);
 
         static::assertInstanceOf(SpatialInterface::class, $multiPolygon);
         static::assertInstanceOf(GeometryInterface::class, $multiPolygon);
