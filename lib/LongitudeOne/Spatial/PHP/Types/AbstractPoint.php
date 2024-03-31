@@ -15,9 +15,9 @@
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use CrEOF\Geo\String\Exception\RangeException;
-use CrEOF\Geo\String\Exception\UnexpectedValueException;
-use CrEOF\Geo\String\Parser;
+use LongitudeOne\Geo\String\Exception\RangeException;
+use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
+use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
