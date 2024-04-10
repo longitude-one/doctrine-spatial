@@ -9,7 +9,7 @@ jobs:
     environment: 'Test environment'
     strategy:
       matrix:
-        php: [ '8.1' ]
+        php: [ '8.1', '8.2', '8.3' ]
     name: PHP${{ matrix.php }}/MySQL5.7/MySQL8.0/PgSQL
     env:
       HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
@@ -51,14 +51,14 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - name: Validate composer.json
         run: composer validate --strict
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -76,7 +76,7 @@ jobs:
         run: composer update -vvv
       - name: Run test suite and coverage
         if: env.HAS_CC_SECRET == 'true'
-        uses: paambaati/codeclimate-action@v3.2.0
+        uses: paambaati/codeclimate-action@v5.0.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
