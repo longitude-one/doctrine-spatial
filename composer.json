@@ -28,7 +28,7 @@
         "ext-mbstring": "*",
         "longitude-one/geo-parser": "2.1.*",
         "longitude-one/wkt-parser": "2.1.*",
-        "creof/wkb-parser": "~2.3",
+        "longitude-one/wkb-parser": "2.1.*",
         "doctrine/orm": "^2.19"
     },
     "require-dev": {
