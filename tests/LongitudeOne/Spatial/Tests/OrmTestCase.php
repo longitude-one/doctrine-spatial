@@ -23,6 +23,9 @@ use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -296,6 +299,11 @@ abstract class OrmTestCase extends TestCase
         }
     }
 
+    private static function getPlatformClass(Connection $connection): string
+    {
+        return get_class($connection->getDatabasePlatform());
+    }
+
     /**
      * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
      */
@@ -314,7 +322,7 @@ abstract class OrmTestCase extends TestCase
             $this->schemaTool = $this->getSchemaTool();
 
             if ($GLOBALS['opt_mark_sql']) {
-                $query = sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName());
+                $query = sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), 'foo');
                 static::getConnection()->executeQuery($query);
             }
 
@@ -438,24 +446,28 @@ abstract class OrmTestCase extends TestCase
      * @throws Exception                    when connection is not successful
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    protected static function getConnection()
+    protected static function getConnection(): Connection
     {
         if (isset(static::$connection)) {
             return static::$connection;
         }
 
         $connection = DriverManager::getConnection(static::getConnectionParameters());
+        $class = static::getPlatformClass($connection);
 
-        switch ($connection->getDatabasePlatform()->getName()) {
-            case 'postgresql':
+        switch ($class) {
+            case PostgreSQL100Platform::class:
+            case PostgreSQLPlatform::class:
                 $connection->executeStatement('CREATE EXTENSION postgis');
                 break;
-            case 'mysql':
+            case MySQL57Platform::class:
+            case MySQL80Platform::class:
+            case MySQLPlatform::class:
                 break;
             default:
                 throw new UnsupportedPlatformException(sprintf(
                     'DBAL platform "%s" is not currently supported.',
-                    $connection->getDatabasePlatform()->getName()
+                    $class
                 ));
         }
 
@@ -582,15 +594,15 @@ abstract class OrmTestCase extends TestCase
     /**
      * On not successful test.
      *
-     * @param \Throwable $throwable the exception
+     * @param \Throwable $t the exception
      *
      * @throws \InvalidArgumentException the formatted exception when sql logger is on
      * @throws \Throwable                the exception provided as parameter
      */
-    protected function onNotSuccessfulTest(\Throwable $throwable): void
+    protected function onNotSuccessfulTest(\Throwable $t): never
     {
-        if (!$GLOBALS['opt_use_debug_stack'] || $throwable instanceof AssertionFailedError) {
-            throw $throwable;
+        if (!$GLOBALS['opt_use_debug_stack'] || $t instanceof AssertionFailedError) {
+            throw $t;
         }
 
         if (isset($this->sqlLoggerStack->queries) && count($this->sqlLoggerStack->queries)) {
@@ -616,7 +628,7 @@ abstract class OrmTestCase extends TestCase
                 );
             }
 
-            $trace = $throwable->getTrace();
+            $trace = $t->getTrace();
             $traceMsg = '';
 
             foreach ($trace as $part) {
@@ -630,13 +642,13 @@ abstract class OrmTestCase extends TestCase
                 }
             }
 
-            $message = sprintf("[%s] %s\n\n", get_class($throwable), $throwable->getMessage());
+            $message = sprintf("[%s] %s\n\n", get_class($t), $t->getMessage());
             $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
 
-            throw new \InvalidArgumentException($message, $throwable->getCode(), $throwable);
+            throw new \InvalidArgumentException($message, $t->getCode(), $t);
         }
 
-        throw $throwable;
+        throw $t;
     }
 
     /**
