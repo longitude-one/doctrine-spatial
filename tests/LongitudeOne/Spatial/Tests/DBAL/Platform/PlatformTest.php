@@ -35,13 +35,13 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
  *
  * @internal
  *
- * @covers \LongitudeOne\Spatial\DBAL\Platform\MySql<extended>
- * @covers \LongitudeOne\Spatial\DBAL\Platform\PostgreSql<extended>
+ * @covers \LongitudeOne\Spatial\DBAL\Platform\MySql
+ * @covers \LongitudeOne\Spatial\DBAL\Platform\PostgreSql
  */
 class PlatformTest extends OrmMockTestCase
 {
     /**
-     * Setup the test.
+     * Set up the test.
      *
      * @throws Exception    When connection failed
      * @throws ORMException when cache is not set
