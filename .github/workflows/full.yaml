@@ -68,6 +68,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          coverage: pcov
+          tools: composer:v2
       - name: Echo PHP version
         run: php -v
       - name: Copy testsuites
