@@ -36,4 +36,9 @@
             <directory suffix=".php">lib</directory>
         </include>
     </source>
+    <coverage includeUncoveredFiles="true" cacheDirectory=".phpunit.cache/code-coverage">
+        <report>
+            <clover outputFile=".phpunit.cache/code-coverage/clover-mysql57.xml"/>
+        </report>
+    </coverage>
 </phpunit>
