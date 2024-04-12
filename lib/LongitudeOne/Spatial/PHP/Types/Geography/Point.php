@@ -30,7 +30,9 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
     /**
      * X setter.
      *
-     * @param mixed $x X coordinate
+     * todo force string in version 5
+     *
+     * @param string $x X coordinate
      *
      * @return self
      *
@@ -38,9 +40,14 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      */
     public function setX($x)
     {
-        $parser = new Parser($x);
+        if (!is_string($x)) {
+            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+        }
+
+        $parser = new Parser((string) $x);
 
         try {
+            //TODO use a string in next major version
             $x = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
@@ -66,9 +73,15 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      */
     public function setY($y)
     {
-        $parser = new Parser($y);
+        if (!is_string($y)) {
+            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+        }
+
+        $parser = new Parser((string) $y);
+
 
         try {
+            //TODO use a string in next major version
             $y = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
