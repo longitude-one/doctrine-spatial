@@ -146,13 +146,13 @@ abstract class AbstractPoint extends AbstractGeometry
     public function setX($x)
     {
         if (!is_string($x)) {
-            //TODO remove this line in version 5
+            // TODO remove this line in version 5
             trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
         }
         $parser = new Parser((string) $x);
 
         try {
-            //TODO replace with a string
+            // TODO replace with a string
             $this->x = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
@@ -165,6 +165,7 @@ abstract class AbstractPoint extends AbstractGeometry
      * Y setter. Longitude Setter.
      *
      * todo force string in version 5
+     *
      * @param string $y the new Y value
      *
      * @return self
@@ -174,13 +175,13 @@ abstract class AbstractPoint extends AbstractGeometry
     public function setY($y)
     {
         if (!is_string($y)) {
-            //TODO remove this line in version 5
+            // TODO remove this line in version 5
             trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
         }
         $parser = new Parser((string) $y);
 
         try {
-            //TODO replace with a string
+            // TODO replace with a string
             $this->y = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());

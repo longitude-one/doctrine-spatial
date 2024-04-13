@@ -47,7 +47,7 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
         $parser = new Parser((string) $x);
 
         try {
-            //TODO use a string in next major version
+            // TODO use a string in next major version
             $x = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
@@ -79,9 +79,8 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
 
         $parser = new Parser((string) $y);
 
-
         try {
-            //TODO use a string in next major version
+            // TODO use a string in next major version
             $y = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());

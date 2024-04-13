@@ -299,11 +299,6 @@ abstract class OrmTestCase extends TestCase
         }
     }
 
-    private static function getPlatformClass(Connection $connection): string
-    {
-        return get_class($connection->getDatabasePlatform());
-    }
-
     /**
      * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
      */
@@ -441,8 +436,6 @@ abstract class OrmTestCase extends TestCase
     /**
      * Establish the connection if it is not already done, then returns it.
      *
-     * @return Connection
-     *
      * @throws Exception                    when connection is not successful
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -497,6 +490,11 @@ abstract class OrmTestCase extends TestCase
         $tmpConnection->close();
 
         return $parameters;
+    }
+
+    private static function getPlatformClass(Connection $connection): string
+    {
+        return get_class($connection->getDatabasePlatform());
     }
 
     /**
