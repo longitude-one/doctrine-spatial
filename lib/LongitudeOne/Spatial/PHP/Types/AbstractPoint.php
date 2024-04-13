@@ -147,7 +147,12 @@ abstract class AbstractPoint extends AbstractGeometry
     {
         if (!is_string($x)) {
             // TODO remove this line in version 5
-            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
         }
         $parser = new Parser((string) $x);
 
@@ -176,7 +181,12 @@ abstract class AbstractPoint extends AbstractGeometry
     {
         if (!is_string($y)) {
             // TODO remove this line in version 5
-            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
         }
         $parser = new Parser((string) $y);
 

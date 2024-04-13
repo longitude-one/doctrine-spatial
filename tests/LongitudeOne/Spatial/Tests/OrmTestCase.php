@@ -492,6 +492,15 @@ abstract class OrmTestCase extends TestCase
         return $parameters;
     }
 
+    /**
+     * Return the platform class.
+     *
+     * @param Connection $connection the current static connection
+     *
+     * @return string the platform \LongitudeOne\Spatial\Tests\OrmTestCase
+     *
+     * @throws Exception this will not happen
+     */
     private static function getPlatformClass(Connection $connection): string
     {
         return get_class($connection->getDatabasePlatform());

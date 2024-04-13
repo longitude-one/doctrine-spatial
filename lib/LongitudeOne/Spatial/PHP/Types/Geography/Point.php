@@ -41,7 +41,12 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
     public function setX($x)
     {
         if (!is_string($x)) {
-            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
         }
 
         $parser = new Parser((string) $x);
@@ -74,7 +79,12 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
     public function setY($y)
     {
         if (!is_string($y)) {
-            trigger_deprecation('longitude-one/doctrine-spatial', '4.1', 'Passing a non-string value to %s is deprecated and will trigger an error in version 5, pass a string instead.', __METHOD__);
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
         }
 
         $parser = new Parser((string) $y);
