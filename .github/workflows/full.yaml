@@ -1,8 +1,12 @@
 name: Doctrine spatial test
 on:
-  push: ~
+  push:
   pull_request:
     branches: [ dev, main ]
+
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,9 +60,7 @@ jobs:
         run: composer validate --strict
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -75,7 +77,7 @@ jobs:
       - name: Copy testsuites
         run: cp .github/phpunit.*.xml .
       - name: Install libraries
-        run: composer update -vvv
+        run: composer --prefer-source update -vvv
       - name: Run test suite and coverage
         if: env.HAS_CC_SECRET == 'true'
         uses: paambaati/codeclimate-action@v5.0.0
@@ -83,7 +85,7 @@ jobs:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
            coverageCommand: composer run-script test
-           coverageLocations: ${{github.workspace}}/.phpunit.cache/clover*.xml:clover
+           coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
       - name: Run test suite for forks
         if: env.HAS_CC_SECRET != 'true'
         run: composer run-script test
