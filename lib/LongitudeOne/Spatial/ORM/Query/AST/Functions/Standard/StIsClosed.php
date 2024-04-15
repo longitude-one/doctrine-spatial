@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -63,11 +65,12 @@ class StIsClosed extends AbstractSpatialDQLFunction
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-ring array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql', 'mysql'];
+        return [PostgreSQLPlatform::class, MySQLPlatform::class];
     }
 }

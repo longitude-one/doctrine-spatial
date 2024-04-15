@@ -33,14 +33,15 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * This spatial class is updated to avoid non-covered code. A lot of PostgreSQL was not tested, but that was not
- * displayed by coverage rapport. Some MySQL methods generates bug since MySQL 8.0 because their name was updated.
+ * This spatial class is updated to avoid non-covered code. A lot of PostgreSQL functions were not tested,
+ * but that was not displayed by coverage rapport. Some MySQL methods generate bug since MySQL 8.0 because their name
+ * was updated.
  *
  * It is not possible to evaluate which function is tested or not with a children containing only protected methods.
  * The new pattern consists of create an abstract method for each removed property.
- * Then, if function is not tested, the code coverage tools will report this information.
+ * Then, if tests don't check function, the code coverage tools will report this information.
  *
- * Thus, if we analyse platform version, we can implement the getFunctionName method to return geomfromtext for
+ * Thus, if we analyze a platform version, we can implement the getFunctionName method to return geomfromtext for
  * MySQL Version 5.7 and return st_geomfromtext for version 8.0
  *
  * @see https://stackoverflow.com/questions/60377271/why-some-spatial-functions-does-not-exists-on-my-mysql-server
@@ -128,21 +129,27 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
     }
 
     /**
-     * Test that the platform supports spatial type.
+     * Check that the current platform supports current spatial function.
+     *
+     * TODO when support for 8.1 will be dropped, this method will only return true.
      *
      * @param AbstractPlatform $platform database spatial
      *
+     * @return true if the current platform is supported
+     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    protected function validatePlatform(AbstractPlatform $platform): void
+    protected function validatePlatform(AbstractPlatform $platform): bool
     {
-        $platformName = $platform->getName();
-
-        if (!in_array($platformName, $this->getPlatforms())) {
-            throw new UnsupportedPlatformException(
-                sprintf('DBAL platform "%s" is not currently supported.', $platformName)
-            );
+        foreach ($this->getPlatforms() as $acceptedPlatform) {
+            if ($platform instanceof $acceptedPlatform) {
+                return true;
+            }
         }
+
+        throw new UnsupportedPlatformException(
+            sprintf('DBAL platform "%s" is not currently supported.', $platform::class)
+        );
     }
 
     /**
@@ -153,29 +160,33 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
     abstract protected function getFunctionName(): string;
 
     /**
-     * Maximum number of parameter for the spatial function.
+     * Maximum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
-     * @return int the inherited methods shall NOT return a null, but 0 when function has no parameter
+     * @return int the inherited methods shall NOT return a null, but 0 when the function has no parameter
      */
     abstract protected function getMaxParameter(): int;
 
     /**
-     * Minimum number of parameter for the spatial function.
+     * Minimum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
-     * @return int the inherited methods shall NOT return a null, but 0 when function has no parameter
+     * @return int the inherited methods shall NOT return a null, but 0 when the function has no parameter
      */
     abstract protected function getMinParameter(): int;
 
     /**
      * Get the platforms accepted.
      *
-     * @since 2.0 This function replace the protected property platforms.
+     * The AbstractPlatform::getName() method is now deprecated in the doctrine/dbal component.
+     * We now use the class name to identify the platform.
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @see https://github.com/doctrine/dbal/issues/4749
+     * @see https://github.com/longitude-one/doctrine-spatial/issues/40
+     *
+     * @return class-string[] a non-empty array of accepted platforms
      */
     abstract protected function getPlatforms(): array;
 }

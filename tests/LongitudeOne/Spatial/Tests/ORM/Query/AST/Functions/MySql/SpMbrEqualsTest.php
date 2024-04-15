@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -36,12 +37,12 @@ class SpMbrEqualsTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }

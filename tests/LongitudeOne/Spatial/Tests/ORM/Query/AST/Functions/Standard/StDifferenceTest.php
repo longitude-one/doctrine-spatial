@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -35,13 +37,13 @@ class StDifferenceTest extends OrmTestCase
     use LineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -73,17 +75,14 @@ class StDifferenceTest extends OrmTestCase
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('LINESTRING(10 10,12 12)', $result[0][1]);
         static::assertEquals($lineStringB, $result[1][0]);
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                // MySQL failed ST_Difference implementation, so I test the bad result.
-                static::assertEquals('LINESTRING(0 0,12 12)', $result[1][1]);
-                break;
-            case 'postgresl':
-            default:
-                // Here is the good result.
-                // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertEquals('MULTILINESTRING((0 0,6 6),(6 6,12 12))', $result[1][1]);
+        // Here is the only good result one.
+        // A linestring minus another crossing linestring returns initial linestring split
+        $expected = 'MULTILINESTRING((0 0,6 6),(6 6,12 12))';
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // MySQL failed ST_Difference implementation, so I test the bad result.
+            $expected = 'LINESTRING(0 0,12 12)';
         }
+        static::assertEquals($expected, $result[1][1]);
         static::assertEquals($lineStringC, $result[2][0]);
         static::assertEquals('LINESTRING(0 0,12 12)', $result[2][1]);
     }

@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -38,12 +39,12 @@ class SpDistanceTest extends OrmTestCase
     use PointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }

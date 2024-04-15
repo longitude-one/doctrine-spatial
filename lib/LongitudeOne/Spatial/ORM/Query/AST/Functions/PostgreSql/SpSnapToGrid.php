@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
@@ -23,6 +24,8 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
  * ST_SnapToGrid DQL function.
+ *
+ * TODO remove all deprecations of this file.
  *
  * @see https://postgis.net/docs/ST_SnapToGrid.html
  *
@@ -120,11 +123,12 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql'];
+        return [PostgreSQLPlatform::class];
     }
 }

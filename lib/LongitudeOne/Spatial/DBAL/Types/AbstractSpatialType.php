@@ -16,8 +16,12 @@
 namespace LongitudeOne\Spatial\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
+use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
@@ -29,9 +33,6 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  */
 abstract class AbstractSpatialType extends Type
 {
-    public const PLATFORM_MYSQL = 'MySql';
-    public const PLATFORM_POSTGRESQL = 'PostgreSql';
-
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
 
     /**
@@ -160,16 +161,16 @@ abstract class AbstractSpatialType extends Type
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array            $fieldDeclaration the field declaration
-     * @param AbstractPlatform $platform         database platform
+     * @param array            $column   the field declaration
+     * @param AbstractPlatform $platform database platform
      *
      * @return string
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform)
     {
-        return $this->getSpatialPlatform($platform)->getSqlDeclaration($fieldDeclaration);
+        return $this->getSpatialPlatform($platform)->getSqlDeclaration($column);
     }
 
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
@@ -225,22 +226,21 @@ abstract class AbstractSpatialType extends Type
      *
      * @return PlatformInterface
      *
-     * @throws UnsupportedPlatformException when platform is not declared in constant
+     * @throws UnsupportedPlatformException when platform is unknown by the library
      */
     private function getSpatialPlatform(AbstractPlatform $platform)
     {
-        $platformName = $platform->getName();
-        $const = sprintf('self::PLATFORM_%s', mb_strtoupper($platformName));
-
-        if (!defined($const)) {
-            throw new UnsupportedPlatformException(sprintf(
-                'DBAL platform "%s" is not currently supported.',
-                $platform->getName()
-            ));
+        if ($platform instanceof MySqlPlatform) {
+            return new MySql();
         }
 
-        $class = sprintf('LongitudeOne\Spatial\DBAL\Platform\%s', constant($const));
+        if ($platform instanceof PostgreSqlPlatform) {
+            return new PostgreSql();
+        }
 
-        return new $class();
+        throw new UnsupportedPlatformException(sprintf(
+            'DBAL platform "%s" is not currently supported.',
+            $platform::class
+        ));
     }
 }

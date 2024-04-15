@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -36,13 +38,13 @@ class StEnvelopeTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -64,15 +66,12 @@ class StEnvelopeTest extends OrmTestCase
         );
         $result = $query->getResult();
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                // polygon is equals, but not the same
-                $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
-                break;
-            case 'postgresql':
-            default:
-                $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
+        $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // polygon is equals, but different order
+            $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
         }
+
         static::assertEquals($expected, $result[0][1]);
         static::assertEquals($expected, $result[1][1]);
     }
@@ -95,13 +94,10 @@ class StEnvelopeTest extends OrmTestCase
             // phpcs:enable
         );
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                $parameter = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
-                break;
-            case 'postgresql':
-            default:
-                $parameter = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
+        $parameter = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // polygon is equals, but different order
+            $parameter = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
         }
 
         $query->setParameter('p', $parameter, 'string');

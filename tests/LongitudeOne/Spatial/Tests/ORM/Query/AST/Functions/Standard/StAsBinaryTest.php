@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -36,13 +38,13 @@ class StAsBinaryTest extends OrmTestCase
     use LineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -69,15 +71,14 @@ class StAsBinaryTest extends OrmTestCase
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
         // phpcs:enable
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                static::assertEquals(pack('H*', $expectedA), $result[0][1]);
-                static::assertEquals(pack('H*', $expectedB), $result[1][1]);
-                break;
-            case 'postgresql':
-            default:
-                static::assertEquals($expectedA, bin2hex(stream_get_contents($result[0][1])));
-                static::assertEquals($expectedB, bin2hex(stream_get_contents($result[1][1])));
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            static::assertEquals(pack('H*', $expectedA), $result[0][1]);
+            static::assertEquals(pack('H*', $expectedB), $result[1][1]);
+        }
+
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            static::assertEquals($expectedA, bin2hex(stream_get_contents($result[0][1])));
+            static::assertEquals($expectedB, bin2hex(stream_get_contents($result[1][1])));
         }
     }
 }

@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -36,13 +38,13 @@ class StIntersectionTest extends OrmTestCase
     use LineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -74,9 +76,9 @@ class StIntersectionTest extends OrmTestCase
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('POINT(0 0)', $result[0][1]);
         static::assertEquals($lineStringB, $result[1][0]);
-        static::assertEmptyGeometry($result[1][1], $this->getPlatform());
+        static::assertEmptyPoint($result[1][1], $this->getPlatform());
         static::assertEquals($lineStringC, $result[2][0]);
-        static::assertEmptyGeometry($result[2][1], $this->getPlatform());
+        static::assertEmptyPoint($result[2][1], $this->getPlatform());
     }
 
     /**

@@ -40,7 +40,7 @@ class WrappingTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {

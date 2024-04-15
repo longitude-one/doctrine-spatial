@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -36,14 +38,14 @@ class StContainsTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->usesType('point');
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -116,13 +118,12 @@ class StContainsTest extends OrmTestCase
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
-                break;
-            case 'postgresql':
-            default:
-                static::assertEquals($holeyPolygon, $result[1]);
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            static::markTestSkipped(
+                'MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way'
+            );
         }
+
+        static::assertEquals($holeyPolygon, $result[1]);
     }
 }

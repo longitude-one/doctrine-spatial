@@ -16,6 +16,7 @@
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
@@ -45,7 +46,7 @@ class SchemaTest extends OrmTestCase
         $this->usesEntity(self::MULTIPOLYGON_ENTITY);
 
         // TODO : Verify what MySQL can do with geography
-        if ('postgresql' === $this->getPlatform()->getName()) {
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             $this->usesEntity(self::GEOGRAPHY_ENTITY);
             $this->usesEntity(self::GEO_POINT_SRID_ENTITY);
             $this->usesEntity(self::GEO_LINESTRING_ENTITY);

@@ -40,7 +40,7 @@ class GeometryWalkerTest extends OrmTestCase
     use PointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
@@ -100,17 +100,7 @@ class GeometryWalkerTest extends OrmTestCase
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-            case 'postgresql':
-            default:
-                $asBinary = 'ST_AsBinary';
-                $startPoint = 'ST_StartPoint';
-                $envelope = 'ST_Envelope';
-                break;
-        }
-
-        static::test($this->getEntityManager(), $asBinary, $startPoint, $envelope);
+        static::test($this->getEntityManager(), 'ST_AsBinary', 'ST_StartPoint', 'ST_Envelope');
     }
 
     /**
@@ -123,16 +113,6 @@ class GeometryWalkerTest extends OrmTestCase
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-            case 'postgresql':
-            default:
-                $asText = 'ST_AsText';
-                $startPoint = 'ST_StartPoint';
-                $envelope = 'ST_Envelope';
-                break;
-        }
-
-        static::test($this->getEntityManager(), $asText, $startPoint, $envelope);
+        static::test($this->getEntityManager(), 'ST_AsText', 'ST_StartPoint', 'ST_Envelope');
     }
 }

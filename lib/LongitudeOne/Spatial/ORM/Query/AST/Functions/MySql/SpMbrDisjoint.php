@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -36,7 +37,7 @@ class SpMbrDisjoint extends AbstractSpatialDQLFunction
     }
 
     /**
-     * Maximum number of parameter for the spatial function.
+     * Maximum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
@@ -48,7 +49,7 @@ class SpMbrDisjoint extends AbstractSpatialDQLFunction
     }
 
     /**
-     * Minimum number of parameter for the spatial function.
+     * Minimum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
@@ -63,11 +64,12 @@ class SpMbrDisjoint extends AbstractSpatialDQLFunction
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['mysql'];
+        return [MySQLPlatform::class];
     }
 }

@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -35,13 +37,13 @@ class StOverlapsTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -70,14 +72,15 @@ class StOverlapsTest extends OrmTestCase
 
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
-                break;
-            case 'postgresql':
-                static::assertEquals($holeyPolygon, $result[1]);
-        }
         static::assertEquals($polygonW, $result[2]);
+
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            static::markTestSkipped(
+                'MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way'
+            );
+        }
+
+        static::assertEquals($holeyPolygon, $result[1]);
     }
 
     /**

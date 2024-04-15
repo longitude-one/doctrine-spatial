@@ -300,15 +300,22 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
+     * Creates a connection to the test database if there is none yet, and creates the necessary tables.
      */
     protected function setUp(): void
     {
         try {
-            if (!isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
+            $skipped = true;
+            foreach ($this->supportedPlatforms as $platform => $supported) {
+                if ($supported && $this->getPlatform() instanceof $platform) {
+                    $skipped = false;
+                }
+            }
+
+            if ($skipped) {
                 static::markTestSkipped(sprintf(
                     'No support for platform %s in test class %s.',
-                    $this->getPlatform()->getName(),
+                    $this->getPlatform()::class,
                     get_class($this)
                 ));
             }
@@ -353,26 +360,20 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Assert empty geometry.
-     * MySQL5 does not return the standard answer, but this bug was solved in MySQL8.
-     * So test for an empty geometry is a little more complex than to compare two strings.
+     * Assert big polygon.
      *
-     * @param mixed                 $value    Value to test
-     * @param AbstractPlatform|null $platform the platform
+     * @param mixed            $value    Value to test
+     * @param AbstractPlatform $platform the platform
      */
-    protected static function assertBigPolygon($value, ?AbstractPlatform $platform = null): void
+    protected static function assertBigPolygon($value, AbstractPlatform $platform): void
     {
-        switch ($platform->getName()) {
-            case 'mysql':
-                // MySQL does not respect creation order of points composing a Polygon.
-                static::assertSame('POLYGON((0 10,0 0,10 0,10 10,0 10))', $value);
-                break;
-            case 'postgresl':
-            default:
-                // Here is the good result.
-                // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertSame('POLYGON((0 10,10 10,10 0,0 0,0 10))', $value);
+        $expected = 'POLYGON((0 10,10 10,10 0,0 0,0 10))';
+        if ($platform instanceof MySQLPlatform) {
+            // MySQL does not respect creation order of points composing a Polygon.
+            $expected = 'POLYGON((0 10,0 0,10 0,10 10,0 10))';
         }
+
+        static::assertSame($expected, $value);
     }
 
     /**
@@ -383,19 +384,21 @@ abstract class OrmTestCase extends TestCase
      * @param mixed                 $value    Value to test
      * @param AbstractPlatform|null $platform the platform
      */
-    protected static function assertEmptyGeometry($value, ?AbstractPlatform $platform = null): void
+    protected static function assertEmptyPoint($value, ?AbstractPlatform $platform = null): void
     {
-        $expected = 'EMPTY';
-        $method = 'assertStringEndsWith';
+        $expected = 'POINT EMPTY';
 
-        if ($platform instanceof MySQL57Platform && !$platform instanceof MySQL80Platform) {
+        if ($platform instanceof MySQL57Platform) {
             // MySQL5 does not return the standard answer
-            // This bug was solved in MySQL8
             $expected = 'GEOMETRYCOLLECTION()';
-            $method = 'assertSame';
         }
 
-        static::$method($expected, $value);
+        if ($platform instanceof MySQL80Platform) {
+            // MySQL8 does not return the standard answer
+            $expected = 'GEOMETRYCOLLECTION EMPTY';
+        }
+
+        static::assertSame($expected, $value);
     }
 
     /**
@@ -559,22 +562,6 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Return the platform completed by the version number of the server for mysql.
-     */
-    protected function getPlatformAndVersion(): string
-    {
-        if ($this->getPlatform() instanceof MySQL80Platform) {
-            return 'mysql8';
-        }
-
-        if ($this->getPlatform() instanceof MySQL57Platform) {
-            return 'mysql5';
-        }
-
-        return $this->getPlatform()->getName();
-    }
-
-    /**
      * Return the schema tool.
      *
      * @return SchemaTool
@@ -690,13 +677,13 @@ abstract class OrmTestCase extends TestCase
 
         $this->addStandardFunctions($configuration);
 
-        if ('postgresql' === $this->getPlatformAndVersion()) {
-            // Specific functions of PostgreSQL server
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            // Specific functions of PostgreSQL database engine
             $this->addSpecificPostgreSqlFunctions($configuration);
         }
 
-        // This test does not work when we compare to 'mysql' (on Travis only)
-        if ('postgresql' !== $this->getPlatform()->getName()) {
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
         }
     }
@@ -734,7 +721,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Set the supported platforms.
      *
-     * @param string $platform the platform to support
+     * @param class-string $platform the platform to support
      */
     protected function supportsPlatform(string $platform): void
     {
@@ -742,7 +729,7 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Declare the used entity class to initialized them (and delete its content before the test).
+     * Declare the used entity class to initialize them (and delete its content before the test).
      *
      * @param string $entityClass the entity class
      */

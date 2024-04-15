@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -35,12 +36,13 @@ class StBufferTest extends OrmTestCase
     use PointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        // TODO check if this function is supported by MySQL or if I missed a platform
 
         parent::setUp();
     }

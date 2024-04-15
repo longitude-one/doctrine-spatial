@@ -28,9 +28,6 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 /**
  * Spatial platform tests.
  *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
- *
  * @group geometry
  *
  * @internal
@@ -66,8 +63,8 @@ class PlatformTest extends OrmMockTestCase
      */
     public function testUnsupportedPlatform()
     {
-        $this->expectException(UnsupportedPlatformException::class);
-        $this->expectExceptionMessage('DBAL platform "YourSQL" is not currently supported.');
+        self::expectException(UnsupportedPlatformException::class);
+        self::expectExceptionMessageMatches('/^DBAL platform ".+" is not currently supported.$/');
 
         $metadata = $this->getMockEntityManager()->getClassMetadata('LongitudeOne\Spatial\Tests\Fixtures\PointEntity');
         $schemaTool = new SchemaTool($this->getMockEntityManager());
