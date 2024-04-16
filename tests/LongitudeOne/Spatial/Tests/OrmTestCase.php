@@ -19,12 +19,12 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -155,6 +155,9 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Processor\PsrLogMessageProcessor;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 
@@ -448,26 +451,27 @@ abstract class OrmTestCase extends TestCase
             return static::$connection;
         }
 
-        $connection = DriverManager::getConnection(static::getConnectionParameters());
-        $class = static::getPlatformClass($connection);
+        $logger = new Logger('PHPUnit');
+        // TODO Configure cache directory
+        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../../.phpunit.cache/sql.log', Logger::DEBUG));
+        $logger->pushProcessor(new PsrLogMessageProcessor(null, true));
 
-        switch ($class) {
-            case PostgreSQL100Platform::class:
-            case PostgreSQLPlatform::class:
-                $connection->executeStatement('CREATE EXTENSION postgis');
-                break;
-            case MySQL57Platform::class:
-            case MySQL80Platform::class:
-            case MySQLPlatform::class:
-                break;
-            default:
-                throw new UnsupportedPlatformException(sprintf(
-                    'DBAL platform "%s" is not currently supported.',
-                    $class
-                ));
+        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($logger)]);
+
+        $connection = DriverManager::getConnection(static::getConnectionParameters(), $configuration);
+        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $connection->executeStatement('CREATE EXTENSION postgis');
+            return $connection;
         }
 
-        return $connection;
+        if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            return $connection;
+        }
+
+        throw new UnsupportedPlatformException(sprintf(
+            'DBAL platform "%s" is not currently supported.',
+            $connection->getDatabasePlatform()::class
+        ));
     }
 
     /**
@@ -489,34 +493,12 @@ abstract class OrmTestCase extends TestCase
 
         $tmpConnection = DriverManager::getConnection(static::getCommonConnectionParameters());
 
-        $tmpConnection->getSchemaManager()->dropAndCreateDatabase($dbName);
+        $manager = $tmpConnection->createSchemaManager();
+        $manager->dropDatabase($dbName);
+        $manager->createDatabase($dbName);
         $tmpConnection->close();
 
         return $parameters;
-    }
-
-    /**
-     * Return the platform class.
-     *
-     * @param Connection $connection the current static connection
-     *
-     * @return string the platform \LongitudeOne\Spatial\Tests\OrmTestCase
-     *
-     * @throws Exception this will not happen
-     */
-    private static function getPlatformClass(Connection $connection): string
-    {
-        return get_class($connection->getDatabasePlatform());
-    }
-
-    /**
-     * Using the SQL Logger Stack this method retrieves the current query count executed in this test.
-     *
-     * @return int
-     */
-    protected function getCurrentQueryCount()
-    {
-        return count($this->sqlLoggerStack->queries);
     }
 
     /**
@@ -543,7 +525,7 @@ abstract class OrmTestCase extends TestCase
             $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
 
-            return EntityManager::create(static::getConnection(), $config);
+            return new EntityManager(static::getConnection(), $config);
         } catch (ORMException|Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to init the EntityManager: %s', $e->getMessage()));
         }

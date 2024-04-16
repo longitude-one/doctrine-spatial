@@ -36,7 +36,7 @@ abstract class OrmMockTestCase extends TestCase
     protected EntityManagerInterface $mockEntityManager;
 
     /**
-     * Setup the mocked entity manager.
+     * Set up the mocked entity manager.
      *
      * @throws Exception    when connection is not successful
      * @throws ORMException when cache is not set
@@ -61,13 +61,10 @@ abstract class OrmMockTestCase extends TestCase
             ->getMock()
         ;
         $platform = $this->getMockBuilder(SqlitePlatform::class)
-            ->onlyMethods(['getName'])
+            ->onlyMethods([])
             ->getMock()
         ;
 
-        $platform->method('getName')
-            ->willReturn('YourSQL')
-        ;
         $driver->method('getDatabasePlatform')
             ->willReturn($platform)
         ;
@@ -97,6 +94,6 @@ abstract class OrmMockTestCase extends TestCase
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 
-        return EntityManager::create($this->getMockConnection(), $config);
+        return new EntityManager($this->getMockConnection(), $config);
     }
 }
