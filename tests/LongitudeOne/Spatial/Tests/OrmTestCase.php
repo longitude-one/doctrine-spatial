@@ -143,6 +143,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StUnion;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StX;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StY;
+use LongitudeOne\Spatial\Tests\Doctrine\Logging\FileLogger;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoLineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
@@ -156,8 +157,6 @@ use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Processor\PsrLogMessageProcessor;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 
@@ -451,16 +450,13 @@ abstract class OrmTestCase extends TestCase
             return static::$connection;
         }
 
-        $logger = new Logger('PHPUnit');
-        // TODO Configure cache directory
-        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../../.phpunit.cache/sql.log', Logger::DEBUG));
-        $logger->pushProcessor(new PsrLogMessageProcessor(null, true));
-
+        $logger = new FileLogger();
         $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($logger)]);
 
         $connection = DriverManager::getConnection(static::getConnectionParameters(), $configuration);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $connection->executeStatement('CREATE EXTENSION postgis');
+
             return $connection;
         }
 
