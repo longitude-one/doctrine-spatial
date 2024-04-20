@@ -548,64 +548,6 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * On not successful test.
-     *
-     * @throws \InvalidArgumentException the formatted exception when sql logger is on
-     * @throws \Throwable                the exception provided as parameter
-     */
-    //    protected function onNotSuccessfulTest(\Throwable $t): never
-    //    {
-    //        if (!$GLOBALS['opt_use_debug_stack'] || $t instanceof AssertionFailedError) {
-    //            throw $t;
-    //        }
-    //
-    //        if (isset($this->sqlLoggerStack->queries) && count($this->sqlLoggerStack->queries)) {
-    //            $queries = '';
-    //            $count = count($this->sqlLoggerStack->queries) - 1;
-    //            $max = max(count($this->sqlLoggerStack->queries) - 25, 0);
-    //
-    //            for ($i = $count; $i > $max && isset($this->sqlLoggerStack->queries[$i]); --$i) {
-    //                $query = $this->sqlLoggerStack->queries[$i];
-    //                $params = array_map(function ($param) {
-    //                    if (is_object($param)) {
-    //                        return get_class($param);
-    //                    }
-    //
-    //                    return sprintf("'%s'", $param);
-    //                }, $query['params'] ?: []);
-    //
-    //                $queries .= sprintf(
-    //                    "%2d. SQL: '%s' Params: %s\n",
-    //                    $i,
-    //                    $query['sql'],
-    //                    implode(', ', $params)
-    //                );
-    //            }
-    //
-    //            $trace = $t->getTrace();
-    //            $traceMsg = '';
-    //
-    //            foreach ($trace as $part) {
-    //                if (isset($part['file'])) {
-    //                    if (false !== mb_strpos($part['file'], 'PHPUnit/')) {
-    //                        // Beginning with PHPUnit files we don't print the trace anymore.
-    //                        break;
-    //                    }
-    //
-    //                    $traceMsg .= sprintf("%s:%s\n", $part['file'], $part['line']);
-    //                }
-    //            }
-    //
-    //            $message = sprintf("[%s] %s\n\n", get_class($t), $t->getMessage());
-    //            $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
-    //
-    //            throw new \InvalidArgumentException($message, $t->getCode(), $t);
-    //        }
-    //
-    //        throw $t;
-    //    }
-
-    /**
      * Create entities used by tests.
      */
     protected function setUpEntities()
