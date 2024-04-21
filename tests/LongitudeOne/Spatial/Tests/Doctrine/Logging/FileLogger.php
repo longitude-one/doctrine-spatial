@@ -22,11 +22,14 @@ use Psr\Log\LoggerInterface;
 
 class FileLogger extends MonologLogger implements LoggerInterface
 {
+    /**
+     * @param \DateTimeZone|null $timezone Timezone
+     */
     public function __construct(?\DateTimeZone $timezone = null)
     {
         // TODO USE CONSTANT AND GLOBALS
         $name = 'PHPUnit';
-        $handler = new StreamHandler(__DIR__.'/../../../../../../.phpunit.cache/sql.log', MonologLogger::DEBUG);
+        $handler = new StreamHandler(dirname(__DIR__, 6).'/.phpunit.cache/sql.log', MonologLogger::DEBUG);
         $processor = new PsrLogMessageProcessor(null, true);
         parent::__construct($name, [$handler], [$processor], $timezone);
     }
