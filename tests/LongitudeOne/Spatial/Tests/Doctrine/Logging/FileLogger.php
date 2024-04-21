@@ -23,14 +23,97 @@ use Psr\Log\LoggerInterface;
 class FileLogger extends MonologLogger implements LoggerInterface
 {
     /**
-     * @param \DateTimeZone|null $timezone Timezone
+     * FileLogger constructor.
      */
-    public function __construct(?\DateTimeZone $timezone = null)
+    public function __construct()
     {
-        // TODO USE CONSTANT AND GLOBALS
+        $logParams = static::getCommonLogParams();
+        $filename = self::getFinalFilename($logParams['directory'], $logParams['filename']);
         $name = 'PHPUnit';
-        $handler = new StreamHandler(dirname(__DIR__, 6).'/.phpunit.cache/sql.log', MonologLogger::DEBUG);
+        $level = MonologLogger::toMonologLevel($logParams['level']);
+        $handler = new StreamHandler($filename, $level);
         $processor = new PsrLogMessageProcessor(null, true);
-        parent::__construct($name, [$handler], [$processor], $timezone);
+        parent::__construct($name, [$handler], [$processor], $logParams['timezone']);
+    }
+
+    /**
+     * Return common log parameters.
+     *
+     * @return array{log: bool, filename: string, level: string, directory: string, timezone: \DateTimeZone}
+     *
+     * @throws \InvalidArgumentException if the timezone is not valid
+     */
+    protected static function getCommonLogParams(): array
+    {
+        $logParams = [
+            'mark' => true,
+            'filename' => 'doctrine-spatial.log',
+            'level' => 'debug', // TODO use level instead of mark
+            'directory' => '.phpunit.cache/logs',
+            'timezone' => new \DateTimeZone('UTC'),
+        ];
+
+        if (isset($GLOBALS['opt_mark_sql'])) {
+            $logParams['mark'] = $GLOBALS['opt_mark_sql'];
+        }
+
+        if (isset($GLOBALS['opt_log_file'])) {
+            $logParams['filename'] = self::removeFirstAndLastSlash($GLOBALS['opt_log_file']);
+        }
+
+        if (isset($GLOBALS['opt_log_level'])) {
+            $logParams['level'] = $GLOBALS['opt_log_level'];
+        }
+
+        if (isset($GLOBALS['opt_log_dir'])) {
+            $logParams['directory'] = $GLOBALS['opt_log_dir'];
+        }
+
+        if (isset($GLOBALS['opt_log_timezone'])) {
+            try {
+                $logParams['timezone'] = new \DateTimeZone($GLOBALS['opt_log_timezone']);
+            } catch (\Exception $e) {
+                $message = sprintf(
+                    'Unable to create DateTimeZone, fix the `opt_log_message` parameter in your phpunit.xml file: %s',
+                    $e->getMessage()
+                );
+
+                throw new \InvalidArgumentException($message, $e->getCode(), $e);
+            }
+        }
+
+        return $logParams;
+    }
+
+    /**
+     * Return the final filename from the directory project.
+     *
+     * @param string $directory the directory where the log file is stored
+     * @param string $filename  the filename
+     *
+     * @return string the final filename
+     */
+    private static function getFinalFilename(string $directory, string $filename): string
+    {
+        return dirname(__DIR__, 6).DIRECTORY_SEPARATOR.$directory.DIRECTORY_SEPARATOR.$filename;
+    }
+
+    /**
+     * Remove first and last slash from the chain.
+     *
+     * @param string $chain the chain to clean
+     *
+     * @return string the chain without first and last slash
+     */
+    private static function removeFirstAndLastSlash(string $chain): string
+    {
+        if ('/' === $chain[0]) {
+            $chain = mb_substr($chain, 1);
+        }
+        if ('/' === $chain[mb_strlen($chain) - 1]) {
+            $chain = mb_substr($chain, 0, -1);
+        }
+
+        return $chain;
     }
 }

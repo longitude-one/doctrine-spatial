@@ -142,6 +142,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StUnion;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StX;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StY;
+use LongitudeOne\Spatial\Tests\Doctrine\ConnectionParameters;
 use LongitudeOne\Spatial\Tests\Doctrine\Logging\FileLogger;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoLineStringEntity;
@@ -265,6 +266,8 @@ abstract class OrmTestCase extends TestCase
         'geopolygon' => GeographyPolygonType::class,
     ];
 
+    private static FileLogger $logger;
+
     protected EntityManagerInterface $entityManager;
 
     /**
@@ -301,37 +304,29 @@ abstract class OrmTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        try {
-            $skipped = true;
-            foreach ($this->supportedPlatforms as $platform => $supported) {
-                if ($supported && $this->getPlatform() instanceof $platform) {
-                    $skipped = false;
-                }
+        $skipped = true;
+        foreach ($this->supportedPlatforms as $platform => $supported) {
+            if ($supported && $this->getPlatform() instanceof $platform) {
+                $skipped = false;
             }
-
-            if ($skipped) {
-                static::markTestSkipped(sprintf(
-                    'No support for platform %s in test class %s.',
-                    $this->getPlatform()::class,
-                    get_class($this)
-                ));
-            }
-
-            $this->entityManager = $this->getEntityManager();
-            $this->schemaTool = $this->getSchemaTool();
-
-            if ($GLOBALS['opt_mark_sql']) {
-                // Add a line in logger to help developer. It is easier to find the test in the log.
-                $query = sprintf('SELECT 1 /*%s*/', get_class($this));
-                static::getConnection()->executeQuery($query);
-            }
-
-            $this->setUpTypes();
-            $this->setUpEntities();
-            $this->setUpFunctions();
-        } catch (UnsupportedPlatformException|Exception $e) {
-            static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
+
+        if ($skipped) {
+            static::markTestSkipped(sprintf(
+                'No support for platform %s in test class %s.',
+                $this->getPlatform()::class,
+                get_class($this)
+            ));
+        }
+
+        $this->entityManager = $this->getEntityManager();
+        $this->schemaTool = $this->getSchemaTool();
+
+        static::$logger->info(sprintf('Starting test %s', get_class($this)));
+
+        $this->setUpTypes();
+        $this->setUpEntities();
+        $this->setUpFunctions();
 
         try {
             foreach (array_keys($this->usedEntities) as $entityName) {
@@ -390,41 +385,6 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Return common connection parameters.
-     *
-     * @return array
-     */
-    protected static function getCommonConnectionParameters()
-    {
-        $connectionParams = [
-            'driver' => $GLOBALS['db_type'],
-            'user' => $GLOBALS['db_username'],
-            'password' => null,
-            'host' => $GLOBALS['db_host'],
-            'dbname' => null,
-            'port' => $GLOBALS['db_port'],
-        ];
-
-        if (isset($GLOBALS['db_server'])) {
-            $connectionParams['server'] = $GLOBALS['db_server'];
-        }
-
-        if (!empty($GLOBALS['db_password'])) {
-            $connectionParams['password'] = $GLOBALS['db_password'];
-        }
-
-        if (isset($GLOBALS['db_unix_socket'])) {
-            $connectionParams['unix_socket'] = $GLOBALS['db_unix_socket'];
-        }
-
-        if (isset($GLOBALS['db_version'])) {
-            $connectionParams['driverOptions']['server_version'] = (string) $GLOBALS['db_version'];
-        }
-
-        return $connectionParams;
-    }
-
-    /**
      * Establish the connection if it is not already done, then returns it.
      *
      * @throws Exception                    when connection is not successful
@@ -435,11 +395,10 @@ abstract class OrmTestCase extends TestCase
         if (isset(static::$connection)) {
             return static::$connection;
         }
+        static::$logger = new FileLogger();
+        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware(static::$logger)]);
 
-        $logger = new FileLogger();
-        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($logger)]);
-
-        $connection = DriverManager::getConnection(static::getConnectionParameters(), $configuration);
+        $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $connection->executeStatement('CREATE EXTENSION postgis');
 
@@ -454,33 +413,6 @@ abstract class OrmTestCase extends TestCase
             'DBAL platform "%s" is not currently supported.',
             $connection->getDatabasePlatform()::class
         ));
-    }
-
-    /**
-     * Return connection parameters.
-     *
-     * @return array
-     *
-     * @throws Exception when connection is not successful
-     */
-    protected static function getConnectionParameters()
-    {
-        $parameters = static::getCommonConnectionParameters();
-        $parameters['dbname'] = $GLOBALS['db_name'];
-
-        $connection = DriverManager::getConnection($parameters);
-        $dbName = $connection->getDatabase();
-
-        $connection->close();
-
-        $tmpConnection = DriverManager::getConnection(static::getCommonConnectionParameters());
-
-        $manager = $tmpConnection->createSchemaManager();
-        $manager->dropDatabase($dbName);
-        $manager->createDatabase($dbName);
-        $tmpConnection->close();
-
-        return $parameters;
     }
 
     /**
