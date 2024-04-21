@@ -25,10 +25,14 @@
         <!-- Change it -->
         <var name="db_name" value="main"/>
         <var name="db_port" value="5432"/>
-        <!-- Execute dummy SELECT statement before each test to mark DB query log -->
-        <var name="opt_mark_sql" value="true"/>
-        <!-- Enable SQLLoggerStack and query logging exception in tests -->
-        <var name="opt_use_debug_stack" value="true"/>
+        <!-- Select timezone for log -->
+        <var name="opt_log_timezone" value="Europe/Paris"/>
+        <!-- Select the log level : debug to get each request, info to get each starting test and disconnection -->
+        <var name="opt_log_level" value="debug"/>
+        <!-- Select the directory to store the log files -->
+        <var name="opt_log_dir" value=".phpunit.cache/logs"/>
+        <!-- Select the log file name -->
+        <var name="opt_log_file" value="pgsql.log"/>
     </php>
     <source>
         <include>
