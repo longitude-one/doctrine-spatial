@@ -267,11 +267,11 @@ abstract class AbstractPoint extends AbstractGeometry
         }
 
         array_walk($argv, function (&$value) {
-            if (is_array($value)) {
-                $value = 'Array';
-            } else {
-                $value = sprintf('"%s"', $value);
+            $tmp = 'Array';
+            if (!is_array($value)) {
+                $tmp = sprintf('"%s"', $value);
             }
+            $value = $tmp;
         });
 
         throw new InvalidValueException(sprintf(
