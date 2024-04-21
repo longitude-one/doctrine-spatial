@@ -46,16 +46,11 @@ class FileLogger extends MonologLogger implements LoggerInterface
     protected static function getCommonLogParams(): array
     {
         $logParams = [
-            'mark' => true,
             'filename' => 'doctrine-spatial.log',
             'level' => 'debug', // TODO use level instead of mark
             'directory' => '.phpunit.cache/logs',
             'timezone' => new \DateTimeZone('UTC'),
         ];
-
-        if (isset($GLOBALS['opt_mark_sql'])) {
-            $logParams['mark'] = $GLOBALS['opt_mark_sql'];
-        }
 
         if (isset($GLOBALS['opt_log_file'])) {
             $logParams['filename'] = self::removeFirstAndLastSlash($GLOBALS['opt_log_file']);

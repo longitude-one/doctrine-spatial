@@ -20,7 +20,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Logging;
-use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
@@ -157,10 +156,6 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Processor\PsrLogMessageProcessor;
-use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 
 // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber

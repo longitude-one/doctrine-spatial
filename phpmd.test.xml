@@ -12,8 +12,9 @@
         <exclude name="MissingImport"/>
         <exclude name="StaticAccess"/>
     </rule>
-    <!-- Import the some rules of code size rule set -->
+    <!-- Import some rules of code size rule set -->
     <rule ref="rulesets/codesize.xml">
+        <!-- There are never too many tests -->
         <exclude name="TooManyPublicMethods"/>
     </rule>
     <!-- Import the entire controversial code rule set, but SuperGlobals -->
