@@ -9,15 +9,18 @@
     <!-- Import some rules of clean code rule set -->
     <rule ref="rulesets/cleancode.xml">
         <exclude name="BooleanArgumentFlag"/>
+        <exclude name="MissingImport"/>
         <exclude name="StaticAccess"/>
     </rule>
     <!-- Import the some rules of code size rule set -->
     <rule ref="rulesets/codesize.xml">
         <exclude name="TooManyPublicMethods"/>
     </rule>
-    <!-- Import the entire controversial code rule set -->
-    <rule ref="rulesets/controversial.xml" />
-    <!-- Import the entire design code rule set -->
+    <!-- Import the entire controversial code rule set, but SuperGlobals -->
+    <rule ref="rulesets/controversial.xml">
+        <exclude name="Superglobals"/>
+    </rule>
+    <!-- Import the entire design code rule set, but "coupling between" and "number of children" -->
     <rule ref="rulesets/design.xml">
         <exclude name="CouplingBetweenObjects"/>
         <exclude name="NumberOfChildren"/>

@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Logging;
-use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
@@ -143,6 +143,8 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StUnion;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StX;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StY;
+use LongitudeOne\Spatial\Tests\Doctrine\ConnectionParameters;
+use LongitudeOne\Spatial\Tests\Doctrine\Logging\FileLogger;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoLineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
@@ -269,6 +271,8 @@ abstract class OrmTestCase extends TestCase
         'geopolygon' => GeographyPolygonType::class,
     ];
 
+    private static FileLogger $logger;
+
     protected EntityManagerInterface $entityManager;
 
     /**
@@ -288,8 +292,6 @@ abstract class OrmTestCase extends TestCase
 
     private SchemaTool $schemaTool;
 
-    private DebugStack $sqlLoggerStack;
-
     /**
      * Setup connection before class creation.
      */
@@ -307,46 +309,29 @@ abstract class OrmTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        try {
-            $skipped = true;
-            foreach ($this->supportedPlatforms as $platform => $supported) {
-                if ($supported && $this->getPlatform() instanceof $platform) {
-                    $skipped = false;
-                }
+        $skipped = true;
+        foreach ($this->supportedPlatforms as $platform => $supported) {
+            if ($supported && $this->getPlatform() instanceof $platform) {
+                $skipped = false;
             }
-
-            if ($skipped) {
-                static::markTestSkipped(sprintf(
-                    'No support for platform %s in test class %s.',
-                    $this->getPlatform()::class,
-                    get_class($this)
-                ));
-            }
-
-            $this->entityManager = $this->getEntityManager();
-            $this->schemaTool = $this->getSchemaTool();
-
-            if ($GLOBALS['opt_mark_sql']) {
-                $query = sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), 'foo');
-                static::getConnection()->executeQuery($query);
-            }
-
-            $this->sqlLoggerStack->enabled = $GLOBALS['opt_use_debug_stack'];
-
-            $this->setUpTypes();
-            $this->setUpEntities();
-            $this->setUpFunctions();
-        } catch (UnsupportedPlatformException|Exception $e) {
-            static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
-    }
 
-    /**
-     * Teardown fixtures.
-     */
-    protected function tearDown(): void
-    {
-        $this->sqlLoggerStack->enabled = false;
+        if ($skipped) {
+            static::markTestSkipped(sprintf(
+                'No support for platform %s in test class %s.',
+                $this->getPlatform()::class,
+                get_class($this)
+            ));
+        }
+
+        $this->entityManager = $this->getEntityManager();
+        $this->schemaTool = $this->getSchemaTool();
+
+        static::$logger->info(sprintf('Starting test %s', get_class($this)));
+
+        $this->setUpTypes();
+        $this->setUpEntities();
+        $this->setUpFunctions();
 
         try {
             foreach (array_keys($this->usedEntities) as $entityName) {
@@ -358,7 +343,7 @@ abstract class OrmTestCase extends TestCase
 
             $this->getEntityManager()->clear();
         } catch (Exception|MappingException|UnsupportedPlatformException $e) {
-            static::fail(sprintf('Unable to clear table after test: %s', $e->getMessage()));
+            static::fail(sprintf('Unable to clear table before test: %s', $e->getMessage()));
         }
     }
 
@@ -405,41 +390,6 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Return common connection parameters.
-     *
-     * @return array
-     */
-    protected static function getCommonConnectionParameters()
-    {
-        $connectionParams = [
-            'driver' => $GLOBALS['db_type'],
-            'user' => $GLOBALS['db_username'],
-            'password' => null,
-            'host' => $GLOBALS['db_host'],
-            'dbname' => null,
-            'port' => $GLOBALS['db_port'],
-        ];
-
-        if (isset($GLOBALS['db_server'])) {
-            $connectionParams['server'] = $GLOBALS['db_server'];
-        }
-
-        if (!empty($GLOBALS['db_password'])) {
-            $connectionParams['password'] = $GLOBALS['db_password'];
-        }
-
-        if (isset($GLOBALS['db_unix_socket'])) {
-            $connectionParams['unix_socket'] = $GLOBALS['db_unix_socket'];
-        }
-
-        if (isset($GLOBALS['db_version'])) {
-            $connectionParams['driverOptions']['server_version'] = (string) $GLOBALS['db_version'];
-        }
-
-        return $connectionParams;
-    }
-
-    /**
      * Establish the connection if it is not already done, then returns it.
      *
      * @throws Exception                    when connection is not successful
@@ -450,17 +400,13 @@ abstract class OrmTestCase extends TestCase
         if (isset(static::$connection)) {
             return static::$connection;
         }
+        static::$logger = new FileLogger();
+        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware(static::$logger)]);
 
-        $logger = new Logger('PHPUnit');
-        // TODO Configure cache directory
-        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../../.phpunit.cache/sql.log', Logger::DEBUG));
-        $logger->pushProcessor(new PsrLogMessageProcessor(null, true));
-
-        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($logger)]);
-
-        $connection = DriverManager::getConnection(static::getConnectionParameters(), $configuration);
+        $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $connection->executeStatement('CREATE EXTENSION postgis');
+
             return $connection;
         }
 
@@ -475,33 +421,6 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Return connection parameters.
-     *
-     * @return array
-     *
-     * @throws Exception when connection is not successful
-     */
-    protected static function getConnectionParameters()
-    {
-        $parameters = static::getCommonConnectionParameters();
-        $parameters['dbname'] = $GLOBALS['db_name'];
-
-        $connection = DriverManager::getConnection($parameters);
-        $dbName = $connection->getDatabase();
-
-        $connection->close();
-
-        $tmpConnection = DriverManager::getConnection(static::getCommonConnectionParameters());
-
-        $manager = $tmpConnection->createSchemaManager();
-        $manager->dropDatabase($dbName);
-        $manager->createDatabase($dbName);
-        $tmpConnection->close();
-
-        return $parameters;
-    }
-
-    /**
      * Return the entity manager.
      *
      * @return EntityManager
@@ -512,11 +431,7 @@ abstract class OrmTestCase extends TestCase
             return $this->entityManager;
         }
 
-        $this->sqlLoggerStack = new DebugStack();
-        $this->sqlLoggerStack->enabled = false;
-
         try {
-            static::getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
             $realPaths = [realpath(__DIR__.'/Fixtures')];
             $config = new Configuration();
 
@@ -565,66 +480,6 @@ abstract class OrmTestCase extends TestCase
     protected function getUsedEntityClasses()
     {
         return static::$createdEntities;
-    }
-
-    /**
-     * On not successful test.
-     *
-     * @param \Throwable $t the exception
-     *
-     * @throws \InvalidArgumentException the formatted exception when sql logger is on
-     * @throws \Throwable                the exception provided as parameter
-     */
-    protected function onNotSuccessfulTest(\Throwable $t): never
-    {
-        if (!$GLOBALS['opt_use_debug_stack'] || $t instanceof AssertionFailedError) {
-            throw $t;
-        }
-
-        if (isset($this->sqlLoggerStack->queries) && count($this->sqlLoggerStack->queries)) {
-            $queries = '';
-            $count = count($this->sqlLoggerStack->queries) - 1;
-            $max = max(count($this->sqlLoggerStack->queries) - 25, 0);
-
-            for ($i = $count; $i > $max && isset($this->sqlLoggerStack->queries[$i]); --$i) {
-                $query = $this->sqlLoggerStack->queries[$i];
-                $params = array_map(function ($param) {
-                    if (is_object($param)) {
-                        return get_class($param);
-                    }
-
-                    return sprintf("'%s'", $param);
-                }, $query['params'] ?: []);
-
-                $queries .= sprintf(
-                    "%2d. SQL: '%s' Params: %s\n",
-                    $i,
-                    $query['sql'],
-                    implode(', ', $params)
-                );
-            }
-
-            $trace = $t->getTrace();
-            $traceMsg = '';
-
-            foreach ($trace as $part) {
-                if (isset($part['file'])) {
-                    if (false !== mb_strpos($part['file'], 'PHPUnit/')) {
-                        // Beginning with PHPUnit files we don't print the trace anymore.
-                        break;
-                    }
-
-                    $traceMsg .= sprintf("%s:%s\n", $part['file'], $part['line']);
-                }
-            }
-
-            $message = sprintf("[%s] %s\n\n", get_class($t), $t->getMessage());
-            $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
-
-            throw new \InvalidArgumentException($message, $t->getCode(), $t);
-        }
-
-        throw $t;
     }
 
     /**
@@ -687,6 +542,8 @@ abstract class OrmTestCase extends TestCase
                     $type = Type::getType($typeName);
 
                     // Since doctrineTypeComments may already be initialized check if added type requires comment
+                    // TODO @see https://github.com/doctrine/dbal/pull/5058/files
+                    // TODO @see https://github.com/longitude-one/doctrine-spatial/issues/42
                     $platform = $this->getPlatform();
                     if ($type->requiresSQLCommentHint($platform) && !$platform->isCommentedDoctrineType($type)) {
                         $this->getPlatform()->markDoctrineTypeCommented(Type::getType($typeName));
