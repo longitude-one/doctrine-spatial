@@ -16,16 +16,14 @@
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\Query\TokenType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
  * ST_SnapToGrid DQL function.
- *
- * TODO remove all deprecations of this file.
  *
  * @see https://postgis.net/docs/ST_SnapToGrid.html
  *
@@ -52,37 +50,37 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
     {
         $lexer = $parser->getLexer();
 
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         // 1st signature
         $this->addGeometryExpression($parser->ArithmeticFactor());
-        $parser->match(Lexer::T_COMMA);
+        $parser->match(TokenType::T_COMMA);
         $this->addGeometryExpression($parser->ArithmeticFactor());
 
         // 2nd signature
-        if (Lexer::T_COMMA === $lexer->lookahead['type']) {
-            $parser->match(Lexer::T_COMMA);
+        if (TokenType::T_COMMA === $lexer->lookahead['type']) {
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
         }
 
         // 3rd signature
-        if (Lexer::T_COMMA === $lexer->lookahead['type']) {
-            $parser->match(Lexer::T_COMMA);
+        if (TokenType::T_COMMA === $lexer->lookahead['type']) {
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
-            $parser->match(Lexer::T_COMMA);
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
             // 4th signature
-            if (Lexer::T_COMMA === $lexer->lookahead['type']) {
+            if (TokenType::T_COMMA === $lexer->lookahead['type']) {
                 // sizeM
-                $parser->match(Lexer::T_COMMA);
+                $parser->match(TokenType::T_COMMA);
                 $this->addGeometryExpression($parser->ArithmeticFactor());
             }
         }
 
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
     /**

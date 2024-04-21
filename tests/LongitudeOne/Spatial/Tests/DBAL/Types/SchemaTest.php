@@ -34,7 +34,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class SchemaTest extends OrmTestCase
 {
     /**
-     * Setup the geography type test.
+     * Set up the geography type test.
      */
     protected function setUp(): void
     {
