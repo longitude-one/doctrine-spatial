@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
@@ -40,11 +41,12 @@ class GeoPolygonTypeTest extends OrmTestCase
     use PersistHelperTrait;
 
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEO_POLYGON_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
