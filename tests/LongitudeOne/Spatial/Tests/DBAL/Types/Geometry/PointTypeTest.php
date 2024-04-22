@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
@@ -38,11 +40,13 @@ class PointTypeTest extends OrmTestCase
     use PointHelperTrait;
 
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
+        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
@@ -82,4 +86,11 @@ class PointTypeTest extends OrmTestCase
     }
 
     // TODO test to find a null geometry
+
+    public function testDeclarationType(): void
+    {
+        $this->usesEntity(self::POINT_ENTITY);
+        $metadata = $this->getEntityManager()->getClassMetadata(PointEntity::class);
+        static::assertEquals('point', $metadata->fieldMappings['point']['type']);
+    }
 }
