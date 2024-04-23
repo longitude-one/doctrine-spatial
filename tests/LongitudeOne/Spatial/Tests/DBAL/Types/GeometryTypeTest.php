@@ -53,7 +53,7 @@ class GeometryTypeTest extends OrmTestCase
     {
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesEntity(self::NO_HINT_GEOMETRY_ENTITY);
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }

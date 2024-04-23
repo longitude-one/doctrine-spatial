@@ -48,7 +48,7 @@ class MultiPolygonTypeTest extends OrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::MULTIPOLYGON_ENTITY);
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
