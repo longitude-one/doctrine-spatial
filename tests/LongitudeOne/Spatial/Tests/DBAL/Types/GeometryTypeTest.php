@@ -64,7 +64,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testBadGeometryValue(): void
     {
         static::expectException(InvalidValueException::class);
-        static::expectExceptionMessage('Spatial geometric column values must implement GeometryInterface');
+        static::expectExceptionMessage('Spatial column values must implement SpatialInterface');
 
         $entity = new NoHintGeometryEntity();
         $entity->setGeometry('POINT(0 0)');
