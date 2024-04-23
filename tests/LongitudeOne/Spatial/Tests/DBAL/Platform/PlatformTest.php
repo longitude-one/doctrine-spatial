@@ -23,6 +23,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 
 /**
@@ -66,7 +67,7 @@ class PlatformTest extends OrmMockTestCase
         self::expectException(UnsupportedPlatformException::class);
         self::expectExceptionMessageMatches('/^DBAL platform ".+" is not currently supported.$/');
 
-        $metadata = $this->getMockEntityManager()->getClassMetadata('LongitudeOne\Spatial\Tests\Fixtures\PointEntity');
+        $metadata = $this->getMockEntityManager()->getClassMetadata(PointEntity::class);
         $schemaTool = new SchemaTool($this->getMockEntityManager());
 
         $schemaTool->createSchema([$metadata]);
