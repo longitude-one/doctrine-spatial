@@ -17,8 +17,11 @@ namespace LongitudeOne\Spatial\Tests\Issues;
 
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
+use LongitudeOne\Spatial\DBAL\Types\Geography\PointType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,11 +42,17 @@ class Issue42Test extends TestCase
     {
         $platform = new MySql();
 
-        static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeometryDumpFromNewVersion()));
-        static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion()));
-
         static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeometryDumpFromOldVersion()));
         static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeographyDumpFromOldVersion()));
+
+        $actual = $platform->getSqlDeclaration($this->getGeometryDumpFromNewVersion(), new LineStringType());
+        static::assertSame('LINESTRING', $actual);
+
+        $actual = $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion(), new GeographyType());
+        static::assertSame('GEOMETRY', $actual);
+
+        self::expectException(MissingArgumentException::class);
+        $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion());
     }
 
     /**
@@ -53,11 +62,17 @@ class Issue42Test extends TestCase
     {
         $platform = new PostgreSql();
 
-        static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeometryDumpFromNewVersion()));
-        static::assertSame('GEOGRAPHY', $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion()));
+        static::assertSame('Geometry', $platform->getSqlDeclaration($this->getGeometryDumpFromOldVersion()));
+        static::assertSame('Geography', $platform->getSqlDeclaration($this->getGeographyDumpFromOldVersion()));
 
-        static::assertSame('GEOMETRY', $platform->getSqlDeclaration($this->getGeometryDumpFromOldVersion()));
-        static::assertSame('GEOGRAPHY', $platform->getSqlDeclaration($this->getGeographyDumpFromOldVersion()));
+        $actual = $platform->getSqlDeclaration($this->getGeometryDumpFromNewVersion(), new LineStringType());
+        static::assertSame('Geometry(LineString)', $actual);
+
+        $actual = $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion(), new PointType());
+        static::assertSame('Geography(Point)', $actual);
+
+        self::expectException(MissingArgumentException::class);
+        $platform->getSqlDeclaration($this->getGeographyDumpFromNewVersion());
     }
 
     /**
@@ -76,7 +91,6 @@ class Issue42Test extends TestCase
             'scale' => null,
             'precision' => null,
             'autoincrement' => false,
-            'comment' => '(DC2Type:geography)',
         ];
     }
 
@@ -110,10 +124,7 @@ class Issue42Test extends TestCase
      */
     private function getGeometryDumpFromNewVersion(): array
     {
-        $dump = $this->getGeographyDumpFromNewVersion();
-        $dump['comment'] = '(DC2Type:geometry)';
-
-        return $dump;
+        return $this->getGeographyDumpFromNewVersion();
     }
 
     /**
