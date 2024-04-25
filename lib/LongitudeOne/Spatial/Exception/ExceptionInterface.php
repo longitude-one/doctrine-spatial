@@ -16,10 +16,10 @@
 namespace LongitudeOne\Spatial\Exception;
 
 /**
- * InvalidValueException class.
+ * Exception interface.
  *
- * This exception is thrown when a geometric or geographic value is invalid.
+ * Any exceptions to the Spatial library must implement this interface.
  */
-class InvalidValueException extends \Exception implements ExceptionInterface
+interface ExceptionInterface extends \Throwable
 {
 }

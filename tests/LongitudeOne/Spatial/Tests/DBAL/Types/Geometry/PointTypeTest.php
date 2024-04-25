@@ -45,9 +45,18 @@ class PointTypeTest extends OrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
+    }
+
+    // TODO test to find a null geometry
+
+    public function testDeclarationType(): void
+    {
+        $this->usesEntity(self::POINT_ENTITY);
+        $metadata = $this->getEntityManager()->getClassMetadata(PointEntity::class);
+        static::assertEquals('point', $metadata->fieldMappings['point']['type']);
     }
 
     /**
@@ -83,14 +92,5 @@ class PointTypeTest extends OrmTestCase
     {
         $entity = $this->persistPointA();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
-    }
-
-    // TODO test to find a null geometry
-
-    public function testDeclarationType(): void
-    {
-        $this->usesEntity(self::POINT_ENTITY);
-        $metadata = $this->getEntityManager()->getClassMetadata(PointEntity::class);
-        static::assertEquals('point', $metadata->fieldMappings['point']['type']);
     }
 }

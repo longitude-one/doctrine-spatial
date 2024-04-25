@@ -45,7 +45,7 @@ class PolygonTypeTest extends OrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }

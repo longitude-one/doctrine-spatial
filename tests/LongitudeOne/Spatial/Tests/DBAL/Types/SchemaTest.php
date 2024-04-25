@@ -54,7 +54,7 @@ class SchemaTest extends OrmTestCase
             $this->usesEntity(self::GEO_POLYGON_ENTITY);
         }
 
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }

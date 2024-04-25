@@ -53,7 +53,7 @@ class GeometryTypeTest extends OrmTestCase
     {
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesEntity(self::NO_HINT_GEOMETRY_ENTITY);
-        $this->supportsPlatform(MySqlPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
@@ -64,7 +64,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testBadGeometryValue(): void
     {
         static::expectException(InvalidValueException::class);
-        static::expectExceptionMessage('Spatial geometric column values must implement GeometryInterface');
+        static::expectExceptionMessage('Spatial column values must implement SpatialInterface');
 
         $entity = new NoHintGeometryEntity();
         $entity->setGeometry('POINT(0 0)');
