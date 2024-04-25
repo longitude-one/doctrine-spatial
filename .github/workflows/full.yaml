@@ -17,6 +17,7 @@ jobs:
     name: PHP${{ matrix.php }}/MySQL5.7/MySQL8.0/PgSQL
     env:
       HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
+      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
     services:
       mysql5:
         image: mysql:5.7
@@ -81,15 +82,21 @@ jobs:
       - name: Install libraries
         run: composer --prefer-source update -vvv
       - name: Run test suite and coverage
-        if: env.HAS_CC_SECRET == 'true'
+        if: ${{ matrix.php == '8.3' && env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
-           coverageCommand: composer run-script test
+           coverageCommand: composer run-script test-coverage
            coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
-      - name: Run test suite for forks
-        if: env.HAS_CC_SECRET != 'true'
+      - name: Run test suite for forks without coverage
+        if: ${{ matrix.php != '8.3' || env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
+      - name: Coveralls.io steps
+        if: ${{ matrix.php == '8.3' && env.HAS_CA_SECRET == 'true' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          file: ${{github.workspace}}/.phpunit.cache/code-coverage/clover.xml
       - name: Check quality code
         run: composer run-script check-quality-code

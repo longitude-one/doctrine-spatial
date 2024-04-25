@@ -62,6 +62,12 @@
             "phpunit --configuration phpunit.mysql8.0.xml",
             "phpunit --configuration phpunit.pgsql.xml"
         ],
+        "test-coverage": [
+            "phpunit --configuration phpunit.mysql5.7.xml --coverage-php .phpunit.cache/code-coverage/mysql5.7.cov",
+            "phpunit --configuration phpunit.mysql8.0.xml --coverage-php .phpunit.cache/code-coverage/mysql8.0.cov",
+            "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
+            "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
+        ],
         "test-deprecation": "phpunit --configuration phpunit.deprecation.xml",
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
