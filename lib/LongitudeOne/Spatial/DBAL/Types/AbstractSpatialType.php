@@ -170,7 +170,7 @@ abstract class AbstractSpatialType extends Type
      */
     public function getSqlDeclaration(array $column, AbstractPlatform $platform)
     {
-        return $this->getSpatialPlatform($platform)->getSqlDeclaration($column);
+        return $this->getSpatialPlatform($platform)->getSqlDeclaration($column, $this, $column['srid'] ?? null);
     }
 
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
