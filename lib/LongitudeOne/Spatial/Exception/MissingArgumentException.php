@@ -16,10 +16,10 @@
 namespace LongitudeOne\Spatial\Exception;
 
 /**
- * InvalidValueException class.
+ * MissingArgumentException class.
  *
- * This exception is thrown when a geometric or geographic value is invalid.
+ * This exception is thrown when an argument is missing.
  */
-class InvalidValueException extends \Exception implements ExceptionInterface
+class MissingArgumentException extends \Exception implements ExceptionInterface
 {
 }
