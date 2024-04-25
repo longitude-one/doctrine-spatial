@@ -52,6 +52,9 @@ class PointTypeTest extends OrmTestCase
 
     // TODO test to find a null geometry
 
+    /**
+     * Test the declaration type.
+     */
     public function testDeclarationType(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
