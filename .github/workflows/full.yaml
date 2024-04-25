@@ -17,6 +17,7 @@ jobs:
     name: PHP${{ matrix.php }}/MySQL5.7/MySQL8.0/PgSQL
     env:
       HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
+      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
     services:
       mysql5:
         image: mysql:5.7
@@ -91,5 +92,13 @@ jobs:
       - name: Run test suite for forks
         if: env.HAS_CC_SECRET != 'true'
         run: composer run-script test
+      - name: Coveralls.io steps
+        if: env.HAS_CA_SECRET == 'true'
+        uses: coverallsapp/github-action@v2.1.0
+        env:
+          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          flag-name: run ${{ join(matrix.*, ' - ') }}
+          parallel: true
       - name: Check quality code
         run: composer run-script check-quality-code
+
