@@ -89,9 +89,12 @@ jobs:
         with:
            coverageCommand: composer run-script test-coverage
            coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
-      - name: Run test suite for forks
+      - name: Run test suite for forks without coverage
         if: ${{ matrix.php != '8.3' || env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
+      - name: Merging coverage files
+        if: ${{ matrix.php == '8.3' && env.HAS_CC_SECRET == 'true' }}
+        run: composer merge-coverage
       - name: Coveralls.io steps
         if: ${{ matrix.php == '8.3' && env.HAS_CA_SECRET == 'true' }}
         uses: coverallsapp/github-action@v2
