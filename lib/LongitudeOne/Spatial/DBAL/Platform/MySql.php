@@ -16,7 +16,8 @@
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * MySql5.7 and less spatial platform.
@@ -56,16 +57,22 @@ class MySql extends AbstractPlatform
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array $fieldDeclaration array SHALL contains 'type' as key
+     * @param array                $column array SHOULD contain 'type' as key
+     * @param ?AbstractSpatialType $type   type is now provided
+     * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *
      * @return string
+     *
+     * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
      */
-    public function getSqlDeclaration(array $fieldDeclaration)
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null)
     {
-        if (GeographyInterface::GEOGRAPHY === $fieldDeclaration['type']->getSQLType()) {
+        $type = parent::checkType($column, $type);
+
+        if (SpatialInterface::GEOGRAPHY === $type->getSQLType()) {
             return 'GEOMETRY';
         }
 
-        return mb_strtoupper($fieldDeclaration['type']->getSQLType());
+        return mb_strtoupper($type->getSQLType());
     }
 }

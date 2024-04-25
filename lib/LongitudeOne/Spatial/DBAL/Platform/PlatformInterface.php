@@ -16,6 +16,7 @@
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -86,9 +87,13 @@ interface PlatformInterface
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array $fieldDeclaration array SHALL contains 'type' as key
+     * @param array                $column array SHOULD contain 'type' as key
+     * @param ?AbstractSpatialType $type   type is now provided
+     * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *
      * @return string
+     *
+     * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
      */
-    public function getSqlDeclaration(array $fieldDeclaration);
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null);
 }
