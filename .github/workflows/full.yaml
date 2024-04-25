@@ -94,9 +94,9 @@ jobs:
         run: composer run-script test
       - name: Coveralls.io steps
         if: ${{ matrix.php == '8.3' && env.HAS_CA_SECRET == 'true' }}
-        uses: coverallsapp/github-action@v2.1.0
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          file: ${{github.workspace}}/.phpunit.cache/code-coverage/clover-pgsql.xml
+          files: ${{github.workspace}}/.phpunit.cache/code-coverage/clover-mysql5.7.xml ${{github.workspace}}/.phpunit.cache/code-coverage/clover-mysql8.0.xml ${{github.workspace}}/.phpunit.cache/code-coverage/clover-pgsql.xml
       - name: Check quality code
         run: composer run-script check-quality-code
