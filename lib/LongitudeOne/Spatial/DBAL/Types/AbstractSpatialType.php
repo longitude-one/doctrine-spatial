@@ -31,7 +31,7 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 /**
  * Abstract Doctrine GEOMETRY type.
  */
-abstract class AbstractSpatialType extends Type
+abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeInterface
 {
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
 
@@ -57,14 +57,14 @@ abstract class AbstractSpatialType extends Type
     /**
      * Converts a value from its PHP representation to its database representation of this type.
      *
-     * @param SpatialInterface $value    the value to convert
+     * @param mixed            $value    the value to convert
      * @param AbstractPlatform $platform the database platform
      *
      * @return string|null
      *
      * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (null === $value) {
             return null;
@@ -83,11 +83,9 @@ abstract class AbstractSpatialType extends Type
      * @param string           $sqlExpr  the SQL expression
      * @param AbstractPlatform $platform the database platform
      *
-     * @return string
-     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function convertToDatabaseValueSql($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSql($sqlExpr, AbstractPlatform $platform): string
     {
         return $this->getSpatialPlatform($platform)->convertToDatabaseValueSql($this, $sqlExpr);
     }
@@ -104,7 +102,7 @@ abstract class AbstractSpatialType extends Type
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
         if (null === $value) {
             return null;
@@ -125,11 +123,9 @@ abstract class AbstractSpatialType extends Type
      * @param string           $sqlExpr  SQL expression
      * @param AbstractPlatform $platform platform database
      *
-     * @return string
-     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function convertToPhpValueSql($sqlExpr, $platform)
+    public function convertToPhpValueSql($sqlExpr, $platform): string
     {
         return $this->getSpatialPlatform($platform)->convertToPhpValueSql($this, $sqlExpr);
     }
@@ -139,11 +135,9 @@ abstract class AbstractSpatialType extends Type
      *
      * @param AbstractPlatform $platform platform database
      *
-     * @return array
-     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function getMappedDatabaseTypes(AbstractPlatform $platform)
+    public function getMappedDatabaseTypes(AbstractPlatform $platform): array
     {
         return $this->getSpatialPlatform($platform)->getMappedDatabaseTypes($this);
     }
@@ -164,11 +158,9 @@ abstract class AbstractSpatialType extends Type
      * @param array            $column   the field declaration
      * @param AbstractPlatform $platform database platform
      *
-     * @return string
-     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function getSqlDeclaration(array $column, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $this->getSpatialPlatform($platform)->getSqlDeclaration($column, $this, $column['srid'] ?? null);
     }

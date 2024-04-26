@@ -26,12 +26,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Common test code.
  */
-abstract class OrmMockTestCase extends TestCase
+abstract class OrmMockTestCase extends SpatialTestCase
 {
     protected EntityManagerInterface $mockEntityManager;
 

@@ -46,7 +46,7 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
      *
      * @throws QueryException Query exception
      */
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
 
@@ -59,13 +59,13 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
         $this->addGeometryExpression($parser->ArithmeticFactor());
 
         // 2nd signature
-        if (TokenType::T_COMMA === $lexer->lookahead['type']) {
+        if (TokenType::T_COMMA === $lexer->lookahead->type) {
             $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
         }
 
         // 3rd signature
-        if (TokenType::T_COMMA === $lexer->lookahead['type']) {
+        if (TokenType::T_COMMA === $lexer->lookahead->type) {
             $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
@@ -73,7 +73,7 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
             // 4th signature
-            if (TokenType::T_COMMA === $lexer->lookahead['type']) {
+            if (TokenType::T_COMMA === $lexer->lookahead->type) {
                 // sizeM
                 $parser->match(TokenType::T_COMMA);
                 $this->addGeometryExpression($parser->ArithmeticFactor());

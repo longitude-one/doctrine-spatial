@@ -12,9 +12,17 @@
         </testsuite>
     </testsuites>
     <groups>
+        <include>
+            <group>php</group>
+            <group>dql</group>
+            <group>geometry</group>
+            <group>geography</group>
+            <group>srid</group>
+            <group>pgsql-only</group>
+            <group>issue</group>
+        </include>
         <exclude>
             <group>mysql-only</group>
-            <group>deprecation</group>
         </exclude>
     </groups>
     <php>
@@ -22,9 +30,12 @@
         <var name="db_host" value="spatial-postgis"/>
         <var name="db_username" value="main"/>
         <var name="db_password" value="main"/>
-        <!-- Change it -->
         <var name="db_name" value="main"/>
         <var name="db_port" value="5432"/>
+        <!-- PostgreSQL cannot drop current database, -->
+        <!-- Also, we connect on the alternate database, then we drop the main database -->
+        <var name="db_alternate" value="postgres"/>
+
         <!-- Select timezone for log -->
         <var name="opt_log_timezone" value="Europe/Paris"/>
         <!-- Select the log level : debug to get each request, info to get each starting test and disconnection -->

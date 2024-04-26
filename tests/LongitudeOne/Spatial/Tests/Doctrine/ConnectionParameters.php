@@ -39,6 +39,10 @@ class ConnectionParameters
             'port' => $GLOBALS['db_port'],
         ];
 
+        if (isset($GLOBALS['db_name'])) {
+            $connectionParams['dbname'] = $GLOBALS['db_name'];
+        }
+
         if (isset($GLOBALS['db_server'])) {
             $connectionParams['server'] = $GLOBALS['db_server'];
         }
@@ -66,20 +70,26 @@ class ConnectionParameters
     public static function getConnectionParameters(): array
     {
         $parameters = static::getCommonConnectionParameters();
-        $parameters['dbname'] = $GLOBALS['db_name'];
+        $parameters['dbname'] = static::getAlternateDatabaseName();
 
         $connection = DriverManager::getConnection($parameters);
-        $dbName = $connection->getDatabase();
-
-        $connection->close();
-
-        $tmpConnection = DriverManager::getConnection(static::getCommonConnectionParameters());
-
-        $manager = $tmpConnection->createSchemaManager();
+        $manager = $connection->createSchemaManager();
+        $dbName = $GLOBALS['db_name'];
         $manager->dropDatabase($dbName);
         $manager->createDatabase($dbName);
-        $tmpConnection->close();
+        $parameters['dbname'] = $dbName;
 
         return $parameters;
+    }
+
+    /**
+     * Return connection parameters for alternate database.
+     *
+     * Alternate database is used with PostgreSQL and doctrine/orm3.0,
+     * because we cannot drop database as long as we are connected to it.
+     */
+    private static function getAlternateDatabaseName(): ?string
+    {
+        return $GLOBALS['db_alternate'] ?? $GLOBALS['db_name'] ?? static::getCommonConnectionParameters()['dbname'];
     }
 }

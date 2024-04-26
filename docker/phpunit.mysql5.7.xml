@@ -12,6 +12,14 @@
         </testsuite>
     </testsuites>
     <groups>
+        <include>
+            <group>php</group>
+            <group>dql</group>
+            <group>geometry</group>
+            <group>srid</group>
+            <group>mysql-only</group>
+            <group>issue</group>
+        </include>
         <exclude>
             <group>pgsql-only</group>
             <group>srid</group>

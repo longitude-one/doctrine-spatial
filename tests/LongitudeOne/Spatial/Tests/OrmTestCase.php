@@ -21,10 +21,9 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform;
-use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\UnknownColumnType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -34,6 +33,7 @@ use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\Mapping\MappingException;
+use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType as GeographyPolygonType;
@@ -156,7 +156,6 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
-use PHPUnit\Framework\TestCase;
 
 // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
 // phpcs miss the Exception
@@ -164,7 +163,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Abstract ORM test class.
  */
-abstract class OrmTestCase extends TestCase
+abstract class OrmTestCase extends SpatialTestCase
 {
     // Fixtures and entities
     public const GEO_LINESTRING_ENTITY = GeoLineStringEntity::class;
@@ -305,8 +304,8 @@ abstract class OrmTestCase extends TestCase
     protected function setUp(): void
     {
         $skipped = true;
-        foreach ($this->supportedPlatforms as $platform => $supported) {
-            if ($supported && $this->getPlatform() instanceof $platform) {
+        foreach ($this->supportedPlatforms as $platformInterface => $supported) {
+            if ($supported && $this->getPlatform() instanceof $platformInterface) {
                 $skipped = false;
             }
         }
@@ -340,48 +339,6 @@ abstract class OrmTestCase extends TestCase
         } catch (Exception|MappingException|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to clear table before test: %s', $e->getMessage()));
         }
-    }
-
-    /**
-     * Assert big polygon.
-     *
-     * @param mixed            $value    Value to test
-     * @param AbstractPlatform $platform the platform
-     */
-    protected static function assertBigPolygon($value, AbstractPlatform $platform): void
-    {
-        $expected = 'POLYGON((0 10,10 10,10 0,0 0,0 10))';
-        if ($platform instanceof MySQLPlatform) {
-            // MySQL does not respect creation order of points composing a Polygon.
-            $expected = 'POLYGON((0 10,0 0,10 0,10 10,0 10))';
-        }
-
-        static::assertSame($expected, $value);
-    }
-
-    /**
-     * Assert empty geometry.
-     * MySQL5 does not return the standard answer, but this bug was solved in MySQL8.
-     * So test for an empty geometry is a little more complex than to compare two strings.
-     *
-     * @param mixed                 $value    Value to test
-     * @param AbstractPlatform|null $platform the platform
-     */
-    protected static function assertEmptyPoint($value, ?AbstractPlatform $platform = null): void
-    {
-        $expected = 'POINT EMPTY';
-
-        if ($platform instanceof MySQL57Platform) {
-            // MySQL5 does not return the standard answer
-            $expected = 'GEOMETRYCOLLECTION()';
-        }
-
-        if ($platform instanceof MySQL80Platform) {
-            // MySQL8 does not return the standard answer
-            $expected = 'GEOMETRYCOLLECTION EMPTY';
-        }
-
-        static::assertSame($expected, $value);
     }
 
     /**
@@ -534,17 +491,18 @@ abstract class OrmTestCase extends TestCase
                 }
 
                 try {
-                    $type = Type::getType($typeName);
-
-                    // Since doctrineTypeComments may already be initialized check if added type requires comment
-                    // TODO @see https://github.com/doctrine/dbal/pull/5058/files
-                    // TODO @see https://github.com/longitude-one/doctrine-spatial/issues/42
-                    $platform = $this->getPlatform();
-                    if ($type->requiresSQLCommentHint($platform) && !$platform->isCommentedDoctrineType($type)) {
-                        $this->getPlatform()->markDoctrineTypeCommented(Type::getType($typeName));
-                    }
+                    $message = sprintf('The type "%s" doesn\t implement DoctrineSpatialTypeInteface', $typeName);
+                    static::assertInstanceOf(
+                        DoctrineSpatialTypeInterface::class,
+                        Type::getType($typeName),
+                        $message
+                    );
+                } catch (UnknownColumnType $e) {
+                    static::fail(sprintf('Unregistered type %s: %s', $typeName, $e->getMessage()));
                 } catch (Exception $e) {
-                    static::fail(sprintf('Unable to get type %s: %s', $typeName, $e->getMessage()));
+                    static::fail(
+                        sprintf('Unknown exception when getting type %s: %s', $typeName, $e->getMessage())
+                    );
                 }
 
                 static::$addedTypes[$typeName] = true;

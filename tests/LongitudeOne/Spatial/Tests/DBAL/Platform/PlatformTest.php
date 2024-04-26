@@ -21,7 +21,11 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
+use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
+use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
+use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
@@ -29,7 +33,7 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 /**
  * Spatial platform tests.
  *
- * @group geometry
+ * @group pg-only
  *
  * @internal
  *
@@ -53,6 +57,47 @@ class PlatformTest extends OrmMockTestCase
         }
 
         parent::setUp();
+    }
+
+    /**
+     * Test SRID returned by getSqlDeclaration.
+     *
+     * @throws InvalidValueException    this SHALL happen
+     * @throws MissingArgumentException this SHOULD NOT happen
+     */
+    public function testSrid(): void
+    {
+        $platform = new PostgreSql();
+        $expected = 'Geography(LineString,4026)';
+        $lineStringType = new LineStringType();
+        static::assertSame($expected, $platform->getSqlDeclaration(['srid' => []], $lineStringType, 4026));
+
+        $platform = new PostgreSql();
+        static::assertSame($expected, $platform->getSqlDeclaration(['srid' => 4026], $lineStringType));
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('SRID SHALL be an integer, but a array is provided');
+        $platform->getSqlDeclaration(['srid' => []], $lineStringType);
+    }
+
+    /**
+     * @throws InvalidValueException    the non-expected exception
+     * @throws MissingArgumentException the expected exception
+     */
+    public function testType(): void
+    {
+        $platform = new PostgreSql();
+
+        $expected = 'Geometry(Point)';
+        $column = ['type' => new PointType()];
+
+        static::assertSame($expected, $platform->getSqlDeclaration($column, new PointType()));
+        static::assertSame($expected, $platform->getSqlDeclaration([], new PointType()));
+        static::assertSame($expected, $platform->getSqlDeclaration($column));
+
+        self::expectException(MissingArgumentException::class);
+        self::expectExceptionMessage('Arguments aren\'t well defined. Please provide a type.');
+        $platform->getSqlDeclaration([]);
     }
 
     /**

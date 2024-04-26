@@ -81,7 +81,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      *
      * @throws QueryException Query exception
      */
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
 
@@ -92,7 +92,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
 
         while (count($this->geometryExpression) < $this->getMinParameter()
             || ((count($this->geometryExpression) < $this->getMaxParameter())
-                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead['type'])
+                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead->type)
         ) {
             $parser->match(TokenType::T_COMMA);
 
