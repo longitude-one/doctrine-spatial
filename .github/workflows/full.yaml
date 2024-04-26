@@ -86,7 +86,7 @@ jobs:
         run: composer --prefer-stable update -vvv
       - name: Upgrade libraries to 3.0
         if: ${{ '3.0' == matrix.orm }}
-        run: composer --prefer-stable require doctrine/orm:3.0 longitude-one/geo-parser:3.0.0.RC longitude-one/wkb-parser:3.0.0.RC longitude-one/wkt-parser:3.0.0.RC
+        run: composer --prefer-stable require doctrine/orm:3.0 longitude-one/geo-parser:3.0.0.RC longitude-one/wkb-parser:3.0.0.RC longitude-one/wkt-parser:3.0.0.RC --with-all-dependencies
       - name: Run test suite and coverage
         if: ${{ matrix.php == '8.3' && env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
