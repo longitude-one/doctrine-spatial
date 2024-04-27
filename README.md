@@ -6,16 +6,21 @@ Currently, MySQL and PostgreSQL with PostGIS are supported.
 Could potentially add support for other platforms if an interest is expressed.
 
 ## Current status
+![longitude-one/doctrine--spatial](https://img.shields.io/badge/longitude--one-doctrine--spatial-blue)
+![Stable release](https://img.shields.io/github/v/release/longitude-one/doctrine-spatial)
+![Minimum PHP Version](https://img.shields.io/packagist/php-v/longitude-one/wkt-parser.svg?maxAge=3600)
+[![Packagist License](https://img.shields.io/packagist/l/longitude-one/doctrine-spatial)](https://github.com/longitude-one/doctrine-spatial/blob/main/LICENSE)
+
 [![Last integration test](https://github.com/longitude-one/doctrine-spatial/actions/workflows/full.yaml/badge.svg)](https://github.com/longitude-one/doctrine-spatial/actions/workflows/full.yaml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/92b245a85ab4fbaca5d2/maintainability)](https://codeclimate.com/github/longitude-one/doctrine-spatial/maintainability)
 [![Downloads](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
-[![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/92b245a85ab4fbaca5d2/test_coverage)](https://codeclimate.com/github/longitude-one/doctrine-spatial/test_coverage)
+[![Documentation Status](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=latest)](https://lo-doctrine-spatial.readthedocs.io/en/latest/?badge=latest)
 
 Documentation 
 -------------
 
-The [new documentation](https://doctrine-spatial.readthedocs.io) explain how to:
+The [documentation](https://doctrine-spatial.readthedocs.io) explain how to:
 
 * install this doctrine extension,
 * configure this extension,
@@ -31,10 +36,7 @@ Alexandre Tranchant forked it from [creof/doctrine-spatial](https://github.com/c
 because project seems to be non-active since 2017.
 
 The `dev` branch can be used, but be careful backward compatibility aren't warrantied.
-The `main` branch will be dedicated to fix issue.
-The release 3.0 has been published during summer 2021.
-The release 4.0 will be published during spring 2023 and compatibility with PHP7.4 and 8.0 will be abandoned because of 
-[PHP roadmap](https://www.php.net/supported-versions.php)
+The `main` branch is dedicated to fix issue in the last stable version.
 
 Compatibility
 -------------
@@ -43,21 +45,12 @@ This doctrine extension is compatible with PHP 8.1+
 Security fixes will follow the [PHP Roadmap](https://www.php.net/supported-versions.php).
 
 ### MySQL 5.7 and 8.0
-A lot of functions change their names between these two versions. The [MySQL 5.7 deprecated functions](https://stackoverflow.com/questions/60377271/why-some-spatial-functions-does-not-exists-on-my-mysql-server)
-are not implemented.
-
-### MariaDB 10
-This version is **NOT** compatible with MariaDB version. Some spatial functions seems to work, but their results are 
-different from MySQL version (StContains function is a good example). 
+MySQL5.7 is supported, but is deprecated.
+MySQL8.0 is supported.
 
 ### PostgreSQL
-This spatial library is compatible with PostgreSql13. 
-This library is tested with Postgis 3.1.
-
-### Migrating from creof/doctrine2-spatial
-Update your composer.json to replace `creof/doctrine2-spatial` by `longitude-one/doctrine-spatial`.
-
-Update the namespace, each `use CrEOF\Spatial\...` by `use LongitudeOne\Spatial\...`
+This spatial library is compatible with PostgreSql. 
+This library is tested with the last versions of Postgis and PostgreSql.
 
 ## Help wanted
 
