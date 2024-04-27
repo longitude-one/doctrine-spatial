@@ -33,10 +33,11 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 /**
  * Spatial platform tests.
  *
- * @group pg-only
+ * @group pgsql-only
  *
  * @internal
  *
+ * @covers \LongitudeOne\Spatial\DBAL\Platform\AbstractPlatform
  * @covers \LongitudeOne\Spatial\DBAL\Platform\MySql
  * @covers \LongitudeOne\Spatial\DBAL\Platform\PostgreSql
  */
