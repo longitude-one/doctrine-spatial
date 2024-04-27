@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -37,7 +39,7 @@ class StSetSRID extends AbstractSpatialDQLFunction
     }
 
     /**
-     * Maximum number of parameter for the spatial function.
+     * Maximum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
@@ -49,7 +51,7 @@ class StSetSRID extends AbstractSpatialDQLFunction
     }
 
     /**
-     * Minimum number of parameter for the spatial function.
+     * Minimum number of parameters for the spatial function.
      *
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
@@ -64,11 +66,12 @@ class StSetSRID extends AbstractSpatialDQLFunction
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql'];
+        return [PostgreSQLPlatform::class, MySQLPlatform::class];
     }
 }

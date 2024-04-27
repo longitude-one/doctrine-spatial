@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
@@ -39,11 +41,13 @@ class LineStringTypeTest extends OrmTestCase
     use PersistHelperTrait;
 
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 

@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -16,6 +16,8 @@
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
@@ -33,7 +35,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class SchemaTest extends OrmTestCase
 {
     /**
-     * Setup the geography type test.
+     * Set up the geography type test.
      */
     protected function setUp(): void
     {
@@ -45,13 +47,15 @@ class SchemaTest extends OrmTestCase
         $this->usesEntity(self::MULTIPOLYGON_ENTITY);
 
         // TODO : Verify what MySQL can do with geography
-        if ('postgresql' === $this->getPlatform()->getName()) {
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             $this->usesEntity(self::GEOGRAPHY_ENTITY);
             $this->usesEntity(self::GEO_POINT_SRID_ENTITY);
             $this->usesEntity(self::GEO_LINESTRING_ENTITY);
             $this->usesEntity(self::GEO_POLYGON_ENTITY);
         }
 
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 

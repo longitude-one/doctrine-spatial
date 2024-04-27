@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -35,12 +36,13 @@ class StPerimeterTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        // TODO Check if MySQL doesn't support this function or if I missed it
 
         parent::setUp();
     }

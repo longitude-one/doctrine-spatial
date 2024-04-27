@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -18,6 +18,7 @@ namespace LongitudeOne\Spatial\DBAL\Platform;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -26,7 +27,8 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://dlambert.mit-license.org MIT */
+ * @license https://dlambert.mit-license.org MIT
+ */
 class PostgreSql extends AbstractPlatform
 {
     public const DEFAULT_SRID = 4326;
@@ -113,21 +115,32 @@ class PostgreSql extends AbstractPlatform
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array $fieldDeclaration array SHALL contains 'type' as key
+     * @param array                $column array SHOULD contain 'type' as key
+     * @param ?AbstractSpatialType $type   type is now provided
+     * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *
      * @return string
+     *
+     * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
+     * @throws InvalidValueException    when SRID is not null nor an integer
      */
-    public function getSqlDeclaration(array $fieldDeclaration)
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null)
     {
-        $typeFamily = $fieldDeclaration['type']->getTypeFamily();
-        $sqlType = $fieldDeclaration['type']->getSQLType();
+        $type = parent::checkType($column, $type);
+        $srid = parent::checkSrid($column, $srid);
+        $typeFamily = $type->getTypeFamily();
+        $sqlType = $type->getSQLType();
 
         if ($typeFamily === $sqlType) {
             return $sqlType;
         }
 
-        if (isset($fieldDeclaration['srid'])) {
-            return sprintf('%s(%s,%d)', $typeFamily, $sqlType, $fieldDeclaration['srid']);
+        if (null === $srid && key_exists('srid', $column) && null !== $column['srid']) {
+            $srid = (int) $column['srid'];
+        }
+
+        if (!empty($srid)) {
+            return sprintf('%s(%s,%d)', $typeFamily, $sqlType, $srid);
         }
 
         return sprintf('%s(%s)', $typeFamily, $sqlType);

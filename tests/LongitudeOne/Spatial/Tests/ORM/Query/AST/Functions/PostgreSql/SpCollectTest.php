@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\Mapping\MappingException;
@@ -40,12 +41,12 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class SpCollectTest extends OrmTestCase
 {
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }

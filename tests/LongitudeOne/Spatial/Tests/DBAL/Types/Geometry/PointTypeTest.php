@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
@@ -38,12 +40,40 @@ class PointTypeTest extends OrmTestCase
     use PointHelperTrait;
 
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
+    }
+
+    // TODO test to find a null geometry
+
+    /**
+     * Test the declaration type.
+     */
+    public function testDeclarationType(): void
+    {
+        $this->usesEntity(self::POINT_ENTITY);
+        $metadata = $this->getEntityManager()->getClassMetadata(PointEntity::class);
+
+        // Set the type
+        $type = null;
+        if (is_array($metadata->getFieldMapping('point'))) {
+            // doctrine/orm:2.9
+            $type = $metadata->getFieldMapping('point')['type'];
+        }
+        if (is_object($metadata->getFieldMapping('point'))) {
+            // doctrine/orm:3.1, doctrine/orm:4.0
+            $type = $metadata->getFieldMapping('point')->type;
+        }
+
+        // Check the type
+        static::assertNotNull($type, 'This test is not compatible with this version of doctrine/orm');
+        static::assertEquals('point', $type);
     }
 
     /**
@@ -80,6 +110,4 @@ class PointTypeTest extends OrmTestCase
         $entity = $this->persistPointA();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
     }
-
-    // TODO test to find a null geometry
 }

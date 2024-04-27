@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,6 +15,8 @@
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
@@ -45,12 +47,14 @@ class GeometryTypeTest extends OrmTestCase
     use PolygonHelperTrait;
 
     /**
-     * Setup the geography type test.
+     * Set up the geography type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesEntity(self::NO_HINT_GEOMETRY_ENTITY);
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
@@ -60,7 +64,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testBadGeometryValue(): void
     {
         static::expectException(InvalidValueException::class);
-        static::expectExceptionMessage('Geometry column values must implement GeometryInterface');
+        static::expectExceptionMessage('Spatial column values must implement SpatialInterface');
 
         $entity = new NoHintGeometryEntity();
         $entity->setGeometry('POINT(0 0)');

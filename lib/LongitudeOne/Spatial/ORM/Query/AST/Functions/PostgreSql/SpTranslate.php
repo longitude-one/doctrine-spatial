@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,11 +15,14 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
  * ST_Translate DQL function.
+ *
+ * TODO add test for this function
  *
  * @author  Tom Vogt <tom@lemuria.org>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -65,11 +68,12 @@ class SpTranslate extends AbstractSpatialDQLFunction implements ReturnsGeometryI
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql'];
+        return [PostgreSQLPlatform::class];
     }
 }

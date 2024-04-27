@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,11 +15,12 @@
 
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
-use CrEOF\Geo\WKB\Parser as BinaryParser;
+use LongitudeOne\Geo\WKB\Parser as BinaryParser;
 use LongitudeOne\Geo\WKT\Parser as StringParser;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -32,6 +33,49 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  */
 abstract class AbstractPlatform implements PlatformInterface
 {
+    /**
+     * Check both arguments and return srid when possible.
+     *
+     * @param array<string, mixed> $column array MAY contain 'srid' as key
+     * @param ?int                 $srid   srid MAY be provided
+     *
+     * @throws InvalidValueException when SRID is not null nor an integer
+     */
+    protected static function checkSrid(array $column, ?int $srid): ?int
+    {
+        $srid = $srid ?? $column['srid'] ?? null;
+
+        if (null !== $srid && !is_int($srid)) {
+            $message = sprintf(
+                'SRID SHALL be an integer, but a %s is provided',
+                gettype($srid)
+            );
+
+            throw new InvalidValueException($message);
+        }
+
+        return $srid;
+    }
+
+    /**
+     * Check both argument and return AbstractSpatialType when possible.
+     *
+     * @param array<string, mixed> $column array SHOULD contain 'type' as key
+     * @param ?AbstractSpatialType $type   type is now provided
+     *
+     * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
+     */
+    protected static function checkType(array $column, ?AbstractSpatialType $type): AbstractSpatialType
+    {
+        $type = $type ?? $column['type'] ?? null;
+
+        if (!$type instanceof AbstractSpatialType) {
+            throw new MissingArgumentException('Arguments aren\'t well defined. Please provide a type.');
+        }
+
+        return $type;
+    }
+
     /**
      * Convert binary data to a php value.
      *

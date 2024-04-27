@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -26,17 +26,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Common test code.
  */
-abstract class OrmMockTestCase extends TestCase
+abstract class OrmMockTestCase extends SpatialTestCase
 {
     protected EntityManagerInterface $mockEntityManager;
 
     /**
-     * Setup the mocked entity manager.
+     * Set up the mocked entity manager.
      *
      * @throws Exception    when connection is not successful
      * @throws ORMException when cache is not set
@@ -61,13 +60,10 @@ abstract class OrmMockTestCase extends TestCase
             ->getMock()
         ;
         $platform = $this->getMockBuilder(SqlitePlatform::class)
-            ->onlyMethods(['getName'])
+            ->onlyMethods([])
             ->getMock()
         ;
 
-        $platform->method('getName')
-            ->willReturn('YourSQL')
-        ;
         $driver->method('getDatabasePlatform')
             ->willReturn($platform)
         ;
@@ -97,6 +93,6 @@ abstract class OrmMockTestCase extends TestCase
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 
-        return EntityManager::create($this->getMockConnection(), $config);
+        return new EntityManager($this->getMockConnection(), $config);
     }
 }

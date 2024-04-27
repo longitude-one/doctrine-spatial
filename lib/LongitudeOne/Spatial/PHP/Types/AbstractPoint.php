@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,9 +15,9 @@
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use CrEOF\Geo\String\Exception\RangeException;
-use CrEOF\Geo\String\Exception\UnexpectedValueException;
-use CrEOF\Geo\String\Parser;
+use LongitudeOne\Geo\String\Exception\RangeException;
+use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
+use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
@@ -135,7 +135,9 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X setter. (Latitude setter).
      *
-     * @param mixed $x the new X
+     * todo force string in version 5
+     *
+     * @param string $x the new X
      *
      * @return self
      *
@@ -143,9 +145,19 @@ abstract class AbstractPoint extends AbstractGeometry
      */
     public function setX($x)
     {
-        $parser = new Parser($x);
+        if (!is_string($x)) {
+            // TODO remove this line in version 5
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
+        }
+        $parser = new Parser((string) $x);
 
         try {
+            // TODO replace with a string
             $this->x = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
@@ -157,7 +169,9 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y setter. Longitude Setter.
      *
-     * @param mixed $y the new Y value
+     * todo force string in version 5
+     *
+     * @param string $y the new Y value
      *
      * @return self
      *
@@ -165,9 +179,19 @@ abstract class AbstractPoint extends AbstractGeometry
      */
     public function setY($y)
     {
-        $parser = new Parser($y);
+        if (!is_string($y)) {
+            // TODO remove this line in version 5
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '4.1',
+                'Passing a non-string value to %s is deprecated, pass a string instead.',
+                __METHOD__
+            );
+        }
+        $parser = new Parser((string) $y);
 
         try {
+            // TODO replace with a string
             $this->y = (float) $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
@@ -243,11 +267,11 @@ abstract class AbstractPoint extends AbstractGeometry
         }
 
         array_walk($argv, function (&$value) {
-            if (is_array($value)) {
-                $value = 'Array';
-            } else {
-                $value = sprintf('"%s"', $value);
+            $tmp = 'Array';
+            if (!is_array($value)) {
+                $tmp = sprintf('"%s"', $value);
             }
+            $value = $tmp;
         });
 
         throw new InvalidValueException(sprintf(

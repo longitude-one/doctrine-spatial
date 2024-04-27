@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP 8.1 | 8.2 | 8.3
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -15,9 +15,10 @@
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\ORM\Query\Lexer;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\Query\TokenType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
@@ -45,41 +46,41 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
      *
      * @throws QueryException Query exception
      */
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
 
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         // 1st signature
         $this->addGeometryExpression($parser->ArithmeticFactor());
-        $parser->match(Lexer::T_COMMA);
+        $parser->match(TokenType::T_COMMA);
         $this->addGeometryExpression($parser->ArithmeticFactor());
 
         // 2nd signature
-        if (Lexer::T_COMMA === $lexer->lookahead['type']) {
-            $parser->match(Lexer::T_COMMA);
+        if (TokenType::T_COMMA === $lexer->lookahead->type) {
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
         }
 
         // 3rd signature
-        if (Lexer::T_COMMA === $lexer->lookahead['type']) {
-            $parser->match(Lexer::T_COMMA);
+        if (TokenType::T_COMMA === $lexer->lookahead->type) {
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
-            $parser->match(Lexer::T_COMMA);
+            $parser->match(TokenType::T_COMMA);
             $this->addGeometryExpression($parser->ArithmeticFactor());
 
             // 4th signature
-            if (Lexer::T_COMMA === $lexer->lookahead['type']) {
+            if (TokenType::T_COMMA === $lexer->lookahead->type) {
                 // sizeM
-                $parser->match(Lexer::T_COMMA);
+                $parser->match(TokenType::T_COMMA);
                 $this->addGeometryExpression($parser->ArithmeticFactor());
             }
         }
 
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
     /**
@@ -120,11 +121,12 @@ class SpSnapToGrid extends AbstractSpatialDQLFunction implements ReturnsGeometry
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql'];
+        return [PostgreSQLPlatform::class];
     }
 }
