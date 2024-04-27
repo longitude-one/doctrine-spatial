@@ -85,7 +85,6 @@ jobs:
       - name: Install libraries
         run: composer --prefer-stable update -vvv
       - name: Force doctrine/orm library to ${{ matrix.orm }}
-        if: ${{ '3.1' != matrix.orm }}
         run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
       - name: Run test suite and coverage
         if: ${{ matrix.php == '8.3' && env.HAS_CC_SECRET == 'true' }}
