@@ -54,7 +54,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointSelect()
+    public function testStEndPointSelect(): void
     {
         $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -74,7 +74,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointWhereCompareLineString()
+    public function testStEndPointWhereCompareLineString(): void
     {
         $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -100,7 +100,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointWhereComparePoint()
+    public function testStEndPointWhereComparePoint(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();

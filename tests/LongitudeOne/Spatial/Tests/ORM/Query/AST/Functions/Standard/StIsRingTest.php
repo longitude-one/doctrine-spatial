@@ -52,7 +52,7 @@ class StIsRingTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $straight = $this->persistStraightLineString();
         $ring = $this->persistRingLineString();

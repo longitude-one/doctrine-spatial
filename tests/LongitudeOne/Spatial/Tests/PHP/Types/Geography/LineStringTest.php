@@ -15,6 +15,7 @@
 
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
+use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
@@ -41,8 +42,10 @@ class LineStringTest extends TestCase
 {
     /**
      * Test interfaces.
+     *
+     * @throws InvalidValueException This shall not happen
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $pointOrigin = new Point('113:4:0W', '32:27:0N');
         $pointFinal = new Point('113:4:0W', '32:27:0N');

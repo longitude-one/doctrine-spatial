@@ -56,7 +56,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straight = $this->persistStraightLineString();
         $lineC = $this->persistLineStringC();
@@ -87,7 +87,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithPolygonInSelect()
+    public function testFunctionWithPolygonInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

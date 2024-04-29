@@ -53,7 +53,7 @@ class CoordinateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectCoordinates()
+    public function testSelectCoordinates(): void
     {
         $pointO = $this->persistPointO();
         $pointA = $this->persistPointA();

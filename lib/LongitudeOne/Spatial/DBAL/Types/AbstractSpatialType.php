@@ -24,7 +24,6 @@ use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -60,11 +59,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      * @param mixed            $value    the value to convert
      * @param AbstractPlatform $platform the database platform
      *
-     * @return string|null
-     *
      * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
             return null;
@@ -188,7 +185,7 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      */
     public function getTypeFamily()
     {
-        return $this instanceof GeographyType ? GeographyInterface::GEOGRAPHY : GeometryInterface::GEOMETRY;
+        return $this instanceof GeographyType ? SpatialInterface::GEOGRAPHY : SpatialInterface::GEOMETRY;
     }
 
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps

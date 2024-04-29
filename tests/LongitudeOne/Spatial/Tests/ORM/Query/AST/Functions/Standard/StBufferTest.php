@@ -52,7 +52,7 @@ class StBufferTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStBuffer()
+    public function testSelectStBuffer(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();

@@ -54,7 +54,7 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();
@@ -79,7 +79,7 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelectWith3Parameters()
+    public function testFunctionInSelectWith3Parameters(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $massachusetts = $this->persistMassachusettsState(false);
@@ -103,7 +103,7 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelectWithSrid()
+    public function testFunctionInSelectWithSrid(): void
     {
         $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();

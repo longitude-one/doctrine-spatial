@@ -54,7 +54,7 @@ class StIsEmptyTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

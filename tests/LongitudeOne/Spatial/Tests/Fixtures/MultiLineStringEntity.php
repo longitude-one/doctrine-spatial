@@ -34,36 +34,26 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
 #[Entity]
 class MultiLineStringEntity
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var MultiLineString
-     */
     #[Column(type: 'multilinestring', nullable: true)]
-    protected $multiLineString;
+    protected MultiLineString $multiLineString;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get multiLineString.
-     *
-     * @return MultiLineString
      */
-    public function getMultiLineString()
+    public function getMultiLineString(): MultiLineString
     {
         return $this->multiLineString;
     }
@@ -75,7 +65,7 @@ class MultiLineStringEntity
      *
      * @return self
      */
-    public function setMultiLineString(MultiLineString $multiLineString)
+    public function setMultiLineString(MultiLineString $multiLineString): static
     {
         $this->multiLineString = $multiLineString;
 

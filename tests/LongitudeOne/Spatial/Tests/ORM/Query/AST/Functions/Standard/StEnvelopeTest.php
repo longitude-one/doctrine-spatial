@@ -54,7 +54,7 @@ class StEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStEnvelope()
+    public function testSelectStEnvelope(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -81,7 +81,7 @@ class StEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEnvelopeWhereParameter()
+    public function testStEnvelopeWhereParameter(): void
     {
         $holeyPolygon = $this->persistHoleyPolygon();
         $this->persistSmallPolygon();

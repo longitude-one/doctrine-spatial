@@ -58,7 +58,7 @@ class SpGeometryTypeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsText()
+    public function testStAsText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

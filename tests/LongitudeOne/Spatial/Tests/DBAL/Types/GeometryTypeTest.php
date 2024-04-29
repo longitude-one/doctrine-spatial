@@ -18,6 +18,7 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
@@ -79,6 +80,7 @@ class GeometryTypeTest extends OrmTestCase
     {
         $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
+        static::assertInstanceOf(GeometryInterface::class, $entity->getGeometry());
     }
 
     /**

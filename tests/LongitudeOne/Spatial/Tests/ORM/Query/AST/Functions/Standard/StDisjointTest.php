@@ -54,7 +54,7 @@ class StDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDisjoint()
+    public function testSelectStDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -86,7 +86,7 @@ class StDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStDisjointWhereParameter()
+    public function testStDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

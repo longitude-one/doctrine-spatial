@@ -18,7 +18,6 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
@@ -62,13 +61,12 @@ class SpSummaryTest extends OrmTestCase
      * Test a DQL containing function to test in the select with a geography.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
      * @group geography
      */
-    public function testSelectStSummaryGeography()
+    public function testSelectStSummaryGeography(): void
     {
         $point = new GeographyEntity();
         $point->setGeography(new GeographyPoint(5, 5));
@@ -112,7 +110,6 @@ class SpSummaryTest extends OrmTestCase
      * Test a DQL containing function to test in the select with a geometry.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *

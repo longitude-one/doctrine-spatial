@@ -52,7 +52,7 @@ class SpAzimuthTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $pointA = $this->persistPointA();
         $pointO = $this->persistPointO();

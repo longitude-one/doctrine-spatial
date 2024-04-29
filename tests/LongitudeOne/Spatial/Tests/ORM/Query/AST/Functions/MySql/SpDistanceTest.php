@@ -21,7 +21,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
  * ST_Distance MyQL function tests.
- * Be careful, MySQL implements ST_Distance, but this function does not respects the OGC Standard.
+ * Be careful, MySQL implements ST_Distance, but this function does not respect the OGC Standard.
  * So you should use this specific function.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -54,7 +54,7 @@ class SpDistanceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceGeometry()
+    public function testSelectStDistanceGeometry(): void
     {
         $pointO = $this->persistPointO();
         $pointA = $this->persistPointA();

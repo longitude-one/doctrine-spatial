@@ -283,9 +283,9 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create a Polygon from an array of linestrings.
+     * Create a Polygon from an array of lLine-strings.
      *
-     * @param array    $lineStrings the array of linestrings
+     * @param array    $lineStrings the array of line-strings
      * @param int|null $srid        Spatial Reference System Identifier
      *
      * @throws InvalidValueException when geometries are not valid

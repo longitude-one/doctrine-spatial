@@ -57,7 +57,7 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testLineString()
+    public function testLineString(): void
     {
         $lineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -82,7 +82,7 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPoint()
+    public function testPoint(): void
     {
         $pointA = $this->persistPointA();
         $this->getEntityManager()->flush();

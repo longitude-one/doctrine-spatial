@@ -52,7 +52,7 @@ class SpExpandTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInSelect()
+    public function testInSelect(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();

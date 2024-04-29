@@ -53,7 +53,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInPredicate()
+    public function testInPredicate(): void
     {
         $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -80,7 +80,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInSelect()
+    public function testInSelect(): void
     {
         $lineStringX = $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();

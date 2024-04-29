@@ -15,7 +15,7 @@
 
 namespace LongitudeOne\Spatial\ORM\Query;
 
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\AST\SelectExpression;
 use Doctrine\ORM\Query\ParserResult;
 use Doctrine\ORM\Query\QueryException;
@@ -43,9 +43,9 @@ class GeometryWalker extends SqlWalker
     /**
      * Initializes TreeWalker with important information about the ASTs to be walked.
      *
-     * @param AbstractQuery $query           the parsed Query
-     * @param ParserResult  $parserResult    the result of the parsing process
-     * @param array         $queryComponents the query components (symbol table)
+     * @param Query        $query           the parsed Query
+     * @param ParserResult $parserResult    the result of the parsing process
+     * @param array        $queryComponents the query components (symbol table)
      */
     public function __construct($query, $parserResult, array $queryComponents)
     {
@@ -61,9 +61,9 @@ class GeometryWalker extends SqlWalker
      *
      * @return string the SQL
      *
-     * @throws QueryException when error happend during walking into select expression
+     * @throws QueryException when error happen during walking into select expression
      */
-    public function walkSelectExpression($selectExpression)
+    public function walkSelectExpression(SelectExpression $selectExpression): string
     {
         $expr = $selectExpression->expression;
         $sql = parent::walkSelectExpression($selectExpression);

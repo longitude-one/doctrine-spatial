@@ -108,7 +108,7 @@ class PlatformTest extends OrmMockTestCase
      * @throws ORMException   when cache is not set
      * @throws ToolsException this should not happen
      */
-    public function testUnsupportedPlatform()
+    public function testUnsupportedPlatform(): void
     {
         self::expectException(UnsupportedPlatformException::class);
         self::expectExceptionMessageMatches('/^DBAL platform ".+" is not currently supported.$/');

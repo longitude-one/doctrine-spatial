@@ -32,36 +32,26 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 #[Entity]
 class GeoPointSridEntity
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var Point
-     */
     #[Column(type: 'geopoint', nullable: true, options: ['srid' => 4326])]
-    protected $point;
+    protected Point $point;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get geography.
-     *
-     * @return Point
      */
-    public function getPoint()
+    public function getPoint(): Point
     {
         return $this->point;
     }
@@ -73,7 +63,7 @@ class GeoPointSridEntity
      *
      * @return self
      */
-    public function setPoint(Point $point)
+    public function setPoint(Point $point): static
     {
         $this->point = $point;
 

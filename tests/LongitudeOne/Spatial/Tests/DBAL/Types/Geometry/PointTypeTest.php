@@ -79,7 +79,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its geometric.
      */
-    public function testFindByPoint()
+    public function testFindByPoint(): void
     {
         $point = static::createPointA();
         $entity = new PointEntity();
@@ -96,7 +96,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a null point and find it by its id.
      */
-    public function testNullPoint()
+    public function testNullPoint(): void
     {
         $entity = new PointEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -105,7 +105,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its id.
      */
-    public function testPoint()
+    public function testPoint(): void
     {
         $entity = $this->persistPointA();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

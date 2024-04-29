@@ -53,7 +53,7 @@ class StOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -88,9 +88,9 @@ class StOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
-        $bigPolyon = $this->persistBigPolygon();
+        $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
         $polygonW = $this->persistPolygonW();
         $holeyPolygon = $this->persistHoleyPolygon();
@@ -106,7 +106,7 @@ class StOverlapsTest extends OrmTestCase
         $result = $query->getResult();
 
         static::assertCount(4, $result);
-        static::assertEquals($bigPolyon, $result[0][0]);
+        static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);
         static::assertEquals(0, $result[1][1]);

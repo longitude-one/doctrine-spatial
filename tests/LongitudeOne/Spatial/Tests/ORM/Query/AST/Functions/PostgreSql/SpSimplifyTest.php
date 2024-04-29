@@ -53,7 +53,7 @@ class SpSimplifyTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();

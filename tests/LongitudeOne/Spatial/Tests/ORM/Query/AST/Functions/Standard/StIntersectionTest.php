@@ -54,7 +54,7 @@ class StIntersectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStIntersection()
+    public function testSelectStIntersection(): void
     {
         $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -86,7 +86,7 @@ class StIntersectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStIntersectionWhereParameter()
+    public function testStIntersectionWhereParameter(): void
     {
         $lineStringA = $this->persistLineStringA();
         $this->persistLineStringB();

@@ -54,7 +54,7 @@ class SpTranslateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -80,7 +80,7 @@ class SpTranslateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

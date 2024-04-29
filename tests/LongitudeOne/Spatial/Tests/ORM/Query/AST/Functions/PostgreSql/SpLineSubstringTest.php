@@ -52,7 +52,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -80,7 +80,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistLineStringA();

@@ -53,7 +53,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon and find it by its geometric.
      */
-    public function testFindByPolygon()
+    public function testFindByPolygon(): void
     {
         $polygon = $this->createBigPolygon();
         $entity = $this->persistPolygon($polygon);
@@ -66,7 +66,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null polygon and find it by its id.
      */
-    public function testNullPolygon()
+    public function testNullPolygon(): void
     {
         $entity = new PolygonEntity();
 
@@ -83,7 +83,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring and find it by its id.
      */
-    public function testPolygonRing()
+    public function testPolygonRing(): void
     {
         $entity = $this->persistHoleyPolygon();
         $id = $entity->getId();
@@ -95,7 +95,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a solid polygon and find it by its id.
      */
-    public function testSolidPolygon()
+    public function testSolidPolygon(): void
     {
         $entity = $this->persistBigPolygon();
         $id = $entity->getId();

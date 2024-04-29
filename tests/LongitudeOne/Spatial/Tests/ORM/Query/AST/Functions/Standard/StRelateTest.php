@@ -52,7 +52,7 @@ class StRelateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $linestring = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -75,7 +75,7 @@ class StRelateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();

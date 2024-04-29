@@ -78,7 +78,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiPolygon()
+    public function testEmptyMultiPolygon(): void
     {
         $multiPolygon = new MultiPolygon([]);
 
@@ -90,7 +90,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $multiPolygon = new MultiPolygon([]);
 
@@ -110,7 +110,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiPolygon","coordinates":[[[[0,0],[10,0],[10,10],[0,10],[0,0]]],[[[5,5],[7,5],[7,7],[5,7],[5,5]]]],"srid":null}';
@@ -149,7 +149,7 @@ class MultiPolygonTest extends TestCase
     }
 
     /**
-     * Test to get last polygon from a multipolygon created from a lot objects.
+     * Test to get last polygon from a multipolygon created from a lot of objects.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
@@ -187,11 +187,11 @@ class MultiPolygonTest extends TestCase
     }
 
     /**
-     * Test to get first polygon from a multipolygon created from a lot objects.
+     * Test to get first polygon from a multipolygon created from a lot of objects.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPolygonFromObjectsGetSinglePolygon()
+    public function testMultiPolygonFromObjectsGetSinglePolygon(): void
     {
         $firstPolygon = new Polygon(
             [
@@ -229,7 +229,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonAddPolygon()
+    public function testSolidMultiPolygonAddPolygon(): void
     {
         $expected = [
             new Polygon(
@@ -325,7 +325,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromArraysGetPolygons()
+    public function testSolidMultiPolygonFromArraysGetPolygons(): void
     {
         $expected = [
             new Polygon(
@@ -387,7 +387,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromArraysToString()
+    public function testSolidMultiPolygonFromArraysToString(): void
     {
         $expected = '((0 0,10 0,10 10,0 10,0 0)),((5 5,7 5,7 7,5 7,5 5))';
         $polygons = [
@@ -421,7 +421,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromObjectsToArray()
+    public function testSolidMultiPolygonFromObjectsToArray(): void
     {
         $expected = [
             [

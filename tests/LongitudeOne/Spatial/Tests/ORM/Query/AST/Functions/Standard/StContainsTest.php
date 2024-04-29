@@ -55,7 +55,7 @@ class StContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStContains()
+    public function testSelectStContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -84,7 +84,7 @@ class StContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStContainsWhereParameter()
+    public function testStContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $holeyPolygon = $this->persistHoleyPolygon();

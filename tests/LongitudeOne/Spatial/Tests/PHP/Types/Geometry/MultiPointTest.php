@@ -48,7 +48,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testBadLineString()
+    public function testBadLineString(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid MultiPoint Point value of type "integer"');
@@ -61,7 +61,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiPoint()
+    public function testEmptyMultiPoint(): void
     {
         $multiPoint = new MultiPoint([]);
 
@@ -73,7 +73,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $multiPoint = new MultiPoint([]);
 
@@ -93,7 +93,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"MultiPoint","coordinates":[[0,0],[0,5],[5,0],[0,0]],"srid":null}';
         $multiPoint = new MultiPoint(
@@ -120,7 +120,7 @@ class MultiPointTest extends TestCase
      * @throws InvalidValueException this should not happen
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointAddPoints()
+    public function testMultiPointAddPoints(): void
     {
         $expected = [
             new Point(0, 0),
@@ -151,7 +151,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetLastPoint()
+    public function testMultiPointFromArraysGetLastPoint(): void
     {
         $expected = new Point(3, 3);
         $multiPoint = new MultiPoint(
@@ -172,7 +172,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetPoints()
+    public function testMultiPointFromArraysGetPoints(): void
     {
         $expected = [
             new Point(0, 0),
@@ -199,7 +199,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetSinglePoint()
+    public function testMultiPointFromArraysGetSinglePoint(): void
     {
         $expected = new Point(1, 1);
         $multiPoint = new MultiPoint(
@@ -220,7 +220,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysToString()
+    public function testMultiPointFromArraysToString(): void
     {
         $expected = '0 0,0 5,5 0,0 0';
         $multiPoint = new MultiPoint(
@@ -240,7 +240,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromObjectsToArray()
+    public function testMultiPointFromObjectsToArray(): void
     {
         $expected = [
             [0, 0],

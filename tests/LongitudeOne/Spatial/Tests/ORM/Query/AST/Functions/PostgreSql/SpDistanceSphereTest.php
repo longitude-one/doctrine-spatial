@@ -53,7 +53,7 @@ class SpDistanceSphereTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceSphereGeometry()
+    public function testSelectStDistanceSphereGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();

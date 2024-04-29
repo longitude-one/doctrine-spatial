@@ -34,36 +34,26 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 #[Entity]
 class PointEntity
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var Point
-     */
     #[Column(type: 'point', nullable: true)]
-    protected $point;
+    protected Point $point;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get point.
-     *
-     * @return Point
      */
-    public function getPoint()
+    public function getPoint(): Point
     {
         return $this->point;
     }
@@ -75,7 +65,7 @@ class PointEntity
      *
      * @return self
      */
-    public function setPoint(Point $point)
+    public function setPoint(Point $point): static
     {
         $this->point = $point;
 

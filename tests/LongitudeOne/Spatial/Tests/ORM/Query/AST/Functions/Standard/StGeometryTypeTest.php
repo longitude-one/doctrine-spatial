@@ -53,7 +53,7 @@ class StGeometryTypeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

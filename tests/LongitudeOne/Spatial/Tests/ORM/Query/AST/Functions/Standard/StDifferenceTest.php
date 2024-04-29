@@ -53,7 +53,7 @@ class StDifferenceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDifference()
+    public function testSelectStDifference(): void
     {
         $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -92,7 +92,7 @@ class StDifferenceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStDifferenceWhereParameter()
+    public function testStDifferenceWhereParameter(): void
     {
         $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();

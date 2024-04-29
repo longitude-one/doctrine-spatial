@@ -55,7 +55,7 @@ class SpSplitTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();

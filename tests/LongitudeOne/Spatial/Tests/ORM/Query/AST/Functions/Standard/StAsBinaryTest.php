@@ -54,7 +54,7 @@ class StAsBinaryTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsBinary()
+    public function testStAsBinary(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

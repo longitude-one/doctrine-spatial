@@ -53,7 +53,7 @@ class StEqualsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $this->persistStraightLineString(); // Linestring has three points (0 0, 2 2, 5 5)
         $this->getEntityManager()->flush();

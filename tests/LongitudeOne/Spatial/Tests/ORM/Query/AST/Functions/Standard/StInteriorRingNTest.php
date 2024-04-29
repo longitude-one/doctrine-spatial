@@ -53,7 +53,7 @@ class StInteriorRingNTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStInteriorRingN()
+    public function testSelectStInteriorRingN(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

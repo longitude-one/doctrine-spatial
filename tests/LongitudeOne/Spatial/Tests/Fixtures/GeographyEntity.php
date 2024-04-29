@@ -32,36 +32,26 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 #[Entity]
 class GeographyEntity
 {
-    /**
-     * @var GeographyInterface
-     */
     #[Column(type: 'geography', nullable: true)]
-    protected $geography;
+    protected GeographyInterface $geography;
 
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
     /**
      * Get geography.
-     *
-     * @return GeographyInterface
      */
-    public function getGeography()
+    public function getGeography(): GeographyInterface
     {
         return $this->geography;
     }
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -73,7 +63,7 @@ class GeographyEntity
      *
      * @return self
      */
-    public function setGeography(GeographyInterface $geography)
+    public function setGeography(GeographyInterface $geography): static
     {
         $this->geography = $geography;
 

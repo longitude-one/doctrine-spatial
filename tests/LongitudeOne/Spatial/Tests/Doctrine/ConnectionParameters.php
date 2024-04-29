@@ -65,6 +65,8 @@ class ConnectionParameters
     /**
      * Return connection parameters.
      *
+     * @return array<string, string>
+     *
      * @throws Exception when connection is not successful
      */
     public static function getConnectionParameters(): array

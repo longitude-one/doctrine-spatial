@@ -52,7 +52,7 @@ class StPointOnSurfaceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -82,7 +82,7 @@ class StPointOnSurfaceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();

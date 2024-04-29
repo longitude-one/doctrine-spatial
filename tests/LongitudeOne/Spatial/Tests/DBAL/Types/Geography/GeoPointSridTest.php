@@ -69,7 +69,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Test a null geography.
      */
-    public function testNullGeography()
+    public function testNullGeography(): void
     {
         $entity = new GeoPointSridEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -78,7 +78,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Test to persist a geographic point then find it by its id.
      */
-    public function testPointGeographyById()
+    public function testPointGeographyById(): void
     {
         $entity = new GeoPointSridEntity();
 

@@ -56,7 +56,7 @@ class StSridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithGeography()
+    public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
 
@@ -79,7 +79,7 @@ class StSridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithGeometry()
+    public function testFunctionWithGeometry(): void
     {
         $this->persistGeometryPoint('A', 1, 1, 2154);
 

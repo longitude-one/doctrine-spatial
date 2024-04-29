@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 /**
  * SP_Buffer and SP_BufferStrategy DQL functions tests.
  * The ST_Buffer and ST_BufferStrategy SQL functions are specific to MySQL.
- * Thes tests verify their implementation in doctrine spatial.
+ * These tests verify their implementation in doctrine spatial.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -54,7 +54,7 @@ class SpBufferTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectSpBuffer()
+    public function testSelectSpBuffer(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();

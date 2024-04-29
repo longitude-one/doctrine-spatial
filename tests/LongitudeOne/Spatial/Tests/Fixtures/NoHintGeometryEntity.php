@@ -34,30 +34,25 @@ use Doctrine\ORM\Mapping\Table;
 class NoHintGeometryEntity
 {
     #[Column(type: 'geometry', nullable: true)]
-    protected $geometry;
+    protected mixed $geometry;
 
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
     /**
      * Get geometry.
      */
-    public function getGeometry()
+    public function getGeometry(): string
     {
         return $this->geometry;
     }
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -69,7 +64,7 @@ class NoHintGeometryEntity
      *
      * @return self
      */
-    public function setGeometry($geometry)
+    public function setGeometry(mixed $geometry): static
     {
         $this->geometry = $geometry;
 

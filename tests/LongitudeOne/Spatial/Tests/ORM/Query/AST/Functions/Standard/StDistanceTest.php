@@ -16,7 +16,6 @@
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
@@ -54,11 +53,9 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group geography
      */
-    public function testSelectStDistanceGeographyCartesian()
+    public function testSelectStDistanceGeographyCartesian(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -92,7 +89,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geography
      */
-    public function testSelectStDistanceGeographySpheroid()
+    public function testSelectStDistanceGeographySpheroid(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -125,7 +122,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceGeometryCartesian()
+    public function testSelectStDistanceGeometryCartesian(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();

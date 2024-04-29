@@ -337,7 +337,7 @@ trait PointHelperTrait
     /**
      * Create a geographic Point entity from an array of points.
      *
-     * @param GeographyPoint|array $point Point could be an array of X, Y or an instance of Point class
+     * @param GeographyPoint $point Point could be an array of X, Y or an instance of Point class
      */
     private function persistGeography(GeographyPoint $point): GeographyEntity
     {
@@ -352,7 +352,7 @@ trait PointHelperTrait
     /**
      * Create a geometric Point entity from an array of points.
      *
-     * @param GeometryPoint|array $point Point could be an array of X, Y or an instance of Point class
+     * @param GeometryPoint $point Point could be an array of X, Y or an instance of Point class
      */
     private function persistGeometry(GeometryPoint $point): GeometryPointEntity
     {

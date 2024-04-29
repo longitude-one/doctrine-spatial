@@ -34,36 +34,26 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 #[Entity]
 class MultiPolygonEntity
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var MultiPolygon
-     */
     #[Column(type: 'multipolygon', nullable: true)]
-    protected $multiPolygon;
+    protected MultiPolygon $multiPolygon;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get multipolygon.
-     *
-     * @return MultiPolygon
      */
-    public function getMultiPolygon()
+    public function getMultiPolygon(): MultiPolygon
     {
         return $this->multiPolygon;
     }
@@ -75,7 +65,7 @@ class MultiPolygonEntity
      *
      * @return self
      */
-    public function setMultiPolygon(MultiPolygon $multiPolygon)
+    public function setMultiPolygon(MultiPolygon $multiPolygon): static
     {
         $this->multiPolygon = $multiPolygon;
 

@@ -53,7 +53,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testLineStringGeography()
+    public function testLineStringGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -67,7 +67,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a null geography.
      */
-    public function testNullGeography()
+    public function testNullGeography(): void
     {
         $entity = new GeographyEntity();
         $this->assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -78,7 +78,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPointGeography()
+    public function testPointGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -91,7 +91,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPolygonGeography()
+    public function testPolygonGeography(): void
     {
         $entity = new GeographyEntity();
 

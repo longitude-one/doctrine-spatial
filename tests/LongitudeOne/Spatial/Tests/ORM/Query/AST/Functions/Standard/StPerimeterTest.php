@@ -52,7 +52,7 @@ class StPerimeterTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -78,7 +78,7 @@ class StPerimeterTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $bigPolyon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

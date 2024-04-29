@@ -46,7 +46,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiLineString()
+    public function testEmptyMultiLineString(): void
     {
         $multiLineString = new MultiLineString([]);
 
@@ -56,7 +56,7 @@ class MultiLineStringTest extends TestCase
     /**
      * Test interfaces.
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $multiLineString = new MultiLineString([]);
 
@@ -76,7 +76,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiLineString","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":null}';
@@ -114,7 +114,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromArraysToString()
+    public function testMultiLineStringFromArraysToString(): void
     {
         $expected = '(0 0,10 0,10 10,0 10,0 0),(0 0,10 0,10 10,0 10,0 0)';
         $lineStrings = [
@@ -144,7 +144,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsGetLastLineString()
+    public function testMultiLineStringFromObjectsGetLastLineString(): void
     {
         $firstLineString = new LineString(
             [
@@ -174,7 +174,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsGetSingleLineString()
+    public function testMultiLineStringFromObjectsGetSingleLineString(): void
     {
         $firstLineString = new LineString(
             [
@@ -204,7 +204,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsToArray()
+    public function testMultiLineStringFromObjectsToArray(): void
     {
         $expected = [
             [
@@ -253,7 +253,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiLineStringAddRings()
+    public function testSolidMultiLineStringAddRings(): void
     {
         $expected = [
             new LineString(
@@ -305,7 +305,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiLineStringFromArraysGetRings()
+    public function testSolidMultiLineStringFromArraysGetRings(): void
     {
         $expected = [
             new LineString(

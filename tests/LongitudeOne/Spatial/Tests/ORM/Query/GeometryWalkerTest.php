@@ -95,7 +95,7 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testGeometryWalkerBinary()
+    public function testGeometryWalkerBinary(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -108,7 +108,7 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testGeometryWalkerText()
+    public function testGeometryWalkerText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

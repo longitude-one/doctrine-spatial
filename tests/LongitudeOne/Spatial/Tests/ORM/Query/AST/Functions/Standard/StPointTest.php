@@ -53,7 +53,7 @@ class StPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $this->persistToursLambert93(false);
         $pointO = $this->persistPointO();
@@ -79,10 +79,10 @@ class StPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
-        $tours = $this->persistToursLambert93(true);
-        $this->persistGeometryParisLambert93(true);
+        $tours = $this->persistToursLambert93();
+        $this->persistGeometryParisLambert93();
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

@@ -53,7 +53,7 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature2Parameters()
+    public function testSelectStSnapToGridSignature2Parameters(): void
     {
         $this->persistGeometryPoint('in grid', 1.25, 2.55);
 
@@ -74,7 +74,7 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature3Parameters()
+    public function testSelectStSnapToGridSignature3Parameters(): void
     {
         $this->persistGeometryPoint('in grid', 1.25, 2.55);
 
@@ -97,7 +97,7 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature5Parameters()
+    public function testSelectStSnapToGridSignature5Parameters(): void
     {
         $this->persistGeometryPoint('in grid', 5.25, 6.55);
 
@@ -116,11 +116,11 @@ class SpSnapToGridTest extends OrmTestCase
     }
 
     /**
-     * Test a DQL containing function with six paramters to test in the select.
+     * Test a DQL containing function with six parameters to test in the select.
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature6Parameters()
+    public function testSelectStSnapToGridSignature6Parameters(): void
     {
         $this->persistGeometryPoint('in grid', 5.25, 6.55);
 

@@ -53,7 +53,7 @@ class SpMakeEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStMakeEnvelope()
+    public function testSelectStMakeEnvelope(): void
     {
         $this->persistBigPolygon();
         $this->getEntityManager()->flush();

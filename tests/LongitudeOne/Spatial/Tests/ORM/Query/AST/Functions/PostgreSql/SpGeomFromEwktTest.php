@@ -52,7 +52,7 @@ class SpGeomFromEwktTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();

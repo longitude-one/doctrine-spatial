@@ -47,12 +47,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
 
     /**
      * Return the mocked connection.
-     *
-     * @return Connection
-     *
-     * @throws Exception when connection is not successful
      */
-    protected function getMockConnection()
+    protected function getMockConnection(): Connection
     {
         /** @var Driver|MockObject $driver */
         $driver = $this->getMockBuilder(Driver\PDO\SQLite\Driver::class)
@@ -75,11 +71,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
      * Get the mocked entity manager.
      *
      * @return EntityManagerInterface a mocked entity manager
-     *
-     * @throws Exception    When connection is not successful
-     * @throws ORMException won't happen because Metadata cache is set
      */
-    protected function getMockEntityManager()
+    protected function getMockEntityManager(): EntityManagerInterface
     {
         if (isset($this->mockEntityManager)) {
             return $this->mockEntityManager;

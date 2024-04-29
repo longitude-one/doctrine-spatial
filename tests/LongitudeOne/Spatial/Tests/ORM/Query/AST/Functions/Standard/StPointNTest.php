@@ -42,7 +42,7 @@ class StPointNTest extends OrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
-        // TODO Check if MySSQL doesn't support this function or if I missed this function
+        // TODO Check if MySQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
@@ -52,7 +52,7 @@ class StPointNTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -83,7 +83,7 @@ class StPointNTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();

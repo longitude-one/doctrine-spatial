@@ -57,7 +57,7 @@ class StMLineFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -81,7 +81,7 @@ class StMLineFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();

@@ -53,7 +53,7 @@ class SpMbrDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testMbrDisjointWhereParameter()
+    public function testMbrDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -95,7 +95,7 @@ class SpMbrDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectMbrDisjoint()
+    public function testSelectMbrDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

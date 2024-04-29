@@ -54,7 +54,7 @@ class SpGeogFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $this->persistLosAngelesGeography();

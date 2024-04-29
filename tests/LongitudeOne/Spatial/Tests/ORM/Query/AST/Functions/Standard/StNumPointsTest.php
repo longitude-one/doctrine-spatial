@@ -53,7 +53,7 @@ class StNumPointsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -81,7 +81,7 @@ class StNumPointsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

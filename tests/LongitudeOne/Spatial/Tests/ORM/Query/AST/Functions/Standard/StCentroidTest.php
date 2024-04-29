@@ -54,7 +54,7 @@ class StCentroidTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStCentroid()
+    public function testSelectStCentroid(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

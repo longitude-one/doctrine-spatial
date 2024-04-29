@@ -41,7 +41,7 @@ class PolygonTest extends TestCase
     /**
      * Test interfaces.
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $polygon = new Polygon([]);
 

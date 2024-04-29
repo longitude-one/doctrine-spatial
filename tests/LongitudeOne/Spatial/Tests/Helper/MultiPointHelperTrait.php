@@ -42,7 +42,7 @@ trait MultiPointHelperTrait
     use PointHelperTrait;
 
     /**
-     * Create A Multipoint entity entity composed of four points and persist it in database.
+     * Create A Multipoint entity composed of four points and persist it in database.
      */
     protected function persistFourPoints(): MultiPointEntity
     {
@@ -60,7 +60,7 @@ trait MultiPointHelperTrait
     }
 
     /**
-     * Create A Multipoint entity entity composed of one point and persist it in database.
+     * Create A Multipoint entity composed of one point and persist it in database.
      */
     protected function persistSinglePoint(): MultiPointEntity
     {

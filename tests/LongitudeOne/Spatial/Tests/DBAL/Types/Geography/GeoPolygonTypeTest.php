@@ -55,7 +55,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testFindByPolygon()
+    public function testFindByPolygon(): void
     {
         $rings = [
             new LineString([
@@ -84,7 +84,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store an empty polygon.
      */
-    public function testNullPolygon()
+    public function testNullPolygon(): void
     {
         $entity = new GeoPolygonEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -106,7 +106,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testPolygonRing()
+    public function testPolygonRing(): void
     {
         $rings = [
             new LineString([
@@ -135,7 +135,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testSolidPolygon()
+    public function testSolidPolygon(): void
     {
         $rings = [
             new LineString([

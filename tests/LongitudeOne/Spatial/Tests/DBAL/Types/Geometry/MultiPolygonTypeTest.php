@@ -58,7 +58,7 @@ class MultiPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testMultiPolygon()
+    public function testMultiPolygon(): void
     {
         $polygons = [
             new Polygon(
@@ -104,7 +104,7 @@ class MultiPolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null multipolygon and find it by id.
      */
-    public function testNullMultiPolygon()
+    public function testNullMultiPolygon(): void
     {
         $entity = new MultiPolygonEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

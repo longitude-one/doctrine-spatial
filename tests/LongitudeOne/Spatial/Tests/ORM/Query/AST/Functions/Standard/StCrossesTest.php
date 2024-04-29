@@ -54,7 +54,7 @@ class StCrossesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStCrosses()
+    public function testSelectStCrosses(): void
     {
         $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -86,7 +86,7 @@ class StCrossesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStCrossesWhereParameter()
+    public function testStCrossesWhereParameter(): void
     {
         $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();

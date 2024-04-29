@@ -53,7 +53,7 @@ class StUnionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStUnion()
+    public function testSelectStUnion(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $holeyPolygon = $this->persistHoleyPolygon();
@@ -82,7 +82,7 @@ class StUnionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStUnionWhereParameter()
+    public function testStUnionWhereParameter(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();

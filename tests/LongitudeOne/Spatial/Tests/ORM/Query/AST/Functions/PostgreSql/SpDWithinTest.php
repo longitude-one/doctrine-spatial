@@ -53,7 +53,7 @@ class SpDWithinTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectGeography()
+    public function testSelectGeography(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -85,7 +85,7 @@ class SpDWithinTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectGeometry()
+    public function testSelectGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();

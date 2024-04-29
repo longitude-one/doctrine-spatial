@@ -53,7 +53,7 @@ class StConvexHullTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStConvexHull()
+    public function testSelectStConvexHull(): void
     {
         static::markTestIncomplete('ST_COLLECT should be implement');
         $origin = $this->persistPointO();

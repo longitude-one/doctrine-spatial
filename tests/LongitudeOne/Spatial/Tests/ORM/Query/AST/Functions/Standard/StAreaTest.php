@@ -50,11 +50,11 @@ class StAreaTest extends OrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL containing function to test in the predicate.
      *
      * @group geometry
      */
-    public function testFunctionInPredicat()
+    public function testFunctionInPredicate(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -77,7 +77,7 @@ class StAreaTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();

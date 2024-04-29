@@ -53,7 +53,7 @@ class StNumGeometriesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStNumGeometries()
+    public function testSelectStNumGeometries(): void
     {
         $four = $this->persistFourPoints();
         $single = $this->persistSinglePoint();
@@ -75,7 +75,7 @@ class StNumGeometriesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStNumGeometriesInPredicate()
+    public function testStNumGeometriesInPredicate(): void
     {
         $this->persistFourPoints();
         $single = $this->persistSinglePoint();

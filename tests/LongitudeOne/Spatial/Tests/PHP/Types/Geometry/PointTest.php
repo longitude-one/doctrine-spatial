@@ -43,9 +43,9 @@ class PointTest extends TestCase
     use PointHelperTrait;
 
     /**
-     * Test bad string parameters - latitude degrees greater that 90.
+     * Test bad string parameters - latitude degrees greater than 90.
      */
-    public function testBadLatitudeDegrees()
+    public function testBadLatitudeDegrees(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -90 to 90 in value "92:26:46N"');
@@ -56,7 +56,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - invalid latitude direction.
      */
-    public function testBadLatitudeDirection()
+    public function testBadLatitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -69,7 +69,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - latitude minutes greater than 59.
      */
-    public function testBadLatitudeMinutes()
+    public function testBadLatitudeMinutes(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "84:64:46N"');
@@ -80,7 +80,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - latitude seconds greater than 59.
      */
-    public function testBadLatitudeSeconds()
+    public function testBadLatitudeSeconds(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "84:23:75N"');
@@ -102,7 +102,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - invalid longitude direction.
      */
-    public function testBadLongitudeDirection()
+    public function testBadLongitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -115,7 +115,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude minutes greater than 59.
      */
-    public function testBadLongitudeMinutes()
+    public function testBadLongitudeMinutes(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "108:62:55W"');
@@ -126,7 +126,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude seconds greater than 59.
      */
-    public function testBadLongitudeSeconds()
+    public function testBadLongitudeSeconds(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "108:53:94W"');
@@ -137,7 +137,7 @@ class PointTest extends TestCase
     /**
      * Test getType method.
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $point = static::createPointOrigin();
         $result = $point->getType();
@@ -148,7 +148,7 @@ class PointTest extends TestCase
     /**
      * Test a valid numeric point.
      */
-    public function testGoodNumericPoint()
+    public function testGoodNumericPoint(): void
     {
         $point = $this->createLosAngelesGeometry();
 
@@ -171,7 +171,7 @@ class PointTest extends TestCase
     /**
      * Test valid string points.
      */
-    public function testGoodStringPoints()
+    public function testGoodStringPoints(): void
     {
         $point = new Point('79:56:55W', '40:26:46N');
 
@@ -212,7 +212,7 @@ class PointTest extends TestCase
     /**
      * Test interfaces.
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $point = new Point(4, 2);
 
@@ -230,7 +230,7 @@ class PointTest extends TestCase
     /**
      * Test to convert point to json.
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
         $point = static::createPointE();
@@ -247,7 +247,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - No parameters.
      */
-    public function testMissingArguments()
+    public function testMissingArguments(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -260,7 +260,7 @@ class PointTest extends TestCase
     /**
      * Test a point created with an array.
      */
-    public function testPointFromArrayToString()
+    public function testPointFromArrayToString(): void
     {
         $expected = '5 5';
         $point = static::createPointE();
@@ -271,7 +271,7 @@ class PointTest extends TestCase
     /**
      * Test error when point is created with too many arguments.
      */
-    public function testPointTooManyArguments()
+    public function testPointTooManyArguments(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -284,7 +284,7 @@ class PointTest extends TestCase
     /**
      * Test point with srid.
      */
-    public function testPointWithSrid()
+    public function testPointWithSrid(): void
     {
         $point = static::createPointWithSrid(2154);
         $result = $point->getSrid();
@@ -295,7 +295,7 @@ class PointTest extends TestCase
     /**
      * Test error when point was created with wrong arguments type.
      */
-    public function testPointWrongArgumentTypes()
+    public function testPointWrongArgumentTypes(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -308,7 +308,7 @@ class PointTest extends TestCase
     /**
      * Test to convert a point to an array.
      */
-    public function testToArray()
+    public function testToArray(): void
     {
         $expected = [0.0, 0.0];
         $point = static::createPointOrigin();
@@ -320,7 +320,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - Two invalid parameters.
      */
-    public function testTwoInvalidArguments()
+    public function testTwoInvalidArguments(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -333,7 +333,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - More than 3 parameters.
      */
-    public function testUnusedArguments()
+    public function testUnusedArguments(): void
     {
         $this->expectException(InvalidValueException::class);
         // phpcs:disable Generic.Files.LineLength.MaxExceeded

@@ -54,7 +54,7 @@ class StStartPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStStartPointSelect()
+    public function testStStartPointSelect(): void
     {
         $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -74,7 +74,7 @@ class StStartPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStStartPointWhereCompareLineString()
+    public function testStStartPointWhereCompareLineString(): void
     {
         $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -100,7 +100,7 @@ class StStartPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStStartPointWhereComparePoint()
+    public function testStStartPointWhereComparePoint(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();

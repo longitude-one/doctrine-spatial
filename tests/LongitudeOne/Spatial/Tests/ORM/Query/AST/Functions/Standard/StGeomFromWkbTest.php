@@ -53,7 +53,7 @@ class StGeomFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -77,7 +77,7 @@ class StGeomFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();

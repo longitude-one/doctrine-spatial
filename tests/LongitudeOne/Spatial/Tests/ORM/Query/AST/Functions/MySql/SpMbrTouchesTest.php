@@ -52,7 +52,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -76,7 +76,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistSmallPolygon();

@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 /**
  * SC_GeometryType DQL function tests.
  * The SQL ST_GeometryType function does not respect the OGC.
- * It should sreturns the SQL MM Type ('ST_Linestring', 'ST_Polygon'),
+ * It should return the SQL MM Type ('ST_Linestring', 'ST_Polygon'),
  * But MySQL returns the type of the geometry as a string. Eg: 'LINESTRING', 'POLYGON', 'MULTIPOINT'.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -55,7 +55,7 @@ class SpGeometryTypeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsText()
+    public function testStAsText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

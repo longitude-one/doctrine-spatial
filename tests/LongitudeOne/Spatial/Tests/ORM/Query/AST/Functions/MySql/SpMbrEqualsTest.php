@@ -52,7 +52,7 @@ class SpMbrEqualsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testMbrEqualsWhereParameter()
+    public function testMbrEqualsWhereParameter(): void
     {
         $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -93,7 +93,7 @@ class SpMbrEqualsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectMbrEquals()
+    public function testSelectMbrEquals(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

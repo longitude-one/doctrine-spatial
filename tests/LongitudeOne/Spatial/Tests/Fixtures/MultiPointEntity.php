@@ -34,36 +34,26 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 #[Entity]
 class MultiPointEntity
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var MultiPoint
-     */
     #[Column(type: 'multipoint', nullable: true)]
-    protected $multiPoint;
+    protected MultiPoint $multiPoint;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get multipoint.
-     *
-     * @return MultiPoint
      */
-    public function getMultiPoint()
+    public function getMultiPoint(): MultiPoint
     {
         return $this->multiPoint;
     }
@@ -75,7 +65,7 @@ class MultiPointEntity
      *
      * @return self
      */
-    public function setMultiPoint(MultiPoint $multiPoint)
+    public function setMultiPoint(MultiPoint $multiPoint): static
     {
         $this->multiPoint = $multiPoint;
 

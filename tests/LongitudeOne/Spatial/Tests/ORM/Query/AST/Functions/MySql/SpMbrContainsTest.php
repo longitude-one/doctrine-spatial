@@ -52,7 +52,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testContainsWhereParameter()
+    public function testContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -93,7 +93,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectContains()
+    public function testSelectContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

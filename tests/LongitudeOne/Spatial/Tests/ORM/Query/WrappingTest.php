@@ -55,7 +55,7 @@ class WrappingTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testTypeWrappingSelect()
+    public function testTypeWrappingSelect(): void
     {
         $this->persistBigPolygon();
         $smallPolygon = $this->createSmallPolygon();
@@ -82,7 +82,7 @@ class WrappingTest extends OrmTestCase
     /**
      * @group geometry
      */
-    public function testTypeWrappingWhere()
+    public function testTypeWrappingWhere(): void
     {
         $this->persistGeometryE();
 

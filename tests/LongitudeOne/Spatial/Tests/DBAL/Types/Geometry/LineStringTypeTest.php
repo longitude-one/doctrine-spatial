@@ -56,7 +56,7 @@ class LineStringTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testFindByLineString()
+    public function testFindByLineString(): void
     {
         $lineString = new LineString(
             [
@@ -76,7 +76,7 @@ class LineStringTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testLineString()
+    public function testLineString(): void
     {
         $lineString = new LineString(
             [
@@ -94,7 +94,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store a null line string, then to find it with its id.
      */
-    public function testNullLineStringType()
+    public function testNullLineStringType(): void
     {
         $entity = new LineStringEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

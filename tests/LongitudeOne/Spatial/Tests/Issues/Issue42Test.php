@@ -21,6 +21,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geography\PointType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
+use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,8 @@ class Issue42Test extends TestCase
 {
     /**
      * Test issue with MySQL.
+     *
+     * @throws MissingArgumentException this exception shall happen
      */
     public function testIssueWithMySql(): void
     {
@@ -57,6 +60,9 @@ class Issue42Test extends TestCase
 
     /**
      * Test issue with PostgreSQL.
+     *
+     * @throws MissingArgumentException this exception shall happen
+     * @throws InvalidValueException    this exception shall not happen
      */
     public function testIssueWithPgSql(): void
     {
