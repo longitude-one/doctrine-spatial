@@ -310,8 +310,14 @@ class PointTest extends TestCase
      */
     public function testToArray()
     {
-        $expected = [0.0, 0.0];
+        $expected = [0, 0];
         $point = static::createPointOrigin();
+        $result = $point->toArray();
+
+        static::assertSame($expected, $result);
+
+        $expected = [-118.2430, 34.0522];
+        $point = static::createLosAngelesGeometry();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);

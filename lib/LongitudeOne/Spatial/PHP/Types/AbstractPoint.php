@@ -31,14 +31,14 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * The X coordinate or the longitude.
      *
-     * @var float
+     * @var string
      */
     protected $x;
 
     /**
      * The Y coordinate or the latitude.
      *
-     * @var float
+     * @var string
      */
     protected $y;
 
@@ -57,7 +57,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude getter.
      *
-     * @return float
+     * @return string
      */
     public function getLatitude()
     {
@@ -67,7 +67,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Longitude getter.
      *
-     * @return float
+     * @return string
      */
     public function getLongitude()
     {
@@ -87,7 +87,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X getter. (Longitude getter).
      *
-     * @return float
+     * @return string
      */
     public function getX()
     {
@@ -97,7 +97,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y getter. Latitude getter.
      *
-     * @return float
+     * @return string
      */
     public function getY()
     {
@@ -135,30 +135,18 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X setter. (Latitude setter).
      *
-     * todo force string in version 5
-     *
      * @param string $x the new X
      *
      * @return self
      *
      * @throws InvalidValueException when x is not valid
      */
-    public function setX($x)
+    public function setX(string $x)
     {
-        if (!is_string($x)) {
-            // TODO remove this line in version 5
-            trigger_deprecation(
-                'longitude-one/doctrine-spatial',
-                '4.1',
-                'Passing a non-string value to %s is deprecated, pass a string instead.',
-                __METHOD__
-            );
-        }
-        $parser = new Parser((string) $x);
+        $parser = new Parser($x);
 
         try {
-            // TODO replace with a string
-            $this->x = (float) $parser->parse();
+            $this->x = $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
@@ -169,30 +157,18 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y setter. Longitude Setter.
      *
-     * todo force string in version 5
-     *
      * @param string $y the new Y value
      *
      * @return self
      *
      * @throws InvalidValueException when Y is invalid, not in valid range
      */
-    public function setY($y)
+    public function setY(string $y)
     {
-        if (!is_string($y)) {
-            // TODO remove this line in version 5
-            trigger_deprecation(
-                'longitude-one/doctrine-spatial',
-                '4.1',
-                'Passing a non-string value to %s is deprecated, pass a string instead.',
-                __METHOD__
-            );
-        }
-        $parser = new Parser((string) $y);
+        $parser = new Parser($y);
 
         try {
-            // TODO replace with a string
-            $this->y = (float) $parser->parse();
+            $this->y = $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
