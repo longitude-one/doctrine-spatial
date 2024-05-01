@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -157,8 +159,8 @@ class PointTest extends TestCase
 
         try {
             $point
-                ->setLatitude(32.782778)
-                ->setLongitude(-96.803889)
+                ->setLatitude('32.782778')
+                ->setLongitude('-96.803889')
             ;
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to update geometry point: %s', $e->getMessage()));
@@ -232,14 +234,14 @@ class PointTest extends TestCase
      */
     public function testJson()
     {
-        $expected = '{"type":"Point","coordinates":["5","5"],"srid":null}';
+        $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
         $point = static::createPointE();
 
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
 
         $point->setSrid(4326);
-        $expected = '{"type":"Point","coordinates":["5","5"],"srid":4326}';
+        $expected = '{"type":"Point","coordinates":[5,5],"srid":4326}';
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
     }
@@ -310,13 +312,13 @@ class PointTest extends TestCase
      */
     public function testToArray()
     {
-        $expected = ['0', '0'];
+        $expected = [0, 0];
         $point = static::createPointOrigin();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);
 
-        $expected = ['-118.243', '34.0522'];
+        $expected = [-118.243, 34.0522];
         $point = static::createLosAngelesGeometry();
         $result = $point->toArray();
 

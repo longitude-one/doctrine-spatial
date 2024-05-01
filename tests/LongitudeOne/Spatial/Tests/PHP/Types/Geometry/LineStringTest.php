@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -89,15 +91,11 @@ class LineStringTest extends TestCase
      */
     public function testJson()
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"LineString","coordinates":[["0","0"],["1","0"],["1","1"],["0","1"],["0","0"]],"srid":null}';
-        // phpcs:enable Generic.Files.LineLength.MaxExceeded
+        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":null}';
         $lineString = $this->createRingLineString();
         static::assertEquals($expected, $lineString->toJson());
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"LineString","coordinates":[["0","0"],["1","0"],["1","1"],["0","1"],["0","0"]],"srid":4326}';
-        // phpcs:enable Generic.Files.LineLength.MaxExceeded
+        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":4326}';
         $lineString->setSrid(4326);
         static::assertEquals($expected, $lineString->toJson());
         static::assertEquals($expected, json_encode($lineString));

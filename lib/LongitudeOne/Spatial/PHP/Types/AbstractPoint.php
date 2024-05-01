@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Geo\String\Exception\RangeException;
@@ -31,12 +33,12 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * The X coordinate or the longitude.
      */
-    protected string $x;
+    protected int|float $x;
 
     /**
      * The Y coordinate or the latitude.
      */
-    protected string $y;
+    protected int|float $y;
 
     /**
      * AbstractPoint constructor.
@@ -53,7 +55,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude getter.
      */
-    public function getLatitude(): string
+    public function getLatitude(): int|float
     {
         return $this->getY();
     }
@@ -61,7 +63,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Longitude getter.
      */
-    public function getLongitude(): string
+    public function getLongitude(): int|float
     {
         return $this->getX();
     }
@@ -77,7 +79,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X getter. (Longitude getter).
      */
-    public function getX(): string
+    public function getX(): int|float
     {
         return $this->x;
     }
@@ -85,7 +87,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y getter. Latitude getter.
      */
-    public function getY(): string
+    public function getY(): int|float
     {
         return $this->y;
     }

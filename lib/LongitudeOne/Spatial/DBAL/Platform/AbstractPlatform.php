@@ -13,6 +13,20 @@
  *
  */
 
+declare(strict_types=1);
+/**
+ * This file is part of the doctrine spatial extension.
+ *
+ * PHP 8.1 | 8.2 | 8.3
+ *
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
+ * Copyright Longitude One 2020-2024
+ * Copyright 2015 Derek J. Lambert
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Geo\WKB\Parser as BinaryParser;
@@ -43,7 +57,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected static function checkSrid(array $column, ?int $srid): ?int
     {
-        $srid = $srid ?? $column['srid'] ?? null;
+        $srid ??= $column['srid'] ?? null;
 
         if (null !== $srid && !is_int($srid)) {
             $message = sprintf(
@@ -67,7 +81,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected static function checkType(array $column, ?AbstractSpatialType $type): AbstractSpatialType
     {
-        $type = $type ?? $column['type'] ?? null;
+        $type ??= $column['type'] ?? null;
 
         if (!$type instanceof AbstractSpatialType) {
             throw new MissingArgumentException('Arguments aren\'t well defined. Please provide a type.');

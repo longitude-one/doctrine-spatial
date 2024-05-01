@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\ORM\Query;
 
 use Doctrine\ORM\AbstractQuery;
@@ -61,9 +63,9 @@ class GeometryWalker extends SqlWalker
      *
      * @return string the SQL
      *
-     * @throws QueryException when error happend during walking into select expression
+     * @throws QueryException when error happens during walking into select expression
      */
-    public function walkSelectExpression($selectExpression)
+    public function walkSelectExpression($selectExpression): string
     {
         $expr = $selectExpression->expression;
         $sql = parent::walkSelectExpression($selectExpression);

@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
@@ -60,9 +62,9 @@ class LineStringTypeTest extends OrmTestCase
     {
         $lineString = new LineString(
             [
-                new Point(0, 0),
-                new Point(1, 1),
-                new Point(2, 2),
+                new Point('0', '0'),
+                new Point('1', '1'),
+                new Point('2', '2'),
             ]
         );
         $entity = new LineStringEntity();
@@ -80,9 +82,9 @@ class LineStringTypeTest extends OrmTestCase
     {
         $lineString = new LineString(
             [
-                new Point(0, 0),
-                new Point(1, 1),
-                new Point(2, 2),
+                new Point('0', '0'),
+                new Point('1', '1'),
+                new Point('2', '2'),
             ]
         );
         $entity = new LineStringEntity();

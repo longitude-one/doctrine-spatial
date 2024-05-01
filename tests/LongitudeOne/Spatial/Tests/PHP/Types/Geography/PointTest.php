@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -190,8 +192,8 @@ class PointTest extends TestCase
      */
     public function testFix19(): void
     {
-        $lat = '52.092876';
-        $lon = '5.104481';
+        $lat = 52.092876;
+        $lon = 5.104481;
         $point = new Point($lon, $lat);
         static::assertSame($lon, $point->getLongitude());
         static::assertSame($lat, $point->getLatitude());
@@ -229,7 +231,7 @@ class PointTest extends TestCase
     public function testGoodStringPoints()
     {
         $point = new Point('79:56:55W', '40:26:46N');
-        $expected = '{"type":"Point","coordinates":["-79.948611111111","40.446111111111"],"srid":null}';
+        $expected = '{"type":"Point","coordinates":[-79.9486111111111,40.44611111111111],"srid":null}';
 
         static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
         static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
@@ -238,7 +240,7 @@ class PointTest extends TestCase
 
         $point = new Point('79°56\'55"W', '40°26\'46"N');
         $point->setSrid(4326);
-        $expected = '{"type":"Point","coordinates":["-79.948611111111","40.446111111111"],"srid":4326}';
+        $expected = '{"type":"Point","coordinates":[-79.9486111111111,40.44611111111111],"srid":4326}';
 
         static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
         static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
