@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\DBAL\Types\Geometry;
 
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;

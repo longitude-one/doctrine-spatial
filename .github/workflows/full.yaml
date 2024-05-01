@@ -87,7 +87,7 @@ jobs:
       - name: Force doctrine/orm library to ${{ matrix.orm }}
         run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
       - name: Run test suite and coverage
-        if: ${{ matrix.php == '8.3' && env.HAS_CC_SECRET == 'true' }}
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' && env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
@@ -95,10 +95,10 @@ jobs:
            coverageCommand: composer run-script test-coverage
            coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
       - name: Run test suite for forks or version without coverage
-        if: ${{ matrix.php != '8.3' || env.HAS_CC_SECRET != 'true' }}
+        if: ${{ matrix.php != '8.3' || matrix.orm != '^3.1' || env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
       - name: Coveralls.io steps
-        if: ${{ matrix.php == '8.3' && env.HAS_CA_SECRET == 'true' }}
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' && env.HAS_CA_SECRET == 'true' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}

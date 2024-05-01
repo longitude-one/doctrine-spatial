@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -191,10 +193,10 @@ class PointTest extends TestCase
     public function testFix19(): void
     {
         $lat = 52.092876;
-        $lon = 5.104480;
+        $lon = 5.104481;
         $point = new Point($lon, $lat);
-        static::assertSame($lat, $point->getLatitude());
         static::assertSame($lon, $point->getLongitude());
+        static::assertSame($lat, $point->getLatitude());
     }
 
     /**
@@ -233,8 +235,8 @@ class PointTest extends TestCase
 
         static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
         static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
-        static::assertEquals($expected, $point->toJson());
-        static::assertEquals($expected, json_encode($point));
+        static::assertSame($expected, $point->toJson());
+        static::assertSame($expected, json_encode($point));
 
         $point = new Point('79°56\'55"W', '40°26\'46"N');
         $point->setSrid(4326);
@@ -242,8 +244,8 @@ class PointTest extends TestCase
 
         static::assertEqualsWithDelta(40.446111111111, $point->getLatitude(), 0.000000000001);
         static::assertEqualsWithDelta(-79.948611111111, $point->getLongitude(), 0.000000000001);
-        static::assertEquals($expected, $point->toJson());
-        static::assertEquals($expected, json_encode($point));
+        static::assertSame($expected, $point->toJson());
+        static::assertSame($expected, json_encode($point));
 
         $point = new Point('79° 56\' 55" W', '40° 26\' 46" N');
 

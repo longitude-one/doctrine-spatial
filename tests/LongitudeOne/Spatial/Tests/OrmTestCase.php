@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;

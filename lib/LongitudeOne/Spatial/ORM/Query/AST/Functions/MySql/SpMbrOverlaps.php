@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;

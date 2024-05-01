@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;

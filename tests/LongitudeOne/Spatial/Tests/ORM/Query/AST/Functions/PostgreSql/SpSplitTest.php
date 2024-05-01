@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;

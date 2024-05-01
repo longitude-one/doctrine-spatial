@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
@@ -81,7 +83,7 @@ class StSridTest extends OrmTestCase
      */
     public function testFunctionWithGeometry()
     {
-        $this->persistGeometryPoint('A', 1, 1, 2154);
+        $this->persistGeometryPoint('A', '1', '1', 2154);
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT ST_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'

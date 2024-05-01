@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
@@ -55,7 +57,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature2Parameters()
     {
-        $this->persistGeometryPoint('in grid', 1.25, 2.55);
+        $this->persistGeometryPoint('in grid', '1.25', '2.55');
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 0.5)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
@@ -76,7 +78,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature3Parameters()
     {
-        $this->persistGeometryPoint('in grid', 1.25, 2.55);
+        $this->persistGeometryPoint('in grid', '1.25', '2.55');
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -99,7 +101,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature5Parameters()
     {
-        $this->persistGeometryPoint('in grid', 5.25, 6.55);
+        $this->persistGeometryPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded
@@ -122,7 +124,7 @@ class SpSnapToGridTest extends OrmTestCase
      */
     public function testSelectStSnapToGridSignature6Parameters()
     {
-        $this->persistGeometryPoint('in grid', 5.25, 6.55);
+        $this->persistGeometryPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
             // phpcs:disable Generic.Files.LineLength.MaxExceeded

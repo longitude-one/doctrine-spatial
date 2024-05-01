@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +57,7 @@ trait PointHelperTrait
      */
     protected static function createLosAngelesGeography(): GeographyPoint
     {
-        return static::createGeographyPoint('Los Angeles', -118.2430, 34.0522);
+        return static::createGeographyPoint('Los Angeles', '-118.2430', '34.0522');
     }
 
     /**
@@ -63,7 +65,7 @@ trait PointHelperTrait
      */
     protected static function createLosAngelesGeometry(): GeometryPoint
     {
-        return static::createGeometryPoint('Los Angeles', -118.2430, 34.0522);
+        return static::createGeometryPoint('Los Angeles', '-118.2430', '34.0522');
     }
 
     /**
@@ -71,7 +73,7 @@ trait PointHelperTrait
      */
     protected static function createPointA(): GeometryPoint
     {
-        return static::createGeometryPoint('a', 1, 1);
+        return static::createGeometryPoint('a', '1', '1');
     }
 
     /**
@@ -79,7 +81,7 @@ trait PointHelperTrait
      */
     protected static function createPointB(): GeometryPoint
     {
-        return static::createGeometryPoint('B', 2, 2);
+        return static::createGeometryPoint('B', '2', '2');
     }
 
     /**
@@ -87,7 +89,7 @@ trait PointHelperTrait
      */
     protected static function createPointC(): GeometryPoint
     {
-        return static::createGeometryPoint('C', 3, 3);
+        return static::createGeometryPoint('C', '3', '3');
     }
 
     /**
@@ -95,7 +97,7 @@ trait PointHelperTrait
      */
     protected static function createPointD(): GeometryPoint
     {
-        return static::createGeometryPoint('D', 4, 4);
+        return static::createGeometryPoint('D', '4', '4');
     }
 
     /**
@@ -103,7 +105,7 @@ trait PointHelperTrait
      */
     protected static function createPointE(): GeometryPoint
     {
-        return static::createGeometryPoint('E', 5, 5);
+        return static::createGeometryPoint('E', '5', '5');
     }
 
     /**
@@ -111,7 +113,7 @@ trait PointHelperTrait
      */
     protected static function createPointOrigin(): GeometryPoint
     {
-        return static::createGeometryPoint('O', 0, 0);
+        return static::createGeometryPoint('O', '0', '0');
     }
 
     /**
@@ -122,7 +124,7 @@ trait PointHelperTrait
     protected static function createPointWithSrid(int $srid): GeometryPoint
     {
         try {
-            return new GeometryPoint(5, 5, $srid);
+            return new GeometryPoint('5', '5', $srid);
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to create point E (5 5) with srid %d: %s', $srid, $e->getMessage()));
         }
@@ -132,10 +134,10 @@ trait PointHelperTrait
      * Create a geography point.
      *
      * @param string $name name is only used when an exception is thrown
-     * @param float  $x    X coordinate
-     * @param float  $y    Y coordinate
+     * @param string $x    X coordinate
+     * @param string $y    Y coordinate
      */
-    private static function createGeographyPoint(string $name, float $x, float $y): GeographyPoint
+    private static function createGeographyPoint(string $name, string $x, string $y): GeographyPoint
     {
         try {
             return new GeographyPoint($x, $y);
@@ -148,10 +150,10 @@ trait PointHelperTrait
      * Create a geometry point.
      *
      * @param string $name name is only used when an exception is thrown
-     * @param float  $x    X coordinate
-     * @param float  $y    Y coordinate
+     * @param string $x    X coordinate
+     * @param string $y    Y coordinate
      */
-    private static function createGeometryPoint(string $name, float $x, float $y): GeometryPoint
+    private static function createGeometryPoint(string $name, string $x, string $y): GeometryPoint
     {
         try {
             return new GeometryPoint($x, $y);
@@ -165,7 +167,7 @@ trait PointHelperTrait
      */
     private static function createNewYorkGeography(): GeographyPoint
     {
-        return static::createGeographyPoint('New-York', -73.938611, 40.664167);
+        return static::createGeographyPoint('New-York', '-73.938611', '40.664167');
     }
 
     /**
@@ -173,7 +175,7 @@ trait PointHelperTrait
      */
     private static function createNewYorkGeometry(): GeometryPoint
     {
-        return static::createGeometryPoint('New-York', -73.938611, 40.664167);
+        return static::createGeometryPoint('New-York', '-73.938611', '40.664167');
     }
 
     /**
@@ -181,7 +183,7 @@ trait PointHelperTrait
      */
     protected function persistDallasGeography(): GeographyEntity
     {
-        return $this->persistGeography(static::createGeographyPoint('Dallas', -96.803889, 32.782778));
+        return $this->persistGeography(static::createGeographyPoint('Dallas', '-96.803889', '32.782778'));
     }
 
     /**
@@ -189,7 +191,7 @@ trait PointHelperTrait
      */
     protected function persistDallasGeometry(): GeometryPointEntity
     {
-        return $this->persistGeometry(static::createGeometryPoint('Dallas', -96.803889, 32.782778));
+        return $this->persistGeometry(static::createGeometryPoint('Dallas', '-96.803889', '32.782778'));
     }
 
     /**
@@ -201,18 +203,18 @@ trait PointHelperTrait
     {
         $srid = $setSrid ? 4326 : null;
 
-        return $this->persistGeographyPoint('Los Angeles', -118.2430, 34.0522, $srid);
+        return $this->persistGeographyPoint('Los Angeles', '-118.2430', '34.0522', $srid);
     }
 
     /**
      * Persist a geometry point (x y).
      *
      * @param string $name name of the point
-     * @param float  $x    coordinate x
-     * @param float  $y    coordinate y
+     * @param string $x    coordinate x
+     * @param string $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeographyPoint(string $name, float $x, float $y, ?int $srid = null): GeographyEntity
+    protected function persistGeographyPoint(string $name, string $x, string $y, ?int $srid = null): GeographyEntity
     {
         $point = static::createGeographyPoint($name, $x, $y);
         if (null !== $srid) {
@@ -231,18 +233,18 @@ trait PointHelperTrait
     {
         $srid = $setSrid ? 2154 : null;
 
-        return $this->persistGeometryPoint('Paris', 6519, 68624, $srid);
+        return $this->persistGeometryPoint('Paris', '6519', '68624', $srid);
     }
 
     /**
      * Persist a geometry point (x y).
      *
      * @param string $name name of the point
-     * @param float  $x    coordinate x
-     * @param float  $y    coordinate y
+     * @param string $x    coordinate x
+     * @param string $y    coordinate y
      * @param ?int   $srid SRID
      */
-    protected function persistGeometryPoint(string $name, float $x, float $y, ?int $srid = null): GeometryPointEntity
+    protected function persistGeometryPoint(string $name, string $x, string $y, ?int $srid = null): GeometryPointEntity
     {
         $point = static::createGeometryPoint($name, $x, $y);
         if (null !== $srid) {
@@ -291,7 +293,7 @@ trait PointHelperTrait
      */
     protected function persistPointA(?int $srid = null): GeometryPointEntity
     {
-        return $this->persistGeometryPoint('A', 1, 2, $srid);
+        return $this->persistGeometryPoint('A', '1', '2', $srid);
     }
 
     /**
@@ -299,7 +301,7 @@ trait PointHelperTrait
      */
     protected function persistPointB(): GeometryPointEntity
     {
-        return $this->persistGeometryPoint('B', -2, 3);
+        return $this->persistGeometryPoint('B', '-2', '3');
     }
 
     /**
@@ -307,7 +309,7 @@ trait PointHelperTrait
      */
     protected function persistPointE(): GeometryPointEntity
     {
-        return $this->persistGeometryPoint('E', 5, 5);
+        return $this->persistGeometryPoint('E', '5', '5');
     }
 
     /**
@@ -319,7 +321,7 @@ trait PointHelperTrait
     {
         $srid = $setSrid ? 0 : null;
 
-        return $this->persistGeometryPoint('O', 0, 0, $srid);
+        return $this->persistGeometryPoint('O', '0', '0', $srid);
     }
 
     /**
@@ -331,13 +333,13 @@ trait PointHelperTrait
     {
         $srid = $setSrid ? 2154 : null;
 
-        return $this->persistGeometryPoint('Tours', 525375.21, 6701871.83, $srid);
+        return $this->persistGeometryPoint('Tours', '525375.21', '6701871.83', $srid);
     }
 
     /**
      * Create a geographic Point entity from an array of points.
      *
-     * @param GeographyPoint|array $point Point could be an array of X, Y or an instance of Point class
+     * @param GeographyPoint $point Point could be an array of X, Y or an instance of Point class
      */
     private function persistGeography(GeographyPoint $point): GeographyEntity
     {
@@ -352,7 +354,7 @@ trait PointHelperTrait
     /**
      * Create a geometric Point entity from an array of points.
      *
-     * @param GeometryPoint|array $point Point could be an array of X, Y or an instance of Point class
+     * @param GeometryPoint $point Point could be an array of X, Y or an instance of Point class
      */
     private function persistGeometry(GeometryPoint $point): GeometryPointEntity
     {

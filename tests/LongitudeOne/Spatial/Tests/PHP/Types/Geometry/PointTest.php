@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -157,8 +159,8 @@ class PointTest extends TestCase
 
         try {
             $point
-                ->setLatitude(32.782778)
-                ->setLongitude(-96.803889)
+                ->setLatitude('32.782778')
+                ->setLongitude('-96.803889')
             ;
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to update geometry point: %s', $e->getMessage()));
@@ -206,7 +208,7 @@ class PointTest extends TestCase
         $point = new Point('112:4:0W', '33:27:0N');
 
         static::assertEquals(33.45, $point->getLatitude());
-        static::assertEqualsWithDelta(-112.06666666666666, $point->getLongitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-112.06666666666, $point->getLongitude(), 0.0000000001);
     }
 
     /**
@@ -310,8 +312,14 @@ class PointTest extends TestCase
      */
     public function testToArray()
     {
-        $expected = [0.0, 0.0];
+        $expected = [0, 0];
         $point = static::createPointOrigin();
+        $result = $point->toArray();
+
+        static::assertSame($expected, $result);
+
+        $expected = [-118.243, 34.0522];
+        $point = static::createLosAngelesGeometry();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);
