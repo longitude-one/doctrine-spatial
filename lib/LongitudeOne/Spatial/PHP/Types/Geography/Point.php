@@ -30,30 +30,18 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
     /**
      * X setter.
      *
-     * todo force string in version 5
-     *
      * @param string $x X coordinate
      *
      * @return self
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setX($x)
+    public function setX(string $x): static
     {
-        if (!is_string($x)) {
-            trigger_deprecation(
-                'longitude-one/doctrine-spatial',
-                '4.1',
-                'Passing a non-string value to %s is deprecated, pass a string instead.',
-                __METHOD__
-            );
-        }
-
-        $parser = new Parser((string) $x);
+        $parser = new Parser($x);
 
         try {
-            // TODO use a string in next major version
-            $x = (float) $parser->parse();
+            $x = $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
@@ -70,28 +58,16 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
     /**
      * Y setter.
      *
-     * @param mixed $y the Y coordinate
-     *
-     * @return self
+     * @param string $y the Y coordinate
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setY($y)
+    public function setY(string $y): static
     {
-        if (!is_string($y)) {
-            trigger_deprecation(
-                'longitude-one/doctrine-spatial',
-                '4.1',
-                'Passing a non-string value to %s is deprecated, pass a string instead.',
-                __METHOD__
-            );
-        }
-
-        $parser = new Parser((string) $y);
+        $parser = new Parser($y);
 
         try {
-            // TODO use a string in next major version
-            $y = (float) $parser->parse();
+            $y = $parser->parse();
         } catch (RangeException|UnexpectedValueException $e) {
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }

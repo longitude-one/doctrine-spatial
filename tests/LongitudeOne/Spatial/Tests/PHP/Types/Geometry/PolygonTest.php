@@ -94,14 +94,14 @@ class PolygonTest extends TestCase
     public function testJson(): void
     {
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":null}';
+        $expected = '{"type":"Polygon","coordinates":[[["0","0"],["10","0"],["10","10"],["0","10"],["0","0"]],[["5","5"],["7","5"],["7","7"],["5","7"],["5","5"]]],"srid":null}';
         // phpcs:enable
         $polygon = $this->createHoleyPolygon();
         static::assertEquals($expected, $polygon->toJson());
         static::assertEquals($expected, json_encode($polygon));
 
         // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":4326}';
+        $expected = '{"type":"Polygon","coordinates":[[["0","0"],["10","0"],["10","10"],["0","10"],["0","0"]],[["5","5"],["7","5"],["7","7"],["5","7"],["5","5"]]],"srid":4326}';
         // phpcs:enable
         $polygon->setSrid(4326);
         static::assertEquals($expected, $polygon->toJson());

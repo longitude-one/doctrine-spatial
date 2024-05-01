@@ -206,7 +206,7 @@ class PointTest extends TestCase
         $point = new Point('112:4:0W', '33:27:0N');
 
         static::assertEquals(33.45, $point->getLatitude());
-        static::assertEqualsWithDelta(-112.06666666666666, $point->getLongitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-112.06666666666, $point->getLongitude(), 0.0000000001);
     }
 
     /**
@@ -232,14 +232,14 @@ class PointTest extends TestCase
      */
     public function testJson()
     {
-        $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
+        $expected = '{"type":"Point","coordinates":["5","5"],"srid":null}';
         $point = static::createPointE();
 
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
 
         $point->setSrid(4326);
-        $expected = '{"type":"Point","coordinates":[5,5],"srid":4326}';
+        $expected = '{"type":"Point","coordinates":["5","5"],"srid":4326}';
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
     }
@@ -310,13 +310,13 @@ class PointTest extends TestCase
      */
     public function testToArray()
     {
-        $expected = [0, 0];
+        $expected = ['0', '0'];
         $point = static::createPointOrigin();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);
 
-        $expected = [-118.2430, 34.0522];
+        $expected = ['-118.243', '34.0522'];
         $point = static::createLosAngelesGeometry();
         $result = $point->toArray();
 

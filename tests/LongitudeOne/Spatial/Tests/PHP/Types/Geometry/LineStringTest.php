@@ -89,11 +89,15 @@ class LineStringTest extends TestCase
      */
     public function testJson()
     {
-        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":null}';
+        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+        $expected = '{"type":"LineString","coordinates":[["0","0"],["1","0"],["1","1"],["0","1"],["0","0"]],"srid":null}';
+        // phpcs:enable Generic.Files.LineLength.MaxExceeded
         $lineString = $this->createRingLineString();
         static::assertEquals($expected, $lineString->toJson());
 
-        $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":4326}';
+        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+        $expected = '{"type":"LineString","coordinates":[["0","0"],["1","0"],["1","1"],["0","1"],["0","0"]],"srid":4326}';
+        // phpcs:enable Generic.Files.LineLength.MaxExceeded
         $lineString->setSrid(4326);
         static::assertEquals($expected, $lineString->toJson());
         static::assertEquals($expected, json_encode($lineString));
@@ -177,9 +181,9 @@ class LineStringTest extends TestCase
     public function testLineStringFromObjectsToArray()
     {
         $expected = [
-            [0, 0],
-            [2, 2],
-            [5, 5],
+            ['0', '0'],
+            ['2', '2'],
+            ['5', '5'],
         ];
         $lineString = $this->createStraightLineString();
 
