@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
@@ -177,9 +179,9 @@ class LineStringTest extends TestCase
     public function testLineStringFromObjectsToArray(): void
     {
         $expected = [
-            [0, 0],
-            [2, 2],
-            [5, 5],
+            ['0', '0'],
+            ['2', '2'],
+            ['5', '5'],
         ];
         $lineString = $this->createStraightLineString();
 

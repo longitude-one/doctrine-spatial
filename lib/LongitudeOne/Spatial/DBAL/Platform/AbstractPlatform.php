@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Geo\WKB\Parser as BinaryParser;
@@ -43,7 +45,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected static function checkSrid(array $column, ?int $srid): ?int
     {
-        $srid = $srid ?? $column['srid'] ?? null;
+        $srid ??= $column['srid'] ?? null;
 
         if (null !== $srid && !is_int($srid)) {
             $message = sprintf(
@@ -67,7 +69,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected static function checkType(array $column, ?AbstractSpatialType $type): AbstractSpatialType
     {
-        $type = $type ?? $column['type'] ?? null;
+        $type ??= $column['type'] ?? null;
 
         if (!$type instanceof AbstractSpatialType) {
             throw new MissingArgumentException('Arguments aren\'t well defined. Please provide a type.');

@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 use Composer\Autoload\ClassLoader;
 
 require __DIR__.'/../../../../vendor/autoload.php';

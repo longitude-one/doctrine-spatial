@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,10 +50,10 @@ trait MultiPointHelperTrait
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', 0, 0));
-            $multipoint->addPoint(static::createGeometryPoint('0 1', 0, 1));
-            $multipoint->addPoint(static::createGeometryPoint('1 0', 1, 0));
-            $multipoint->addPoint(static::createGeometryPoint('1 1', 0, 1));
+            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
+            $multipoint->addPoint(static::createGeometryPoint('0 1', '0', '1'));
+            $multipoint->addPoint(static::createGeometryPoint('1 0', '1', '0'));
+            $multipoint->addPoint(static::createGeometryPoint('1 1', '0', '1'));
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
         }
@@ -66,7 +68,7 @@ trait MultiPointHelperTrait
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', 0, 0));
+            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
         }

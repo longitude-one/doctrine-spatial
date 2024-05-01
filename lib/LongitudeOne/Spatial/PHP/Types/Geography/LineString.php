@@ -13,6 +13,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractLineString;
