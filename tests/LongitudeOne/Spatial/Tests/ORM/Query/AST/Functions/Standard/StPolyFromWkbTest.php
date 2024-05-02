@@ -65,9 +65,7 @@ class StPolyFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE p.polygon = ST_PolyFromWkb(:wkb)'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
-        // phpcs:enable
 
         $result = $query->getResult();
 
@@ -86,13 +84,11 @@ class StPolyFromWkbTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(ST_PolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
         $result = $query->getResult();
-        // phpcs:enable
 
         static::assertCount(1, $result);
         static::assertEquals('POLYGON((0 0,10 0,10 10,0 10,0 0))', $result[0][1]);

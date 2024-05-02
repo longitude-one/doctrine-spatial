@@ -66,9 +66,7 @@ class StIntersectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(ST_Intersection(l.lineString, ST_GeomFromText(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(0 0)', 'string');
@@ -98,9 +96,7 @@ class StIntersectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_IsEmpty(ST_Intersection(l.lineString, ST_GeomFromText(:p1))) = false'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(0 0)', 'string');

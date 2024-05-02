@@ -60,9 +60,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
         }
 
         if (!is_array($polygon)) {
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             throw new InvalidValueException('AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter');
-            // phpcs:enable
         }
 
         $this->polygons[] = $this->validatePolygonValue($polygon);

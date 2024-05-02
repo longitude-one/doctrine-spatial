@@ -65,9 +65,7 @@ class StPerimeterTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Perimeter(p.polygon) = :p'
-            // phpcs:enable
         );
         $query->setParameter('p', 40);
         $result = $query->getResult();

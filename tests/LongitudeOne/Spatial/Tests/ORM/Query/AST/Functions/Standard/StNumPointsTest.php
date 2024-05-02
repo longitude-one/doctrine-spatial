@@ -93,9 +93,7 @@ class StNumPointsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l where  ST_NumPoints(l.lineString) = :p'
-            // phpcs:enable
         );
         $query->setParameter('p', 5, 'integer');
         $result = $query->getResult();

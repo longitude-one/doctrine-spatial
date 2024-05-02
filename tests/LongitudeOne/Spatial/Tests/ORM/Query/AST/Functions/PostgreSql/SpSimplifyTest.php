@@ -63,9 +63,7 @@ class SpSimplifyTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSQL_NPoints(PgSQL_Simplify(ST_Buffer(p.point, 10, 12), 10)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 

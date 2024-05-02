@@ -39,9 +39,7 @@ class StMPolyFromWkbTest extends OrmTestCase
 {
     use GeometryHelperTrait;
 
-    // phpcs:disable Generic.Files.LineLength.MaxExceeded
     private const DATA = '01060000000200000001030000000100000005000000000000000000000000000000000000000000000000000000000000000000F03F000000000000F03F000000000000F03F000000000000F03F000000000000000000000000000000000000000000000000010300000001000000050000000000000000000040000000000000004000000000000000400000000000000840000000000000084000000000000008400000000000000840000000000000004000000000000000400000000000000040';
-    // phpcs:enable
 
     /**
      * Set up the function type test.
@@ -69,9 +67,7 @@ class StMPolyFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT t, ST_AsText(ST_MPolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin(self::DATA), 'blob');
-        // phpcs:enable
 
         $result = $query->getResult();
 

@@ -64,9 +64,7 @@ class SpScaleTest extends OrmTestCase
         $angularLineString = $this->persistAngularLineString();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(PgSQL_Scale(l.lineString, :x, :y)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('x', 2);
         $query->setParameter('y', 4);

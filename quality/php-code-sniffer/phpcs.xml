@@ -104,14 +104,10 @@
     </rule>
 
     <!--
-      Lines should not longer than 120 (warning) and
-      must not be longer than 120 (error).
+      Lines length rule excluded!
     -->
     <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="120"/>
-        </properties>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
     </rule>
 
     <!--

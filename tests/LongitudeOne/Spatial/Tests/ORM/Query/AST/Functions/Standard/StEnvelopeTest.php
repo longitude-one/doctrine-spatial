@@ -92,9 +92,7 @@ class StEnvelopeTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Envelope(p.polygon) = ST_GeomFromText(:p)'
-            // phpcs:enable
         );
 
         $parameter = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';

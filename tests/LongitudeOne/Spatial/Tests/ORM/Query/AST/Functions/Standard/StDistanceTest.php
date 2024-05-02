@@ -68,9 +68,7 @@ class StDistanceTest extends OrmTestCase
         $dallas = $this->persistDallasGeography();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
@@ -105,9 +103,7 @@ class StDistanceTest extends OrmTestCase
 
         // TODO This test should be moved to a class implementing only PgSQL
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
@@ -137,9 +133,7 @@ class StDistanceTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_Distance(p.point, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');

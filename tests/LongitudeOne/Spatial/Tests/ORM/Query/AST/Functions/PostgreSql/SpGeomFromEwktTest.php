@@ -62,9 +62,7 @@ class SpGeomFromEwktTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_SRID(PgSql_GeomFromEwkt(:ewkt)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('ewkt', 'SRID=2249;POINT(0 0)');
 

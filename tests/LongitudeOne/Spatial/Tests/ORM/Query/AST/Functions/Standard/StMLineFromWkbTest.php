@@ -39,9 +39,7 @@ class StMLineFromWkbTest extends OrmTestCase
 {
     use GeometryHelperTrait;
 
-    // phpcs:disable Generic.Files.LineLength.MaxExceeded
     private const DATA = '01050000000200000001020000000200000000000000000000000000000000000000000000000000F03F000000000000F03F0102000000020000000000000000000040000000000000004000000000000014400000000000001440';
-    // phpcs:enable
 
     /**
      * Set up the function type test.
@@ -69,9 +67,7 @@ class StMLineFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT t, ST_AsText(ST_MLineFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin(self::DATA), 'blob');
-        // phpcs:enable
 
         $result = $query->getResult();
 

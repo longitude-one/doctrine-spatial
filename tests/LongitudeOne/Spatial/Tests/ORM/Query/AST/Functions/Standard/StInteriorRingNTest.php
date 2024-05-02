@@ -65,9 +65,7 @@ class StInteriorRingNTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(ST_InteriorRingN(p.polygon, :p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 1);
         $result = $query->getResult();

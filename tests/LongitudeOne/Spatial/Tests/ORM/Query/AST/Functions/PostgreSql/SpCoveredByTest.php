@@ -63,9 +63,7 @@ class SpCoveredByTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE PgSql_CoveredBy(ST_GeomFromText(:p1), p.polygon) = true'
-            // phpcs:enable
         );
         $query->setParameter('p1', 'LINESTRING(4 4,8 8)', 'string');
         $result = $query->getResult();
@@ -87,9 +85,7 @@ class SpCoveredByTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSql_CoveredBy(ST_GeomFromText(:p1), p.polygon) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs: enable
         );
         $query->setParameter('p1', 'LINESTRING(4 4,8 8)', 'string');
         $result = $query->getResult();

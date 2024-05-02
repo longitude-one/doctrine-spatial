@@ -64,9 +64,7 @@ class SpLineInterpolatePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(PgSql_LineInterpolatePoint(l.lineString, :p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 0.2);

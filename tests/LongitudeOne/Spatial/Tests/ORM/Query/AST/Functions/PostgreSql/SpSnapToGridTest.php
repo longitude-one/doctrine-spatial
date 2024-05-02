@@ -82,9 +82,7 @@ class SpSnapToGridTest extends OrmTestCase
         $this->persistGeometryPoint('in grid', '1.25', '2.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 0.5, 1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
@@ -105,9 +103,7 @@ class SpSnapToGridTest extends OrmTestCase
         $this->persistGeometryPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 5.55, 6.25, 0.5, 0.5)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
@@ -128,9 +124,7 @@ class SpSnapToGridTest extends OrmTestCase
         $this->persistGeometryPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, p.point, 0.005, 0.025, 0.5, 0.01)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 

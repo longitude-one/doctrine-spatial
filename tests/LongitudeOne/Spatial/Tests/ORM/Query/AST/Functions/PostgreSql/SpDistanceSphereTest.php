@@ -63,9 +63,7 @@ class SpDistanceSphereTest extends OrmTestCase
         $dallas = $this->persistDallasGeometry();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSql_Distance_Sphere(p.point, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');

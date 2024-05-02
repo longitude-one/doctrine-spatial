@@ -64,9 +64,7 @@ class SpAzimuthTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSql_Azimuth(p.point, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POINT(0 5)');
         $result = $query->getResult();

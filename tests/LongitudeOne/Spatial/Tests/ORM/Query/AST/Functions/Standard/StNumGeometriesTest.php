@@ -84,9 +84,7 @@ class StNumGeometriesTest extends OrmTestCase
         $single = $this->persistSinglePoint();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT m FROM LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity m WHERE ST_NumGeometries(m.multiPoint) = :p'
-            // phpcs:enable
         );
         $query->setParameter('p', 1);
         $result = $query->getResult();

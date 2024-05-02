@@ -65,9 +65,7 @@ class SpTranslateTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE PgSql_Translate(p.polygon, :x, :y) = :g'
-            // phpcs:enable
         );
         $query->setParameter('g', 'POLYGON((4 -4.5,14 -4.5,14 5.5,4 5.5,4 -4.5))', 'string');
         $query->setParameter('x', 4.0);
@@ -91,9 +89,7 @@ class SpTranslateTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Translate(p.polygon, :x, :y)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpccs: enable
         );
         $query->setParameter('x', 4.0);
         $query->setParameter('y', -4.5);

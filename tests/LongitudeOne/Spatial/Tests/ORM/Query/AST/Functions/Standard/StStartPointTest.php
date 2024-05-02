@@ -85,9 +85,7 @@ class StStartPointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_StartPoint(l.lineString) = ST_StartPoint(ST_GeomFromText(:p1))'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(3 3, 4 15, 5 22)', 'string');
@@ -112,9 +110,7 @@ class StStartPointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_StartPoint(l.lineString) = ST_GeomFromText(:p1)'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(0 0)', 'string');

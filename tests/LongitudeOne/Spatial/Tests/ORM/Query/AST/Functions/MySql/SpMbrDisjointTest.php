@@ -65,9 +65,7 @@ class SpMbrDisjointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySql_MBRDisjoint(p.polygon, ST_GeomFromText(:p)) = 1'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
@@ -79,9 +77,7 @@ class SpMbrDisjointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySql_MBRDisjoint(p.polygon, ST_GeomFromText(:p)) = 1'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POLYGON((15 15,17 15,17 17,15 17,15 15))', 'string');
@@ -107,9 +103,7 @@ class SpMbrDisjointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, MySql_MBRDisjoint(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POLYGON((5 5,5 7,7 7,7 5,5 5))', 'string');

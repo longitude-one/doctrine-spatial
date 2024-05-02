@@ -64,9 +64,7 @@ class StPointNTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(ST_PointN(l.lineString, :p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('p', 2, 'integer');
         $result = $query->getResult();
@@ -95,9 +93,7 @@ class StPointNTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l where  ST_PointN(l.lineString, :n) = ST_GeomFromText(:p)'
-            // phpcs: enable
         );
         $query->setParameter('n', 2, 'integer');
         $query->setParameter('p', 'POINT(2 2)', 'string');

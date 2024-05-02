@@ -23,8 +23,6 @@ use Doctrine\DBAL\Exception;
 
 class ConnectionParameters
 {
-    // phpcs:disable Generic.Files.LineLength.MaxExceeded
-
     /**
      * Return common connection parameters.
      *

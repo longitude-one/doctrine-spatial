@@ -87,9 +87,7 @@ class StLengthTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Length(ST_GeomFromText(:p1)) > ST_Length(l.lineString)'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(0 0,21 21)', 'string');

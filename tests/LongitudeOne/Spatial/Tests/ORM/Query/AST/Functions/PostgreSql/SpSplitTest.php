@@ -65,9 +65,7 @@ class SpSplitTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(PgSQL_Split(l.lineString, ST_GeomFromText(:g))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('g', 'POINT (3 3)');
         $result = $query->getResult();

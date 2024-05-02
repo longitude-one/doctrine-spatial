@@ -74,9 +74,7 @@ class SpCollectTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_Collect(p.point, ST_GeomFromText(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POINT(-2 3)');
         $result = $query->getResult();

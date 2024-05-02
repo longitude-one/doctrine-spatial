@@ -65,9 +65,7 @@ class SpLineLocatePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE PgSql_LineLocatePoint(l.lineString, ST_GeomFromText(:point)) < :percent'
-            // phpcs:enable
         );
 
         $query->setParameter('point', 'POINT(4 3)', 'string');
@@ -94,9 +92,7 @@ class SpLineLocatePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT PgSql_LineLocatePoint(l.lineString, :point) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('point', 'POINT(4 3)');
         $result = $query->getResult();

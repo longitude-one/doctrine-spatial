@@ -62,9 +62,7 @@ class SpMakePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_AsText(PgSql_MakePoint(:x, :y, :z, :m)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('x', 1, 'integer');
         $query->setParameter('y', 2, 'integer');

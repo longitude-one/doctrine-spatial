@@ -62,16 +62,12 @@ class SpExpandTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Expand(p.point, 4)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0][0]);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         static::assertEquals('POLYGON((-4 -4,-4 4,4 4,4 -4,-4 -4))', $result[0][1]);
-        // phpcs:enable
     }
 }

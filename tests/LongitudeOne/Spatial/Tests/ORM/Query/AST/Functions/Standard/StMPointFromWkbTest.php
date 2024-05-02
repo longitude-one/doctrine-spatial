@@ -65,9 +65,7 @@ class StMPointFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT t, ST_AsText(ST_MPointFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin('0104000000030000000101000000000000000000000000000000000000000101000000000000000000F03F000000000000F03F010100000000000000000000400000000000000040'), 'blob');
-        // phpcs:enable
 
         $result = $query->getResult();
 
@@ -89,9 +87,7 @@ class StMPointFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT t, ST_SRID(ST_MPointFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin('0104000000030000000101000000000000000000000000000000000000000101000000000000000000F03F000000000000F03F010100000000000000000000400000000000000040'), 'blob');
-        // phpcs:enable
         $query->setParameter('srid', 2154);
 
         $result = $query->getResult();

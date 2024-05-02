@@ -64,9 +64,7 @@ class SpGeogFromTextTest extends OrmTestCase
         $this->persistPointA();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g WHERE g.geography = PgSQL_GeogFromText(:g)'
-            // phpcs:enable
         );
         $query->setParameter('g', 'SRID=4326;POINT(-73.938611 40.664167)');
 

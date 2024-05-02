@@ -67,9 +67,7 @@ class StGeomFromTextTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE g.lineString = ST_GeomFromText(:geometry)'
-            // phpcs:enable
         );
 
         $query->setParameter('geometry', 'LINESTRING(0 0,2 2,5 5)', 'string');

@@ -69,10 +69,8 @@ class StAsBinaryTest extends OrmTestCase
         );
         $result = $query->getResult();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expectedA = '010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440';
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
-        // phpcs:enable
 
         if ($this->getPlatform() instanceof MySQLPlatform) {
             static::assertEquals(pack('H*', $expectedA), $result[0][1]);

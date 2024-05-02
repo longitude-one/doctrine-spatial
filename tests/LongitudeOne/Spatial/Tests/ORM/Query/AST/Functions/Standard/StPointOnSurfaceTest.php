@@ -64,9 +64,7 @@ class StPointOnSurfaceTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(ST_PointOnSurface(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs: enable
         );
         $result = $query->getResult();
 
@@ -94,9 +92,7 @@ class StPointOnSurfaceTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l where  ST_PointOnSurface(l.lineString) = ST_GeomFromText(:p)'
-            // phpcs: enable
         );
         $query->setParameter('p', 'POINT(2 2)', 'string');
         $result = $query->getResult();

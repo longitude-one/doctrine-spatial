@@ -64,9 +64,7 @@ class SpBufferTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(Mysql_Buffer(p.point, 4, Mysql_BufferStrategy(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'point_square', 'string');

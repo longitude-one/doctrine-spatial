@@ -64,9 +64,7 @@ class StPointTest extends OrmTestCase
         $this->persistPointB();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p WHERE ST_EQUALS(p.point, ST_Point(:x, :y)) = true'
-            // phpcs:enable
         );
         $query->setParameter('x', 0, 'integer');
         $query->setParameter('y', 0, 'integer');
@@ -88,9 +86,7 @@ class StPointTest extends OrmTestCase
         $this->persistGeometryParisLambert93(true);
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p WHERE ST_EQUALS(p.point, ST_SetSRID(ST_Point(:x, :y), :srid)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('x', 525375.21);

@@ -62,9 +62,7 @@ class StRelateTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             "SELECT l FROM LongitudeOne\\Spatial\\Tests\\Fixtures\\LineStringEntity l WHERE ST_Relate(l.lineString, ST_GeomFromText(:p)) = 'FF1FF0102'"
-            // phpcs:enable
         );
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();
@@ -86,9 +84,7 @@ class StRelateTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_Relate(l.lineString, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();

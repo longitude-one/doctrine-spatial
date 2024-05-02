@@ -65,9 +65,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE PgSql_LineCrossingDirection(l.lineString, ST_GeomFromText(:p1)) = 1'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(12 6,5 11,8 12,5 15)', 'string');
@@ -92,9 +90,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, PgSql_LineCrossingDirection(l.lineString, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(12 6,5 11,8 12,5 15)', 'string');

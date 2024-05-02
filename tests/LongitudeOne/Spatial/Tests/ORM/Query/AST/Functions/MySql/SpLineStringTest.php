@@ -63,9 +63,7 @@ class SpLineStringTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE MySql_LineString(MySql_Point(:x, :x), MySql_Point(:y, :y)) = l.lineString'
-            // phpcs:enable
         );
         $query->setParameter('x', 0, 'integer');
         $query->setParameter('y', 10, 'integer');
@@ -88,9 +86,7 @@ class SpLineStringTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(MySql_LineString(MySql_Point(:x, :y), MySql_Point(:y, :x))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('x', 1, 'integer');
         $query->setParameter('y', 2, 'integer');

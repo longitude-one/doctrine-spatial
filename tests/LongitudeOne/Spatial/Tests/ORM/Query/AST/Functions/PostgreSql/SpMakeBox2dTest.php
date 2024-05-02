@@ -62,9 +62,7 @@ class SpMakeBox2dTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_AsText(PgSql_MakeBox2D(ST_Point(:x1, :y1), ST_Point(:x2, :y2))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('x1', 0);
         $query->setParameter('y1', 0);
