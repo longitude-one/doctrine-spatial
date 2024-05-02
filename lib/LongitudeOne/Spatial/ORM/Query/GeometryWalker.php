@@ -65,8 +65,10 @@ class GeometryWalker extends SqlWalker
      * @return string the SQL
      *
      * @throws QueryException when error happens during walking into select expression
+     *
+     * DO NOT ADD SelectExpression TYPEHINT here, because library won't work with ORM ^2.19
      */
-    public function walkSelectExpression(SelectExpression $selectExpression): string
+    public function walkSelectExpression($selectExpression): string
     {
         $expr = $selectExpression->expression;
         $sql = parent::walkSelectExpression($selectExpression);
