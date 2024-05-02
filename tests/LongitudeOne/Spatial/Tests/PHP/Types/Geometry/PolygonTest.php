@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -138,6 +139,7 @@ class PolygonTest extends TestCase
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
         $polygon = $this->createEmptyPolygon();
+
         try {
             $polygon->addRing($ringA);
             $polygon->addRing($ringB);
@@ -156,6 +158,7 @@ class PolygonTest extends TestCase
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
         $polygon = $this->createEmptyPolygon();
+
         try {
             $polygon->addRing($ringA);
             $polygon->addRing($ringB);
@@ -273,6 +276,7 @@ class PolygonTest extends TestCase
                 [0, 0],
             ],
         ];
+
         try {
             $polygon = new Polygon($rings);
             $result = (string) $polygon;

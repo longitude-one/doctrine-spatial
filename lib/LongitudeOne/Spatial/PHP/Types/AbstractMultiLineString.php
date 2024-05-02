@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -35,7 +36,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      * AbstractMultiLineString constructor.
      *
      * @param AbstractLineString[]|array[] $rings array of linestring
-     * @param int|null                     $srid  Spatial Reference System Identifier
+     * @param null|int                     $srid  Spatial Reference System Identifier
      *
      * @throws InvalidValueException when rings contains an invalid linestring
      */

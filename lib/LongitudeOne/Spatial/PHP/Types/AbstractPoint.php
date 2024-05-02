@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -33,12 +34,12 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * The X coordinate or the longitude.
      */
-    protected int|float $x;
+    protected float|int $x;
 
     /**
      * The Y coordinate or the latitude.
      */
-    protected int|float $y;
+    protected float|int $y;
 
     /**
      * AbstractPoint constructor.
@@ -55,7 +56,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude getter.
      */
-    public function getLatitude(): int|float
+    public function getLatitude(): float|int
     {
         return $this->getY();
     }
@@ -63,7 +64,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Longitude getter.
      */
-    public function getLongitude(): int|float
+    public function getLongitude(): float|int
     {
         return $this->getX();
     }
@@ -79,7 +80,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X getter. (Longitude getter).
      */
-    public function getX(): int|float
+    public function getX(): float|int
     {
         return $this->x;
     }
@@ -87,7 +88,7 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y getter. Latitude getter.
      */
-    public function getY(): int|float
+    public function getY(): float|int
     {
         return $this->y;
     }
@@ -170,7 +171,7 @@ abstract class AbstractPoint extends AbstractGeometry
      *
      * @param string   $x    X, longitude
      * @param string   $y    Y, latitude
-     * @param int|null $srid Spatial Reference System Identifier
+     * @param null|int $srid Spatial Reference System Identifier
      *
      * @throws InvalidValueException if x or y are invalid
      */

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -75,7 +76,7 @@ trait GeometryHelperTrait
     /**
      * Create a geometric point at A (1 1).
      *
-     * @param int|null $srid Spatial Reference System Identifier
+     * @param null|int $srid Spatial Reference System Identifier
      */
     protected function persistGeometryA(?int $srid = null): GeometryEntity
     {
@@ -90,7 +91,7 @@ trait GeometryHelperTrait
     /**
      * Create a geometric point E (5 5).
      *
-     * @param int|null $srid Spatial Reference System Identifier
+     * @param null|int $srid Spatial Reference System Identifier
      */
     protected function persistGeometryE(?int $srid = null): GeometryEntity
     {
@@ -105,7 +106,7 @@ trait GeometryHelperTrait
     /**
      * Create a geometric point at origin.
      *
-     * @param int|null $srid Spatial Reference System Identifier
+     * @param null|int $srid Spatial Reference System Identifier
      */
     protected function persistGeometryO(?int $srid = null): GeometryEntity
     {
