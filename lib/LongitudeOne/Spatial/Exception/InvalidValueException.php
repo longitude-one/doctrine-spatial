@@ -23,4 +23,6 @@ namespace LongitudeOne\Spatial\Exception;
  *
  * This exception is thrown when a geometric or geographic value is invalid.
  */
-class InvalidValueException extends \Exception implements ExceptionInterface {}
+class InvalidValueException extends \Exception implements ExceptionInterface
+{
+}

@@ -21,4 +21,6 @@ namespace LongitudeOne\Spatial\Exception;
 /**
  * UnsupportedPlatformException class.
  */
-class UnsupportedPlatformException extends \Exception implements ExceptionInterface {}
+class UnsupportedPlatformException extends \Exception implements ExceptionInterface
+{
+}

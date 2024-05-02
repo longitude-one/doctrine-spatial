@@ -332,6 +332,10 @@
 
     </rule>
 
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag.WrongNumber">
+        <severity>0</severity>
+    </rule>
+
     <rule ref="Squiz.Commenting.VariableComment.IncorrectVarType">
         <severity>0</severity>
     </rule>

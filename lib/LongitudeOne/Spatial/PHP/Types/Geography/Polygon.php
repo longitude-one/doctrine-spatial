@@ -24,4 +24,6 @@ use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
 /**
  * Polygon object for POLYGON geography type.
  */
-class Polygon extends AbstractPolygon implements GeographyInterface, PolygonInterface {}
+class Polygon extends AbstractPolygon implements GeographyInterface, PolygonInterface
+{
+}

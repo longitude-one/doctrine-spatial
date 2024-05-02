@@ -24,4 +24,6 @@ use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
 /**
  * MultiLineString object for MULTILINESTRING geometry type.
  */
-class MultiLineString extends AbstractMultiLineString implements GeometryInterface, MultiLineStringInterface {}
+class MultiLineString extends AbstractMultiLineString implements GeometryInterface, MultiLineStringInterface
+{
+}

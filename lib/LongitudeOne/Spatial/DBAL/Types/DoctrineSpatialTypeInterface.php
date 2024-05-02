@@ -18,4 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\DBAL\Types;
 
-interface DoctrineSpatialTypeInterface {}
+interface DoctrineSpatialTypeInterface
+{
+}

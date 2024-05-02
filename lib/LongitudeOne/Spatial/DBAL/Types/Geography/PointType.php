@@ -26,4 +26,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeographyType;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-class PointType extends GeographyType {}
+class PointType extends GeographyType
+{
+}

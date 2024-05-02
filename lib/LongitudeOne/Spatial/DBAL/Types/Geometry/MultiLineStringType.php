@@ -28,4 +28,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeometryType;
  *
  * TODO create a MultiLineStringTypeTest as MultiPolygonTypeTest
  */
-class MultiLineStringType extends GeometryType {}
+class MultiLineStringType extends GeometryType
+{
+}

@@ -24,4 +24,6 @@ namespace LongitudeOne\Spatial\DBAL\Types;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-class GeometryType extends AbstractSpatialType {}
+class GeometryType extends AbstractSpatialType
+{
+}

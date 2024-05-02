@@ -26,4 +26,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeometryType;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-class LineStringType extends GeometryType {}
+class LineStringType extends GeometryType
+{
+}

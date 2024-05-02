@@ -23,4 +23,6 @@ namespace LongitudeOne\Spatial\Exception;
  *
  * This exception is thrown when an argument is missing.
  */
-class MissingArgumentException extends \Exception implements ExceptionInterface {}
+class MissingArgumentException extends \Exception implements ExceptionInterface
+{
+}

@@ -72,6 +72,7 @@ return $config->setRules([
     ],
     'php_unit_test_case_static_method_calls' => true, //FIXME accepted values are self static or this.
     'single_line_throw' => false, //FIXME set to true when all #60 is fixed
+    'single_line_empty_body' => false,
 ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/.php_cs.cache');

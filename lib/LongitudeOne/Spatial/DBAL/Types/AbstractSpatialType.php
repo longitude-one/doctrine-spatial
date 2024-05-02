@@ -65,7 +65,8 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      *
      * @return null|string
      *
-     * @throws InvalidValueException|UnsupportedPlatformException when value is not an instance of Geometry Interface
+     * @throws InvalidValueException        when value is not an instance of Geometry Interface
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {

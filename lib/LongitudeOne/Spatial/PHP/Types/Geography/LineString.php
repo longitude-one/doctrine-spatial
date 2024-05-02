@@ -24,4 +24,6 @@ use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
 /**
  * LineString object for LINESTRING geography type.
  */
-class LineString extends AbstractLineString implements GeographyInterface, LineStringInterface {}
+class LineString extends AbstractLineString implements GeographyInterface, LineStringInterface
+{
+}

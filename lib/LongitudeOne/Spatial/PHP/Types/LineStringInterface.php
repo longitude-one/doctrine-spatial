@@ -18,4 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-interface LineStringInterface extends SpatialInterface {}
+interface LineStringInterface extends SpatialInterface
+{
+}

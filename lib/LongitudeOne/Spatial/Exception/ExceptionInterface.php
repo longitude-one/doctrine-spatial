@@ -23,4 +23,6 @@ namespace LongitudeOne\Spatial\Exception;
  *
  * Any exceptions to the Spatial library must implement this interface.
  */
-interface ExceptionInterface extends \Throwable {}
+interface ExceptionInterface extends \Throwable
+{
+}

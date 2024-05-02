@@ -24,4 +24,6 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-interface ReturnsGeometryInterface {}
+interface ReturnsGeometryInterface
+{
+}
