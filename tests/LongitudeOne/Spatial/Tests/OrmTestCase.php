@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -293,7 +294,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         try {
             static::$connection = static::getConnection();
-        } catch (UnsupportedPlatformException|Exception $e) {
+        } catch (Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to establish connection in %s: %s', __FILE__, $e->getMessage()));
         }
     }
@@ -391,7 +392,7 @@ abstract class OrmTestCase extends SpatialTestCase
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
 
             return new EntityManager(static::getConnection(), $config);
-        } catch (Exception|UnsupportedPlatformException $e) {
+        } catch (Exception|ORMException|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to init the EntityManager: %s', $e->getMessage()));
         }
     }
@@ -403,7 +404,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         try {
             return static::getConnection()->getDatabasePlatform();
-        } catch (UnsupportedPlatformException|Exception $e) {
+        } catch (Exception|UnsupportedPlatformException $e) {
             static::fail('Unable to get database platform: '.$e->getMessage());
         }
     }

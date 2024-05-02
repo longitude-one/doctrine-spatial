@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -22,12 +23,10 @@ use Doctrine\DBAL\Exception;
 
 class ConnectionParameters
 {
-    // phpcs:disable Generic.Files.LineLength.MaxExceeded
-
     /**
      * Return common connection parameters.
      *
-     * @return array{driver: string, user: string, password: string|null, host: string, dbname: string|null, port: string, unix_socket: string|null, driverOptions: array<string, string>}
+     * @return array{driver: string, user: string, password: null|string, host: string, dbname: null|string, port: string, unix_socket: null|string, driverOptions: array<string, string>}
      */
     public static function getCommonConnectionParameters(): array
     {

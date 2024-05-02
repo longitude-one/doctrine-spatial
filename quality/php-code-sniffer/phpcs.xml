@@ -3,17 +3,21 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
 
-    <arg name="basepath" value="."/>
+    <arg name="basepath" value="../.."/>
     <arg name="cache" value=".phpcs-cache"/>
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
 
     <description>
-        The coding standard of Alexandre Tranchant's application, based on the Generic, PSR2.
+        The coding standard of doctrine spatial library, based on the Generic, PSR2.
     </description>
 
     <!-- Exclude git -->
     <exclude-pattern>*/.git/*</exclude-pattern>
+    <!-- Exclude docker directory -->
+    <exclude-pattern>*/docker/*</exclude-pattern>
+    <!-- Exclude quality directory -->
+    <exclude-pattern>*/quality/*</exclude-pattern>
     <!-- Exclude third party code -->
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
@@ -100,14 +104,10 @@
     </rule>
 
     <!--
-      Lines should not longer than 120 (warning) and
-      must not be longer than 120 (error).
+      Lines length rule excluded!
     -->
     <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="120"/>
-        </properties>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
     </rule>
 
     <!--
@@ -328,6 +328,10 @@
 
     </rule>
 
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag.WrongNumber">
+        <severity>0</severity>
+    </rule>
+
     <rule ref="Squiz.Commenting.VariableComment.IncorrectVarType">
         <severity>0</severity>
     </rule>
@@ -500,6 +504,6 @@
         <severity>0</severity>
     </rule>
 
-    <file>lib/</file>
-    <file>tests/</file>
+    <file>../../lib/</file>
+    <file>../../tests/</file>
 </ruleset>

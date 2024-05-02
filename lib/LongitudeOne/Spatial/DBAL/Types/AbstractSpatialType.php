@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -61,7 +62,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      * @param mixed            $value    the value to convert
      * @param AbstractPlatform $platform the database platform
      *
-     * @throws UnsupportedPlatformException|InvalidValueException when value is not an instance of Geometry Interface
+     * @return null|string
+     *
+     * @throws InvalidValueException        when value is not an instance of Geometry Interface
+     * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
@@ -69,7 +73,7 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
             return null;
         }
 
-        if (!($value instanceof SpatialInterface)) {
+        if (!$value instanceof SpatialInterface) {
             throw new InvalidValueException('Spatial column values must implement SpatialInterface');
         }
 
@@ -94,10 +98,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     /**
      * Converts a value from its database representation to its PHP representation of this type.
      *
-     * @param resource|string|null $value    value to convert to PHP
+     * @param null|resource|string $value    value to convert to PHP
      * @param AbstractPlatform     $platform platform database
      *
-     * @return GeometryInterface|null
+     * @return null|GeometryInterface
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */

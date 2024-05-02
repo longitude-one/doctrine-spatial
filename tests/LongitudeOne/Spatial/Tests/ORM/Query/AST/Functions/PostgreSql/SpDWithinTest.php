@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -62,9 +63,7 @@ class SpDWithinTest extends OrmTestCase
         $dallas = $this->persistDallasGeography();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, PgSql_DWithin(g.geography, PgSql_GeographyFromText(:p), :d, :spheroid) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');
@@ -94,9 +93,7 @@ class SpDWithinTest extends OrmTestCase
         $dallas = $this->persistDallasGeometry();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSql_DWithin(p.point, ST_GeomFromText(:p), :d) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');

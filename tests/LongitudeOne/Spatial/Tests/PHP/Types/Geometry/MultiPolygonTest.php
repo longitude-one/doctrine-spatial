@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -114,9 +115,7 @@ class MultiPolygonTest extends TestCase
      */
     public function testJson(): void
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiPolygon","coordinates":[[[[0,0],[10,0],[10,10],[0,10],[0,0]]],[[[5,5],[7,5],[7,7],[5,7],[5,5]]]],"srid":null}';
-        // phpcs:enable
         $polygons = [
             [
                 [
@@ -142,9 +141,7 @@ class MultiPolygonTest extends TestCase
         static::assertEquals($expected, $multiPolygon->toJson());
         static::assertEquals($expected, json_encode($multiPolygon));
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiPolygon","coordinates":[[[[0,0],[10,0],[10,10],[0,10],[0,0]]],[[[5,5],[7,5],[7,7],[5,7],[5,5]]]],"srid":4326}';
-        // phpcs:enable
         $multiPolygon->setSrid(4326);
         static::assertEquals($expected, $multiPolygon->toJson());
         static::assertEquals($expected, json_encode($multiPolygon));

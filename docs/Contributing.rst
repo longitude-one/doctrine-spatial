@@ -200,28 +200,31 @@ Quality of your code
 
 Quality of code is auto-verified by php-cs-fixer, php code sniffer and php mess detector.
 
-Before a commit, launch the quality script:
+Before a commit, install the quality scripts:
+
+.. code-block:: bash
+    docker exec spatial-php8 composer update --working-dir=quality/php-cs-fixer
+    docker exec spatial-php8 composer update --working-dir=quality/php-code-sniffer
+    docker exec spatial-php8 composer update --working-dir=quality/php-mess-detector
+    docker exec spatial-php8 composer update --working-dir=quality/php-stan
+
+Then, you can check the quality of your code with:
 
 .. code-block:: bash
 
-    docker spatial-php8 composer check-quality-code
+    docker exec spatial-php8 quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
+    docker exec spatial-php8 quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M
+    docker exec spatial-php8 quality/php-mess-detector/vendor/bin/phpmd lib text quality/php-mess-detector/ruleset.xml
+    docker exec spatial-php8 quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml
+    docker exec spatial-php8 quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
 
 You can launch PHPCS-FIXER to fix errors with:
 
 .. code-block:: bash
 
-    docker spatial-php8 composer phpcsfixer
+    docker exec spatial-php8 quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --allow-risky=yes
 
-You can launch PHP Code Sniffer only with:
-.. code-block:: bash
-
-    docker spatial-php8 composer phpcs
-
-You can launch PHP Mess Detector only with:
-
-.. code-block:: bash
-
-    docker spatial-php8 composer phpmd
+Fix all errors, then commit your code.
 
 .. _Common directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Common
 .. _MySql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql
