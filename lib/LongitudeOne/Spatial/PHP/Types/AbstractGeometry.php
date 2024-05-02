@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -39,7 +40,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
     /**
      * Spatial Reference System Identifier getter.
      *
-     * @return int|null
+     * @return null|int
      */
     public function getSrid()
     {
@@ -198,8 +199,10 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
         switch (true) {
             case $point instanceof AbstractPoint:
                 return $point->toArray();
+
             case is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1]):
                 return array_values($point);
+
             default:
                 throw new InvalidValueException(sprintf(
                     'Invalid %s Point value of type "%s"',
@@ -241,9 +244,12 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
         switch (true) {
             case $ring instanceof AbstractLineString:
                 $ring = $ring->toArray();
+
                 break;
+
             case is_array($ring):
                 break;
+
             default:
                 throw new InvalidValueException(sprintf(
                     'Invalid %s LineString value of type "%s"',

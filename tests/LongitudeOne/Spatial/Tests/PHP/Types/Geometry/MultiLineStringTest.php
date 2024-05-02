@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -80,9 +81,7 @@ class MultiLineStringTest extends TestCase
      */
     public function testJson()
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiLineString","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":null}';
-        // phpcs:enable
         $lineStrings = [
             [
                 [0, 0],
@@ -103,9 +102,7 @@ class MultiLineStringTest extends TestCase
 
         static::assertEquals($expected, $multiLineString->toJson());
         static::assertEquals($expected, json_encode($multiLineString));
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"MultiLineString","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":4326}';
-        // phpcs:enable
         $multiLineString->setSrid(4326);
         static::assertEquals($expected, $multiLineString->toJson());
         static::assertEquals($expected, json_encode($multiLineString));

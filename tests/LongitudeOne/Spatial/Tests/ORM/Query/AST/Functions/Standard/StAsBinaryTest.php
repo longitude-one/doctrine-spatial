@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -68,10 +69,8 @@ class StAsBinaryTest extends OrmTestCase
         );
         $result = $query->getResult();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expectedA = '010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440';
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
-        // phpcs:enable
 
         if ($this->getPlatform() instanceof MySQLPlatform) {
             static::assertEquals(pack('H*', $expectedA), $result[0][1]);

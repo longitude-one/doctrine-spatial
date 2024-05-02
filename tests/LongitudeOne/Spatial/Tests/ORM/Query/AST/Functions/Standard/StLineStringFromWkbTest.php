@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -61,11 +62,9 @@ class StLineStringFromWkbTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query = $this->getEntityManager()->createQuery(
             'SELECT g, St_AsText(ST_LineStringFromWkb(St_AsBinary(g.geometry))) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g'
         );
-        // phpcs:enable
 
         $result = $query->getResult();
 
@@ -84,13 +83,11 @@ class StLineStringFromWkbTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query = $this->getEntityManager()->createQuery(
             'SELECT g, ST_SRID(ST_LineStringFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g'
         );
         $query->setParameter('wkb', hex2bin('010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440'), 'blob');
         $query->setParameter('srid', 2154);
-        // phpcs:enable
 
         $result = $query->getResult();
 

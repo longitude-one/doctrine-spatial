@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -35,7 +36,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      * Abstract polygon constructor.
      *
      * @param AbstractLineString[]|array[] $rings the polygons
-     * @param int|null                     $srid  Spatial Reference System Identifier
+     * @param null|int                     $srid  Spatial Reference System Identifier
      *
      * @throws InvalidValueException When a ring is invalid
      */
@@ -49,7 +50,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param LineStringInterface|PolygonInterface|array[] $ring Ring to add to geometry
+     * @param array[]|LineStringInterface|PolygonInterface $ring Ring to add to geometry
      *
      * @return self
      *

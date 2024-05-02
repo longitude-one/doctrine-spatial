@@ -45,18 +45,6 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "scripts": {
-        "check-quality-code": [
-            "php-cs-fixer fix --dry-run --config=.php-cs-fixer.dist.php --allow-risky=yes -vvv",
-            "phpcs --standard=phpcs.xml.dist -s",
-            "phpmd lib text ./phpmd.lib.xml",
-            "phpmd tests text ./phpmd.test.xml"
-        ],
-        "phpcs": "phpcs --standard=phpcs.xml.dist -s",
-        "phpcsfixer": "php-cs-fixer --config=.php-cs-fixer.dist.php fix --allow-risky=yes -vvv",
-        "phpmd": [
-            "phpmd lib text ./phpmd.lib.xml",
-            "phpmd tests text ./phpmd.test.xml"
-        ],
         "test": [
             "phpunit --configuration phpunit.mysql5.7.xml",
             "phpunit --configuration phpunit.mysql8.0.xml",
@@ -68,7 +56,6 @@
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
             "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
         ],
-        "test-deprecation": "phpunit --configuration phpunit.deprecation.xml",
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
         "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"

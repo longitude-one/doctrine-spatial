@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -58,9 +59,7 @@ class PointTest extends TestCase
     public function testBadLatitudeDirection()
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $this->expectExceptionMessage('[Syntax Error] line 0, col 8: Error: Expected LongitudeOne\\Geo\\String\\Lexer::T_INTEGER or LongitudeOne\\Geo\\String\\Lexer::T_FLOAT, got "Q" in value "84:26:46Q"');
-        // phpcs:enable
 
         new Point('100:56:55W', '84:26:46Q');
     }
@@ -104,9 +103,7 @@ class PointTest extends TestCase
     public function testBadLongitudeDirection()
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $this->expectExceptionMessage('[Syntax Error] line 0, col 9: Error: Expected LongitudeOne\\Geo\\String\\Lexer::T_INTEGER or LongitudeOne\\Geo\\String\\Lexer::T_FLOAT, got "P" in value "100:56:55P"');
-        // phpcs:enable
 
         new Point('100:56:55P', '84:26:46N');
     }
@@ -312,9 +309,7 @@ class PointTest extends TestCase
     public function testPointTooManyArguments()
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geography\\Point::__construct: "5", "5", "5", "5"');
-        // phpcs:enable
 
         new Point(5, 5, 5, 5);
     }
@@ -346,9 +341,7 @@ class PointTest extends TestCase
     public function testPointWrongArgumentTypes()
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geography\\Point::__construct: Array, Array, "1234"');
-        // phpcs:enable
 
         new Point([], [], '1234');
     }

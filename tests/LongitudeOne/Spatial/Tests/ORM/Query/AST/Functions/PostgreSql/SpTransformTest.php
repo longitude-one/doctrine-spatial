@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -62,9 +63,7 @@ class SpTransformTest extends OrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :proj)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpccs: enable
         );
         $query->setParameter('proj', '+proj=longlat +datum=WGS84 +no_defs');
         $result = $query->getResult();
@@ -83,7 +82,6 @@ class SpTransformTest extends OrmTestCase
      */
     public function testFunctionInSelectWith3Parameters()
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $massachusetts = $this->persistMassachusettsState(false);
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
@@ -97,7 +95,6 @@ class SpTransformTest extends OrmTestCase
         static::assertCount(1, $result);
         static::assertEquals($massachusetts, $result[0][0]);
         static::assertStringStartsWith('POLYGON((', $result[0][1]);
-        // phpccs: enable
     }
 
     /**
@@ -114,17 +111,13 @@ class SpTransformTest extends OrmTestCase
         // TODO The test above failed because DQL SRID is seen as a string
         static::markTestSkipped('The test above failed because DQL SRID is seen as a string');
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpccs: enable
         );
         $query->setParameter('srid', 4326, 'integer');
         $result = $query->getResult();
 
         static::assertCount(1, $result);
         static::assertEquals($massachusetts, $result[0][0]);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         static::assertSame('POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 42.3903829478009, -71.1775844305465 42.3903826677917,-71.1775825927231 42.3902893647987,-71.1776848522251 42.3902896512902))', $result[0][1]);
-        // phpcs: enable
     }
 }

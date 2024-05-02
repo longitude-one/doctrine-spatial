@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -57,7 +58,7 @@ class SpatialTestCase extends TestCase
      * So test for an empty geometry is a little more complex than to compare two strings.
      *
      * @param mixed                 $value    Value to test
-     * @param AbstractPlatform|null $platform the platform
+     * @param null|AbstractPlatform $platform the platform
      */
     protected static function assertEmptyPoint($value, ?AbstractPlatform $platform = null): void
     {
@@ -81,7 +82,7 @@ class SpatialTestCase extends TestCase
      *
      * With doctrine/orm:3.0 MySQL57Platform does not exist anymore.
      *
-     * @param AbstractPlatform|null $platform the platform
+     * @param null|AbstractPlatform $platform the platform
      */
     private static function platformIsMySql57(?AbstractPlatform $platform): bool
     {

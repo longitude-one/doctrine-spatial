@@ -59,34 +59,45 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Validate composer.json
         run: composer validate --strict
-      - name: Get Composer Cache Directory
+
+      - name: Display Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+
+      - name: Restore cache Composer dependencies
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           coverage: pcov
           tools: composer:v2
+
       - name: Echo PHP version
         run: php -v
-      - name: Copy testsuites
+
+      - name: Copy test suites
         run: cp .github/phpunit.*.xml .
+
       - name: Install libraries
         run: composer --prefer-stable update -vvv
+
       - name: Force doctrine/orm library to ${{ matrix.orm }}
         run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
-      - name: Run test suite and coverage
+
+      - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' && env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
@@ -94,14 +105,91 @@ jobs:
         with:
            coverageCommand: composer run-script test-coverage
            coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
-      - name: Run test suite for forks or version without coverage
+
+      - name: Run test suite for forks or version without code coverage
         if: ${{ matrix.php != '8.3' || matrix.orm != '^3.1' || env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
+
       - name: Coveralls.io steps
         if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' && env.HAS_CA_SECRET == 'true' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
           file: ${{github.workspace}}/.phpunit.cache/code-coverage/clover.xml
-      - name: Check quality code
-        run: composer run-script check-quality-code
+
+      ## Quality checks
+      ## PHP-CS-Fixer is needed with only one version of PHP
+      - name: Cache Composer PHP-CS-FIXER packages
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        id: composer-phpcsfixer-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-phpcsfixer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-phpcsfixer-
+
+      - name: Install PHP-CS-Fixer
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: composer update --working-dir=quality/php-cs-fixer
+
+      - name: Run PHP-CS-Fixer
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
+
+      ## PHP-MESS-DETECTOR
+      - name: Cache Composer PHP-MESS-DETECTOR packages
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        id: composer-phpmd-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-phpmd-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-phpmd-
+      - name: Install PHP-MESS-DETECTOR
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: composer update --working-dir=quality/php-mess-detector
+      - name: Run PHP-MESS-DETECTOR on lib directory
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: ./quality/php-mess-detector/vendor/bin/phpmd lib text quality/php-mess-detector/ruleset.xml
+      - name: Run PHP-MESS-DETECTOR on tests directory
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: ./quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml
+
+      ## PHP CODE SNIFFER
+      - name: Cache Composer PHP-CS packages
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        id: composer-php-cs-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-php-cs-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-cs-
+
+      - name: Install PHP-CS
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: composer update --working-dir=quality/php-code-sniffer
+
+      - name: Run PHP-CS
+        if: ${{ matrix.php == '8.3' && matrix.orm == '^3.1' }}
+        run: ./quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
+
+      ## PHP-STAN
+#      - name: Cache Composer PHP-STAN packages
+#        if: ${{ matrix.lexer-version == '~3.0.0' }}
+#        id: composer-php-stan-cache
+#        uses: actions/cache@v4
+#        with:
+#          path: quality/php-cs-fixer/vendor/
+#          key: ${{ runner.os }}-php-stan-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-php-stan-
+#      - name: Install PHP-STAN
+#        if: ${{ matrix.lexer-version == '~3.0.0' }}
+#        run: composer update --working-dir=quality/php-stan
+#      - name: Run PHP-STAN
+#        if: ${{ matrix.lexer-version == '~3.0.0' }}
+#        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v
+

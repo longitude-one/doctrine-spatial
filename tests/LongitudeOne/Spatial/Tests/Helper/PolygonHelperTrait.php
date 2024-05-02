@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -288,7 +289,7 @@ trait PolygonHelperTrait
      * Create a Polygon from an array of linestrings.
      *
      * @param array    $lineStrings the array of linestrings
-     * @param int|null $srid        Spatial Reference System Identifier
+     * @param null|int $srid        Spatial Reference System Identifier
      *
      * @throws InvalidValueException when geometries are not valid
      */
@@ -319,7 +320,7 @@ trait PolygonHelperTrait
 
             $this->getEntityManager()->persist($polygonEntity);
             $this->getEntityManager()->flush();
-        } catch (ORMException|Exception|UnsupportedPlatformException $e) {
+        } catch (Exception|ORMException|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to persist polygon: %s', $e->getMessage()));
         }
 

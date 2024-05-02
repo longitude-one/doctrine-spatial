@@ -1,11 +1,12 @@
-<?xml version="1.0"?>
 <ruleset name="Alexandre PHPMD rule set"
          xmlns="http://pmd.sf.net/ruleset/1.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
                      http://pmd.sf.net/ruleset_xml_schema.xsd"
          xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
-    <description>Alexandre Tranchant rule set.</description>
+    <description>
+        Specific custom rule set that checks longitude-one/doctrine-spatial test code.
+    </description>
     <!-- Import some rules of clean code rule set -->
     <rule ref="rulesets/cleancode.xml">
         <exclude name="BooleanArgumentFlag"/>
@@ -14,7 +15,8 @@
     </rule>
     <!-- Import some rules of code size rule set -->
     <rule ref="rulesets/codesize.xml">
-        <!-- There are never too many tests -->
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="NPathComplexity"/>
         <exclude name="TooManyPublicMethods"/>
     </rule>
     <!-- Import the entire controversial code rule set, but SuperGlobals -->
@@ -23,9 +25,12 @@
     </rule>
     <!-- Import the entire design code rule set, but "coupling between" and "number of children" -->
     <rule ref="rulesets/design.xml">
+        <exclude name="CountInLoopExpression"/>
         <exclude name="CouplingBetweenObjects"/>
         <exclude name="NumberOfChildren"/>
     </rule>
-    <!-- Import the entire unused code rule set -->
-    <rule ref="rulesets/unusedcode.xml"/>
+    <!-- Import the entire unused code rule set, but "unused private method" rule -->
+    <rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedPrivateMethod"/>
+    </rule>
 </ruleset>
