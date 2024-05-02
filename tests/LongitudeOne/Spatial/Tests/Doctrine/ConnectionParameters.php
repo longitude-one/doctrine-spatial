@@ -26,30 +26,30 @@ class ConnectionParameters
     /**
      * Return common connection parameters.
      *
-     * @return array{driver: string, user: string, password: null|string, host: string, dbname: null|string, port: string, unix_socket: null|string, driverOptions: array<string, string>}
+     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: null|string, host: string, dbname: null|string, port: int, unix_socket: null|string, driverOptions: array<string, string>}
      */
     public static function getCommonConnectionParameters(): array
     {
         // phpcs:enable Generic.Files.LineLength.MaxExceeded
         $connectionParams = [
-            'driver' => $GLOBALS['db_type'],
+            'driver' => static::checkDriver(),
             'user' => $GLOBALS['db_username'],
-            'password' => null,
+            'password' => '',
             'host' => $GLOBALS['db_host'],
-            'dbname' => null,
-            'port' => $GLOBALS['db_port'],
+            'dbname' => 'main',
+            'port' => (int) $GLOBALS['db_port'],
         ];
 
-        if (isset($GLOBALS['db_name'])) {
+        if (null !== $GLOBALS['db_name']) {
             $connectionParams['dbname'] = $GLOBALS['db_name'];
         }
 
         if (isset($GLOBALS['db_server'])) {
-            $connectionParams['server'] = $GLOBALS['db_server'];
+            $connectionParams['server'] = (string) $GLOBALS['db_server'];
         }
 
         if (!empty($GLOBALS['db_password'])) {
-            $connectionParams['password'] = $GLOBALS['db_password'];
+            $connectionParams['password'] = (string) $GLOBALS['db_password'];
         }
 
         if (isset($GLOBALS['db_unix_socket'])) {
@@ -57,7 +57,7 @@ class ConnectionParameters
         }
 
         if (isset($GLOBALS['db_version'])) {
-            $connectionParams['driverOptions']['server_version'] = (string) $GLOBALS['db_version'];
+            $connectionParams['driverOptions']['server_version'] = $GLOBALS['db_version'];
         }
 
         return $connectionParams;
@@ -66,7 +66,7 @@ class ConnectionParameters
     /**
      * Return connection parameters.
      *
-     * @return array<string, string>
+     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: string, host: string, dbname: string, port: int, unix_socket: string, driverOptions: array<string, string>}
      *
      * @throws Exception when connection is not successful
      */
@@ -77,7 +77,7 @@ class ConnectionParameters
 
         $connection = DriverManager::getConnection($parameters);
         $manager = $connection->createSchemaManager();
-        $dbName = $GLOBALS['db_name'];
+        $dbName = (string) $GLOBALS['db_name'];
         $manager->dropDatabase($dbName);
         $manager->createDatabase($dbName);
         $parameters['dbname'] = $dbName;
@@ -86,13 +86,27 @@ class ConnectionParameters
     }
 
     /**
+     * @return ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv') driver
+     */
+    private static function checkDriver(): string
+    {
+        $drivers = DriverManager::getAvailableDrivers();
+
+        if (in_array($GLOBALS['db_type'], $drivers)) {
+            return $GLOBALS['db_type'];
+        }
+
+        throw new \InvalidArgumentException(sprintf('Driver %s is not available.', $GLOBALS['driver']));
+    }
+
+    /**
      * Return connection parameters for alternate database.
      *
      * Alternate database is used with PostgreSQL and doctrine/orm3.0,
      * because we cannot drop database as long as we are connected to it.
      */
-    private static function getAlternateDatabaseName(): ?string
+    private static function getAlternateDatabaseName(): string
     {
-        return $GLOBALS['db_alternate'] ?? $GLOBALS['db_name'] ?? static::getCommonConnectionParameters()['dbname'];
+        return $GLOBALS['db_alternate'] ?? $GLOBALS['db_name'] ?? static::getCommonConnectionParameters()['dbname'] ?? 'main';
     }
 }

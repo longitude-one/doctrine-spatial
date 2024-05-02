@@ -152,7 +152,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPolygonFromObjectsGetLastPolygon()
+    public function testMultiPolygonFromObjectsGetLastPolygon(): void
     {
         $firstPolygon = new Polygon(
             [

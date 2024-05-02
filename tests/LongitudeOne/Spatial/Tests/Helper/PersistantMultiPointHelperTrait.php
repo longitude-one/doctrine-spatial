@@ -37,10 +37,11 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @method EntityManagerInterface getEntityManager the entity interface
+ * @method static never fail(string $message='') fail the test with a message
  *
  * @internal
  */
-trait MultiPointHelperTrait
+trait PersistantMultiPointHelperTrait
 {
     use PointHelperTrait;
 
@@ -59,7 +60,7 @@ trait MultiPointHelperTrait
             static::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
         }
 
-        return $this->createMultipoint($multipoint);
+        return $this->persistMultiPoint($multipoint);
     }
 
     /**
@@ -74,15 +75,15 @@ trait MultiPointHelperTrait
             static::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
         }
 
-        return $this->createMultipoint($multipoint);
+        return $this->persistMultiPoint($multipoint);
     }
 
     /**
-     * Create a geometric MultiPoint entity from an array of geometric points.
+     * Persist a geometric MultiPoint entity from an array of geometric points.
      *
      * @param MultiPoint $multipoint Each point could be an array of X, Y or an instance of Point class
      */
-    private function createMultipoint(MultiPoint $multipoint): MultiPointEntity
+    private function persistMultiPoint(MultiPoint $multipoint): MultiPointEntity
     {
         $multiPointEntity = new MultiPointEntity();
         $multiPointEntity->setMultiPoint($multipoint);

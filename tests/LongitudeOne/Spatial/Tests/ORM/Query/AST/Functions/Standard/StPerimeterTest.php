@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -36,7 +36,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class StPerimeterTest extends OrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.

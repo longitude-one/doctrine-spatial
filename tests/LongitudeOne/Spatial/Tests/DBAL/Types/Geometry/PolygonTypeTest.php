@@ -22,7 +22,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -40,7 +40,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 class PolygonTypeTest extends OrmTestCase
 {
     use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the test.

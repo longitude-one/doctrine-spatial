@@ -1,2 +1,10 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySqlPlatform not found\\.$#"
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
+		-
+			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySQL57Platform not found\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/SpatialTestCase.php

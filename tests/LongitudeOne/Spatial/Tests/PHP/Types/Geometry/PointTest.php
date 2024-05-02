@@ -92,7 +92,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude degrees greater than 180.
      */
-    public function testBadLongitudeDegrees()
+    public function testBadLongitudeDegrees(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -180 to 180 in value "190:56:55W"');

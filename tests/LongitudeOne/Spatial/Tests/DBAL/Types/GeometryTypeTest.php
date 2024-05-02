@@ -27,9 +27,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -46,9 +45,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeometryTypeTest extends OrmTestCase
 {
-    use GeometryHelperTrait;
-    use PersistHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantGeometryHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the geography type test.

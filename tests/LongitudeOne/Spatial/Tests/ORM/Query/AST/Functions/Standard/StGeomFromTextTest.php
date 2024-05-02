@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,8 +39,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class StGeomFromTextTest extends OrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.

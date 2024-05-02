@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -38,7 +38,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class SpGeogFromTextTest extends OrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.

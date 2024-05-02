@@ -21,8 +21,7 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,8 +38,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class PointTypeTest extends OrmTestCase
 {
-    use PersistHelperTrait;
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the test.

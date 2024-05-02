@@ -20,7 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -37,7 +37,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class StMPointFromWkbTest extends OrmTestCase
 {
-    use GeometryHelperTrait;
+    use PersistantGeometryHelperTrait;
 
     /**
      * Set up the function type test.

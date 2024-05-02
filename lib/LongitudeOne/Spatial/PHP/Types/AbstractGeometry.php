@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use JsonSerializable;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 
@@ -361,6 +360,13 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
     {
         return $this->toStringMultiLineString($polygon);
     }
+
+    /**
+     * Type of this geometry: Linestring, point, etc.
+     *
+     * @return string
+     */
+    abstract public function getType();
 
     /**
      * Convert this abstract geometry to an array.

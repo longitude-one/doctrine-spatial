@@ -18,31 +18,22 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
-use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
- * TestHelperTrait Trait.
+ * PolygonHelperTrait Trait.
  *
- * This helper provides some methods to generates polygons, linestring and point.
- *
- * TODO All of these polygonal geometries will be defined in test documentation.
- *
- * Methods beginning with create will store a geo* entity in database.
+ * This helper provides some methods to create polygons.
  *
  * @see /docs/Test.rst
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @method EntityManagerInterface getEntityManager the entity interface
+ * @method static never fail(string $message = '')
  *
  * @internal
  */
@@ -221,71 +212,6 @@ trait PolygonHelperTrait
     }
 
     /**
-     * Create the BIG Polygon and persist it in database.
-     * Square (0 0, 10 10).
-     */
-    protected function persistBigPolygon(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createBigPolygon());
-    }
-
-    /**
-     * Create an eccentric polygon and persist it in database.
-     * Square (6 6, 10 10).
-     *
-     * DO NOT REMOVE THIS UNUSED method, it will be used soon.
-     */
-    protected function persistEccentricPolygon(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createEccentricPolygon());
-    }
-
-    /**
-     * Create the HOLEY Polygon and persist it in database.
-     * (Big polygon minus Small Polygon).
-     */
-    protected function persistHoleyPolygon(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createHoleyPolygon());
-    }
-
-    /**
-     * Create the Massachusetts state plane US feet geometry and persist it in database.
-     *
-     * @param bool $forwardSrid forward SRID for creation
-     */
-    protected function persistMassachusettsState(bool $forwardSrid = true): PolygonEntity
-    {
-        return $this->persistPolygon($this->createMassachusettsState($forwardSrid));
-    }
-
-    /**
-     * Create the Outer Polygon and persist it in database.
-     * Square (15 15, 17 17).
-     */
-    protected function persistOuterPolygon(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createOuterPolygon());
-    }
-
-    /**
-     * Create the W Polygon and persist it in database.
-     */
-    protected function persistPolygonW(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createPolygonW());
-    }
-
-    /**
-     * Create the SMALL Polygon and persist it in database.
-     * SQUARE (5 5, 7 7).
-     */
-    protected function persistSmallPolygon(): PolygonEntity
-    {
-        return $this->persistPolygon($this->createSmallPolygon());
-    }
-
-    /**
      * Create a Polygon from an array of lLine-strings.
      *
      * @param array    $lineStrings the array of line-strings
@@ -301,29 +227,5 @@ trait PolygonHelperTrait
         }
 
         return $polygon;
-    }
-
-    /**
-     * Persist a polygon.
-     *
-     * @param Polygon $polygon Geometric polygon to persist
-     */
-    private function persistPolygon(Polygon $polygon): PolygonEntity
-    {
-        try {
-            if (!$this->getEntityManager() instanceof EntityManagerInterface) {
-                static::fail('The entity manager is unavailable. Did you miss to create when setting up your test?');
-            }
-
-            $polygonEntity = new PolygonEntity();
-            $polygonEntity->setPolygon($polygon);
-
-            $this->getEntityManager()->persist($polygonEntity);
-            $this->getEntityManager()->flush();
-        } catch (Exception|ORMException|UnsupportedPlatformException $e) {
-            static::fail(sprintf('Unable to persist polygon: %s', $e->getMessage()));
-        }
-
-        return $polygonEntity;
     }
 }

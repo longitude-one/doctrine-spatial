@@ -22,7 +22,7 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +58,7 @@ abstract class OrmMockTestCase extends SpatialTestCase
             ->onlyMethods(['getDatabasePlatform'])
             ->getMock()
         ;
-        $platform = $this->getMockBuilder(SqlitePlatform::class)
+        $platform = $this->getMockBuilder(SQLitePlatform::class)
             ->onlyMethods([])
             ->getMock()
         ;

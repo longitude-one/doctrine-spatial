@@ -18,10 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,8 +41,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class GeometryWalkerTest extends OrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -48,6 +50,8 @@ class GeometryWalkerTest extends OrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         parent::setUp();
     }
 

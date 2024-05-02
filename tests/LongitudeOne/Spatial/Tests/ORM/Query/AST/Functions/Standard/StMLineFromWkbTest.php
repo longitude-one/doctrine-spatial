@@ -20,7 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -37,7 +37,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class StMLineFromWkbTest extends OrmTestCase
 {
-    use GeometryHelperTrait;
+    use PersistantGeometryHelperTrait;
 
     private const DATA = '01050000000200000001020000000200000000000000000000000000000000000000000000000000F03F000000000000F03F0102000000020000000000000000000040000000000000004000000000000014400000000000001440';
 

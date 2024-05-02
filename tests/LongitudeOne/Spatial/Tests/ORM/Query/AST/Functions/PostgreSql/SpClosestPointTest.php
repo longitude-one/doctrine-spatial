@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,8 +39,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class SpClosestPointTest extends OrmTestCase
 {
-    use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.

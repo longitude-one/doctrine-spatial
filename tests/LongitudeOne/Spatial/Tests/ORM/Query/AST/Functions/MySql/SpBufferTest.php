@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -39,7 +39,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class SpBufferTest extends OrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.

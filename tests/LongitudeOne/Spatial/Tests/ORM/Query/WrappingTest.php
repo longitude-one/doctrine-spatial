@@ -19,9 +19,11 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
 
 /**
@@ -31,7 +33,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
+ * @group php
  *
  * @internal
  *
@@ -39,8 +41,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  */
 class WrappingTest extends OrmTestCase
 {
-    use GeometryHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantGeometryHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -50,6 +52,8 @@ class WrappingTest extends OrmTestCase
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesType('point');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         parent::setUp();
     }
 
