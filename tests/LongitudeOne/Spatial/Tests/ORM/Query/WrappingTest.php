@@ -24,7 +24,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * DQL type wrapping tests.
@@ -39,7 +39,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class WrappingTest extends OrmTestCase
+class WrappingTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
     use PersistantPolygonHelperTrait;

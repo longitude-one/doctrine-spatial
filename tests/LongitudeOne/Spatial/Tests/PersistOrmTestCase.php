@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\Tests\Helper;
+namespace LongitudeOne\Spatial\Tests;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,12 +32,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
- * PersistHelper Trait.
- *
- * This helper provides some methods to persist entities then it test to find them.
- * All of these points are defined in test documentation.
- *
- * Methods beginning with create will store a geo* entity in database.
+ * This class provides some methods to persist entities then assert that we can select them in database.
  *
  * @see /docs/Test.rst
  *
@@ -47,8 +42,10 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
  * @internal
  *
  * @method EntityManagerInterface getEntityManager retrieve entity manager
+ *
+ * @coversNothing
  */
-trait PersistHelperTrait
+class PersistOrmTestCase extends OrmTestCase
 {
     /**
      * Store and retrieve geography entity in database and retrieve it by its geometry (or geography).
@@ -60,7 +57,7 @@ trait PersistHelperTrait
      * @param object                 $geo           Geography or geometry object (non-persisted object)
      * @param string                 $method        the method name to retrieve object
      */
-    private static function assertIsRetrievableByGeo(
+    protected static function assertIsRetrievableByGeo(
         EntityManagerInterface $entityManager,
         object $entity,
         object $geo,
@@ -78,14 +75,14 @@ trait PersistHelperTrait
     }
 
     /**
-     * Store geography entity in database and retrieve it by its id.
+     * Store entity in database and retrieve it by its id.
      *
      * Then assert data are equals, not same.
      *
      * @param EntityManagerInterface $entityManager Entity manager to persist data
      * @param object                 $entity        Entity to test
      */
-    private static function assertIsRetrievableById(EntityManagerInterface $entityManager, object $entity): ?object
+    protected static function assertIsRetrievableById(EntityManagerInterface $entityManager, object $entity): ?object
     {
         $entityManager->persist($entity);
         $entityManager->flush();
@@ -104,7 +101,7 @@ trait PersistHelperTrait
      *
      * @param GeographyPoint $point Point could be an array of X, Y or an instance of Point class
      */
-    private function persistGeographicPoint(GeographyPoint $point): GeographyEntity
+    protected function persistGeographicPoint(GeographyPoint $point): GeographyEntity
     {
         $pointEntity = new GeographyEntity();
         $pointEntity->setGeography($point);
@@ -119,7 +116,7 @@ trait PersistHelperTrait
      *
      * @param GeometryPoint $point Point could be an array of X, Y or an instance of Point class
      */
-    private function persistGeometricPoint(GeometryPoint $point): GeometryPointEntity
+    protected function persistGeometricPoint(GeometryPoint $point): GeometryPointEntity
     {
         $pointEntity = new GeometryPointEntity();
         $pointEntity->setPoint($point);
@@ -134,7 +131,7 @@ trait PersistHelperTrait
      *
      * @param LineString $linestring the LineString object to persist
      */
-    private function persistLineString(LineString $linestring): LineStringEntity
+    protected function persistLineString(LineString $linestring): LineStringEntity
     {
         $lineStringEntity = new LineStringEntity();
         $lineStringEntity->setLineString($linestring);
@@ -149,7 +146,7 @@ trait PersistHelperTrait
      *
      * @param Polygon $polygon Geometric polygon to persist
      */
-    private function persistPolygon(Polygon $polygon): PolygonEntity
+    protected function persistPolygon(Polygon $polygon): PolygonEntity
     {
         try {
             if (!$this->getEntityManager() instanceof EntityManagerInterface) {

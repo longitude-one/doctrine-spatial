@@ -20,7 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_DWithin DQL function tests.
@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpDWithinTest extends OrmTestCase
+class SpDWithinTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
 

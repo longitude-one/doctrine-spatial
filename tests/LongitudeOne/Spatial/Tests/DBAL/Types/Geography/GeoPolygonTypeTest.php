@@ -24,8 +24,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * PolygonType tests.
@@ -39,10 +38,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType
  */
-class GeoPolygonTypeTest extends OrmTestCase
+class GeoPolygonTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
      * Set up the test.
      */

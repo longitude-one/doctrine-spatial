@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
-use Doctrine\ORM\EntityManagerInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 
@@ -29,12 +28,11 @@ use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
  *
  * @see /docs/Test.rst
  *
- * @method EntityManagerInterface getEntityManager Return the entity interface
+ * @method persistLineString(LineString $linestring): LineStringEntity
  */
 trait PersistantLineStringHelperTrait
 {
     use LineStringHelperTrait;
-    use PersistHelperTrait;
 
     /**
      * Create a broken linestring and persist it in database.

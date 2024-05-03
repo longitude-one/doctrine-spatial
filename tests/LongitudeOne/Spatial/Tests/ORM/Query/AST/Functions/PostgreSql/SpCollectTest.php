@@ -24,7 +24,7 @@ use Doctrine\ORM\OptimisticLockException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Collect DQL function tests.
@@ -40,7 +40,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpCollectTest extends OrmTestCase
+class SpCollectTest extends PersistOrmTestCase
 {
     /**
      * Set up the function type test.

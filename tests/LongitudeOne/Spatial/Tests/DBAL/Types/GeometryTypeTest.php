@@ -29,7 +29,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine GeometryType tests.
@@ -43,7 +43,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
-class GeometryTypeTest extends OrmTestCase
+class GeometryTypeTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
     use PersistantPolygonHelperTrait;

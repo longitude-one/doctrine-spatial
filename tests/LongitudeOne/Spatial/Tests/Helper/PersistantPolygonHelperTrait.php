@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
@@ -27,11 +28,12 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
  *
  * @see /docs/Test.rst
  *
+ * @method persistPolygon(Polygon $polygon): PolygonEntity
+ *
  * @internal
  */
 trait PersistantPolygonHelperTrait
 {
-    use PersistHelperTrait;
     use PolygonHelperTrait;
 
     /**

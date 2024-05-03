@@ -24,7 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * GeometryWalker tests.
@@ -39,7 +39,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class GeometryWalkerTest extends OrmTestCase
+class GeometryWalkerTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
     use PersistantPointHelperTrait;

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Helper;
 
+use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
 
@@ -28,11 +30,13 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
  *
  * @see /docs/Test.rst
  *
+ * @method persistGeographicPoint(GeographyPoint $point): GeographyEntity
+ * @method persistGeometricPoint(GeometryPoint $point): GeometryPointEntity
+ *
  * @internal
  */
 trait PersistantPointHelperTrait
 {
-    use PersistHelperTrait;
     use PointHelperTrait;
 
     /**
