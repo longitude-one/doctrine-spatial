@@ -39,8 +39,8 @@ class PostgreSql extends AbstractPlatform
     /**
      * Convert Binary to php value.
      *
-     * @param AbstractSpatialType $type    Spatial type
-     * @param string              $sqlExpr Sql expression
+     * @param AbstractSpatialType  $type    Spatial type
+     * @param resource|string|null $sqlExpr Sql expression
      *
      * @return GeometryInterface
      *
