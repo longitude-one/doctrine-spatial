@@ -35,7 +35,7 @@ class MySql extends AbstractPlatform
      * Convert to database value.
      *
      * @param AbstractSpatialType  $type    The spatial type
-     * @param resource|string|null $sqlExpr The SQL expression
+     * @param null|resource|string $sqlExpr The SQL expression
      *
      * @return string
      */
