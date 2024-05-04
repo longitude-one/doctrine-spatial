@@ -42,7 +42,7 @@ class FileLogger extends MonologLogger implements LoggerInterface
     /**
      * Return common log parameters.
      *
-     * @return array{log: bool, filename: string, level: string, directory: string, timezone: \DateTimeZone}
+     * @return array{filename: string, level: string, directory: string, timezone: \DateTimeZone}
      *
      * @throws \InvalidArgumentException if the timezone is not valid
      */
