@@ -56,4 +56,12 @@ interface SpatialInterface
      * @return self
      */
     public function setSrid($srid);
+
+    /**
+     * Convert spatial object to its string representation.
+     * Example: 'POINT(42 42)'.
+     *
+     * @return string
+     */
+    public function __toString();
 }

@@ -28,7 +28,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Polygons are rings.
      *
-     * @var array[]
+     * @var AbstractLineString[]
      */
     protected $rings = [];
 
@@ -129,7 +129,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Converts rings to array.
      *
-     * @return array[]
+     * @return AbstractLineString[]
      */
     public function toArray()
     {
