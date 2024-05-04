@@ -65,10 +65,8 @@ class MultiLineStringEntity
      * Set multiLineString.
      *
      * @param MultiLineString $multiLineString multiLineString to set
-     *
-     * @return self
      */
-    public function setMultiLineString(MultiLineString $multiLineString): static
+    public function setMultiLineString(MultiLineString $multiLineString): self
     {
         $this->multiLineString = $multiLineString;
 

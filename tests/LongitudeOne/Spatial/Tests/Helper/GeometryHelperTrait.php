@@ -47,7 +47,7 @@ trait GeometryHelperTrait
         try {
             return new Point($x, $y);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
+            self::fail(sprintf('Unable to create point %s(%d %d): %s', $name, $x, $y, $e->getMessage()));
         }
     }
 }

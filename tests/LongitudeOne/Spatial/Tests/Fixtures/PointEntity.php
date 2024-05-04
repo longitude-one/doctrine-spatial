@@ -65,10 +65,8 @@ class PointEntity
      * Set point.
      *
      * @param Point $point point to set
-     *
-     * @return self
      */
-    public function setPoint(Point $point): static
+    public function setPoint(Point $point): self
     {
         $this->point = $point;
 

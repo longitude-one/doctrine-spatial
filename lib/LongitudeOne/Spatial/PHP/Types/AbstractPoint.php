@@ -100,7 +100,7 @@ abstract class AbstractPoint extends AbstractGeometry
      *
      * @throws InvalidValueException when latitude is not valid
      */
-    public function setLatitude(string $latitude): static
+    public function setLatitude(string $latitude): self
     {
         return $this->setY($latitude);
     }
@@ -112,7 +112,7 @@ abstract class AbstractPoint extends AbstractGeometry
      *
      * @throws InvalidValueException when longitude is not valid
      */
-    public function setLongitude(string $longitude): static
+    public function setLongitude(string $longitude): self
     {
         return $this->setX($longitude);
     }
@@ -124,7 +124,7 @@ abstract class AbstractPoint extends AbstractGeometry
      *
      * @throws InvalidValueException when x is not valid
      */
-    public function setX(string $x): static
+    public function setX(string $x): self
     {
         $parser = new Parser($x);
 
@@ -144,7 +144,7 @@ abstract class AbstractPoint extends AbstractGeometry
      *
      * @throws InvalidValueException when Y is invalid, not in valid range
      */
-    public function setY(string $y): static
+    public function setY(string $y): self
     {
         $parser = new Parser($y);
 

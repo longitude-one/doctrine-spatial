@@ -65,10 +65,8 @@ class GeometryEntity
      * Set geometry.
      *
      * @param GeometryInterface $geometry geometry to set
-     *
-     * @return self
      */
-    public function setGeometry(GeometryInterface $geometry): static
+    public function setGeometry(GeometryInterface $geometry): self
     {
         $this->geometry = $geometry;
 

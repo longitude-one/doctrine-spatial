@@ -28,7 +28,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
  *
  * @see /docs/Test.rst
  *
- * @method persistLineString(LineString $linestring): LineStringEntity
+ * @method persistLineString(LineString $linestring)
  */
 trait PersistantLineStringHelperTrait
 {

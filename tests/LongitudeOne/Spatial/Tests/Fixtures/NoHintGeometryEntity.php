@@ -64,10 +64,8 @@ class NoHintGeometryEntity
      * Set geometry.
      *
      * @param mixed $geometry the geometry to set
-     *
-     * @return self
      */
-    public function setGeometry(mixed $geometry): static
+    public function setGeometry(mixed $geometry): self
     {
         $this->geometry = $geometry;
 

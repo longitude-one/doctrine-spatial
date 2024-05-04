@@ -321,9 +321,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $this->entityManager = $this->getEntityManager();
         $this->schemaTool = $this->getSchemaTool();
 
-        if (static::$logger instanceof FileLogger) {
-            static::$logger->info(sprintf('Starting test %s', get_class($this)));
-        }
+        self::$logger->info(sprintf('Starting test %s', get_class($this)));
 
         $this->setUpTypes();
         $this->setUpEntities();
@@ -356,7 +354,7 @@ abstract class OrmTestCase extends SpatialTestCase
         }
         $fileLogger = new FileLogger();
         $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($fileLogger)]);
-        static::$logger = $fileLogger;
+        self::$logger = $fileLogger;
 
         $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {

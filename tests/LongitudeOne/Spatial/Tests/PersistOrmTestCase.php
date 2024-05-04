@@ -41,7 +41,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
  *
  * @internal
  *
- * @method EntityManagerInterface getEntityManager retrieve entity manager
+ * @method EntityManagerInterface getEntityManager() retrieve entity manager
  *
  * @coversNothing
  */

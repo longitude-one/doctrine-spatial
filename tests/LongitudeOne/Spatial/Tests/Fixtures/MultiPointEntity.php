@@ -65,10 +65,8 @@ class MultiPointEntity
      * Set multipoint.
      *
      * @param MultiPoint $multiPoint multipoint to set
-     *
-     * @return self
      */
-    public function setMultiPoint(MultiPoint $multiPoint): static
+    public function setMultiPoint(MultiPoint $multiPoint): self
     {
         $this->multiPoint = $multiPoint;
 

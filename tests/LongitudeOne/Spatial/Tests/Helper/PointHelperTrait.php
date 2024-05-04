@@ -53,7 +53,7 @@ trait PointHelperTrait
      */
     protected static function createLosAngelesGeography(): GeographyPoint
     {
-        return static::createGeographyPoint('Los Angeles', '-118.2430', '34.0522');
+        return self::createGeographyPoint('Los Angeles', '-118.2430', '34.0522');
     }
 
     /**
@@ -61,7 +61,7 @@ trait PointHelperTrait
      */
     protected static function createLosAngelesGeometry(): GeometryPoint
     {
-        return static::createGeometryPoint('Los Angeles', '-118.2430', '34.0522');
+        return self::createGeometryPoint('Los Angeles', '-118.2430', '34.0522');
     }
 
     /**
@@ -69,7 +69,7 @@ trait PointHelperTrait
      */
     protected static function createPointA(): GeometryPoint
     {
-        return static::createGeometryPoint('a', '1', '1');
+        return self::createGeometryPoint('a', '1', '1');
     }
 
     /**
@@ -77,7 +77,7 @@ trait PointHelperTrait
      */
     protected static function createPointB(): GeometryPoint
     {
-        return static::createGeometryPoint('B', '2', '2');
+        return self::createGeometryPoint('B', '2', '2');
     }
 
     /**
@@ -85,7 +85,7 @@ trait PointHelperTrait
      */
     protected static function createPointC(): GeometryPoint
     {
-        return static::createGeometryPoint('C', '3', '3');
+        return self::createGeometryPoint('C', '3', '3');
     }
 
     /**
@@ -93,7 +93,7 @@ trait PointHelperTrait
      */
     protected static function createPointD(): GeometryPoint
     {
-        return static::createGeometryPoint('D', '4', '4');
+        return self::createGeometryPoint('D', '4', '4');
     }
 
     /**
@@ -101,7 +101,7 @@ trait PointHelperTrait
      */
     protected static function createPointE(): GeometryPoint
     {
-        return static::createGeometryPoint('E', '5', '5');
+        return self::createGeometryPoint('E', '5', '5');
     }
 
     /**
@@ -109,7 +109,7 @@ trait PointHelperTrait
      */
     protected static function createPointOrigin(): GeometryPoint
     {
-        return static::createGeometryPoint('O', '0', '0');
+        return self::createGeometryPoint('O', '0', '0');
     }
 
     /**
@@ -163,7 +163,7 @@ trait PointHelperTrait
      */
     private static function createNewYorkGeography(): GeographyPoint
     {
-        return static::createGeographyPoint('New-York', '-73.938611', '40.664167');
+        return self::createGeographyPoint('New-York', '-73.938611', '40.664167');
     }
 
     /**
@@ -171,6 +171,6 @@ trait PointHelperTrait
      */
     private static function createNewYorkGeometry(): GeometryPoint
     {
-        return static::createGeometryPoint('New-York', '-73.938611', '40.664167');
+        return self::createGeometryPoint('New-York', '-73.938611', '40.664167');
     }
 }

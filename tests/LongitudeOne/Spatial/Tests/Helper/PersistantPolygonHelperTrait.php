@@ -22,13 +22,13 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
- * PolygonHelperTrait Trait.
+ * Polygon helper trait.
  *
  * This helper provides some methods to persist polygons.
  *
  * @see /docs/Test.rst
  *
- * @method persistPolygon(Polygon $polygon): PolygonEntity
+ * @method PolygonEntity persistPolygon(Polygon $polygon)
  *
  * @internal
  */

@@ -65,10 +65,8 @@ class GeoPolygonEntity
      * Set polygon.
      *
      * @param Polygon $polygon polygon to set
-     *
-     * @return self
      */
-    public function setPolygon(Polygon $polygon): static
+    public function setPolygon(Polygon $polygon): self
     {
         $this->polygon = $polygon;
 

@@ -32,7 +32,7 @@ class ConnectionParameters
     {
         // phpcs:enable Generic.Files.LineLength.MaxExceeded
         $connectionParams = [
-            'driver' => static::checkDriver(),
+            'driver' => self::checkDriver(),
             'user' => $GLOBALS['db_username'],
             'password' => '',
             'host' => $GLOBALS['db_host'],
@@ -72,8 +72,8 @@ class ConnectionParameters
      */
     public static function getConnectionParameters(): array
     {
-        $parameters = static::getCommonConnectionParameters();
-        $parameters['dbname'] = static::getAlternateDatabaseName();
+        $parameters = self::getCommonConnectionParameters();
+        $parameters['dbname'] = self::getAlternateDatabaseName();
 
         $connection = DriverManager::getConnection($parameters);
         $manager = $connection->createSchemaManager();
@@ -107,6 +107,6 @@ class ConnectionParameters
      */
     private static function getAlternateDatabaseName(): string
     {
-        return $GLOBALS['db_alternate'] ?? $GLOBALS['db_name'] ?? static::getCommonConnectionParameters()['dbname'] ?? 'main';
+        return $GLOBALS['db_alternate'] ?? $GLOBALS['db_name'] ?? self::getCommonConnectionParameters()['dbname'] ?? 'main';
     }
 }

@@ -65,10 +65,8 @@ class GeoLineStringEntity
      * Set lineString.
      *
      * @param LineString $lineString Linestring to set
-     *
-     * @return self
      */
-    public function setLineString(LineString $lineString): static
+    public function setLineString(LineString $lineString): self
     {
         $this->lineString = $lineString;
 

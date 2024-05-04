@@ -36,8 +36,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @method EntityManagerInterface getEntityManager the entity interface
- * @method static never fail(string $message='') fail the test with a message
+ * @method        EntityManagerInterface getEntityManager()
+ * @method static never                  fail(string $message='')
  *
  * @internal
  */
@@ -52,12 +52,12 @@ trait PersistantMultiPointHelperTrait
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
-            $multipoint->addPoint(static::createGeometryPoint('0 1', '0', '1'));
-            $multipoint->addPoint(static::createGeometryPoint('1 0', '1', '0'));
-            $multipoint->addPoint(static::createGeometryPoint('1 1', '0', '1'));
+            $multipoint->addPoint(self::createGeometryPoint('0 0', '0', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('0 1', '0', '1'));
+            $multipoint->addPoint(self::createGeometryPoint('1 0', '1', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('1 1', '0', '1'));
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
         }
 
         return $this->persistMultiPoint($multipoint);
@@ -70,9 +70,9 @@ trait PersistantMultiPointHelperTrait
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('0 0', '0', '0'));
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
         }
 
         return $this->persistMultiPoint($multipoint);

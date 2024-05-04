@@ -63,10 +63,8 @@ class GeographyEntity
      * Set geography.
      *
      * @param GeographyInterface $geography Geography to set
-     *
-     * @return self
      */
-    public function setGeography(GeographyInterface $geography): static
+    public function setGeography(GeographyInterface $geography): self
     {
         $this->geography = $geography;
 

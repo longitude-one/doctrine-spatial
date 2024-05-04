@@ -32,8 +32,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
  *
  * @see /docs/Test.rst
  *
- * @method EntityManagerInterface getEntityManager Return the entity interface
- * @method static never fail(string $message = '')
+ * @method        EntityManagerInterface getEntityManager()
+ * @method static never                  fail(string $message = '')
  */
 trait PersistantGeometryHelperTrait
 {
@@ -61,7 +61,7 @@ trait PersistantGeometryHelperTrait
      */
     protected function persistGeometryA(?int $srid = null): GeometryEntity
     {
-        $point = static::createGeometryPoint('A', 1, 1);
+        $point = self::createGeometryPoint('A', 1, 1);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -76,7 +76,7 @@ trait PersistantGeometryHelperTrait
      */
     protected function persistGeometryE(?int $srid = null): GeometryEntity
     {
-        $point = static::createGeometryPoint('E', 5, 5);
+        $point = self::createGeometryPoint('E', 5, 5);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -91,7 +91,7 @@ trait PersistantGeometryHelperTrait
      */
     protected function persistGeometryO(?int $srid = null): GeometryEntity
     {
-        $point = static::createGeometryPoint('O', 0, 0);
+        $point = self::createGeometryPoint('O', 0, 0);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -111,7 +111,7 @@ trait PersistantGeometryHelperTrait
                 [5, 5],
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring Y (1 1, 2 2, 5 5): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring Y (1 1, 2 2, 5 5): %s', $e->getMessage()));
         }
 
         return $this->persistGeometry($straightLineString);

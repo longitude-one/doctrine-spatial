@@ -35,11 +35,9 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      *
      * @param string $x X coordinate
      *
-     * @return self
-     *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setX(string $x): static
+    public function setX(string $x): self
     {
         $parser = new Parser($x);
 
@@ -49,7 +47,7 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
-        if ($x < -180 || $x > 180) {
+        if (is_array($x) || $x < -180 || $x > 180) {
             throw new InvalidValueException(sprintf('Invalid longitude value "%s", must be in range -180 to 180.', $x));
         }
 
@@ -65,7 +63,7 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setY(string $y): static
+    public function setY(string $y): self
     {
         $parser = new Parser($y);
 
@@ -75,7 +73,7 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
             throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
 
-        if ($y < -90 || $y > 90) {
+        if (is_array($y) || $y < -90 || $y > 90) {
             throw new InvalidValueException(sprintf('Invalid latitude value "%s", must be in range -90 to 90.', $y));
         }
 

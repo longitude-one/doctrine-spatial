@@ -107,7 +107,7 @@ class GeometryWalkerTest extends PersistOrmTestCase
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        static::test($this->getEntityManager(), 'ST_AsBinary', 'ST_StartPoint', 'ST_Envelope');
+        self::test($this->getEntityManager(), 'ST_AsBinary', 'ST_StartPoint', 'ST_Envelope');
     }
 
     /**
@@ -120,6 +120,6 @@ class GeometryWalkerTest extends PersistOrmTestCase
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        static::test($this->getEntityManager(), 'ST_AsText', 'ST_StartPoint', 'ST_Envelope');
+        self::test($this->getEntityManager(), 'ST_AsText', 'ST_StartPoint', 'ST_Envelope');
     }
 }

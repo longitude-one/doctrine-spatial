@@ -68,13 +68,17 @@ class PostgreSql extends AbstractPlatform
     public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
     {
         $sridSQL = null;
+        $srid = null;
 
         if ($type instanceof GeographyType && null === $value->getSrid()) {
             $value->setSrid(self::DEFAULT_SRID);
         }
 
-        $srid = $value->getSrid();
-        if (null !== $srid || $type instanceof GeographyType) {
+        if (method_exists($value, 'getSrid')) {
+            $srid = $value->getSrid();
+        }
+
+        if (null !== $srid) {
             $sridSQL = sprintf('SRID=%d;', $srid);
         }
 

@@ -46,7 +46,7 @@ trait LineStringHelperTrait
                 new Point(5, 22),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create angular linestring: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create angular linestring: %s', $e->getMessage()));
         }
     }
 
@@ -62,7 +62,7 @@ trait LineStringHelperTrait
                 new Point(10, 10),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring A (0 0, 10 10): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring A (0 0, 10 10): %s', $e->getMessage()));
         }
     }
 
@@ -79,7 +79,7 @@ trait LineStringHelperTrait
                 new Point(15, 0),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring B (0 10, 15 0): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring B (0 10, 15 0): %s', $e->getMessage()));
         }
     }
 
@@ -97,7 +97,7 @@ trait LineStringHelperTrait
                 new Point(12, 10),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring C (2 0, 12 10): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring C (2 0, 12 10): %s', $e->getMessage()));
         }
     }
 
@@ -113,7 +113,7 @@ trait LineStringHelperTrait
                 new Point(4, 8),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring X (8 15, 4 8): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring X (8 15, 4 8): %s', $e->getMessage()));
         }
     }
 
@@ -129,7 +129,7 @@ trait LineStringHelperTrait
                 new Point(3, 4),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring Y (12 14, 3 4): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring Y (12 14, 3 4): %s', $e->getMessage()));
         }
     }
 
@@ -148,7 +148,7 @@ trait LineStringHelperTrait
                 new Point(13, 11),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create linestring Z: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create linestring Z: %s', $e->getMessage()));
         }
     }
 
@@ -167,7 +167,7 @@ trait LineStringHelperTrait
                 new Point(0, 0),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create butterfly node linestring: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create butterfly node linestring: %s', $e->getMessage()));
         }
     }
 
@@ -186,7 +186,7 @@ trait LineStringHelperTrait
                 new Point(0, 0),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create a ring linestring: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create a ring linestring: %s', $e->getMessage()));
         }
     }
 
@@ -203,7 +203,7 @@ trait LineStringHelperTrait
                 new Point(5, 5),
             ]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create straight linestring: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create straight linestring: %s', $e->getMessage()));
         }
     }
 
@@ -215,7 +215,7 @@ trait LineStringHelperTrait
         try {
             return new LineString([]);
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create empty linestring: %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create empty linestring: %s', $e->getMessage()));
         }
     }
 }

@@ -30,8 +30,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
  *
  * @see /docs/Test.rst
  *
- * @method persistGeographicPoint(GeographyPoint $point): GeographyEntity
- * @method persistGeometricPoint(GeometryPoint $point): GeometryPointEntity
+ * @method GeographyEntity     persistGeographicPoint(GeographyPoint $point)
+ * @method GeometryPointEntity persistGeometricPoint(GeometryPoint $point)
  *
  * @internal
  */
@@ -49,7 +49,7 @@ trait PersistantPointHelperTrait
      */
     protected function createAndPersistGeographicPoint(string $name, string $x, string $y, ?int $srid = null): GeographyEntity
     {
-        $point = static::createGeographyPoint($name, $x, $y);
+        $point = self::createGeographyPoint($name, $x, $y);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -67,7 +67,7 @@ trait PersistantPointHelperTrait
      */
     protected function createAndPersistGeometricPoint(string $name, string $x, string $y, ?int $srid = null): GeometryPointEntity
     {
-        $point = static::createGeometryPoint($name, $x, $y);
+        $point = self::createGeometryPoint($name, $x, $y);
         if (null !== $srid) {
             $point->setSrid($srid);
         }
@@ -80,7 +80,7 @@ trait PersistantPointHelperTrait
      */
     protected function persistDallasGeography(): GeographyEntity
     {
-        return $this->persistGeographicPoint(static::createGeographyPoint('Dallas', '-96.803889', '32.782778'));
+        return $this->persistGeographicPoint(self::createGeographyPoint('Dallas', '-96.803889', '32.782778'));
     }
 
     /**
@@ -88,7 +88,7 @@ trait PersistantPointHelperTrait
      */
     protected function persistDallasGeometry(): GeometryPointEntity
     {
-        return $this->persistGeometricPoint(static::createGeometryPoint('Dallas', '-96.803889', '32.782778'));
+        return $this->persistGeometricPoint(self::createGeometryPoint('Dallas', '-96.803889', '32.782778'));
     }
 
     /**
@@ -120,7 +120,7 @@ trait PersistantPointHelperTrait
      */
     protected function persistLosAngelesGeography(): GeographyEntity
     {
-        return $this->persistGeographicPoint(static::createLosAngelesGeography());
+        return $this->persistGeographicPoint(self::createLosAngelesGeography());
     }
 
     /**
@@ -136,7 +136,7 @@ trait PersistantPointHelperTrait
      */
     protected function persistNewYorkGeography(): GeographyEntity
     {
-        return $this->persistGeographicPoint(static::createNewYorkGeography());
+        return $this->persistGeographicPoint(self::createNewYorkGeography());
     }
 
     /**
@@ -144,7 +144,7 @@ trait PersistantPointHelperTrait
      */
     protected function persistNewYorkGeometry(): GeometryPointEntity
     {
-        return $this->persistGeometricPoint(static::createNewYorkGeometry());
+        return $this->persistGeometricPoint(self::createNewYorkGeometry());
     }
 
     /**
