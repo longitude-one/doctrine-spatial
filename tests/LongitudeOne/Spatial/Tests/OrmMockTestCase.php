@@ -22,7 +22,7 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,10 +58,24 @@ abstract class OrmMockTestCase extends SpatialTestCase
             ->onlyMethods(['getDatabasePlatform'])
             ->getMock()
         ;
-        $platform = $this->getMockBuilder(SQLitePlatform::class)
-            ->onlyMethods([])
-            ->getMock()
-        ;
+
+        $platformClass = null;
+
+        // Doctrine ORM ^2.19
+        if (class_exists(SqlitePlatform::class)) {
+            $platformClass = SqlitePlatform::class;
+        }
+
+        // Doctrine ORM ^3.0
+        if (class_exists(SqlitePlatform::class)) {
+            $platformClass = SqlitePlatform::class;
+        }
+
+        if (null === $platformClass) {
+            static::fail('Test cannot be performed, no platform SQLite platform found');
+        }
+
+        $platform = new $platformClass();
 
         $driver->method('getDatabasePlatform')
             ->willReturn($platform)
@@ -89,6 +103,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 
-        return new EntityManager($this->getMockConnection(), $config);
+        $this->mockEntityManager = new EntityManager($this->getMockConnection(), $config);
+
+        return $this->mockEntityManager;
     }
 }
