@@ -22,6 +22,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
 
 /**
  * PolygonHelperTrait Trait.
@@ -214,8 +215,8 @@ trait PolygonHelperTrait
     /**
      * Create a Polygon from an array of lLine-strings.
      *
-     * @param array    $lineStrings the array of line-strings
-     * @param null|int $srid        Spatial Reference System Identifier
+     * @param LineStringInterface[] $lineStrings the array of line-strings
+     * @param null|int              $srid        Spatial Reference System Identifier
      *
      * @throws InvalidValueException when geometries are not valid
      */

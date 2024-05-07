@@ -28,15 +28,15 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Polygons are rings.
      *
-     * @var AbstractLineString[]
+     * @var (float|int)[][][]
      */
     protected $rings = [];
 
     /**
      * Abstract polygon constructor.
      *
-     * @param AbstractLineString[]|array[] $rings the polygons
-     * @param null|int                     $srid  Spatial Reference System Identifier
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $rings the polygons
+     * @param null|int                                                                     $srid  Spatial Reference System Identifier
      *
      * @throws InvalidValueException When a ring is invalid
      */
@@ -50,13 +50,11 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param array[]|LineStringInterface|PolygonInterface $ring Ring to add to geometry
-     *
-     * @return self
+     * @param (float|int)[][]|LineStringInterface|LineStringInterface[]|PolygonInterface $ring Ring to add to geometry
      *
      * @throws InvalidValueException when a ring is invalid
      */
-    public function addRing($ring)
+    public function addRing(mixed $ring): self
     {
         if ($ring instanceof AbstractPolygon) {
             throw new InvalidValueException('You cannot add a Polygon to another one. Use a Multipolygon.');
@@ -70,10 +68,8 @@ abstract class AbstractPolygon extends AbstractGeometry
      * Polygon getter.
      *
      * @param int $index index of polygon, use -1 to get last one
-     *
-     * @return AbstractLineString
      */
-    public function getRing($index)
+    public function getRing(int $index): AbstractLineString
     {
         if (-1 == $index) {
             $index = count($this->rings) - 1;
@@ -89,7 +85,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @return AbstractLineString[]
      */
-    public function getRings()
+    public function getRings(): array
     {
         $rings = [];
 
@@ -105,7 +101,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @return string Polygon
      */
-    public function getType()
+    public function getType(): string
     {
         return self::POLYGON;
     }
@@ -113,13 +109,11 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Rings fluent setter.
      *
-     * @param AbstractLineString[] $rings Rings to set
-     *
-     * @return self
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $rings Rings to set
      *
      * @throws InvalidValueException when a ring is invalid
      */
-    public function setRings(array $rings)
+    public function setRings(array $rings): self
     {
         $this->rings = $this->validatePolygonValue($rings);
 
@@ -129,9 +123,9 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Converts rings to array.
      *
-     * @return AbstractLineString[]
+     * @return (AbstractLineString|(AbstractPoint|(float|int)[])[])[] array of line-strings or array² of points...
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->rings;
     }

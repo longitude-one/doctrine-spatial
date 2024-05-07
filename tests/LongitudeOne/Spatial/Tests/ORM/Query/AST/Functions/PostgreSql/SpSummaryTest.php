@@ -118,7 +118,7 @@ class SpSummaryTest extends PersistOrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSummaryGeometry()
+    public function testSelectStSummaryGeometry(): void
     {
         $point = new GeometryEntity();
         $point->setGeometry(new GeometryPoint(5, 5));

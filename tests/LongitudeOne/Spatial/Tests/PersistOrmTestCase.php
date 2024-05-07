@@ -26,6 +26,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
@@ -54,13 +55,15 @@ class PersistOrmTestCase extends OrmTestCase
      *
      * @param EntityManagerInterface $entityManager Entity manager to persist data
      * @param object                 $entity        Entity to test
-     * @param object                 $geo           Geography or geometry object (non-persisted object)
+     * @param SpatialInterface       $geo           Geography or geometry object (non-persisted object)
      * @param string                 $method        the method name to retrieve object
+     *
+     * @return array<int, object> Array of entities declared in Fixtures
      */
     protected static function assertIsRetrievableByGeo(
         EntityManagerInterface $entityManager,
         object $entity,
-        object $geo,
+        SpatialInterface $geo,
         string $method
     ): array {
         $entityManager->persist($entity);

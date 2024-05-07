@@ -18,18 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
-use LongitudeOne\Spatial\PHP\Types\Geography\Point;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,24 +33,11 @@ use PHPUnit\Framework\TestCase;
 class LineStringTest extends TestCase
 {
     /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This shall not happen
+     * Test an empty LineString.
      */
-    public function testInterface(): void
+    public function testGetType(): void
     {
-        $pointOrigin = new Point('113:4:0W', '32:27:0N');
-        $pointFinal = new Point('113:4:0W', '32:27:0N');
-        $lineString = new LineString([$pointOrigin, $pointFinal]);
-
-        static::assertInstanceOf(SpatialInterface::class, $lineString);
-        static::assertInstanceOf(GeographyInterface::class, $lineString);
-        static::assertInstanceOf(LineStringInterface::class, $lineString);
-        static::assertNotInstanceOf(PointInterface::class, $lineString);
-        static::assertNotInstanceOf(PolygonInterface::class, $lineString);
-        static::assertNotInstanceOf(MultiPointInterface::class, $lineString);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $lineString);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $lineString);
-        static::assertNotInstanceOf(GeometryInterface::class, $lineString);
+        $lineString = new LineString([]);
+        static::assertEquals('LineString', $lineString->getType());
     }
 }

@@ -156,8 +156,8 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array            $column   the field declaration
-     * @param AbstractPlatform $platform database platform
+     * @param array<string,mixed> $column   the field declaration
+     * @param AbstractPlatform    $platform database platform
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */

@@ -152,14 +152,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Create spatial object from parsed value.
      *
-     * @param AbstractSpatialType $type  The type spatial type
-     * @param array               $value The value of the spatial object
+     * @param AbstractSpatialType                           $type  The type spatial type
+     * @param array{type: string, srid?: ?int, value:mixed} $value The value of the spatial object
      *
      * @return GeometryInterface
      *
      * @throws InvalidValueException when the provided type is not supported
      */
-    private function newObjectFromValue(AbstractSpatialType $type, $value)
+    private function newObjectFromValue(AbstractSpatialType $type, $value): SpatialInterface
     {
         $typeFamily = $type->getTypeFamily();
         $typeName = mb_strtoupper($value['type']);

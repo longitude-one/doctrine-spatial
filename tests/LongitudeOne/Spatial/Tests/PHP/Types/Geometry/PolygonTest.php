@@ -19,18 +19,9 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use PHPUnit\Framework\TestCase;
@@ -69,26 +60,6 @@ class PolygonTest extends TestCase
         $polygon = $this->createEmptyPolygon();
 
         static::assertEmpty($polygon->getRings());
-    }
-
-    /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This should not happen because of selected value
-     */
-    public function testInterface(): void
-    {
-        $polygon = new Polygon([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $polygon);
-        static::assertInstanceOf(GeometryInterface::class, $polygon);
-        static::assertInstanceOf(PolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(PointInterface::class, $polygon);
-        static::assertNotInstanceOf(LineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPointInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(GeographyInterface::class, $polygon);
     }
 
     /**

@@ -26,15 +26,15 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 abstract class AbstractMultiPoint extends AbstractGeometry
 {
     /**
-     * @var array[]
+     * @var (float|int)[][] Points
      */
     protected $points = [];
 
     /**
      * Abstract multipoint constructor.
      *
-     * @param array[]|int[]|PointInterface[] $points array of point
-     * @param null|int                       $srid   Spatial Reference System Identifier
+     * @param ((float|int)[]|PointInterface)[] $points array of point
+     * @param null|int                         $srid   Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a point is not valid
      */
@@ -48,7 +48,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Add a point to geometry.
      *
-     * @param AbstractPoint|array $point Point to add to geometry
+     * @param AbstractPoint|(float|int)[] $point Point to add to geometry
      *
      * @return self
      *
@@ -66,7 +66,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param int $index index of the point to retrieve. -1 to get last point.
      *
-     * @return AbstractPoint
+     * @return PointInterface
      */
     public function getPoint($index)
     {
@@ -83,7 +83,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Points getter.
      *
-     * @return AbstractPoint[]
+     * @return PointInterface[]
      */
     public function getPoints()
     {
@@ -109,7 +109,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Points fluent setter.
      *
-     * @param AbstractPoint[]|array[] $points the points
+     * @param (AbstractPoint|(float|int)[])[] $points the points
      *
      * @return self
      *
@@ -125,7 +125,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Convert multipoint to array.
      *
-     * @return array[]
+     * @return (float|int)[][]
      */
     public function toArray()
     {

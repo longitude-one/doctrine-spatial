@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -65,7 +66,7 @@ class SpTransformTest extends PersistOrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :proj)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
-        $query->setParameter('proj', '+proj=longlat +datum=WGS84 +no_defs');
+        $query->setParameter('proj', '+proj=longlat +datum=WGS84 +no_defs', ParameterType::STRING);
         $result = $query->getResult();
 
         static::assertCount(1, $result);
@@ -88,8 +89,8 @@ class SpTransformTest extends PersistOrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :from, :to)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
-        $query->setParameter('from', '+proj=lcc +lat_1=42.68333333333333 +lat_2=41.71666666666667 +lat_0=41 +lon_0=-71.5 +x_0=200000.0001016002 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs ');
-        $query->setParameter('to', '+proj=longlat +datum=WGS84 +no_defs');
+        $query->setParameter('from', '+proj=lcc +lat_1=42.68333333333333 +lat_2=41.71666666666667 +lat_0=41 +lon_0=-71.5 +x_0=200000.0001016002 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs ', ParameterType::STRING);
+        $query->setParameter('to', '+proj=longlat +datum=WGS84 +no_defs', ParameterType::STRING);
         $result = $query->getResult();
 
         static::assertCount(1, $result);
@@ -113,7 +114,7 @@ class SpTransformTest extends PersistOrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
-        $query->setParameter('srid', 4326, 'integer');
+        $query->setParameter('srid', 4326, ParameterType::INTEGER);
         $result = $query->getResult();
 
         static::assertCount(1, $result);

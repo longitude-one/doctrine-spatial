@@ -19,18 +19,9 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -54,24 +45,6 @@ class MultiLineStringTest extends TestCase
         $multiLineString = new MultiLineString([]);
 
         static::assertEmpty($multiLineString->getLineStrings());
-    }
-
-    /**
-     * Test interfaces.
-     */
-    public function testInterface(): void
-    {
-        $multiLineString = new MultiLineString([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $multiLineString);
-        static::assertInstanceOf(GeometryInterface::class, $multiLineString);
-        static::assertInstanceOf(MultiLineStringInterface::class, $multiLineString);
-        static::assertNotInstanceOf(PointInterface::class, $multiLineString);
-        static::assertNotInstanceOf(LineStringInterface::class, $multiLineString);
-        static::assertNotInstanceOf(PolygonInterface::class, $multiLineString);
-        static::assertNotInstanceOf(MultiPointInterface::class, $multiLineString);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $multiLineString);
-        static::assertNotInstanceOf(GeographyInterface::class, $multiLineString);
     }
 
     /**

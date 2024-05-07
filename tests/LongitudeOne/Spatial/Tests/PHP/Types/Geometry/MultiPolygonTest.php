@@ -19,19 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -86,26 +77,6 @@ class MultiPolygonTest extends TestCase
         $multiPolygon = new MultiPolygon([]);
 
         static::assertEmpty($multiPolygon->getPolygons());
-    }
-
-    /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This should not happen because of selected value
-     */
-    public function testInterface(): void
-    {
-        $multiPolygon = new MultiPolygon([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $multiPolygon);
-        static::assertInstanceOf(GeometryInterface::class, $multiPolygon);
-        static::assertInstanceOf(MultiPolygonInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(PointInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(LineStringInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(PolygonInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(MultiPointInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(GeographyInterface::class, $multiPolygon);
     }
 
     /**

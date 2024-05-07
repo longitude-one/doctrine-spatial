@@ -28,21 +28,21 @@ abstract class AbstractMultiLineString extends AbstractGeometry
     /**
      * Array of line strings.
      *
-     * @var array[]
+     * @var (float|int)[][][]
      */
     protected $lineStrings = [];
 
     /**
      * AbstractMultiLineString constructor.
      *
-     * @param AbstractLineString[]|array[] $rings array of linestring
-     * @param null|int                     $srid  Spatial Reference System Identifier
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $lineStrings array of linestring
+     * @param null|int                                                                     $srid        Spatial Reference System Identifier
      *
      * @throws InvalidValueException when rings contains an invalid linestring
      */
-    public function __construct(array $rings, $srid = null)
+    public function __construct(array $lineStrings, $srid = null)
     {
-        $this->setLineStrings($rings)
+        $this->setLineStrings($lineStrings)
             ->setSrid($srid)
         ;
     }
@@ -50,7 +50,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
     /**
      * Add a linestring to geometry.
      *
-     * @param AbstractLineString|array[] $lineString the line string to add to Geometry
+     * @param (float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[] $lineString the line string to add to Geometry
      *
      * @return self
      *
@@ -110,7 +110,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
     /**
      * LineStrings fluent setter.
      *
-     * @param AbstractLineString[] $lineStrings array of LineString
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $lineStrings array of LineString
      *
      * @return self
      *
@@ -126,7 +126,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
     /**
      * Implements abstract method to convert line strings into an array.
      *
-     * @return array[]
+     * @return (float|int)[][][]
      */
     public function toArray()
     {

@@ -58,6 +58,15 @@ interface SpatialInterface
     public function setSrid($srid);
 
     /**
+     * Convert spatial object to its array representation.
+     *
+     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
+     *
+     * @return (float|int)[]|(float|int)[][]|(float|int)[][][]|(float|int)[][][][]
+     */
+    public function toArray();
+
+    /**
      * Convert spatial object to its string representation.
      * Example: 'POINT(42 42)'.
      *

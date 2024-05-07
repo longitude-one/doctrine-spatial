@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\Issues;
 
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
+use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
@@ -87,7 +88,7 @@ class Issue42Test extends TestCase
     /**
      * Return the $fieldDeclaration dump from doctrine/dbal 3.7+ for a GeographyType.
      *
-     * @return array the dump
+     * @return array{length: int, unsigned: bool, fixed: bool, default: null, notnull: bool, scale: ?int, precision: ?int, autoincrement: bool} the dump
      */
     private function getGeographyDumpFromNewVersion(): array
     {
@@ -106,7 +107,7 @@ class Issue42Test extends TestCase
     /**
      * Return the $fieldDeclaration dump from doctrine/dbal 3.6- for a GeographyType.
      *
-     * @return array the dump
+     * @return array{name: string, type: AbstractSpatialType, length: int, comment:string, default: null, notnull: bool, scale: int, precision: int, autoincrement: bool, fixed: bool, unsigned: bool, version:bool} the dump
      */
     private function getGeographyDumpFromOldVersion(): array
     {
@@ -129,7 +130,7 @@ class Issue42Test extends TestCase
     /**
      * Return the $fieldDeclaration dump from doctrine/dbal 3.7+ for a GeometryType.
      *
-     * @return array the dump
+     * @return array{length: int, unsigned: bool, fixed: bool, default: null, notnull: bool, scale: ?int, precision: ?int, autoincrement: bool} the dump
      */
     private function getGeometryDumpFromNewVersion(): array
     {
@@ -139,7 +140,7 @@ class Issue42Test extends TestCase
     /**
      * Return the $fieldDeclaration dump from doctrine/dbal 3.6- for a GeometryType.
      *
-     * @return array the dump
+     * @return array{name: string, type: AbstractSpatialType, length: int, comment:string, default: null, notnull: bool, scale: int, precision: int, autoincrement: bool, fixed: bool, unsigned: bool, version:bool} the dump
      */
     private function getGeometryDumpFromOldVersion(): array
     {

@@ -28,26 +28,4 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  */
 interface GeographyInterface extends SpatialInterface
 {
-    /**
-     * Spatial Reference System Identifier getter.
-     *
-     * @return int
-     */
-    public function getSrid();
-
-    /**
-     * Type getter.
-     *
-     * @return string
-     */
-    public function getType();
-
-    /**
-     * Spatial Reference System Identifier setter.
-     *
-     * @param int $srid A Spatial Reference System Identifier (SRID)
-     *
-     * @return self
-     */
-    public function setSrid($srid);
 }

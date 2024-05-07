@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 
 /**
  * Abstract Polygon object for POLYGON spatial types.
@@ -26,15 +27,15 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 abstract class AbstractMultiPolygon extends AbstractGeometry
 {
     /**
-     * @var array[]
+     * @var ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[]
      */
     protected array $polygons = [];
 
     /**
      * AbstractMultiPolygon constructor.
      *
-     * @param AbstractPolygon[]|array[] $polygons Polygons
-     * @param null|int                  $srid     Spatial Reference System Identifier
+     * @param ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[] $polygons Polygons
+     * @param null|int                                                                                              $srid     Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a polygon is invalid
      */
@@ -49,7 +50,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param AbstractPolygon|array[] $polygon polygon to add
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[]|PolygonInterface $polygon polygon to add
      *
      * @throws InvalidValueException when polygon is not an array nor an AbstractPolygon
      */
@@ -114,7 +115,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygon setter.
      *
-     * @param AbstractPolygon[] $polygons polygons to set
+     * @param ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[] $polygons polygons to set
      *
      * @return self
      *
@@ -130,9 +131,9 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Convert Polygon into array.
      *
-     * @return array[]
+     * @return ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->polygons;
     }

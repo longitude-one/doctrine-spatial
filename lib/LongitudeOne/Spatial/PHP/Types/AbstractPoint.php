@@ -48,7 +48,7 @@ abstract class AbstractPoint extends AbstractGeometry
      */
     public function __construct()
     {
-        $argv = $this->validateArguments(func_get_args());
+        $argv = $this->validateArguments(func_get_args(), '__construct');
 
         call_user_func_array([$this, 'construct'], $argv);
     }
@@ -160,6 +160,8 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Convert point into an array X, Y.
      * Latitude, longitude.
+     *
+     * @return array{0 : float|int, 1 : float|int}
      */
     public function toArray(): array
     {
@@ -186,15 +188,26 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Validate arguments.
      *
-     * @param ?array $argv list of arguments
+     * @param mixed[] $argv   list of arguments
+     * @param string  $caller the calling method
+     *
+     * @return (float|int|string)[]
      *
      * @throws InvalidValueException when an argument is not valid
      */
-    protected function validateArguments(?array $argv = null): array
+    protected function validateArguments(array $argv, string $caller): array
     {
         $argc = count($argv);
 
         if (1 == $argc && is_array($argv[0])) {
+            foreach ($argv[0] as $value) {
+                if (is_numeric($value) || is_string($value)) {
+                    continue;
+                }
+
+                throw $this->createException($argv, $caller);
+            }
+
             return $argv[0];
         }
 
@@ -219,18 +232,29 @@ abstract class AbstractPoint extends AbstractGeometry
             }
         }
 
+        throw $this->createException($argv, $caller);
+    }
+
+    /**
+     * Create a fluent message for InvalidException.
+     *
+     * @param mixed[] $argv   the arguments
+     * @param string  $caller the method calling the method calling exception :)
+     */
+    private function createException(array $argv, string $caller): InvalidValueException
+    {
         array_walk($argv, function (&$value) {
-            $tmp = 'Array';
-            if (!is_array($value)) {
-                $tmp = sprintf('"%s"', $value);
+            if (is_numeric($value) || is_string($value)) {
+                return;
             }
-            $value = $tmp;
+
+            $value = gettype($value);
         });
 
-        throw new InvalidValueException(sprintf(
+        return new InvalidValueException(sprintf(
             'Invalid parameters passed to %s::%s: %s',
-            get_class($this),
-            '__construct',
+            $this::class,
+            $caller,
             implode(', ', $argv)
         ));
     }

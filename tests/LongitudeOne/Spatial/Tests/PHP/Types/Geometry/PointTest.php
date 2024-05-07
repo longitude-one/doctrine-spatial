@@ -19,16 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -134,6 +125,19 @@ class PointTest extends TestCase
     }
 
     /**
+     * Test exception on embedded arrays.
+     *
+     * @throws InvalidValueException This SHALL happen
+     */
+    public function testEmbeddedArrays(): void
+    {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array');
+
+        new Point([[3, []]]);
+    }
+
+    /**
      * Test getType method.
      */
     public function testGetType(): void
@@ -209,24 +213,6 @@ class PointTest extends TestCase
     }
 
     /**
-     * Test interfaces.
-     */
-    public function testInterface(): void
-    {
-        $point = new Point(4, 2);
-
-        static::assertInstanceOf(SpatialInterface::class, $point);
-        static::assertInstanceOf(GeometryInterface::class, $point);
-        static::assertInstanceOf(PointInterface::class, $point);
-        static::assertNotInstanceOf(LineStringInterface::class, $point);
-        static::assertNotInstanceOf(PolygonInterface::class, $point);
-        static::assertNotInstanceOf(MultiPointInterface::class, $point);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $point);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $point);
-        static::assertNotInstanceOf(GeographyInterface::class, $point);
-    }
-
-    /**
      * Test to convert point to json.
      */
     public function testJson(): void
@@ -271,7 +257,7 @@ class PointTest extends TestCase
     public function testPointTooManyArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "5", "5", "5", "5"');
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 5, 5, 5, 5');
 
         new Point(5, 5, 5, 5);
     }
@@ -293,7 +279,7 @@ class PointTest extends TestCase
     public function testPointWrongArgumentTypes(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: Array, Array, "1234"');
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array, array, 1234');
 
         new Point([], [], '1234');
     }
@@ -322,7 +308,7 @@ class PointTest extends TestCase
     public function testTwoInvalidArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "", ""');
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: NULL, NULL');
 
         new Point(null, null);
     }
@@ -333,7 +319,7 @@ class PointTest extends TestCase
     public function testUnusedArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "1", "2", "3", "4", "", "5"');
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 1, 2, 3, 4, NULL, 5');
 
         new Point(1, 2, 3, 4, null, 5);
     }

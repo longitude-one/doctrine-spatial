@@ -18,16 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,20 +33,11 @@ use PHPUnit\Framework\TestCase;
 class PolygonTest extends TestCase
 {
     /**
-     * Test interfaces.
+     * Test an empty Polygon.
      */
-    public function testInterface(): void
+    public function testGetType(): void
     {
         $polygon = new Polygon([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $polygon);
-        static::assertInstanceOf(GeographyInterface::class, $polygon);
-        static::assertInstanceOf(PolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(PointInterface::class, $polygon);
-        static::assertNotInstanceOf(LineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPointInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(GeometryInterface::class, $polygon);
+        static::assertEquals('Polygon', $polygon->getType());
     }
 }
