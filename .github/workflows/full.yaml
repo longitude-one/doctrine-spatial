@@ -1,4 +1,4 @@
-name: Doctrine spatial test with stable version of doctrine/orm
+name: Full tests
 on:
   push:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  stable-build:
     runs-on: ubuntu-latest
     environment: 'Test environment'
     name: PHP 8.3 - doctrine/orm ^3.1
@@ -173,4 +173,102 @@ jobs:
 #      - name: Run PHP-STAN
 #        if: ${{ matrix.lexer-version == '~3.0.0' }}
 #        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v
+
+  other-version-build:
+    needs: stable-build
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.orm == '^3.2' || matrix.orm == '^4.0'}}
+    environment: 'Test environment'
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.1', '8.2', '8.3' ]
+        orm: [ '^2.9', '^3.1', '^3.2', '^4.0' ]
+        exclude:
+          # Already tested
+          -   php: '8.3'
+              orm: '^3.1'
+    name: PHP${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
+    env:
+      HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
+      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
+    services:
+      mysql5:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        ports:
+          - 3357:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql8:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        ports:
+          - 3380:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        # Docker Hub image
+        image: postgis/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: main
+          POSTGRES_USER: main
+          POSTGRES_DATABASE: main
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      -   name: Checkout code
+          uses: actions/checkout@v4
+
+      -   name: Validate composer.json
+          run: composer validate --strict
+
+      -   name: Display Composer Cache Directory
+          id: composer-cache
+          run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      -   name: Restore cache Composer dependencies
+          uses: actions/cache@v4
+          with:
+            path: ${{ steps.composer-cache.outputs.dir }}
+            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-composer-
+
+      -   name: Setup PHP ${{ matrix.php }}
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            coverage: pcov
+            tools: composer:v2
+
+      -   name: Echo PHP version
+          run: php -v
+
+      -   name: Copy test suites
+          run: cp .github/phpunit.*.xml .
+
+      -   name: Install libraries
+          run: composer --prefer-stable update -vvv
+
+      -   name: Force doctrine/orm library to ${{ matrix.orm }}
+          run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
+
+      -   name: Run test suite for forks or version without code coverage
+          run: composer run-script test
+
 
