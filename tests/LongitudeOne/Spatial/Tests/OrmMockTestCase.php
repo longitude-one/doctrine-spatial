@@ -22,7 +22,6 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\SQLitePlatform as NewVersionSQLitePlatform;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,13 +61,13 @@ abstract class OrmMockTestCase extends SpatialTestCase
         $platformClass = null;
 
         // Doctrine ORM ^2.19
-        if (class_exists(NewVersionSQLitePlatform::class)) {
-            $platformClass = NewVersionSQLitePlatform::class;
+        if (class_exists('\Doctrine\DBAL\Platforms\SqlitePlatform')) {
+            $platformClass = '\Doctrine\DBAL\Platforms\SqlitePlatform';
         }
 
         // Doctrine ORM ^3.0
-        if (class_exists(NewVersionSQLitePlatform::class)) {
-            $platformClass = NewVersionSQLitePlatform::class;
+        if (class_exists('Doctrine\DBAL\Platforms\SQLitePlatform')) {
+            $platformClass = 'Doctrine\DBAL\Platforms\SQLitePlatform';
         }
 
         if (null === $platformClass) {
