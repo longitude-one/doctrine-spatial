@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
-         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php" executionOrder="depends,defects" stopOnFailure="true"
+         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php" executionOrder="depends,defects" stopOnFailure="false"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerErrors="true"
-         stopOnError="true" stopOnWarning="true" stopOnDefect="true" cacheDirectory=".phpunit.cache">
+         stopOnError="false" stopOnWarning="false" stopOnDefect="false" cacheDirectory=".phpunit.cache">
     <testsuites>
         <testsuite name="default">
             <directory>tests/LongitudeOne/Spatial/Tests</directory>
