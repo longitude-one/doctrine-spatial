@@ -31,6 +31,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\SingleEntityInterface;
 
 /**
  * This class provides some methods to persist entities then assert that we can select them in database.
@@ -83,9 +84,9 @@ class PersistOrmTestCase extends OrmTestCase
      * Then assert data are equals, not same.
      *
      * @param EntityManagerInterface $entityManager Entity manager to persist data
-     * @param object                 $entity        Entity to test
+     * @param SingleEntityInterface  $entity        Entity to test
      */
-    protected static function assertIsRetrievableById(EntityManagerInterface $entityManager, object $entity): ?object
+    protected static function assertIsRetrievableById(EntityManagerInterface $entityManager, SingleEntityInterface $entity): ?object
     {
         $entityManager->persist($entity);
         $entityManager->flush();

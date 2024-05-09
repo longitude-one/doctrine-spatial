@@ -50,7 +50,7 @@ class PointTest extends TestCase
     public function testBadLatitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Syntax Error] line 0, col 8: Error: Expected LongitudeOne\\Geo\\String\\Lexer::T_INTEGER or LongitudeOne\\Geo\\String\\Lexer::T_FLOAT, got "Q" in value "84:26:46Q"');
+        $this->expectExceptionMessage('Invalid latitude value, got "84:26:46Q"');
 
         new Point('100:56:55W', '84:26:46Q');
     }
@@ -94,7 +94,7 @@ class PointTest extends TestCase
     public function testBadLongitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Syntax Error] line 0, col 9: Error: Expected LongitudeOne\\Geo\\String\\Lexer::T_INTEGER or LongitudeOne\\Geo\\String\\Lexer::T_FLOAT, got "P" in value "100:56:55P"');
+        $this->expectExceptionMessage('Invalid longitude value, got "100:56:55P"');
 
         new Point('100:56:55P', '84:26:46N');
     }
@@ -317,6 +317,68 @@ class PointTest extends TestCase
         $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geography\\Point::__construct: array, array, 1234');
 
         new Point([], [], '1234');
+    }
+
+    /**
+     * Test setX method with an array.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetFirstCoordinateWithAnArray(): void
+    {
+        $point = new Point(10, 10);
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid longitude value, longitude cannot be an array.');
+        $point->setX('10 20');
+    }
+
+    /**
+     * Test setY method with an array.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetSecondCoordinateWithAnArray(): void
+    {
+        $point = new Point(10, 10);
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid latitude value, latitude cannot be an array.');
+        $point->setY('10 20');
+    }
+
+    /**
+     * Test setX method.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetX(): void
+    {
+        $point = new Point(10, 10);
+        $point->setX('20');
+        static::assertSame(20, $point->getLongitude());
+        static::assertSame(20, $point->getX());
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid longitude value, got "foo".');
+        $point->setX('foo');
+    }
+
+    /**
+     * Test setY method.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetY(): void
+    {
+        $point = new Point(10, 10);
+        $point->setY('20');
+        static::assertSame(20, $point->getLatitude());
+        static::assertSame(20, $point->getY());
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid latitude value, got "foo".');
+        $point->setY('foo');
     }
 
     /**

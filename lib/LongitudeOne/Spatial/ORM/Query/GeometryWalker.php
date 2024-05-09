@@ -77,8 +77,12 @@ class GeometryWalker extends SqlWalker
         $sql = parent::walkSelectExpression($selectExpression);
 
         if ($expr instanceof ReturnsGeometryInterface && !$selectExpression->hiddenAliasResultVariable) {
-            $alias = trim(mb_strrchr($sql, ' '));
-            $this->resultSetMapping->typeMappings[$alias] = 'geometry';
+            $alias = mb_strrchr($sql, ' ');
+            // Theoretically, $alias cannot be false, but in this case it will be ignored
+            if (false !== $alias) {
+                $alias = trim($alias);
+                $this->resultSetMapping->typeMappings[$alias] = 'geometry';
+            }
         }
 
         return $sql;

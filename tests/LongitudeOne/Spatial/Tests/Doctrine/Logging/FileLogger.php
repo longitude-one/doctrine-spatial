@@ -42,7 +42,7 @@ class FileLogger extends MonologLogger implements LoggerInterface
     /**
      * Return common log parameters.
      *
-     * @return array{filename: string, level: string, directory: string, timezone: \DateTimeZone}
+     * @return array{filename: string, level: ('ALERT'|'alert'|'CRITICAL'|'critical'|'DEBUG'|'debug'|'EMERGENCY'|'emergency'|'ERROR'|'error'|'INFO'|'info'|'NOTICE'|'notice'|'WARNING'|'warning'|100|200|250|300|400|500|550|600), directory: string, timezone: \DateTimeZone}
      *
      * @throws \InvalidArgumentException if the timezone is not valid
      */

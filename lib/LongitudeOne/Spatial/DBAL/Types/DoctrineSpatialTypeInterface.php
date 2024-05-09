@@ -20,4 +20,10 @@ namespace LongitudeOne\Spatial\DBAL\Types;
 
 interface DoctrineSpatialTypeInterface
 {
+    /**
+     * Return (SpatialInterface::GEOGRAPHY|SpatialInterface::GEOMETRY) the family of the type.
+     *
+     * @return ('Geography'|'Geometry')
+     */
+    public function getTypeFamily(): string;
 }

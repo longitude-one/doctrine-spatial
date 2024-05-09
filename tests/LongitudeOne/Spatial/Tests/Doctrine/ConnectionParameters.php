@@ -26,7 +26,7 @@ class ConnectionParameters
     /**
      * Return common connection parameters.
      *
-     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: null|string, host: string, dbname: null|string, port: int, unix_socket: null|string, driverOptions: array<string, string>}
+     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: string, host: string, dbname: null|string, port: int, unix_socket?: string, driverOptions?: array<string, string>}
      */
     public static function getCommonConnectionParameters(): array
     {
@@ -66,7 +66,7 @@ class ConnectionParameters
     /**
      * Return connection parameters.
      *
-     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: string, host: string, dbname: string, port: int, unix_socket: string, driverOptions: array<string, string>}
+     * @return array{driver: ('ibm_db2'|'mysqli'|'oci8'|'pdo_mysql'|'pdo_oci'|'pdo_pgsql'|'pdo_sqlite'|'pdo_sqlsrv'|'pgsql'|'sqlite3'|'sqlsrv'), user: string, password: string, host: string, dbname: string, port: int, unix_socket?: string, driverOptions?: array<string, string>}
      *
      * @throws Exception when connection is not successful
      */

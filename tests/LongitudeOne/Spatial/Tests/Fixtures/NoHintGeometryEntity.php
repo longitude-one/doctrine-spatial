@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping\Table;
  */
 #[Table]
 #[Entity]
-class NoHintGeometryEntity
+class NoHintGeometryEntity implements SingleEntityInterface
 {
     #[Column(type: 'geometry', nullable: true)]
     protected mixed $geometry;

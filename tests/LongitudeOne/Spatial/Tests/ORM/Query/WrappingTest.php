@@ -75,6 +75,10 @@ class WrappingTest extends PersistOrmTestCase
 
         $result = $query->getSQL();
 
+        if (!is_string($result)) {
+            static::fail('Unable to get SQL from query');
+        }
+
         try {
             $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
         } catch (Exception $e) {
@@ -101,6 +105,10 @@ class WrappingTest extends PersistOrmTestCase
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
+
+        if (!is_string($result)) {
+            static::fail('Unable to get SQL from query');
+        }
 
         try {
             $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());

@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
  */
 #[Table]
 #[Entity]
-class PointEntity
+class PointEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

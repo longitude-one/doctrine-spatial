@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
  */
 #[Table]
 #[Entity]
-class MultiPolygonEntity
+class MultiPolygonEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

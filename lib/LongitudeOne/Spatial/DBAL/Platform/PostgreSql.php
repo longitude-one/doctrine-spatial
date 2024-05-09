@@ -22,7 +22,6 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -35,27 +34,6 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 class PostgreSql extends AbstractPlatform
 {
     public const DEFAULT_SRID = 4326;
-
-    /**
-     * Convert Binary to php value.
-     *
-     * @param AbstractSpatialType  $type    Spatial type
-     * @param null|resource|string $sqlExpr Sql expression
-     *
-     * @return GeometryInterface
-     *
-     * @throws InvalidValueException when SQL expression is not a resource
-     */
-    public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
-    {
-        if (!is_resource($sqlExpr)) {
-            throw new InvalidValueException(sprintf('Invalid resource value "%s"', $sqlExpr));
-        }
-
-        $sqlExpr = stream_get_contents($sqlExpr);
-
-        return parent::convertBinaryToPhpValue($type, $sqlExpr);
-    }
 
     /**
      * Convert to database value.

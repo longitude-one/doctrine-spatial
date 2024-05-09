@@ -50,13 +50,13 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param (float|int)[][]|LineStringInterface|LineStringInterface[]|PolygonInterface $ring Ring to add to geometry
+     * @param (float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[]|PolygonInterface $ring Ring to add to geometry
      *
      * @throws InvalidValueException when a ring is invalid
      */
     public function addRing(mixed $ring): self
     {
-        if ($ring instanceof AbstractPolygon) {
+        if ($ring instanceof PolygonInterface) {
             throw new InvalidValueException('You cannot add a Polygon to another one. Use a Multipolygon.');
         }
         $this->rings[] = $this->validateRingValue($ring);
@@ -69,12 +69,13 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @param int $index index of polygon, use -1 to get last one
      */
-    public function getRing(int $index): AbstractLineString
+    public function getRing(int $index): LineStringInterface
     {
         if (-1 == $index) {
             $index = count($this->rings) - 1;
         }
 
+        /** @var class-string<LineStringInterface> $lineStringClass */
         $lineStringClass = $this->getNamespace().'\LineString';
 
         return new $lineStringClass($this->rings[$index], $this->srid);
@@ -83,7 +84,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Rings getter.
      *
-     * @return AbstractLineString[]
+     * @return LineStringInterface[]
      */
     public function getRings(): array
     {

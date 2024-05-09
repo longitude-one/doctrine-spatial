@@ -129,10 +129,18 @@ abstract class AbstractPoint extends AbstractGeometry
         $parser = new Parser($x);
 
         try {
-            $this->x = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+            $x = $parser->parse();
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $x), $e->getCode(), $e);
         }
+
+        if (is_array($x)) {
+            throw new InvalidValueException('Invalid coordinate value, coordinate cannot be an array.');
+        }
+
+        $this->x = $x;
 
         return $this;
     }
@@ -149,10 +157,18 @@ abstract class AbstractPoint extends AbstractGeometry
         $parser = new Parser($y);
 
         try {
-            $this->y = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+            $y = $parser->parse();
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $y), $e->getCode(), $e);
         }
+
+        if (is_array($y)) {
+            throw new InvalidValueException('Invalid coordinate value, coordinate cannot be an array.');
+        }
+
+        $this->y = $y;
 
         return $this;
     }

@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
  */
 #[Table]
 #[Entity]
-class MultiPointEntity
+class MultiPointEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

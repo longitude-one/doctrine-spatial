@@ -62,8 +62,9 @@ class GeoPointSridTest extends PersistOrmTestCase
         $entity = new GeoPointSridEntity();
         $entity->setPoint($point);
 
-        $queryEntity = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
-        static::assertEquals(4326, $queryEntity[0]->getPoint()->getSrid());
+        /** @var GeoPointSridEntity[] $queryEntities */
+        $queryEntities = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
+        static::assertEquals(4326, $queryEntities[0]->getPoint()->getSrid());
     }
 
     /**
@@ -87,6 +88,8 @@ class GeoPointSridTest extends PersistOrmTestCase
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to create a point (11 11): %s', $e->getMessage()));
         }
+
+        /** @var GeoPointSridEntity $queryEntity */
         $queryEntity = static::assertIsRetrievableById($this->getEntityManager(), $entity);
         static::assertEquals(4326, $queryEntity->getPoint()->getSrid());
     }

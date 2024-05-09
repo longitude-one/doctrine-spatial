@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
  */
 #[Table]
 #[Entity]
-class MultiLineStringEntity
+class MultiLineStringEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

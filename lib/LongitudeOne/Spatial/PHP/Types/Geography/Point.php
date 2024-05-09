@@ -43,11 +43,17 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
 
         try {
             $x = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid longitude value, got "%s".', $x), $e->getCode(), $e);
         }
 
-        if (is_array($x) || $x < -180 || $x > 180) {
+        if (is_array($x)) {
+            throw new InvalidValueException('Invalid longitude value, longitude cannot be an array.');
+        }
+
+        if ($x < -180 || $x > 180) {
             throw new InvalidValueException(sprintf('Invalid longitude value "%s", must be in range -180 to 180.', $x));
         }
 
@@ -69,11 +75,17 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
 
         try {
             $y = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid latitude value, got "%s".', $y), $e->getCode(), $e);
         }
 
-        if (is_array($y) || $y < -90 || $y > 90) {
+        if (is_array($y)) {
+            throw new InvalidValueException('Invalid latitude value, latitude cannot be an array.');
+        }
+
+        if ($y < -90 || $y > 90) {
             throw new InvalidValueException(sprintf('Invalid latitude value "%s", must be in range -90 to 90.', $y));
         }
 

@@ -16,16 +16,17 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types;
+namespace LongitudeOne\Spatial\Tests\Fixtures;
 
-interface PointInterface extends SpatialInterface
+/**
+ * Single entity interface, only used in tests.
+ *
+ * @internal
+ */
+interface SingleEntityInterface
 {
     /**
-     * Convert point to its array representation.
-     *
-     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
-     *
-     * @return (float|int)[]
+     * The instanced objects SHALL have a getId() method.
      */
-    public function toArray();
+    public function getId(): int;
 }

@@ -33,7 +33,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
  * @internal
  */
 #[Entity]
-class GeographyEntity
+class GeographyEntity implements SingleEntityInterface
 {
     #[Column(type: 'geography', nullable: true)]
     protected GeographyInterface $geography;

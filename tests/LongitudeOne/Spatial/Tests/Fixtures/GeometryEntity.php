@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  */
 #[Table]
 #[Entity]
-class GeometryEntity
+class GeometryEntity implements SingleEntityInterface
 {
     #[Column(type: 'geometry', nullable: true)]
     protected GeometryInterface $geometry;

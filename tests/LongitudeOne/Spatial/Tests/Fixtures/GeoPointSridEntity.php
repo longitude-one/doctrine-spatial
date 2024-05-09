@@ -33,7 +33,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
  * @internal
  */
 #[Entity]
-class GeoPointSridEntity
+class GeoPointSridEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

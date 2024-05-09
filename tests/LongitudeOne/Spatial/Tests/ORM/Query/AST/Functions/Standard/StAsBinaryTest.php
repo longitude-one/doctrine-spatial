@@ -78,8 +78,13 @@ class StAsBinaryTest extends PersistOrmTestCase
         }
 
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
-            static::assertEquals($expectedA, bin2hex(stream_get_contents($result[0][1])));
-            static::assertEquals($expectedB, bin2hex(stream_get_contents($result[1][1])));
+            $actual = stream_get_contents($result[0][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedA, bin2hex($actual));
+
+            $actual = stream_get_contents($result[1][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedB, bin2hex($actual));
         }
     }
 }

@@ -20,4 +20,12 @@ namespace LongitudeOne\Spatial\PHP\Types;
 
 interface LineStringInterface extends SpatialInterface
 {
+    /**
+     * Convert lineString to its array representation.
+     *
+     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
+     *
+     * @return (float|int)[][]
+     */
+    public function toArray();
 }

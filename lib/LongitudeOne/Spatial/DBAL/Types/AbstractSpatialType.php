@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\DBAL\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
@@ -146,11 +147,20 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     /**
      * Gets the name of this type.
      *
-     * @return string
+     * @return class-string<DoctrineSpatialTypeInterface>
+     *
+     * @throws TypeNotRegistered When type is not registered in the map
      */
     public function getName()
     {
-        return array_search(get_class($this), self::getTypesMap(), true);
+        /** @var class-string<DoctrineSpatialTypeInterface>|false $className */
+        $className = array_search($this::class, self::getTypesMap(), true);
+
+        if (false === $className) {
+            throw new TypeNotRegistered(sprintf('Type "%s" is not currently registered.', $this::class));
+        }
+
+        return $className;
     }
 
     /**
@@ -185,9 +195,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     // phpcs:enable
 
     /**
-     * @return string
+     * @return (SpatialInterface::GEOGRAPHY|SpatialInterface::GEOMETRY)
      */
-    public function getTypeFamily()
+    public function getTypeFamily(): string
     {
         return $this instanceof GeographyType ? SpatialInterface::GEOGRAPHY : SpatialInterface::GEOMETRY;
     }

@@ -74,13 +74,14 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @param int $index Index of polygon, use -1 to get last one
      */
-    public function getPolygon(int $index): AbstractPolygon
+    public function getPolygon(int $index): PolygonInterface
     {
         // TODO replace by a function to be compliant with -1, -2, etc.
         if (-1 == $index) {
             $index = count($this->polygons) - 1;
         }
 
+        /** @var class-string<PolygonInterface> $polygonClass */
         $polygonClass = $this->getNamespace().'\Polygon';
 
         return new $polygonClass($this->polygons[$index], $this->srid);
@@ -89,7 +90,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygons getter.
      *
-     * @return AbstractPolygon[]
+     * @return PolygonInterface[]
      */
     public function getPolygons()
     {

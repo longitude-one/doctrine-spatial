@@ -34,6 +34,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 abstract class OrmMockTestCase extends SpatialTestCase
 {
+    private const FIXTURES_PATH = __DIR__.'/Fixtures';
+
     protected EntityManagerInterface $mockEntityManager;
 
     /**
@@ -94,7 +96,10 @@ abstract class OrmMockTestCase extends SpatialTestCase
             return $this->mockEntityManager;
         }
 
-        $path = [realpath(__DIR__.'/Fixtures')];
+        $path = [0 => realpath(self::FIXTURES_PATH)];
+        if (false === $path[0]) {
+            static::fail(sprintf('Test cannot be launched because the %s directory does not exist.', self::FIXTURES_PATH));
+        }
         $config = new Configuration();
 
         $config->setMetadataCache(new ArrayCachePool());

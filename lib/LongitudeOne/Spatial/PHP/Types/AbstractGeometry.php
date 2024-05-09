@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 
 /**
  * Abstract geometry object for spatial types.
@@ -94,7 +93,14 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
         $json['coordinates'] = $this->toArray();
         $json['srid'] = $this->getSrid();
 
-        return json_encode($json);
+        $json = json_encode($json);
+
+        if (false === $json) {
+            // IMO, it could only happen if someone sends a resource as coordinates
+            throw new InvalidValueException('Cannot convert geometry to JSON string');
+        }
+
+        return $json;
     }
 
     /**
@@ -112,7 +118,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
     /**
      * Validate line strings value.
      *
-     * @param AbstractLineString|AbstractPoint[]|(float|int)[][] $lineString line string to validate
+     * @param (float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[] $lineString line string to validate
      *
      * @return (float|int)[][]
      *
@@ -134,17 +140,19 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validateMultiLineStringValue(array $lineStrings)
     {
-        foreach ($lineStrings as &$lineString) {
-            $lineString = $this->validateLineStringValue($lineString);
+        /** @var (float|int)[][][] $result */
+        $result = [];
+        foreach ($lineStrings as $lineString) {
+            $result[] = $this->validateLineStringValue($lineString);
         }
 
-        return $lineStrings;
+        return $result;
     }
 
     /**
      * Validate multi point value.
      *
-     * @param AbstractLineString|AbstractPoint[]|(float|int)[][] $points array of geometric data to validate
+     * @param (float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[] $points array of geometric data to validate
      *
      * @return (float|int)[][]
      *
@@ -152,15 +160,19 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validateMultiPointValue($points)
     {
-        if ($points instanceof GeometryInterface) {
-            $points = $points->toArray();
+        /** @var (float|int)[][] $result */
+        $result = [];
+        if ($points instanceof SpatialInterface) {
+            $result = $points->toArray();
         }
 
-        foreach ($points as &$point) {
-            $point = $this->validatePointValue($point);
+        if (is_array($points)) {
+            foreach ($points as $point) {
+                $result[] = $this->validatePointValue($point);
+            }
         }
 
-        return $points;
+        return $result;
     }
 
     /**
@@ -174,20 +186,21 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validateMultiPolygonValue(array $polygons)
     {
-        foreach ($polygons as &$polygon) {
-            if ($polygon instanceof GeometryInterface) {
-                $polygon = $polygon->toArray();
-            }
-            $polygon = $this->validatePolygonValue($polygon);
+        $result = [];
+        foreach ($polygons as $polygon) {
+            /** @var (float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][] $polygonArray */
+            $polygonArray = $polygon instanceof PolygonInterface ? $polygon->toArray() : $polygon;
+
+            $result[] = $this->validatePolygonValue($polygonArray);
         }
 
-        return $polygons;
+        return $result;
     }
 
     /**
      * Validate a geometric point or an array of geometric points.
      *
-     * @param AbstractPoint|(float|int)[] $point the geometric point(s) to validate
+     * @param (float|int)[]|PointInterface $point the geometric point(s) to validate
      *
      * @return (float|int)[]
      *
@@ -196,7 +209,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
     protected function validatePointValue($point): array
     {
         switch (true) {
-            case $point instanceof AbstractPoint:
+            case $point instanceof PointInterface:
                 return $point->toArray();
 
             case is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1]):
@@ -222,11 +235,12 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validatePolygonValue(array $polygon)
     {
-        foreach ($polygon as &$lineString) {
-            $lineString = $this->validateRingValue($lineString);
+        $result = [];
+        foreach ($polygon as $lineString) {
+            $result[] = $this->validateRingValue($lineString);
         }
 
-        return $polygon;
+        return $result;
     }
 
     /**
@@ -240,33 +254,32 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validateRingValue($ring)
     {
-        switch (true) {
-            case $ring instanceof AbstractLineString:
-                $ring = $ring->toArray();
-
-                break;
-
-            case is_array($ring):
-                break;
-
-            default:
-                throw new InvalidValueException(sprintf(
-                    'Invalid %s LineString value of type "%s"',
-                    $this->getType(),
-                    is_object($ring) ? get_class($ring) : gettype($ring)
-                ));
+        if ($ring instanceof MultiPointInterface || $ring instanceof LineStringInterface) {
+            $ring = $ring->toArray();
         }
 
-        $ring = $this->validateLineStringValue($ring);
-
-        if ($ring[0] !== end($ring)) {
+        if (!is_array($ring)) {
             throw new InvalidValueException(sprintf(
-                'Invalid polygon, ring "(%s)" is not closed',
-                $this->toStringLineString($ring)
+                'Invalid %s LineString value of type "%s"',
+                $this->getType(),
+                is_object($ring) ? get_class($ring) : gettype($ring)
             ));
         }
 
-        return $ring;
+        /** @var (float|int)[][] $points */
+        $points = [];
+        foreach ($ring as $point) {
+            $points[] = $this->validatePointValue($point);
+        }
+
+        if ($points[0] !== end($points)) {
+            throw new InvalidValueException(sprintf(
+                'Invalid polygon, ring "(%s)" is not closed',
+                $this->toStringLineString($points)
+            ));
+        }
+
+        return $points;
     }
 
     /**

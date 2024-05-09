@@ -18,13 +18,14 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
+use LongitudeOne\Geo\WKB\Exception\ExceptionInterface;
 use LongitudeOne\Geo\WKB\Parser as BinaryParser;
 use LongitudeOne\Geo\WKT\Parser as StringParser;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
+use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -82,15 +83,23 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Convert binary data to a php value.
      *
-     * @param AbstractSpatialType $type    The abstract spatial type
-     * @param string              $sqlExpr the SQL expression
+     * @param DoctrineSpatialTypeInterface $type    The abstract spatial type
+     * @param resource|string              $sqlExpr the SQL expression
      *
-     * @return GeometryInterface
+     * @return SpatialInterface
      *
-     * @throws InvalidValueException when the provided type is not supported
+     * @throws ExceptionInterface|InvalidValueException when the provided type is not supported
      */
-    public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
+    public function convertBinaryToPhpValue(DoctrineSpatialTypeInterface $type, $sqlExpr)
     {
+        if (is_resource($sqlExpr)) {
+            $sqlExpr = stream_get_contents($sqlExpr);
+        }
+
+        if (false === $sqlExpr) {
+            throw new InvalidValueException('Invalid resource value.');
+        }
+
         $parser = new BinaryParser($sqlExpr);
 
         return $this->newObjectFromValue($type, $parser->parse());
@@ -102,7 +111,7 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
      *
-     * @return GeometryInterface
+     * @return SpatialInterface
      *
      * @throws InvalidValueException when the provided type is not supported
      */
@@ -152,14 +161,12 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Create spatial object from parsed value.
      *
-     * @param AbstractSpatialType                           $type  The type spatial type
+     * @param DoctrineSpatialTypeInterface                  $type  The type spatial type
      * @param array{type: string, srid?: ?int, value:mixed} $value The value of the spatial object
-     *
-     * @return GeometryInterface
      *
      * @throws InvalidValueException when the provided type is not supported
      */
-    private function newObjectFromValue(AbstractSpatialType $type, $value): SpatialInterface
+    private function newObjectFromValue(DoctrineSpatialTypeInterface $type, $value): SpatialInterface
     {
         $typeFamily = $type->getTypeFamily();
         $typeName = mb_strtoupper($value['type']);
@@ -170,8 +177,13 @@ abstract class AbstractPlatform implements PlatformInterface
             throw new InvalidValueException(sprintf('Unsupported %s type "%s".', $typeFamily, $typeName));
         }
 
+        /** @var class-string<SpatialInterface> $class */
         $class = sprintf('LongitudeOne\Spatial\PHP\Types\%s\%s', $typeFamily, constant($constName));
 
-        return new $class($value['value'], $value['srid']);
+        if (isset($value['srid'])) {
+            return new $class($value['value'], $value['srid']);
+        }
+
+        return new $class($value['value']);
     }
 }

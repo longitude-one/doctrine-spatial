@@ -35,7 +35,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
  */
 #[Table]
 #[Entity]
-class GeoLineStringEntity
+class GeoLineStringEntity implements SingleEntityInterface
 {
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]

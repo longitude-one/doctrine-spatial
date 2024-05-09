@@ -48,7 +48,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Add a point to geometry.
      *
-     * @param AbstractPoint|(float|int)[] $point Point to add to geometry
+     * @param (float|int)[]|PointInterface $point Point to add to geometry
      *
      * @return self
      *
@@ -75,6 +75,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
             default => $this->points[$index],
         };
 
+        /** @var class-string<PointInterface> $pointClass */
         $pointClass = $this->getNamespace().'\Point';
 
         return new $pointClass($point[0], $point[1], $this->srid);
@@ -109,7 +110,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Points fluent setter.
      *
-     * @param (AbstractPoint|(float|int)[])[] $points the points
+     * @param ((float|int)[]|PointInterface)[] $points the points
      *
      * @return self
      *

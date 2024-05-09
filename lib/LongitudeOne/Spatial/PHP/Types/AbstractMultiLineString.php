@@ -68,7 +68,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param int $index offset of line string to return. Use -1 to get last linestring.
      *
-     * @return AbstractLineString
+     * @return LineStringInterface
      */
     public function getLineString($index)
     {
@@ -76,6 +76,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
             $index = count($this->lineStrings) - 1;
         }
 
+        /** @var class-string<LineStringInterface> $lineStringClass */
         $lineStringClass = $this->getNamespace().'\LineString';
 
         return new $lineStringClass($this->lineStrings[$index], $this->srid);
@@ -84,7 +85,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
     /**
      * Line strings getter.
      *
-     * @return AbstractLineString[]
+     * @return LineStringInterface[]
      */
     public function getLineStrings()
     {

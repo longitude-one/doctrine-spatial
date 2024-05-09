@@ -26,6 +26,11 @@ parameters:
 			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/PointTypeTest.php
 
 		-
+			message: "#^Parameter \\#3 \\$processors of method Monolog\\\\Logger\\:\\:__construct\\(\\) expects array\\<callable\\(array\\)\\: array\\>, array\\{Monolog\\\\Processor\\\\PsrLogMessageProcessor\\} given\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/Doctrine/Logging/FileLogger.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpScaleTest.php
