@@ -96,7 +96,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
 
         while (count($this->geometryExpression) < $this->getMinParameter()
             || ((count($this->geometryExpression) < $this->getMaxParameter())
-                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead->type)
+                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead?->type)
         ) {
             $parser->match(TokenType::T_COMMA);
 

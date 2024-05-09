@@ -71,6 +71,9 @@ class SchemaTest extends OrmTestCase
         foreach ($this->getAllClassMetadata() as $metadata) {
             foreach ($metadata->getFieldNames() as $fieldName) {
                 $doctrineType = $metadata->getTypeOfField($fieldName);
+                if (null === $doctrineType) {
+                    continue;
+                }
 
                 try {
                     $type = Type::getType($doctrineType);
