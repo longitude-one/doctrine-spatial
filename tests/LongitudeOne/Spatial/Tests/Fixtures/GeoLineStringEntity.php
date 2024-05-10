@@ -35,38 +35,28 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
  */
 #[Table]
 #[Entity]
-class GeoLineStringEntity
+class GeoLineStringEntity implements SingleEntityInterface
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var LineString
-     */
     #[Column(type: 'geolinestring', nullable: true)]
-    protected $lineString;
+    protected LineString $lineString;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get lineString.
-     *
-     * @return LineString
      */
-    public function getLineString()
+    public function getLineString(): LineString
     {
         return $this->lineString;
     }
@@ -75,10 +65,8 @@ class GeoLineStringEntity
      * Set lineString.
      *
      * @param LineString $lineString Linestring to set
-     *
-     * @return self
      */
-    public function setLineString(LineString $lineString)
+    public function setLineString(LineString $lineString): self
     {
         $this->lineString = $lineString;
 

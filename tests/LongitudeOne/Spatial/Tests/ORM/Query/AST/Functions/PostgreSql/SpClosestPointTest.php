@@ -19,9 +19,9 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_ClosestPoint DQL function tests.
@@ -37,10 +37,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpClosestPointTest extends OrmTestCase
+class SpClosestPointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -59,7 +59,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straight = $this->persistStraightLineString();
         $lineC = $this->persistLineStringC();
@@ -88,7 +88,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithPolygonInSelect()
+    public function testFunctionWithPolygonInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -103,6 +103,7 @@ class SpClosestPointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals('POINT(2 2)', $result[0][1]);

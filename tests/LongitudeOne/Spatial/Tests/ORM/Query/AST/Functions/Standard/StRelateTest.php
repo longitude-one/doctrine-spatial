@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Relates DQL function tests.
@@ -34,9 +34,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StRelateTest extends OrmTestCase
+class StRelateTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class StRelateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $linestring = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -67,6 +67,7 @@ class StRelateTest extends OrmTestCase
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($linestring, $result[0]);
     }
@@ -76,7 +77,7 @@ class StRelateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -89,6 +90,7 @@ class StRelateTest extends OrmTestCase
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($straightLineString, $result[0][0]);
         static::assertEquals('FF1FF0102', $result[0][1]);

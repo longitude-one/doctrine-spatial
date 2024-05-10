@@ -35,38 +35,28 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
  */
 #[Table]
 #[Entity]
-class GeoPolygonEntity
+class GeoPolygonEntity implements SingleEntityInterface
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var Polygon
-     */
     #[Column(type: 'geopolygon', nullable: true)]
-    protected $polygon;
+    protected Polygon $polygon;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get polygon.
-     *
-     * @return Polygon
      */
-    public function getPolygon()
+    public function getPolygon(): Polygon
     {
         return $this->polygon;
     }
@@ -75,10 +65,8 @@ class GeoPolygonEntity
      * Set polygon.
      *
      * @param Polygon $polygon polygon to set
-     *
-     * @return self
      */
-    public function setPolygon(Polygon $polygon)
+    public function setPolygon(Polygon $polygon): self
     {
         $this->polygon = $polygon;
 

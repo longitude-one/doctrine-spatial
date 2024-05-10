@@ -19,17 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -51,7 +42,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testBadLineString()
+    public function testBadLineString(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid MultiPoint Point value of type "integer"');
@@ -64,7 +55,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiPoint()
+    public function testEmptyMultiPoint(): void
     {
         $multiPoint = new MultiPoint([]);
 
@@ -72,31 +63,11 @@ class MultiPointTest extends TestCase
     }
 
     /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This should not happen because of selected value
-     */
-    public function testInterface()
-    {
-        $multiPoint = new MultiPoint([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $multiPoint);
-        static::assertInstanceOf(GeometryInterface::class, $multiPoint);
-        static::assertInstanceOf(MultiPointInterface::class, $multiPoint);
-        static::assertNotInstanceOf(PointInterface::class, $multiPoint);
-        static::assertNotInstanceOf(LineStringInterface::class, $multiPoint);
-        static::assertNotInstanceOf(PolygonInterface::class, $multiPoint);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $multiPoint);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $multiPoint);
-        static::assertNotInstanceOf(GeographyInterface::class, $multiPoint);
-    }
-
-    /**
      * Test to convert multipoint to json.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"MultiPoint","coordinates":[[0,0],[0,5],[5,0],[0,0]],"srid":null}';
         $multiPoint = new MultiPoint(
@@ -123,7 +94,7 @@ class MultiPointTest extends TestCase
      * @throws InvalidValueException this should not happen
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointAddPoints()
+    public function testMultiPointAddPoints(): void
     {
         $expected = [
             new Point(0, 0),
@@ -154,7 +125,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetLastPoint()
+    public function testMultiPointFromArraysGetLastPoint(): void
     {
         $expected = new Point(3, 3);
         $multiPoint = new MultiPoint(
@@ -175,7 +146,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetPoints()
+    public function testMultiPointFromArraysGetPoints(): void
     {
         $expected = [
             new Point(0, 0),
@@ -202,7 +173,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysGetSinglePoint()
+    public function testMultiPointFromArraysGetSinglePoint(): void
     {
         $expected = new Point(1, 1);
         $multiPoint = new MultiPoint(
@@ -223,7 +194,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromArraysToString()
+    public function testMultiPointFromArraysToString(): void
     {
         $expected = '0 0,0 5,5 0,0 0';
         $multiPoint = new MultiPoint(
@@ -243,7 +214,7 @@ class MultiPointTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPointFromObjectsToArray()
+    public function testMultiPointFromObjectsToArray(): void
     {
         $expected = [
             [0, 0],

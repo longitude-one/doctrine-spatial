@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineSubstring DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineSubstringTest extends OrmTestCase
+class SpLineSubstringTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -72,6 +72,7 @@ class SpLineSubstringTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($straightLineString, $result[0]);
     }
@@ -81,7 +82,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistLineStringA();
@@ -96,6 +97,7 @@ class SpLineSubstringTest extends OrmTestCase
         $query->setParameter('end', 0.8);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals('LINESTRING(2 2,4 4)', $result[0][1]);
         static::assertEquals('LINESTRING(4 4,8 8)', $result[1][1]);
         static::assertEquals('LINESTRING(6 6,12 2)', $result[2][1]);

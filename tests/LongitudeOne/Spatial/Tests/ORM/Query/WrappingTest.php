@@ -19,10 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * DQL type wrapping tests.
@@ -31,16 +33,16 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
+ * @group php
  *
  * @internal
  *
  * @coversDefaultClass
  */
-class WrappingTest extends OrmTestCase
+class WrappingTest extends PersistOrmTestCase
 {
-    use GeometryHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantGeometryHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -50,6 +52,8 @@ class WrappingTest extends OrmTestCase
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesType('point');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         parent::setUp();
     }
 
@@ -58,7 +62,7 @@ class WrappingTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testTypeWrappingSelect()
+    public function testTypeWrappingSelect(): void
     {
         $this->persistBigPolygon();
         $smallPolygon = $this->createSmallPolygon();
@@ -70,6 +74,10 @@ class WrappingTest extends OrmTestCase
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
+
+        if (!is_string($result)) {
+            static::fail('Unable to get SQL from query');
+        }
 
         try {
             $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());
@@ -85,7 +93,7 @@ class WrappingTest extends OrmTestCase
     /**
      * @group geometry
      */
-    public function testTypeWrappingWhere()
+    public function testTypeWrappingWhere(): void
     {
         $this->persistGeometryE();
 
@@ -97,6 +105,10 @@ class WrappingTest extends OrmTestCase
         $query->processParameterValue('geometry');
 
         $result = $query->getSQL();
+
+        if (!is_string($result)) {
+            static::fail('Unable to get SQL from query');
+        }
 
         try {
             $parameter = Type::getType('point')->convertToDatabaseValueSql('?', $this->getPlatform());

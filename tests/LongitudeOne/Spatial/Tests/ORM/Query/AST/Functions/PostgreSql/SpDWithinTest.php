@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_DWithin DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpDWithinTest extends OrmTestCase
+class SpDWithinTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class SpDWithinTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectGeography()
+    public function testSelectGeography(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -72,6 +72,7 @@ class SpDWithinTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertTrue($result[0][1]);
@@ -86,7 +87,7 @@ class SpDWithinTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectGeometry()
+    public function testSelectGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();
@@ -101,6 +102,7 @@ class SpDWithinTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertTrue($result[0][1]);

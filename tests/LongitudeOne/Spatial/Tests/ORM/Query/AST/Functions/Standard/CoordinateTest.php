@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_X and ST_Y DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class CoordinateTest extends OrmTestCase
+class CoordinateTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class CoordinateTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectCoordinates()
+    public function testSelectCoordinates(): void
     {
         $pointO = $this->persistPointO();
         $pointA = $this->persistPointA();
@@ -68,6 +68,7 @@ class CoordinateTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

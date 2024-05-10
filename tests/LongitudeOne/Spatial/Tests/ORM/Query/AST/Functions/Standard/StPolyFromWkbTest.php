@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_PolyFromWkb DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StPolyFromWkbTest extends OrmTestCase
+class StPolyFromWkbTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StPolyFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->getEntityManager()->flush();
@@ -69,6 +69,7 @@ class StPolyFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -78,7 +79,7 @@ class StPolyFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistBigPolygon(); // Unused fake polygon
         $this->getEntityManager()->flush();
@@ -90,6 +91,7 @@ class StPolyFromWkbTest extends OrmTestCase
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POLYGON((0 0,10 0,10 10,0 10,0 0))', $result[0][1]);
     }

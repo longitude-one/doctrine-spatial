@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_MakeEnvelope DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMakeEnvelopeTest extends OrmTestCase
+class SpMakeEnvelopeTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class SpMakeEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStMakeEnvelope()
+    public function testSelectStMakeEnvelope(): void
     {
         $this->persistBigPolygon();
         $this->getEntityManager()->flush();

@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Area DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StAreaTest extends OrmTestCase
+class StAreaTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -53,11 +53,11 @@ class StAreaTest extends OrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL containing function to test in the predicate.
      *
      * @group geometry
      */
-    public function testFunctionInPredicat()
+    public function testFunctionInPredicate(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -71,6 +71,7 @@ class StAreaTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($smallPolygon, $result[0]);
     }
@@ -80,7 +81,7 @@ class StAreaTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -94,6 +95,7 @@ class StAreaTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(100, $result[0][1]);
         static::assertEquals(96, $result[1][1]);
         static::assertEquals(100, $result[2][1]);

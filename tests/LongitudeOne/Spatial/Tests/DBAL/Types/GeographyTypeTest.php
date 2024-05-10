@@ -24,8 +24,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine GeographyType tests.
@@ -36,10 +35,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
-class GeographyTypeTest extends OrmTestCase
+class GeographyTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
      * Set up the geography type test.
      */
@@ -56,7 +53,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testLineStringGeography()
+    public function testLineStringGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -70,7 +67,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a null geography.
      */
-    public function testNullGeography()
+    public function testNullGeography(): void
     {
         $entity = new GeographyEntity();
         $this->assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -81,7 +78,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPointGeography()
+    public function testPointGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -94,7 +91,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPolygonGeography()
+    public function testPolygonGeography(): void
     {
         $entity = new GeographyEntity();
 

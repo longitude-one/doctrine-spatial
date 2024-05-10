@@ -19,12 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Distance MyQL function tests.
- * Be careful, MySQL implements ST_Distance, but this function does not respects the OGC Standard.
+ * Be careful, MySQL implements ST_Distance, but this function does not respect the OGC Standard.
  * So you should use this specific function.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -37,9 +37,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpDistanceTest extends OrmTestCase
+class SpDistanceTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class SpDistanceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceGeometry()
+    public function testSelectStDistanceGeometry(): void
     {
         $pointO = $this->persistPointO();
         $pointA = $this->persistPointA();
@@ -73,6 +73,7 @@ class SpDistanceTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

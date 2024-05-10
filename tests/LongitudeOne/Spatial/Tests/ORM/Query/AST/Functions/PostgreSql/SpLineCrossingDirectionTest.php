@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineCrossingDirection DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineCrossingDirectionTest extends OrmTestCase
+class SpLineCrossingDirectionTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInPredicate()
+    public function testInPredicate(): void
     {
         $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -72,6 +72,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringY, $result[0]);
     }
@@ -81,7 +82,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInSelect()
+    public function testInSelect(): void
     {
         $lineStringX = $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -97,6 +98,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringX, $result[0][0]);
         static::assertEquals(2, $result[0][1]);

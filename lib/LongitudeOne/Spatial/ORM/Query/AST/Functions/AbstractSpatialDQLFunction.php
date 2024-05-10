@@ -27,6 +27,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
+use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 
 /**
@@ -54,7 +55,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
     /**
      * @var Node[]
      */
-    private $geometryExpression = [];
+    private array $geometryExpression = [];
 
     /**
      * Get the SQL.
@@ -95,7 +96,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
 
         while (count($this->geometryExpression) < $this->getMinParameter()
             || ((count($this->geometryExpression) < $this->getMaxParameter())
-                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead->type)
+                && TokenType::T_CLOSE_PARENTHESIS != $lexer->lookahead?->type)
         ) {
             $parser->match(TokenType::T_COMMA);
 
@@ -108,12 +109,18 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
     /**
      * Geometry expressions fluent adder.
      *
-     * @param Node $expression the node expression to add to the array of geometry expression
+     * @param Node|string $expression the node expression to add to the array of geometry expression
      *
      * @since 2.0 This function replace the protected property geomExpr which is now private.
+     *
+     * @throws InvalidValueException when expression is a string
      */
-    final protected function addGeometryExpression(Node $expression): self
+    protected function addGeometryExpression(Node|string $expression): self
     {
+        if (is_string($expression)) {
+            throw new InvalidValueException('Expression must be a node.');
+        }
+
         $this->geometryExpression[] = $expression;
 
         return $this;

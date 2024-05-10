@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MBRDisjoint DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrDisjointTest extends OrmTestCase
+class SpMbrDisjointTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class SpMbrDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testMbrDisjointWhereParameter()
+    public function testMbrDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -72,6 +72,7 @@ class SpMbrDisjointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($outerPolygon, $result[0]);
         $this->getEntityManager()->clear();
@@ -84,6 +85,7 @@ class SpMbrDisjointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($smallPolygon, $result[1]);
@@ -94,7 +96,7 @@ class SpMbrDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectMbrDisjoint()
+    public function testSelectMbrDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -110,6 +112,7 @@ class SpMbrDisjointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

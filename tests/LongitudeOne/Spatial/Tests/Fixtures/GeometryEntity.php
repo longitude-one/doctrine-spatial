@@ -35,38 +35,28 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
  */
 #[Table]
 #[Entity]
-class GeometryEntity
+class GeometryEntity implements SingleEntityInterface
 {
-    /**
-     * @var GeometryInterface
-     */
     #[Column(type: 'geometry', nullable: true)]
-    protected $geometry;
+    protected GeometryInterface $geometry;
 
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
     /**
      * Get geometry.
-     *
-     * @return GeometryInterface
      */
-    public function getGeometry()
+    public function getGeometry(): GeometryInterface
     {
         return $this->geometry;
     }
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -75,10 +65,8 @@ class GeometryEntity
      * Set geometry.
      *
      * @param GeometryInterface $geometry geometry to set
-     *
-     * @return self
      */
-    public function setGeometry(GeometryInterface $geometry)
+    public function setGeometry(GeometryInterface $geometry): self
     {
         $this->geometry = $geometry;
 

@@ -26,8 +26,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MultiPolygonType tests.
@@ -41,10 +40,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType
  */
-class MultiPolygonTypeTest extends OrmTestCase
+class MultiPolygonTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
      * Set up the test.
      */
@@ -61,7 +58,7 @@ class MultiPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testMultiPolygon()
+    public function testMultiPolygon(): void
     {
         $polygons = [
             new Polygon(
@@ -107,7 +104,7 @@ class MultiPolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null multipolygon and find it by id.
      */
-    public function testNullMultiPolygon()
+    public function testNullMultiPolygon(): void
     {
         $entity = new MultiPolygonEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

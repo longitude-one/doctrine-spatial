@@ -64,13 +64,16 @@ class SchemaTest extends OrmTestCase
     /**
      * Test doctrine type mapping.
      */
-    public function testDoctrineTypeMapping()
+    public function testDoctrineTypeMapping(): void
     {
         $platform = $this->getPlatform();
 
         foreach ($this->getAllClassMetadata() as $metadata) {
             foreach ($metadata->getFieldNames() as $fieldName) {
                 $doctrineType = $metadata->getTypeOfField($fieldName);
+                if (null === $doctrineType) {
+                    continue;
+                }
 
                 try {
                     $type = Type::getType($doctrineType);
@@ -96,7 +99,7 @@ class SchemaTest extends OrmTestCase
      */
     public function testSchemaReverseMapping(): void
     {
-        $result = $this->getSchemaTool()->getUpdateSchemaSql($this->getAllClassMetadata(), true);
+        $result = $this->getSchemaTool()->getUpdateSchemaSql($this->getAllClassMetadata());
 
         $message = 'No SQL query should be generated to update schema, but some are generated:';
         foreach ($result as $sql) {

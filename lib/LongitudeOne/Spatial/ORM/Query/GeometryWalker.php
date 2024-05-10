@@ -18,12 +18,17 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\ORM\Query;
 
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\Common\Lexer\Token;
+use Doctrine\ORM\Mapping\AssociationMapping;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\AST\SelectExpression;
 use Doctrine\ORM\Query\ParserResult;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
 /**
@@ -38,21 +43,19 @@ class GeometryWalker extends SqlWalker
 {
     /**
      * Result set mapping.
-     *
-     * @var ResultSetMapping
      */
-    protected $rsm;
+    protected ResultSetMapping $resultSetMapping;
 
     /**
      * Initializes TreeWalker with important information about the ASTs to be walked.
      *
-     * @param AbstractQuery $query           the parsed Query
-     * @param ParserResult  $parserResult    the result of the parsing process
-     * @param array         $queryComponents the query components (symbol table)
+     * @param Query                                                                                                                                                                                                                  $query           the parsed Query
+     * @param ParserResult                                                                                                                                                                                                           $parserResult    the result of the parsing process
+     * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
      */
     public function __construct($query, $parserResult, array $queryComponents)
     {
-        $this->rsm = $parserResult->getResultSetMapping();
+        $this->resultSetMapping = $parserResult->getResultSetMapping();
 
         parent::__construct($query, $parserResult, $queryComponents);
     }
@@ -65,6 +68,8 @@ class GeometryWalker extends SqlWalker
      * @return string the SQL
      *
      * @throws QueryException when error happens during walking into select expression
+     *
+     * DO NOT ADD SelectExpression TYPEHINT here, because library won't work with ORM ^2.19
      */
     public function walkSelectExpression($selectExpression): string
     {
@@ -72,8 +77,12 @@ class GeometryWalker extends SqlWalker
         $sql = parent::walkSelectExpression($selectExpression);
 
         if ($expr instanceof ReturnsGeometryInterface && !$selectExpression->hiddenAliasResultVariable) {
-            $alias = trim(mb_strrchr($sql, ' '));
-            $this->rsm->typeMappings[$alias] = 'geometry';
+            $alias = mb_strrchr($sql, ' ');
+            // Theoretically, $alias cannot be false, but in this case it will be ignored
+            if (false !== $alias) {
+                $alias = trim($alias);
+                $this->resultSetMapping->typeMappings[$alias] = 'geometry';
+            }
         }
 
         return $sql;

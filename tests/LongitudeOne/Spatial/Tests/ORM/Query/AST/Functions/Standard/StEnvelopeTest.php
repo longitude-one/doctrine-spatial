@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Envelope DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StEnvelopeTest extends OrmTestCase
+class StEnvelopeTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class StEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStEnvelope()
+    public function testSelectStEnvelope(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -75,6 +75,7 @@ class StEnvelopeTest extends OrmTestCase
             $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
         }
 
+        static::assertIsArray($result);
         static::assertEquals($expected, $result[0][1]);
         static::assertEquals($expected, $result[1][1]);
     }
@@ -84,7 +85,7 @@ class StEnvelopeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEnvelopeWhereParameter()
+    public function testStEnvelopeWhereParameter(): void
     {
         $holeyPolygon = $this->persistHoleyPolygon();
         $this->persistSmallPolygon();
@@ -105,6 +106,7 @@ class StEnvelopeTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($holeyPolygon, $result[0]);
     }

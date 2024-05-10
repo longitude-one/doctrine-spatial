@@ -35,18 +35,22 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      *
      * @param string $x X coordinate
      *
-     * @return self
-     *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setX(string $x): static
+    public function setX(string $x): self
     {
         $parser = new Parser($x);
 
         try {
             $x = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid longitude value, got "%s".', $x), $e->getCode(), $e);
+        }
+
+        if (is_array($x)) {
+            throw new InvalidValueException('Invalid longitude value, longitude cannot be an array.');
         }
 
         if ($x < -180 || $x > 180) {
@@ -65,14 +69,20 @@ class Point extends AbstractPoint implements GeographyInterface, PointInterface
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setY(string $y): static
+    public function setY(string $y): self
     {
         $parser = new Parser($y);
 
         try {
             $y = $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid latitude value, got "%s".', $y), $e->getCode(), $e);
+        }
+
+        if (is_array($y)) {
+            throw new InvalidValueException('Invalid latitude value, latitude cannot be an array.');
         }
 
         if ($y < -90 || $y > 90) {

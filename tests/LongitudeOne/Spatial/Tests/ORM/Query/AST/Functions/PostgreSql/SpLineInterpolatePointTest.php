@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineInterpolatePoint DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineInterpolatePointTest extends OrmTestCase
+class SpLineInterpolatePointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpLineInterpolatePointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInSelect()
+    public function testInSelect(): void
     {
         $lineStringX = $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -71,6 +71,7 @@ class SpLineInterpolatePointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringX, $result[0][0]);
         static::assertEquals('POINT(7.2 13.6)', $result[0][1]);

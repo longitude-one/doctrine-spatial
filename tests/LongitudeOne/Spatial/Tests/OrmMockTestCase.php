@@ -22,7 +22,6 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +34,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 abstract class OrmMockTestCase extends SpatialTestCase
 {
+    private const FIXTURES_PATH = __DIR__.'/Fixtures';
+
     protected EntityManagerInterface $mockEntityManager;
 
     /**
@@ -50,22 +51,32 @@ abstract class OrmMockTestCase extends SpatialTestCase
 
     /**
      * Return the mocked connection.
-     *
-     * @return Connection
-     *
-     * @throws Exception when connection is not successful
      */
-    protected function getMockConnection()
+    protected function getMockConnection(): Connection
     {
         /** @var Driver|MockObject $driver */
         $driver = $this->getMockBuilder(Driver\PDO\SQLite\Driver::class)
             ->onlyMethods(['getDatabasePlatform'])
             ->getMock()
         ;
-        $platform = $this->getMockBuilder(SqlitePlatform::class)
-            ->onlyMethods([])
-            ->getMock()
-        ;
+
+        $platformClass = null;
+
+        // Doctrine ORM ^2.19
+        if (class_exists('\Doctrine\DBAL\Platforms\SqlitePlatform')) {
+            $platformClass = '\Doctrine\DBAL\Platforms\SqlitePlatform';
+        }
+
+        // Doctrine ORM ^3.0
+        if (class_exists('Doctrine\DBAL\Platforms\SQLitePlatform')) {
+            $platformClass = 'Doctrine\DBAL\Platforms\SQLitePlatform';
+        }
+
+        if (null === $platformClass) {
+            static::fail('Test cannot be performed, no SQLite platform found');
+        }
+
+        $platform = new $platformClass();
 
         $driver->method('getDatabasePlatform')
             ->willReturn($platform)
@@ -78,17 +89,17 @@ abstract class OrmMockTestCase extends SpatialTestCase
      * Get the mocked entity manager.
      *
      * @return EntityManagerInterface a mocked entity manager
-     *
-     * @throws Exception    When connection is not successful
-     * @throws ORMException won't happen because Metadata cache is set
      */
-    protected function getMockEntityManager()
+    protected function getMockEntityManager(): EntityManagerInterface
     {
         if (isset($this->mockEntityManager)) {
             return $this->mockEntityManager;
         }
 
-        $path = [realpath(__DIR__.'/Fixtures')];
+        $path = [0 => realpath(self::FIXTURES_PATH)];
+        if (false === $path[0]) {
+            static::fail(sprintf('Test cannot be launched because the %s directory does not exist.', self::FIXTURES_PATH));
+        }
         $config = new Configuration();
 
         $config->setMetadataCache(new ArrayCachePool());
@@ -96,6 +107,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 
-        return new EntityManager($this->getMockConnection(), $config);
+        $this->mockEntityManager = new EntityManager($this->getMockConnection(), $config);
+
+        return $this->mockEntityManager;
     }
 }

@@ -25,8 +25,4 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  */
 interface GeometryInterface extends SpatialInterface
 {
-    /**
-     * @return string
-     */
-    public function getType();
 }

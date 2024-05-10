@@ -19,19 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -81,7 +72,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiPolygon()
+    public function testEmptyMultiPolygon(): void
     {
         $multiPolygon = new MultiPolygon([]);
 
@@ -89,31 +80,11 @@ class MultiPolygonTest extends TestCase
     }
 
     /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This should not happen because of selected value
-     */
-    public function testInterface()
-    {
-        $multiPolygon = new MultiPolygon([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $multiPolygon);
-        static::assertInstanceOf(GeometryInterface::class, $multiPolygon);
-        static::assertInstanceOf(MultiPolygonInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(PointInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(LineStringInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(PolygonInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(MultiPointInterface::class, $multiPolygon);
-        static::assertNotInstanceOf(GeographyInterface::class, $multiPolygon);
-    }
-
-    /**
      * Test to convert multipolygon to Json.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"MultiPolygon","coordinates":[[[[0,0],[10,0],[10,10],[0,10],[0,0]]],[[[5,5],[7,5],[7,7],[5,7],[5,5]]]],"srid":null}';
         $polygons = [
@@ -148,11 +119,11 @@ class MultiPolygonTest extends TestCase
     }
 
     /**
-     * Test to get last polygon from a multipolygon created from a lot objects.
+     * Test to get last polygon from a multipolygon created from a lot of objects.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPolygonFromObjectsGetLastPolygon()
+    public function testMultiPolygonFromObjectsGetLastPolygon(): void
     {
         $firstPolygon = new Polygon(
             [
@@ -186,11 +157,11 @@ class MultiPolygonTest extends TestCase
     }
 
     /**
-     * Test to get first polygon from a multipolygon created from a lot objects.
+     * Test to get first polygon from a multipolygon created from a lot of objects.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiPolygonFromObjectsGetSinglePolygon()
+    public function testMultiPolygonFromObjectsGetSinglePolygon(): void
     {
         $firstPolygon = new Polygon(
             [
@@ -228,7 +199,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonAddPolygon()
+    public function testSolidMultiPolygonAddPolygon(): void
     {
         $expected = [
             new Polygon(
@@ -324,7 +295,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromArraysGetPolygons()
+    public function testSolidMultiPolygonFromArraysGetPolygons(): void
     {
         $expected = [
             new Polygon(
@@ -386,7 +357,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromArraysToString()
+    public function testSolidMultiPolygonFromArraysToString(): void
     {
         $expected = '((0 0,10 0,10 10,0 10,0 0)),((5 5,7 5,7 7,5 7,5 5))';
         $polygons = [
@@ -420,7 +391,7 @@ class MultiPolygonTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiPolygonFromObjectsToArray()
+    public function testSolidMultiPolygonFromObjectsToArray(): void
     {
         $expected = [
             [

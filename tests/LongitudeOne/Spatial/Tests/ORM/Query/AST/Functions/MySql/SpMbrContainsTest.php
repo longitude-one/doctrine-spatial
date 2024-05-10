@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Contains DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrContainsTest extends OrmTestCase
+class SpMbrContainsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testContainsWhereParameter()
+    public function testContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -70,6 +70,7 @@ class SpMbrContainsTest extends OrmTestCase
         $query->setParameter('p', 'POINT(6 6)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($smallPolygon, $result[1]);
@@ -82,6 +83,7 @@ class SpMbrContainsTest extends OrmTestCase
         $query->setParameter('p', 'POINT(2 2)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($holeyPolygon, $result[1]);
@@ -92,7 +94,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectContains()
+    public function testSelectContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -109,6 +111,7 @@ class SpMbrContainsTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);

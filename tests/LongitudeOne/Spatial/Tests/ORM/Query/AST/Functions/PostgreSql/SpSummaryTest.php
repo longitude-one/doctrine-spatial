@@ -21,7 +21,6 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
@@ -31,7 +30,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometryPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon as GeometryPolygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_Summary DQL function tests.
@@ -47,7 +46,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpSummaryTest extends OrmTestCase
+class SpSummaryTest extends PersistOrmTestCase
 {
     /**
      * Set up the function type test.
@@ -65,13 +64,12 @@ class SpSummaryTest extends OrmTestCase
      * Test a DQL containing function to test in the select with a geography.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
      * @group geography
      */
-    public function testSelectStSummaryGeography()
+    public function testSelectStSummaryGeography(): void
     {
         $point = new GeographyEntity();
         $point->setGeography(new GeographyPoint(5, 5));
@@ -102,6 +100,7 @@ class SpSummaryTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($point, $result[0][0]);
         static::assertMatchesRegularExpression('/^Point\[.*G.*]/', $result[0][1]);
@@ -115,13 +114,12 @@ class SpSummaryTest extends OrmTestCase
      * Test a DQL containing function to test in the select with a geometry.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
      * @group geometry
      */
-    public function testSelectStSummaryGeometry()
+    public function testSelectStSummaryGeometry(): void
     {
         $point = new GeometryEntity();
         $point->setGeometry(new GeometryPoint(5, 5));
@@ -152,6 +150,7 @@ class SpSummaryTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($point, $result[0][0]);
         static::assertMatchesRegularExpression('/^Point\[[^G]*]/', $result[0][1]);

@@ -22,7 +22,6 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -37,27 +36,6 @@ class PostgreSql extends AbstractPlatform
     public const DEFAULT_SRID = 4326;
 
     /**
-     * Convert Binary to php value.
-     *
-     * @param AbstractSpatialType $type    Spatial type
-     * @param string              $sqlExpr Sql expression
-     *
-     * @return GeometryInterface
-     *
-     * @throws InvalidValueException when SQL expression is not a resource
-     */
-    public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr)
-    {
-        if (!is_resource($sqlExpr)) {
-            throw new InvalidValueException(sprintf('Invalid resource value "%s"', $sqlExpr));
-        }
-
-        $sqlExpr = stream_get_contents($sqlExpr);
-
-        return parent::convertBinaryToPhpValue($type, $sqlExpr);
-    }
-
-    /**
      * Convert to database value.
      *
      * @param AbstractSpatialType $type  The spatial type
@@ -68,13 +46,17 @@ class PostgreSql extends AbstractPlatform
     public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
     {
         $sridSQL = null;
+        $srid = null;
 
         if ($type instanceof GeographyType && null === $value->getSrid()) {
             $value->setSrid(self::DEFAULT_SRID);
         }
 
-        $srid = $value->getSrid();
-        if (null !== $srid || $type instanceof GeographyType) {
+        if (method_exists($value, 'getSrid')) {
+            $srid = $value->getSrid();
+        }
+
+        if (null !== $srid) {
             $sridSQL = sprintf('SRID=%d;', $srid);
         }
 
@@ -118,16 +100,14 @@ class PostgreSql extends AbstractPlatform
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array                $column array SHOULD contain 'type' as key
+     * @param array<string,mixed>  $column array SHOULD contain 'type' as key
      * @param ?AbstractSpatialType $type   type is now provided
      * @param ?int                 $srid   the srid SHOULD be forwarded when known
-     *
-     * @return string
      *
      * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
      * @throws InvalidValueException    when SRID is not null nor an integer
      */
-    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null)
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null): string
     {
         $type = parent::checkType($column, $type);
         $srid = parent::checkSrid($column, $srid);
@@ -138,8 +118,8 @@ class PostgreSql extends AbstractPlatform
             return $sqlType;
         }
 
-        if (null === $srid && key_exists('srid', $column) && null !== $column['srid']) {
-            $srid = (int) $column['srid'];
+        if (null === $srid && key_exists('srid', $column) && is_int($column['srid'])) {
+            $srid = $column['srid'];
         }
 
         if (!empty($srid)) {

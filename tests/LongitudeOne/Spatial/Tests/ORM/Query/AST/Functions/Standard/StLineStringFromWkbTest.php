@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineStringFromWKB DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StLineStringFromWkbTest extends OrmTestCase
+class StLineStringFromWkbTest extends PersistOrmTestCase
 {
-    use GeometryHelperTrait;
+    use PersistantGeometryHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StLineStringFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistGeometryStraightLine();
         $this->getEntityManager()->flush();
@@ -68,6 +68,7 @@ class StLineStringFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('LINESTRING(1 1,2 2,5 5)', $result[0][1]);
     }
@@ -77,7 +78,7 @@ class StLineStringFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistGeometryStraightLine();
         $this->getEntityManager()->flush();
@@ -91,6 +92,7 @@ class StLineStringFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

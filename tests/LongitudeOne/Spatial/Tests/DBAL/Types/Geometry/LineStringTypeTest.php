@@ -24,8 +24,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine LineStringType tests.
@@ -39,10 +38,8 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType
  */
-class LineStringTypeTest extends OrmTestCase
+class LineStringTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
      * Set up the test.
      */
@@ -59,7 +56,7 @@ class LineStringTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testFindByLineString()
+    public function testFindByLineString(): void
     {
         $lineString = new LineString(
             [
@@ -79,7 +76,7 @@ class LineStringTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testLineString()
+    public function testLineString(): void
     {
         $lineString = new LineString(
             [
@@ -97,7 +94,7 @@ class LineStringTypeTest extends OrmTestCase
     /**
      * Test to store a null line string, then to find it with its id.
      */
-    public function testNullLineStringType()
+    public function testNullLineStringType(): void
     {
         $entity = new LineStringEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

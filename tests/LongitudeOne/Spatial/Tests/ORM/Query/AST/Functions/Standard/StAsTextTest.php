@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_AsText DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StAsTextTest extends OrmTestCase
+class StAsTextTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class StAsTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsText()
+    public function testStAsText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -69,6 +69,7 @@ class StAsTextTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals('LINESTRING(0 0,2 2,5 5)', $result[0][1]);
         static::assertEquals('LINESTRING(3 3,4 15,5 22)', $result[1][1]);
     }

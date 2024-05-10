@@ -35,7 +35,7 @@ use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
-use Doctrine\Persistence\Mapping\MappingException;
+use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
@@ -183,24 +183,21 @@ abstract class OrmTestCase extends SpatialTestCase
     public const POLYGON_ENTITY = PolygonEntity::class;
 
     /**
-     * @var bool[]
+     * @var array<string, bool>
      */
-    protected static $addedTypes = [];
+    protected static array $addedTypes = [];
+
+    protected static Connection $connection;
 
     /**
-     * @var Connection
+     * @var array<class-string, bool>
      */
-    protected static $connection;
+    protected static array $createdEntities = [];
 
     /**
-     * @var bool[]
+     * @var array<class-string, array{types: string[], table: string}>
      */
-    protected static $createdEntities = [];
-
-    /**
-     * @var array[]
-     */
-    protected static $entities = [
+    protected static array $entities = [
         GeometryEntity::class => [
             'types' => ['geometry'],
             'table' => 'GeometryEntity',
@@ -252,9 +249,9 @@ abstract class OrmTestCase extends SpatialTestCase
     ];
 
     /**
-     * @var string[]
+     * @var array<string, class-string<AbstractSpatialType>>
      */
-    protected static $types = [
+    protected static array $types = [
         'geometry' => GeometryType::class,
         'point' => PointType::class,
         'linestring' => LineStringType::class,
@@ -273,17 +270,17 @@ abstract class OrmTestCase extends SpatialTestCase
     protected EntityManagerInterface $entityManager;
 
     /**
-     * @var bool[]
+     * @var array<class-string, bool>
      */
     protected array $supportedPlatforms = [];
 
     /**
-     * @var bool[]
+     * @var array<class-string, bool>
      */
     protected array $usedEntities = [];
 
     /**
-     * @var bool[]
+     * @var array<string, bool> the name of the type used
      */
     protected array $usedTypes = [];
 
@@ -324,7 +321,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $this->entityManager = $this->getEntityManager();
         $this->schemaTool = $this->getSchemaTool();
 
-        static::$logger->info(sprintf('Starting test %s', get_class($this)));
+        self::$logger->info(sprintf('Starting test %s', get_class($this)));
 
         $this->setUpTypes();
         $this->setUpEntities();
@@ -339,7 +336,7 @@ abstract class OrmTestCase extends SpatialTestCase
             }
 
             $this->getEntityManager()->clear();
-        } catch (Exception|MappingException|UnsupportedPlatformException $e) {
+        } catch (Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to clear table before test: %s', $e->getMessage()));
         }
     }
@@ -355,8 +352,9 @@ abstract class OrmTestCase extends SpatialTestCase
         if (isset(static::$connection)) {
             return static::$connection;
         }
-        static::$logger = new FileLogger();
-        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware(static::$logger)]);
+        $fileLogger = new FileLogger();
+        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($fileLogger)]);
+        self::$logger = $fileLogger;
 
         $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
         if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
@@ -377,17 +375,20 @@ abstract class OrmTestCase extends SpatialTestCase
 
     /**
      * Return the entity manager.
-     *
-     * @return EntityManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): EntityManagerInterface
     {
         if (isset($this->entityManager)) {
             return $this->entityManager;
         }
 
         try {
-            $realPaths = [realpath(__DIR__.'/Fixtures')];
+            $realPath = realpath(__DIR__.'/Fixtures');
+            if (false === $realPath) {
+                static::fail('Unable to find realpath of Fixtures directory. Check that the directory exists and is readable.');
+            }
+
+            $realPaths = [$realPath];
             $config = new Configuration();
 
             $config->setMetadataCache(new ArrayCachePool());
@@ -404,7 +405,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Get platform.
      */
-    protected function getPlatform(): ?AbstractPlatform
+    protected function getPlatform(): AbstractPlatform
     {
         try {
             return static::getConnection()->getDatabasePlatform();
@@ -415,10 +416,8 @@ abstract class OrmTestCase extends SpatialTestCase
 
     /**
      * Return the schema tool.
-     *
-     * @return SchemaTool
      */
-    protected function getSchemaTool()
+    protected function getSchemaTool(): SchemaTool
     {
         if (isset($this->schemaTool)) {
             return $this->schemaTool;
@@ -430,9 +429,9 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Return the static created entity classes.
      *
-     * @return array
+     * @return array<class-string, bool>
      */
-    protected function getUsedEntityClasses()
+    protected function getUsedEntityClasses(): array
     {
         return static::$createdEntities;
     }
@@ -440,7 +439,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Create entities used by tests.
      */
-    protected function setUpEntities()
+    protected function setUpEntities(): void
     {
         $classes = [];
 
@@ -463,7 +462,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Setup DQL functions.
      */
-    protected function setUpFunctions()
+    protected function setUpFunctions(): void
     {
         $configuration = $this->getEntityManager()->getConfiguration();
 
@@ -483,7 +482,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Add types used by test to DBAL.
      */
-    protected function setUpTypes()
+    protected function setUpTypes(): void
     {
         foreach (array_keys($this->usedTypes) as $typeName) {
             if (!isset(static::$addedTypes[$typeName]) && !Type::hasType($typeName)) {
@@ -526,7 +525,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Declare the used entity class to initialize them (and delete its content before the test).
      *
-     * @param string $entityClass the entity class
+     * @param class-string $entityClass the entity class
      */
     protected function usesEntity(string $entityClass): void
     {
@@ -540,7 +539,7 @@ abstract class OrmTestCase extends SpatialTestCase
     /**
      * Set the type used.
      *
-     * @param string $typeName the type name
+     * @param string $typeName the type name, this is not a class name
      */
     protected function usesType(string $typeName): void
     {

@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_AsBinary DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StAsBinaryTest extends OrmTestCase
+class StAsBinaryTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class StAsBinaryTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsBinary()
+    public function testStAsBinary(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -72,14 +72,21 @@ class StAsBinaryTest extends OrmTestCase
         $expectedA = '010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440';
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
 
+        static::assertIsArray($result);
+
         if ($this->getPlatform() instanceof MySQLPlatform) {
             static::assertEquals(pack('H*', $expectedA), $result[0][1]);
             static::assertEquals(pack('H*', $expectedB), $result[1][1]);
         }
 
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
-            static::assertEquals($expectedA, bin2hex(stream_get_contents($result[0][1])));
-            static::assertEquals($expectedB, bin2hex(stream_get_contents($result[1][1])));
+            $actual = stream_get_contents($result[0][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedA, bin2hex($actual));
+
+            $actual = stream_get_contents($result[1][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedB, bin2hex($actual));
         }
     }
 }

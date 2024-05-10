@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_MPointFromWkb DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StMPointFromWkbTest extends OrmTestCase
+class StMPointFromWkbTest extends PersistOrmTestCase
 {
-    use GeometryHelperTrait;
+    use PersistantGeometryHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StMPointFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -69,6 +69,7 @@ class StMPointFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertMatchesRegularExpression('|^MULTIPOINT\(|', $result[0][1]);
     }
@@ -78,7 +79,7 @@ class StMPointFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -92,6 +93,7 @@ class StMPointFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

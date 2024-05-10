@@ -20,14 +20,14 @@ namespace LongitudeOne\Spatial\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -63,12 +63,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      * @param mixed            $value    the value to convert
      * @param AbstractPlatform $platform the database platform
      *
-     * @return null|string
-     *
      * @throws InvalidValueException        when value is not an instance of Geometry Interface
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
             return null;
@@ -149,23 +147,36 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     /**
      * Gets the name of this type.
      *
-     * @return string
+     * @return class-string<DoctrineSpatialTypeInterface>
+     *
+     * @throws TypeNotRegistered When type is not registered in the map
      */
     public function getName()
     {
-        return array_search(get_class($this), self::getTypesMap(), true);
+        /** @var class-string<DoctrineSpatialTypeInterface>|false $className */
+        $className = array_search($this::class, self::getTypesMap(), true);
+
+        if (false === $className) {
+            throw new TypeNotRegistered(sprintf('Type "%s" is not currently registered.', $this::class));
+        }
+
+        return $className;
     }
 
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array            $column   the field declaration
-     * @param AbstractPlatform $platform database platform
+     * @param array<string,mixed> $column   the field declaration
+     * @param AbstractPlatform    $platform database platform
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
+        if (!is_int($column['srid']) || $column['srid'] < 0) {
+            $column['srid'] = null;
+        }
+
         return $this->getSpatialPlatform($platform)->getSqlDeclaration($column, $this, $column['srid'] ?? null);
     }
 
@@ -188,11 +199,11 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     // phpcs:enable
 
     /**
-     * @return string
+     * @return (SpatialInterface::GEOGRAPHY|SpatialInterface::GEOMETRY)
      */
-    public function getTypeFamily()
+    public function getTypeFamily(): string
     {
-        return $this instanceof GeographyType ? GeographyInterface::GEOGRAPHY : GeometryInterface::GEOMETRY;
+        return $this instanceof GeographyType ? SpatialInterface::GEOGRAPHY : SpatialInterface::GEOMETRY;
     }
 
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
@@ -230,7 +241,7 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
             return new MySql();
         }
 
-        if ($platform instanceof PostgreSqlPlatform) {
+        if ($platform instanceof PostgreSQLPlatform) {
             return new PostgreSql();
         }
 

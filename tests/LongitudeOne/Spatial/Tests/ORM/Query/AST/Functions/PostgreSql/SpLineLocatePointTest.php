@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineLocatePoint DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineLocatePointTest extends OrmTestCase
+class SpLineLocatePointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpLineLocatePointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $this->persistStraightLineString();
         $lineA = $this->persistLineStringA();
@@ -73,6 +73,7 @@ class SpLineLocatePointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineA, $result[0]);
         static::assertEquals($lineB, $result[1]);
@@ -83,7 +84,7 @@ class SpLineLocatePointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistLineStringA();
@@ -97,6 +98,7 @@ class SpLineLocatePointTest extends OrmTestCase
         $query->setParameter('point', 'POINT(4 3)');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(0.7, $result[0][1]);
         static::assertEquals(0.35, $result[1][1]);
         static::assertEqualsWithDelta(0.4, $result[2][1], 0.000000000001);

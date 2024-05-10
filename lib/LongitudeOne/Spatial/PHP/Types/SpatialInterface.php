@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
+use Doctrine\DBAL\Types\Type;
+
 interface SpatialInterface
 {
     public const GEOGRAPHY = 'Geography';
@@ -30,4 +32,45 @@ interface SpatialInterface
     public const MULTIPOLYGON = 'MultiPolygon';
     public const POINT = 'Point';
     public const POLYGON = 'Polygon';
+
+    /**
+     * Return the Spatial Reference Identifier (SRID) of this object.
+     *
+     * @return ?int
+     */
+    public function getSrid();
+
+    /**
+     * Return the type of this geometry or geography.
+     * This function is used by the spatial type to get the type of the object.
+     *
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * Set the Spatial Reference Identifier (SRID) of this object.
+     *
+     * @param ?int $srid the Spatial Reference Identifier (SRID)
+     *
+     * @return self
+     */
+    public function setSrid(?int $srid);
+
+    /**
+     * Convert spatial object to its array representation.
+     *
+     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
+     *
+     * @return (float|int)[]|(float|int)[][]|(float|int)[][][]|(float|int)[][][][]
+     */
+    public function toArray();
+
+    /**
+     * Convert spatial object to its string representation.
+     * Example: 'POINT(42 42)'.
+     *
+     * @return string
+     */
+    public function __toString();
 }

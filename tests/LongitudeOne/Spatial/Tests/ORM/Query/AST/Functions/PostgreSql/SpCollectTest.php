@@ -21,11 +21,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Collect DQL function tests.
@@ -41,7 +40,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpCollectTest extends OrmTestCase
+class SpCollectTest extends PersistOrmTestCase
 {
     /**
      * Set up the function type test.
@@ -58,13 +57,12 @@ class SpCollectTest extends OrmTestCase
      * Test a DQL containing function to test in the select.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
      * @group geometry
      */
-    public function testFunctionSelect()
+    public function testFunctionSelect(): void
     {
         $entity = new PointEntity();
         $entity->setPoint(new Point(1, 2));

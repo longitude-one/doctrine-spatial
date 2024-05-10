@@ -20,9 +20,9 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Length DQL function tests.
@@ -37,10 +37,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StLengthTest extends OrmTestCase
+class StLengthTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -59,7 +59,7 @@ class StLengthTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStLength()
+    public function testSelectStLength(): void
     {
         $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
@@ -70,6 +70,7 @@ class StLengthTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0][0]);
         static::assertEqualsWithDelta(19.1126623906578, $result[0][1], 0.000000000001);
@@ -80,7 +81,7 @@ class StLengthTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStLengthWhereParameter()
+    public function testStLengthWhereParameter(): void
     {
         $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
@@ -94,6 +95,7 @@ class StLengthTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0]);
     }

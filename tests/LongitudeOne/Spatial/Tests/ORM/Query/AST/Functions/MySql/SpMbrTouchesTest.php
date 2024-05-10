@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MySQL_MbrTouches DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrTouchesTest extends OrmTestCase
+class SpMbrTouchesTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -68,6 +68,7 @@ class SpMbrTouchesTest extends OrmTestCase
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -77,7 +78,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -90,6 +91,7 @@ class SpMbrTouchesTest extends OrmTestCase
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals(0, $result[1][1]);
     }

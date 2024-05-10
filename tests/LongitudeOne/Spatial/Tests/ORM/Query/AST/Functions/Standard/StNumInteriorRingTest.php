@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_NumInteriorRing DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StNumInteriorRingTest extends OrmTestCase
+class StNumInteriorRingTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StNumInteriorRingTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStNumInteriorRing()
+    public function testSelectStNumInteriorRing(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -69,6 +69,7 @@ class StNumInteriorRingTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);
@@ -83,7 +84,7 @@ class StNumInteriorRingTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStNumInteriorRingInPredicate()
+    public function testStNumInteriorRingInPredicate(): void
     {
         $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -97,6 +98,7 @@ class StNumInteriorRingTest extends OrmTestCase
         $query->setParameter('p', 1);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($holeyPolygon, $result[0]);
     }

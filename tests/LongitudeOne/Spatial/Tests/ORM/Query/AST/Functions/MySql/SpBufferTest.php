@@ -19,13 +19,13 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_Buffer and SP_BufferStrategy DQL functions tests.
  * The ST_Buffer and ST_BufferStrategy SQL functions are specific to MySQL.
- * Thes tests verify their implementation in doctrine spatial.
+ * These tests verify their implementation in doctrine spatial.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -37,9 +37,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpBufferTest extends OrmTestCase
+class SpBufferTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class SpBufferTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectSpBuffer()
+    public function testSelectSpBuffer(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
@@ -70,6 +70,7 @@ class SpBufferTest extends OrmTestCase
         $query->setParameter('p', 'point_square', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals('POLYGON((-4 -4,4 -4,4 4,-4 4,-4 -4))', $result[0][1]);

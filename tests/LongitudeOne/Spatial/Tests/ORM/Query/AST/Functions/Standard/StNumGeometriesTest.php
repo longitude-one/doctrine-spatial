@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\MultiPointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantMultiPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_NumGeometries DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StNumGeometriesTest extends OrmTestCase
+class StNumGeometriesTest extends PersistOrmTestCase
 {
-    use MultiPointHelperTrait;
+    use PersistantMultiPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StNumGeometriesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStNumGeometries()
+    public function testSelectStNumGeometries(): void
     {
         $four = $this->persistFourPoints();
         $single = $this->persistSinglePoint();
@@ -66,6 +66,7 @@ class StNumGeometriesTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($four, $result[0][0]);
         static::assertEquals(4, $result[0][1]);
@@ -78,7 +79,7 @@ class StNumGeometriesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStNumGeometriesInPredicate()
+    public function testStNumGeometriesInPredicate(): void
     {
         $this->persistFourPoints();
         $single = $this->persistSinglePoint();

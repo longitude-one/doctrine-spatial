@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Intersection DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StIntersectionTest extends OrmTestCase
+class StIntersectionTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class StIntersectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStIntersection()
+    public function testSelectStIntersection(): void
     {
         $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -73,6 +73,7 @@ class StIntersectionTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('POINT(0 0)', $result[0][1]);
@@ -87,7 +88,7 @@ class StIntersectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStIntersectionWhereParameter()
+    public function testStIntersectionWhereParameter(): void
     {
         $lineStringA = $this->persistLineStringA();
         $this->persistLineStringB();
@@ -103,6 +104,7 @@ class StIntersectionTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringA, $result[0]);
     }

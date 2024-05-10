@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MBREquals DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrEqualsTest extends OrmTestCase
+class SpMbrEqualsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpMbrEqualsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testMbrEqualsWhereParameter()
+    public function testMbrEqualsWhereParameter(): void
     {
         $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -71,6 +71,7 @@ class SpMbrEqualsTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($smallPolygon, $result[0]);
         $this->getEntityManager()->clear();
@@ -83,6 +84,7 @@ class SpMbrEqualsTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($outerPolygon, $result[0]);
     }
@@ -92,7 +94,7 @@ class SpMbrEqualsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectMbrEquals()
+    public function testSelectMbrEquals(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -108,6 +110,7 @@ class SpMbrEqualsTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

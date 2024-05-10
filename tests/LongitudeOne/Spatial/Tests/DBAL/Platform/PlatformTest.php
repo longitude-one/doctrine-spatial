@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Platform;
 
 use DG\BypassFinals;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\DB2Platform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -30,6 +31,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 
@@ -111,7 +113,7 @@ class PlatformTest extends OrmMockTestCase
      * @throws ORMException   when cache is not set
      * @throws ToolsException this should not happen
      */
-    public function testUnsupportedPlatform()
+    public function testUnsupportedPlatform(): void
     {
         self::expectException(UnsupportedPlatformException::class);
         self::expectExceptionMessageMatches('/^DBAL platform ".+" is not currently supported.$/');
@@ -120,5 +122,22 @@ class PlatformTest extends OrmMockTestCase
         $schemaTool = new SchemaTool($this->getMockEntityManager());
 
         $schemaTool->createSchema([$metadata]);
+    }
+
+    /**
+     * Test non-supported platform.
+     *
+     * @throws Exception      when connection failed
+     * @throws ORMException   when cache is not set
+     * @throws ToolsException this should not happen
+     */
+    public function testWithUnsupportedPlatform(): void
+    {
+        self::expectException(UnsupportedPlatformException::class);
+        self::expectExceptionMessageMatches('/^DBAL platform ".+" is not currently supported.$/');
+
+        $platform = new DB2Platform();
+        $type = new PointType();
+        $type->convertToDatabaseValue(new Point(0, 0), $platform);
     }
 }

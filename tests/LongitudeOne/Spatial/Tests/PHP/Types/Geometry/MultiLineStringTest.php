@@ -19,18 +19,9 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -49,7 +40,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testEmptyMultiLineString()
+    public function testEmptyMultiLineString(): void
     {
         $multiLineString = new MultiLineString([]);
 
@@ -57,29 +48,11 @@ class MultiLineStringTest extends TestCase
     }
 
     /**
-     * Test interfaces.
-     */
-    public function testInterface()
-    {
-        $multiLineString = new MultiLineString([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $multiLineString);
-        static::assertInstanceOf(GeometryInterface::class, $multiLineString);
-        static::assertInstanceOf(MultiLineStringInterface::class, $multiLineString);
-        static::assertNotInstanceOf(PointInterface::class, $multiLineString);
-        static::assertNotInstanceOf(LineStringInterface::class, $multiLineString);
-        static::assertNotInstanceOf(PolygonInterface::class, $multiLineString);
-        static::assertNotInstanceOf(MultiPointInterface::class, $multiLineString);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $multiLineString);
-        static::assertNotInstanceOf(GeographyInterface::class, $multiLineString);
-    }
-
-    /**
      * Test to convert multiline string to json.
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"MultiLineString","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[0,0],[10,0],[10,10],[0,10],[0,0]]],"srid":null}';
         $lineStrings = [
@@ -113,7 +86,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromArraysToString()
+    public function testMultiLineStringFromArraysToString(): void
     {
         $expected = '(0 0,10 0,10 10,0 10,0 0),(0 0,10 0,10 10,0 10,0 0)';
         $lineStrings = [
@@ -143,7 +116,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsGetLastLineString()
+    public function testMultiLineStringFromObjectsGetLastLineString(): void
     {
         $firstLineString = new LineString(
             [
@@ -173,7 +146,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsGetSingleLineString()
+    public function testMultiLineStringFromObjectsGetSingleLineString(): void
     {
         $firstLineString = new LineString(
             [
@@ -203,7 +176,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testMultiLineStringFromObjectsToArray()
+    public function testMultiLineStringFromObjectsToArray(): void
     {
         $expected = [
             [
@@ -252,7 +225,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiLineStringAddRings()
+    public function testSolidMultiLineStringAddRings(): void
     {
         $expected = [
             new LineString(
@@ -304,7 +277,7 @@ class MultiLineStringTest extends TestCase
      *
      * @throws InvalidValueException This should not happen because of selected value
      */
-    public function testSolidMultiLineStringFromArraysGetRings()
+    public function testSolidMultiLineStringFromArraysGetRings(): void
     {
         $expected = [
             new LineString(

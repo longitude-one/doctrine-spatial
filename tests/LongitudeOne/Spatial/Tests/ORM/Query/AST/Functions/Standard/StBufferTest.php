@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Buffer DQL function tests.
@@ -34,9 +34,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StBufferTest extends OrmTestCase
+class StBufferTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class StBufferTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStBuffer()
+    public function testSelectStBuffer(): void
     {
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
@@ -69,6 +69,7 @@ class StBufferTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0][0]);
         // too many error between OS, this test doesn't have to check the result (double float, etc.),

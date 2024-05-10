@@ -36,30 +36,31 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @method EntityManagerInterface getEntityManager the entity interface
+ * @method        EntityManagerInterface getEntityManager()
+ * @method static never                  fail(string $message='')
  *
  * @internal
  */
-trait MultiPointHelperTrait
+trait PersistantMultiPointHelperTrait
 {
     use PointHelperTrait;
 
     /**
-     * Create A Multipoint entity entity composed of four points and persist it in database.
+     * Create A Multipoint entity composed of four points and persist it in database.
      */
     protected function persistFourPoints(): MultiPointEntity
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
-            $multipoint->addPoint(static::createGeometryPoint('0 1', '0', '1'));
-            $multipoint->addPoint(static::createGeometryPoint('1 0', '1', '0'));
-            $multipoint->addPoint(static::createGeometryPoint('1 1', '0', '1'));
+            $multipoint->addPoint(self::createGeometryPoint('0 0', '0', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('0 1', '0', '1'));
+            $multipoint->addPoint(self::createGeometryPoint('1 0', '1', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('1 1', '0', '1'));
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create a multipoint (0 0, 0 1, 1 0, 1 1): %s', $e->getMessage()));
         }
 
-        return $this->createMultipoint($multipoint);
+        return $this->persistMultiPoint($multipoint);
     }
 
     /**
@@ -69,20 +70,20 @@ trait MultiPointHelperTrait
     {
         try {
             $multipoint = new MultiPoint([]);
-            $multipoint->addPoint(static::createGeometryPoint('0 0', '0', '0'));
+            $multipoint->addPoint(self::createGeometryPoint('0 0', '0', '0'));
         } catch (InvalidValueException $e) {
-            static::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
+            self::fail(sprintf('Unable to create a multipoint (0 0): %s', $e->getMessage()));
         }
 
-        return $this->createMultipoint($multipoint);
+        return $this->persistMultiPoint($multipoint);
     }
 
     /**
-     * Create a geometric MultiPoint entity from an array of geometric points.
+     * Persist a geometric MultiPoint entity from an array of geometric points.
      *
      * @param MultiPoint $multipoint Each point could be an array of X, Y or an instance of Point class
      */
-    private function createMultipoint(MultiPoint $multipoint): MultiPointEntity
+    private function persistMultiPoint(MultiPoint $multipoint): MultiPointEntity
     {
         $multiPointEntity = new MultiPointEntity();
         $multiPointEntity->setMultiPoint($multipoint);

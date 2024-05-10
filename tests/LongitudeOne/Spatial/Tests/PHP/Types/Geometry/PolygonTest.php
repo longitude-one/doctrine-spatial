@@ -19,18 +19,9 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
-use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
-use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\PointInterface;
-use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
-use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
 use PHPUnit\Framework\TestCase;
@@ -52,7 +43,7 @@ class PolygonTest extends TestCase
     /**
      * Test to get last ring.
      */
-    public function testAddPolygonToPolygon()
+    public function testAddPolygonToPolygon(): void
     {
         static::expectExceptionMessage('You cannot add a Polygon to another one. Use a Multipolygon.');
         static::expectException(InvalidValueException::class);
@@ -69,26 +60,6 @@ class PolygonTest extends TestCase
         $polygon = $this->createEmptyPolygon();
 
         static::assertEmpty($polygon->getRings());
-    }
-
-    /**
-     * Test interfaces.
-     *
-     * @throws InvalidValueException This should not happen because of selected value
-     */
-    public function testInterface()
-    {
-        $polygon = new Polygon([]);
-
-        static::assertInstanceOf(SpatialInterface::class, $polygon);
-        static::assertInstanceOf(GeometryInterface::class, $polygon);
-        static::assertInstanceOf(PolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(PointInterface::class, $polygon);
-        static::assertNotInstanceOf(LineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiLineStringInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPointInterface::class, $polygon);
-        static::assertNotInstanceOf(MultiPolygonInterface::class, $polygon);
-        static::assertNotInstanceOf(GeographyInterface::class, $polygon);
     }
 
     /**
@@ -110,7 +81,7 @@ class PolygonTest extends TestCase
     /**
      * Test Polygon with open ring.
      */
-    public function testOpenPolygonRing()
+    public function testOpenPolygonRing(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid polygon, ring "(0 0,10 0,10 10,0 10)" is not closed');
@@ -130,7 +101,7 @@ class PolygonTest extends TestCase
     /**
      * Test to get last ring.
      */
-    public function testRingPolygonFromObjectsGetLastRing()
+    public function testRingPolygonFromObjectsGetLastRing(): void
     {
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
@@ -149,7 +120,7 @@ class PolygonTest extends TestCase
     /**
      * Test to get the first ring.
      */
-    public function testRingPolygonFromObjectsGetSingleRing()
+    public function testRingPolygonFromObjectsGetSingleRing(): void
     {
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
@@ -168,7 +139,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from array add rings.
      */
-    public function testSolidPolygonFromArrayAddRings()
+    public function testSolidPolygonFromArrayAddRings(): void
     {
         $expected = [$this->createRingLineString(), $this->createNodeLineString()];
         $ring = [
@@ -203,7 +174,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from an array of points.
      */
-    public function testSolidPolygonFromArrayOfPoints()
+    public function testSolidPolygonFromArrayOfPoints(): void
     {
         $expected = [
             [
@@ -228,7 +199,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from an array of rings.
      */
-    public function testSolidPolygonFromArraysOfRings()
+    public function testSolidPolygonFromArraysOfRings(): void
     {
         $expected = [$this->createRingLineString()];
         $rings = [
@@ -253,7 +224,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from arrays to string.
      */
-    public function testSolidPolygonFromArraysToString()
+    public function testSolidPolygonFromArraysToString(): void
     {
         $expected = '(0 0,10 0,10 10,0 10,0 0),(0 0,10 0,10 10,0 10,0 0)';
         $rings = [
@@ -286,7 +257,7 @@ class PolygonTest extends TestCase
     /**
      * Test solid polygon from objects to array.
      */
-    public function testSolidPolygonFromObjectsToArray()
+    public function testSolidPolygonFromObjectsToArray(): void
     {
         $expected = [
             [

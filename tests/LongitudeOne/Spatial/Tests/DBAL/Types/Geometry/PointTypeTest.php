@@ -21,9 +21,8 @@ namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine PointType tests.
@@ -37,10 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
  */
-class PointTypeTest extends OrmTestCase
+class PointTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the test.
@@ -82,7 +80,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its geometric.
      */
-    public function testFindByPoint()
+    public function testFindByPoint(): void
     {
         $point = static::createPointA();
         $entity = new PointEntity();
@@ -99,7 +97,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a null point and find it by its id.
      */
-    public function testNullPoint()
+    public function testNullPoint(): void
     {
         $entity = new PointEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -108,7 +106,7 @@ class PointTypeTest extends OrmTestCase
     /**
      * Test to store a point and find it by its id.
      */
-    public function testPoint()
+    public function testPoint(): void
     {
         $entity = $this->persistPointA();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);

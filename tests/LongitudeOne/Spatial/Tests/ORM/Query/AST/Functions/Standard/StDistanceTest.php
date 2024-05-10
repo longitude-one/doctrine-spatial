@@ -19,9 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Distance DQL function tests.
@@ -36,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StDistanceTest extends OrmTestCase
+class StDistanceTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,11 +56,9 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group geography
      */
-    public function testSelectStDistanceGeographyCartesian()
+    public function testSelectStDistanceGeographyCartesian(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -76,6 +73,7 @@ class StDistanceTest extends OrmTestCase
         $result = $query->getResult();
 
         // TODO: Test should be fixed, distance are differents on Windows and on Linux.
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
@@ -93,7 +91,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geography
      */
-    public function testSelectStDistanceGeographySpheroid()
+    public function testSelectStDistanceGeographySpheroid(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -110,6 +108,7 @@ class StDistanceTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEquals(1309106.31458423, $result[0][1]);
@@ -124,7 +123,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceGeometryCartesian()
+    public function testSelectStDistanceGeometryCartesian(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();
@@ -140,6 +139,7 @@ class StDistanceTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);

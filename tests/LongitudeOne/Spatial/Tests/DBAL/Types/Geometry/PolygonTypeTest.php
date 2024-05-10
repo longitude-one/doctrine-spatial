@@ -22,8 +22,8 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * PolygonType tests.
@@ -37,10 +37,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
  */
-class PolygonTypeTest extends OrmTestCase
+class PolygonTypeTest extends PersistOrmTestCase
 {
     use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the test.
@@ -56,7 +56,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon and find it by its geometric.
      */
-    public function testFindByPolygon()
+    public function testFindByPolygon(): void
     {
         $polygon = $this->createBigPolygon();
         $entity = $this->persistPolygon($polygon);
@@ -69,7 +69,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null polygon and find it by its id.
      */
-    public function testNullPolygon()
+    public function testNullPolygon(): void
     {
         $entity = new PolygonEntity();
 
@@ -86,7 +86,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring and find it by its id.
      */
-    public function testPolygonRing()
+    public function testPolygonRing(): void
     {
         $entity = $this->persistHoleyPolygon();
         $id = $entity->getId();
@@ -98,7 +98,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a solid polygon and find it by its id.
      */
-    public function testSolidPolygon()
+    public function testSolidPolygon(): void
     {
         $entity = $this->persistBigPolygon();
         $id = $entity->getId();

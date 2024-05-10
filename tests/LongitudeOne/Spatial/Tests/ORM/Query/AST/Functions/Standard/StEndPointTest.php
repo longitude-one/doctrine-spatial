@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_EndPoint DQL function tests.
@@ -36,9 +36,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StEndPointTest extends OrmTestCase
+class StEndPointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -57,7 +57,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointSelect()
+    public function testStEndPointSelect(): void
     {
         $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -69,6 +69,8 @@ class StEndPointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
+        static::assertIsArray($result[0]);
         static::assertEquals('POINT(5 5)', $result[0][1]);
     }
 
@@ -77,7 +79,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointWhereCompareLineString()
+    public function testStEndPointWhereCompareLineString(): void
     {
         $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -92,6 +94,7 @@ class StEndPointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0]);
     }
@@ -101,7 +104,7 @@ class StEndPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStEndPointWhereComparePoint()
+    public function testStEndPointWhereComparePoint(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -117,6 +120,7 @@ class StEndPointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($straightLineString, $result[0]);
     }

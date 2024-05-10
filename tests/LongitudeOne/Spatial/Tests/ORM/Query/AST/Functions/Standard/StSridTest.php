@@ -20,9 +20,9 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_SRID DQL function tests.
@@ -36,10 +36,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StSridTest extends OrmTestCase
+class StSridTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -59,7 +59,7 @@ class StSridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithGeography()
+    public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
 
@@ -74,6 +74,8 @@ class StSridTest extends OrmTestCase
             // TODO MySQL is returning 0 insteadof 4326
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
+
+        static::assertIsArray($result);
         static::assertSame(4326, $result[0][1]);
     }
 
@@ -82,9 +84,9 @@ class StSridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithGeometry()
+    public function testFunctionWithGeometry(): void
     {
-        $this->persistGeometryPoint('A', '1', '1', 2154);
+        $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT ST_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
@@ -99,6 +101,7 @@ class StSridTest extends OrmTestCase
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
+        static::assertIsArray($result);
         static::assertSame(2154, $result[0][1]);
     }
 }

@@ -31,8 +31,8 @@ interface PlatformInterface
     /**
      * Convert Binary to php value.
      *
-     * @param AbstractSpatialType $type    Spatial type
-     * @param string              $sqlExpr Sql expression
+     * @param AbstractSpatialType  $type    Spatial type
+     * @param null|resource|string $sqlExpr Sql expression
      *
      * @return GeometryInterface
      */
@@ -90,13 +90,11 @@ interface PlatformInterface
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array                $column array SHOULD contain 'type' as key
+     * @param array<string, mixed> $column array SHOULD contain 'type' as key
      * @param ?AbstractSpatialType $type   type is now provided
      * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *
-     * @return string
-     *
      * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
      */
-    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null);
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null): string;
 }

@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MySQL_MbrOverlaps DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrOverlapsTest extends OrmTestCase
+class SpMbrOverlapsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
      * Set up the function type test.
@@ -55,7 +55,7 @@ class SpMbrOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -70,6 +70,7 @@ class SpMbrOverlapsTest extends OrmTestCase
         $query->setParameter('p', 'POLYGON((4 4, 4 12, 12 12, 12 4, 4 4))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($polygonW, $result[2]);
@@ -80,7 +81,7 @@ class SpMbrOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $bigPolyon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -95,6 +96,7 @@ class SpMbrOverlapsTest extends OrmTestCase
         $query->setParameter('p', 'POLYGON((0 0, 0 12, 12 12, 12 0, 0 0))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(4, $result);
         static::assertEquals($bigPolyon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

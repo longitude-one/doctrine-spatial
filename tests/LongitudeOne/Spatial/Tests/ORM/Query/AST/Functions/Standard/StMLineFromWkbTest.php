@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_MLineFromWkb DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StMLineFromWkbTest extends OrmTestCase
+class StMLineFromWkbTest extends PersistOrmTestCase
 {
-    use GeometryHelperTrait;
+    use PersistantGeometryHelperTrait;
 
     private const DATA = '01050000000200000001020000000200000000000000000000000000000000000000000000000000F03F000000000000F03F0102000000020000000000000000000040000000000000004000000000000014400000000000001440';
 
@@ -58,7 +58,7 @@ class StMLineFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -71,6 +71,7 @@ class StMLineFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertMatchesRegularExpression('|^MULTILINESTRING\(|', $result[0][1]);
     }
@@ -80,7 +81,7 @@ class StMLineFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistGeometryO(); // Unused fake point
         $this->getEntityManager()->flush();
@@ -94,6 +95,7 @@ class StMLineFromWkbTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

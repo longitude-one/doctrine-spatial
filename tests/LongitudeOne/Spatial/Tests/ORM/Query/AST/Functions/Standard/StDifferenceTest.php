@@ -20,8 +20,8 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Difference DQL function tests.
@@ -35,9 +35,9 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StDifferenceTest extends OrmTestCase
+class StDifferenceTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
@@ -56,7 +56,7 @@ class StDifferenceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDifference()
+    public function testSelectStDifference(): void
     {
         $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -72,6 +72,7 @@ class StDifferenceTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('LINESTRING(10 10,12 12)', $result[0][1]);
@@ -93,7 +94,7 @@ class StDifferenceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStDifferenceWhereParameter()
+    public function testStDifferenceWhereParameter(): void
     {
         $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
@@ -109,6 +110,7 @@ class StDifferenceTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineStringB, $result[0]);
         static::assertEquals($lineStringC, $result[1]);

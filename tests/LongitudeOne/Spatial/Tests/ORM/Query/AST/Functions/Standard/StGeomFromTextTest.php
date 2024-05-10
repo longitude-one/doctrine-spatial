@@ -20,9 +20,9 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_GeomFromText DQL function tests.
@@ -37,10 +37,10 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StGeomFromTextTest extends OrmTestCase
+class StGeomFromTextTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
@@ -60,7 +60,7 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testLineString()
+    public function testLineString(): void
     {
         $lineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
@@ -74,6 +74,7 @@ class StGeomFromTextTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineString, $result[0]);
     }
@@ -83,7 +84,7 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPoint()
+    public function testPoint(): void
     {
         $pointA = $this->persistPointA();
         $this->getEntityManager()->flush();
@@ -97,6 +98,7 @@ class StGeomFromTextTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointA, $result[0]);
     }
