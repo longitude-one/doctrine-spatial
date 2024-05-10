@@ -47,7 +47,7 @@ class NoHintGeometryEntity implements SingleEntityInterface
     /**
      * Get geometry.
      */
-    public function getGeometry(): string
+    public function getGeometry(): mixed
     {
         return $this->geometry;
     }

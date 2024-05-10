@@ -71,6 +71,7 @@ class StAreaTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($smallPolygon, $result[0]);
     }
@@ -94,6 +95,7 @@ class StAreaTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(100, $result[0][1]);
         static::assertEquals(96, $result[1][1]);
         static::assertEquals(100, $result[2][1]);

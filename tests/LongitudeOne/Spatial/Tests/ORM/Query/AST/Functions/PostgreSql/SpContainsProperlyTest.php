@@ -71,6 +71,7 @@ class SpContainsProperlyTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -95,6 +96,7 @@ class SpContainsProperlyTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertTrue($result[0][1]);

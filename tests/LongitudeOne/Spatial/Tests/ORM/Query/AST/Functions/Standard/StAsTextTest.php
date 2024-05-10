@@ -69,6 +69,7 @@ class StAsTextTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals('LINESTRING(0 0,2 2,5 5)', $result[0][1]);
         static::assertEquals('LINESTRING(3 3,4 15,5 22)', $result[1][1]);
     }

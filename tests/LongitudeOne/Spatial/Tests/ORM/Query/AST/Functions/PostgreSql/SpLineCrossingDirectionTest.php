@@ -72,6 +72,7 @@ class SpLineCrossingDirectionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringY, $result[0]);
     }
@@ -97,6 +98,7 @@ class SpLineCrossingDirectionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringX, $result[0][0]);
         static::assertEquals(2, $result[0][1]);

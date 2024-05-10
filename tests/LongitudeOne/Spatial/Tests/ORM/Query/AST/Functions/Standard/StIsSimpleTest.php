@@ -70,6 +70,7 @@ class StIsSimpleTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
         static::assertEquals(1, $result[0][1]);

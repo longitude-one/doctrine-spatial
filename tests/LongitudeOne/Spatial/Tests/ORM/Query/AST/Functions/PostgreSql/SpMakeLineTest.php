@@ -69,6 +69,7 @@ class SpMakeLineTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('LINESTRING(0 0,1 1,2 2,3 3)', $result[0][1]);
     }

@@ -72,6 +72,7 @@ class SpTranslateTest extends PersistOrmTestCase
         $query->setParameter('y', -4.5);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -95,6 +96,7 @@ class SpTranslateTest extends PersistOrmTestCase
         $query->setParameter('y', -4.5);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertSame('POLYGON((4 -4.5,14 -4.5,14 5.5,4 5.5,4 -4.5))', $result[0][1]);

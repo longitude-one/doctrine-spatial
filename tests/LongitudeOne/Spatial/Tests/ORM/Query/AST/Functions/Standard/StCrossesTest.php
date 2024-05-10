@@ -73,6 +73,7 @@ class StCrossesTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals(0, $result[0][1]);
@@ -103,6 +104,7 @@ class StCrossesTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringB, $result[0]);
         $this->getEntityManager()->clear();
@@ -115,6 +117,7 @@ class StCrossesTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringB, $result[0]);
     }

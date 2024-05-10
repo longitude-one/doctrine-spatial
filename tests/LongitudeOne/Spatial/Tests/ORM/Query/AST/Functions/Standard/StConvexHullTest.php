@@ -70,6 +70,7 @@ class StConvexHullTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($firstLine, $result[0][0]);
         static::assertEquals('POLYGON((50 5,10 10,150 30,50 5))', $result[0][1]);

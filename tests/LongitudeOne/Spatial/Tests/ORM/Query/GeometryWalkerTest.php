@@ -81,6 +81,7 @@ class GeometryWalkerTest extends PersistOrmTestCase
         );
 
         $result = $query->getResult();
+        static::assertIsArray($result);
         static::assertEquals(static::createPointOrigin(), $result[0][1]);
         static::assertEquals(static::createPointC(), $result[1][1]);
 
@@ -93,6 +94,7 @@ class GeometryWalkerTest extends PersistOrmTestCase
         $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
 
         $result = $query->getResult();
+        static::assertIsArray($result);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
     }

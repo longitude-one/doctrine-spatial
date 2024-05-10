@@ -73,6 +73,7 @@ class StDistanceTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         // TODO: Test should be fixed, distance are differents on Windows and on Linux.
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
@@ -107,6 +108,7 @@ class StDistanceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEquals(1309106.31458423, $result[0][1]);
@@ -137,6 +139,7 @@ class StDistanceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);

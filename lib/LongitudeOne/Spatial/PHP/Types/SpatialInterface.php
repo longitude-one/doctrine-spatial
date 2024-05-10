@@ -55,7 +55,7 @@ interface SpatialInterface
      *
      * @return self
      */
-    public function setSrid($srid);
+    public function setSrid(?int $srid);
 
     /**
      * Convert spatial object to its array representation.

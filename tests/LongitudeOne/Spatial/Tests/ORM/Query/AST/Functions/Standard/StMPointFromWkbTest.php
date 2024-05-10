@@ -69,6 +69,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertMatchesRegularExpression('|^MULTIPOINT\(|', $result[0][1]);
     }
@@ -92,6 +93,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

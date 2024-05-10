@@ -68,6 +68,7 @@ class SpGeomFromEwktTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2249, $result[0][1]);
     }

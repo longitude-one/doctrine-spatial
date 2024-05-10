@@ -72,6 +72,7 @@ class StDifferenceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('LINESTRING(10 10,12 12)', $result[0][1]);
@@ -109,6 +110,7 @@ class StDifferenceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineStringB, $result[0]);
         static::assertEquals($lineStringC, $result[1]);

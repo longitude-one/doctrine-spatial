@@ -68,6 +68,7 @@ class StExteriorRingTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals('LINESTRING(0 0,10 0,10 10,0 10,0 0)', $result[0][1]);

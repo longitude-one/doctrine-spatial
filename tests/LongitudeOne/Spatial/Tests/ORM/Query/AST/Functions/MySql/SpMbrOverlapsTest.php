@@ -70,6 +70,7 @@ class SpMbrOverlapsTest extends PersistOrmTestCase
         $query->setParameter('p', 'POLYGON((4 4, 4 12, 12 12, 12 4, 4 4))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($polygonW, $result[2]);
@@ -95,6 +96,7 @@ class SpMbrOverlapsTest extends PersistOrmTestCase
         $query->setParameter('p', 'POLYGON((0 0, 0 12, 12 12, 12 0, 0 0))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(4, $result);
         static::assertEquals($bigPolyon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

@@ -71,11 +71,12 @@ class StUnionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
-        static::assertBigPolygon($result[0][1], $this->getPlatform());
+        self::assertBigPolygon($result[0][1], $this->getPlatform());
         static::assertEquals($holeyPolygon, $result[1][0]);
-        static::assertBigPolygon($result[1][1], $this->getPlatform());
+        self::assertBigPolygon($result[1][1], $this->getPlatform());
     }
 
     /**
@@ -98,6 +99,7 @@ class StUnionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(0, $result);
     }
 }

@@ -68,6 +68,7 @@ class CoordinateTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

@@ -173,6 +173,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      */
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
+        if (!is_int($column['srid']) || $column['srid'] < 0) {
+            $column['srid'] = null;
+        }
+
         return $this->getSpatialPlatform($platform)->getSqlDeclaration($column, $this, $column['srid'] ?? null);
     }
 

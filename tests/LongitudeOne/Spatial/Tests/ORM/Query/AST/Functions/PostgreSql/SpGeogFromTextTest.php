@@ -70,6 +70,7 @@ class SpGeogFromTextTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($newYork, $result[0]);
     }

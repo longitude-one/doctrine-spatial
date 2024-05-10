@@ -68,11 +68,11 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
     /**
      * Spatial Reference System Identifier fluent setter.
      *
-     * @param mixed $srid Spatial Reference System Identifier
+     * @param ?int $srid Spatial Reference System Identifier
      *
      * @return self
      */
-    public function setSrid($srid)
+    public function setSrid(?int $srid)
     {
         if (null !== $srid) {
             $this->srid = (int) $srid;

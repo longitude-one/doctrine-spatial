@@ -66,6 +66,7 @@ class StNumGeometriesTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($four, $result[0][0]);
         static::assertEquals(4, $result[0][1]);

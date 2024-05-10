@@ -71,6 +71,7 @@ class SpLineInterpolatePointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringX, $result[0][0]);
         static::assertEquals('POINT(7.2 13.6)', $result[0][1]);

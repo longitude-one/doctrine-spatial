@@ -68,6 +68,7 @@ class SpCoveredByTest extends PersistOrmTestCase
         $query->setParameter('p1', 'LINESTRING(4 4,8 8)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -90,6 +91,7 @@ class SpCoveredByTest extends PersistOrmTestCase
         $query->setParameter('p1', 'LINESTRING(4 4,8 8)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertTrue($result[0][1]);

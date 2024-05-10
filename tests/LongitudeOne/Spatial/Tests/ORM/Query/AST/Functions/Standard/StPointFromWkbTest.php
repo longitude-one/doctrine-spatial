@@ -69,6 +69,7 @@ class StPointFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POINT(1 -1)', $result[0][1]);
     }
@@ -92,6 +93,7 @@ class StPointFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

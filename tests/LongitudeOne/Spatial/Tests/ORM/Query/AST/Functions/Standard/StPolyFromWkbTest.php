@@ -69,6 +69,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -90,6 +91,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POLYGON((0 0,10 0,10 10,0 10,0 0))', $result[0][1]);
     }

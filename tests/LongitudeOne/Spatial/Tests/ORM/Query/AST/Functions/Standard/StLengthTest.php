@@ -70,6 +70,7 @@ class StLengthTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0][0]);
         static::assertEqualsWithDelta(19.1126623906578, $result[0][1], 0.000000000001);
@@ -94,6 +95,7 @@ class StLengthTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0]);
     }

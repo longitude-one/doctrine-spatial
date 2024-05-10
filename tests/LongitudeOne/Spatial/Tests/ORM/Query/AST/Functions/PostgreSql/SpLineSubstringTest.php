@@ -72,6 +72,7 @@ class SpLineSubstringTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($straightLineString, $result[0]);
     }
@@ -96,6 +97,7 @@ class SpLineSubstringTest extends PersistOrmTestCase
         $query->setParameter('end', 0.8);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals('LINESTRING(2 2,4 4)', $result[0][1]);
         static::assertEquals('LINESTRING(4 4,8 8)', $result[1][1]);
         static::assertEquals('LINESTRING(6 6,12 2)', $result[2][1]);

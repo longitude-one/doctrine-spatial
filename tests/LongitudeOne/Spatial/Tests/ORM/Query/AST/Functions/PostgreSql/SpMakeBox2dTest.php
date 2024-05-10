@@ -71,6 +71,7 @@ class SpMakeBox2dTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POLYGON((0 0,0 8,4 8,4 0,0 0))', $result[0][1]);
     }

@@ -74,6 +74,7 @@ class StGeomFromTextTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineString, $result[0]);
     }
@@ -97,6 +98,7 @@ class StGeomFromTextTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointA, $result[0]);
     }

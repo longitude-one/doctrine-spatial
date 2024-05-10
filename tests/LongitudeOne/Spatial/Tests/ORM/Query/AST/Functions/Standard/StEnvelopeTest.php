@@ -75,6 +75,7 @@ class StEnvelopeTest extends PersistOrmTestCase
             $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
         }
 
+        static::assertIsArray($result);
         static::assertEquals($expected, $result[0][1]);
         static::assertEquals($expected, $result[1][1]);
     }
@@ -105,6 +106,7 @@ class StEnvelopeTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($holeyPolygon, $result[0]);
     }

@@ -100,6 +100,7 @@ class SpSummaryTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($point, $result[0][0]);
         static::assertMatchesRegularExpression('/^Point\[.*G.*]/', $result[0][1]);
@@ -149,6 +150,7 @@ class SpSummaryTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($point, $result[0][0]);
         static::assertMatchesRegularExpression('/^Point\[[^G]*]/', $result[0][1]);

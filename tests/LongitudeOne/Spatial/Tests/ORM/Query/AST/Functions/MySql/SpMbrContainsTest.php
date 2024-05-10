@@ -70,6 +70,7 @@ class SpMbrContainsTest extends PersistOrmTestCase
         $query->setParameter('p', 'POINT(6 6)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($smallPolygon, $result[1]);
@@ -82,6 +83,7 @@ class SpMbrContainsTest extends PersistOrmTestCase
         $query->setParameter('p', 'POINT(2 2)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($holeyPolygon, $result[1]);
@@ -109,6 +111,7 @@ class SpMbrContainsTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);

@@ -71,6 +71,7 @@ class SpMakePointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POINT ZM (1 2 3 4)', $result[0][1]);
     }

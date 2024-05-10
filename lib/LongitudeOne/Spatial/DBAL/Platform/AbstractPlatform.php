@@ -177,8 +177,11 @@ abstract class AbstractPlatform implements PlatformInterface
             throw new InvalidValueException(sprintf('Unsupported %s type "%s".', $typeFamily, $typeName));
         }
 
+        /** @var string $constValue */
+        $constValue = constant($constName);
+
         /** @var class-string<SpatialInterface> $class */
-        $class = sprintf('LongitudeOne\Spatial\PHP\Types\%s\%s', $typeFamily, constant($constName));
+        $class = sprintf('LongitudeOne\Spatial\PHP\Types\%s\%s', $typeFamily, $constValue);
 
         if (isset($value['srid'])) {
             return new $class($value['value'], $value['srid']);

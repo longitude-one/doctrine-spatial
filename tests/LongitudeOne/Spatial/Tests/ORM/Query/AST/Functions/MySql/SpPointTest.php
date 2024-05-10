@@ -69,6 +69,7 @@ class SpPointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POINT(1 2)', $result[0][1]);
     }

@@ -74,6 +74,8 @@ class StSridTest extends PersistOrmTestCase
             // TODO MySQL is returning 0 insteadof 4326
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
+
+        static::assertIsArray($result);
         static::assertSame(4326, $result[0][1]);
     }
 
@@ -99,6 +101,7 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
+        static::assertIsArray($result);
         static::assertSame(2154, $result[0][1]);
     }
 }

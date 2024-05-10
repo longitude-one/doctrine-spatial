@@ -70,6 +70,7 @@ class SpLineStringTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringA, $result[0]);
     }
@@ -93,6 +94,7 @@ class SpLineStringTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('LINESTRING(1 2,2 1)', $result[0][1]);
     }

@@ -71,6 +71,7 @@ class StMLineFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertMatchesRegularExpression('|^MULTILINESTRING\(|', $result[0][1]);
     }
@@ -94,6 +95,7 @@ class StMLineFromWkbTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

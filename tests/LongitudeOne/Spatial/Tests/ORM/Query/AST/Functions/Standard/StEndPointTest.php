@@ -69,6 +69,8 @@ class StEndPointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
+        static::assertIsArray($result[0]);
         static::assertEquals('POINT(5 5)', $result[0][1]);
     }
 
@@ -92,6 +94,7 @@ class StEndPointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($angularLineString, $result[0]);
     }
@@ -117,6 +120,7 @@ class StEndPointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($straightLineString, $result[0]);
     }

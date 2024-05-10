@@ -73,6 +73,7 @@ class SpLineLocatePointTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineA, $result[0]);
         static::assertEquals($lineB, $result[1]);
@@ -97,6 +98,7 @@ class SpLineLocatePointTest extends PersistOrmTestCase
         $query->setParameter('point', 'POINT(4 3)');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(0.7, $result[0][1]);
         static::assertEquals(0.35, $result[1][1]);
         static::assertEqualsWithDelta(0.4, $result[2][1], 0.000000000001);

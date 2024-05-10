@@ -72,6 +72,7 @@ class StSymDifferenceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('LINESTRING(10 10,12 12)', $result[0][1]);
@@ -83,6 +84,8 @@ class StSymDifferenceTest extends PersistOrmTestCase
         if ($this->getPlatform() instanceof MySQLPlatform) {
             $expected = 'MULTILINESTRING((0 0,12 12),(0 10,15 0))';
         }
+
+        static::assertIsArray($result);
         static::assertEquals($expected, $result[1][1]);
         static::assertEquals($lineStringC, $result[2][0]);
         static::assertEquals('MULTILINESTRING((0 0,12 12),(2 0,12 10))', $result[2][1]);
@@ -109,6 +112,7 @@ class StSymDifferenceTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineStringB, $result[0]);
         static::assertEquals($lineStringC, $result[1]);

@@ -67,6 +67,7 @@ class StRelateTest extends PersistOrmTestCase
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($linestring, $result[0]);
     }
@@ -89,6 +90,7 @@ class StRelateTest extends PersistOrmTestCase
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($straightLineString, $result[0][0]);
         static::assertEquals('FF1FF0102', $result[0][1]);

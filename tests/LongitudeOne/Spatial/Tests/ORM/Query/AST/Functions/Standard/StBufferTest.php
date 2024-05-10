@@ -69,6 +69,7 @@ class StBufferTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0][0]);
         // too many error between OS, this test doesn't have to check the result (double float, etc.),

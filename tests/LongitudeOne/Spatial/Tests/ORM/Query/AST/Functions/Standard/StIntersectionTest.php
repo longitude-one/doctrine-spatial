@@ -73,6 +73,7 @@ class StIntersectionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
         static::assertEquals('POINT(0 0)', $result[0][1]);
@@ -103,6 +104,7 @@ class StIntersectionTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringA, $result[0]);
     }

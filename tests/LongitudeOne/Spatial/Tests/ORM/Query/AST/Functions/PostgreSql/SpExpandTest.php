@@ -66,6 +66,7 @@ class SpExpandTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals('POLYGON((-4 -4,-4 4,4 4,4 -4,-4 -4))', $result[0][1]);

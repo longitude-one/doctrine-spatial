@@ -70,6 +70,7 @@ class SpDistanceSphereTest extends PersistOrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEquals(1305895.94823465, $result[0][1]);

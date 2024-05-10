@@ -118,8 +118,8 @@ class PostgreSql extends AbstractPlatform
             return $sqlType;
         }
 
-        if (null === $srid && key_exists('srid', $column) && null !== $column['srid']) {
-            $srid = (int) $column['srid'];
+        if (null === $srid && key_exists('srid', $column) && is_int($column['srid'])) {
+            $srid = $column['srid'];
         }
 
         if (!empty($srid)) {

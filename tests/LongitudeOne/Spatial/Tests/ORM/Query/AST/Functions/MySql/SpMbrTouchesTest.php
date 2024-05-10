@@ -68,6 +68,7 @@ class SpMbrTouchesTest extends PersistOrmTestCase
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -90,6 +91,7 @@ class SpMbrTouchesTest extends PersistOrmTestCase
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals(0, $result[1][1]);
     }
