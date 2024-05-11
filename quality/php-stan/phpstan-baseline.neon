@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySqlPlatform not found\\.$#"
-			count: 1
-			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
-
-		-
 			message: "#^Call to function is_object\\(\\) with array\\<float\\|int\\> will always evaluate to false\\.$#"
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
@@ -39,6 +34,11 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpTransformTest.php
+
+		-
+			message: "#^Instantiated class \\\\Doctrine\\\\DBAL\\\\Platforms\\\\SqlitePlatform not found\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmMockTestCase.php
 
 		-
 			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Doctrine\\\\DBAL\\\\Driver\\\\PDO\\\\SQLite\\\\Driver\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"

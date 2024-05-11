@@ -52,6 +52,7 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBufferStrategy;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistance;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistanceSphere as MySQLDistanceSphere;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpGeometryType as MySqlGeometryType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpLineString;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrContains;
@@ -556,6 +557,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('Mysql_Distance', SpDistance::class);
         $configuration->addCustomNumericFunction('Mysql_Buffer', SpBuffer::class);
         $configuration->addCustomNumericFunction('Mysql_BufferStrategy', SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySQLDistanceSphere::class);
         $configuration->addCustomNumericFunction('Mysql_GeometryType', MySqlGeometryType::class);
         $configuration->addCustomNumericFunction('Mysql_LineString', SpLineString::class);
         $configuration->addCustomNumericFunction('Mysql_MBRContains', SpMbrContains::class);
