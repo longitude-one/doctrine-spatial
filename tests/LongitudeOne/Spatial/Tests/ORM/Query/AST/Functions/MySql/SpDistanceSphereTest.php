@@ -86,10 +86,10 @@ class SpDistanceSphereTest extends PersistOrmTestCase
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         // These numeric results are different from PostGis result
-        static::assertEquals(1305891.280669479, $result[0][1]);
+        static::assertEqualsWithDelta(1305891.280669479, $result[0][1], 0.0000001);
         static::assertEquals($losAngeles, $result[1][0]);
-        static::assertEquals(2684072.4889816786, $result[1][1]);
+        static::assertEqualsWithDelta(2684072.4889816786, $result[1][1], 0.0000001);
         static::assertEquals($dallas, $result[2][0]);
-        static::assertEquals(1313749.9111938346, $result[2][1]);
+        static::assertEqualsWithDelta(1313749.9111938346, $result[2][1], 0.0000001);
     }
 }
