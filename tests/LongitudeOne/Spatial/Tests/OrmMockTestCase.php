@@ -68,8 +68,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
         }
 
         // Doctrine ORM ^3.0
-        if (class_exists('Doctrine\DBAL\Platforms\SQLitePlatform')) {
-            $platformClass = 'Doctrine\DBAL\Platforms\SQLitePlatform';
+        if (class_exists('\Doctrine\DBAL\Platforms\SQLitePlatform')) {
+            $platformClass = '\Doctrine\DBAL\Platforms\SQLitePlatform';
         }
 
         if (null === $platformClass) {
