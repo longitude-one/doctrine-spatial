@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySqlPlatform not found\\.$#"
-			count: 1
-			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
-
-		-
 			message: "#^Call to function is_object\\(\\) with array\\<float\\|int\\> will always evaluate to false\\.$#"
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php

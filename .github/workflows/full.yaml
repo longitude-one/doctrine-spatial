@@ -158,21 +158,18 @@ jobs:
         run: ./quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
 
       ## PHP-STAN
-#      - name: Cache Composer PHP-STAN packages
-#        if: ${{ matrix.lexer-version == '~3.0.0' }}
-#        id: composer-php-stan-cache
-#        uses: actions/cache@v4
-#        with:
-#          path: quality/php-cs-fixer/vendor/
-#          key: ${{ runner.os }}-php-stan-${{ hashFiles('**/composer.lock') }}
-#          restore-keys: |
-#            ${{ runner.os }}-php-stan-
-#      - name: Install PHP-STAN
-#        if: ${{ matrix.lexer-version == '~3.0.0' }}
-#        run: composer update --working-dir=quality/php-stan
-#      - name: Run PHP-STAN
-#        if: ${{ matrix.lexer-version == '~3.0.0' }}
-#        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v
+      - name: Cache Composer PHP-STAN packages
+        id: composer-php-stan-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-php-stan-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-stan-
+      - name: Install PHP-STAN
+        run: composer update --working-dir=quality/php-stan
+      - name: Run PHP-STAN
+        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v
 
   other-version-build:
     needs: stable-build
@@ -189,9 +186,6 @@ jobs:
           -   php: '8.3'
               orm: '^3.1'
     name: PHP${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
-    env:
-      HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
-      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
     services:
       mysql5:
         image: mysql:5.7
@@ -261,9 +255,6 @@ jobs:
 
       -   name: Copy test suites
           run: cp .github/phpunit.*.xml .
-
-      -   name: Install libraries
-          run: composer --prefer-stable update -vvv
 
       -   name: Force doctrine/orm library to ${{ matrix.orm }}
           run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
