@@ -16,9 +16,9 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
+namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -36,20 +36,14 @@ class SpDistanceSphere extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.
-     *
-     * @since 2.0 This function replace the protected property functionName.
      */
     protected function getFunctionName(): string
     {
-        // Since Postgis 2.1 ST_Distance_Sphere renamed to ST_DistanceSphere
-        // @see http://postgis.net/docs/manual-3.1/PostGIS_Special_Functions_Index.html#NewFunctions
-        return 'ST_DistanceSphere';
+        return 'ST_Distance_Sphere';
     }
 
     /**
      * Maximum number of parameter for the spatial function.
-     *
-     * @since 2.0 This function replace the protected property maxGeomExpr.
      *
      * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      */
@@ -80,6 +74,6 @@ class SpDistanceSphere extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class];
+        return [MySQLPlatform::class];
     }
 }
