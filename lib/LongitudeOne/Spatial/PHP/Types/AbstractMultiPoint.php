@@ -28,7 +28,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * @var (float|int)[][] Points
      */
-    protected $points = [];
+    protected array $points = [];
 
     /**
      * Abstract multipoint constructor.
@@ -38,7 +38,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @throws InvalidValueException when a point is not valid
      */
-    public function __construct(array $points, $srid = null)
+    public function __construct(array $points, ?int $srid = null)
     {
         $this->setPoints($points)
             ->setSrid($srid)
@@ -50,11 +50,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param (float|int)[]|PointInterface $point Point to add to geometry
      *
-     * @return self
-     *
      * @throws InvalidValueException when the point is not valid
      */
-    public function addPoint($point)
+    public function addPoint(array|PointInterface $point): self
     {
         $this->points[] = $this->validatePointValue($point);
 
@@ -64,12 +62,13 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Point getter.
      *
-     * @param int $index index of the point to retrieve. -1 to get last point.
-     *
-     * @return PointInterface
+     * @param int $index index of the point to retrieve. -1 to get the last point.
      */
-    public function getPoint($index)
+    public function getPoint(int $index): PointInterface
     {
+        // TODO throw an error when index is out of range
+        // TODO throw an error when $this->points is empty
+
         $point = match ($index) {
             -1 => $this->points[count($this->points) - 1],
             default => $this->points[$index],
@@ -86,7 +85,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @return PointInterface[]
      */
-    public function getPoints()
+    public function getPoints(): array
     {
         $points = [];
 
@@ -102,7 +101,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @return string Multipoint
      */
-    public function getType()
+    public function getType(): string
     {
         return self::MULTIPOINT;
     }
@@ -112,11 +111,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @param ((float|int)[]|PointInterface)[] $points the points
      *
-     * @return self
-     *
      * @throws InvalidValueException when a point is invalid
      */
-    public function setPoints($points)
+    public function setPoints($points): self
     {
         $this->points = $this->validateMultiPointValue($points);
 
@@ -128,7 +125,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @return (float|int)[][]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->points;
     }

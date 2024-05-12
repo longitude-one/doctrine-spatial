@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractMultiPoint;
 use LongitudeOne\Spatial\PHP\Types\MultiPointInterface;
 
 /**
- * MultiPoint object for MULTIPOINT geometry type.
+ * MultiPoint object for the MULTIPOINT geometry type.
  */
 class MultiPoint extends AbstractMultiPoint implements GeometryInterface, MultiPointInterface
 {

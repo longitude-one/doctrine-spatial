@@ -30,17 +30,13 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
 {
     /**
      * Spatial Reference System Identifier.
-     *
-     * @var int
      */
-    protected $srid;
+    protected ?int $srid = null;
 
     /**
      * Spatial Reference System Identifier getter.
-     *
-     * @return null|int
      */
-    public function getSrid()
+    public function getSrid(): ?int
     {
         return $this->srid;
     }
@@ -69,13 +65,11 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Spatial Reference System Identifier fluent setter.
      *
      * @param ?int $srid Spatial Reference System Identifier
-     *
-     * @return self
      */
-    public function setSrid(?int $srid)
+    public function setSrid(?int $srid): self
     {
         if (null !== $srid) {
-            $this->srid = (int) $srid;
+            $this->srid = $srid;
         }
 
         return $this;
@@ -83,10 +77,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
 
     /**
      * Convert this abstract geometry to a Json string.
-     *
-     * @return string
      */
-    public function toJson()
+    public function toJson(): string
     {
         $json = [];
         $json['type'] = $this->getType();
@@ -105,10 +97,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
 
     /**
      * Return the namespace of this class.
-     *
-     * @return string
      */
-    protected function getNamespace()
+    protected function getNamespace(): string
     {
         $class = get_class($this);
 
@@ -124,7 +114,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException when a point of line string is not valid
      */
-    protected function validateLineStringValue($lineString)
+    protected function validateLineStringValue($lineString): array
     {
         return $this->validateMultiPointValue($lineString);
     }
@@ -138,7 +128,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException as soon as a point of a line string is not valid
      */
-    protected function validateMultiLineStringValue(array $lineStrings)
+    protected function validateMultiLineStringValue(array $lineStrings): array
     {
         /** @var (float|int)[][][] $result */
         $result = [];
@@ -158,7 +148,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException when one point is not valid
      */
-    protected function validateMultiPointValue($points)
+    protected function validateMultiPointValue($points): array
     {
         /** @var (float|int)[][] $result */
         $result = [];
@@ -184,7 +174,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException when one polygon is not valid
      */
-    protected function validateMultiPolygonValue(array $polygons)
+    protected function validateMultiPolygonValue(array $polygons): array
     {
         $result = [];
         foreach ($polygons as $polygon) {
@@ -208,20 +198,19 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      */
     protected function validatePointValue($point): array
     {
-        switch (true) {
-            case $point instanceof PointInterface:
-                return $point->toArray();
-
-            case is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1]):
-                return array_values($point);
-
-            default:
-                throw new InvalidValueException(sprintf(
-                    'Invalid %s Point value of type "%s"',
-                    $this->getType(),
-                    is_object($point) ? get_class($point) : gettype($point)
-                ));
+        if ($point instanceof PointInterface) {
+            return $point->toArray();
         }
+
+        if (is_array($point) && 2 == count($point) && is_numeric($point[0]) && is_numeric($point[1])) {
+            return array_values($point);
+        }
+
+        throw new InvalidValueException(sprintf(
+            'Invalid %s Point value of type "%s"',
+            $this->getType(),
+            is_object($point) ? get_class($point) : gettype($point)
+        ));
     }
 
     /**
@@ -233,7 +222,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException when ring is not valid
      */
-    protected function validatePolygonValue(array $polygon)
+    protected function validatePolygonValue(array $polygon): array
     {
         $result = [];
         foreach ($polygon as $lineString) {
@@ -252,7 +241,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      *
      * @throws InvalidValueException when the ring is not an abstract line string or is not closed
      */
-    protected function validateRingValue($ring)
+    protected function validateRingValue($ring): array
     {
         if ($ring instanceof MultiPointInterface || $ring instanceof LineStringInterface) {
             $ring = $ring->toArray();
@@ -286,10 +275,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Convert a line to string.
      *
      * @param (float|int)[][] $lineString line string already converted into an array
-     *
-     * @return string
      */
-    private function toStringLineString(array $lineString)
+    private function toStringLineString(array $lineString): string
     {
         return $this->toStringMultiPoint($lineString);
     }
@@ -298,10 +285,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Convert multiline strings to a string value.
      *
      * @param (float|int)[][][] $multiLineString multi line already converted into an array of coordinates
-     *
-     * @return string
      */
-    private function toStringMultiLineString(array $multiLineString)
+    private function toStringMultiLineString(array $multiLineString): string
     {
         $strings = null;
 
@@ -316,10 +301,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Convert multi points to a string value.
      *
      * @param (float|int)[][] $multiPoint multipoint already converted into an array of point
-     *
-     * @return string
      */
-    private function toStringMultiPoint(array $multiPoint)
+    private function toStringMultiPoint(array $multiPoint): string
     {
         $strings = [];
 
@@ -336,10 +319,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * THIS IS NOT A NON-USED PRIVATE METHOD.
      *
      * @param (float|int)[][][][] $multiPolygon multipolygon already converted into an array of polygon
-     *
-     * @return string
      */
-    private function toStringMultiPolygon(array $multiPolygon)
+    private function toStringMultiPolygon(array $multiPolygon): string
     {
         $strings = null;
 
@@ -354,10 +335,8 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Convert a point to a string value.
      *
      * @param (float|int)[] $point point already converted into an array of TWO coordinates
-     *
-     * @return string
      */
-    private function toStringPoint(array $point)
+    private function toStringPoint(array $point): string
     {
         return vsprintf('%s %s', $point);
     }
@@ -366,34 +345,28 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
      * Convert a polygon into a string value.
      *
      * @param (float|int)[][][] $polygon polygons already converted into array
-     *
-     * @return string
      */
-    private function toStringPolygon(array $polygon)
+    private function toStringPolygon(array $polygon): string
     {
         return $this->toStringMultiLineString($polygon);
     }
 
     /**
      * Type of this geometry: Linestring, point, etc.
-     *
-     * @return string
      */
-    abstract public function getType();
+    abstract public function getType(): string;
 
     /**
      * Convert this abstract geometry to an array.
      *
      * @return (float|int)[]|(float|int)[][]|(float|int)[][][]|(float|int)[][][][]
      */
-    abstract public function toArray();
+    abstract public function toArray(): array;
 
     /**
      * Magic method: convert geometry to string.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $type = mb_strtoupper($this->getType());
         $method = 'toString'.$type;

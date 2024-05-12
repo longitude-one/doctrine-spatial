@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractMultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
 
 /**
- * MultiPolygon object for MULTIPOLYGON geometry type.
+ * MultiPolygon object for the MULTIPOLYGON geometry type.
  */
 class MultiPolygon extends AbstractMultiPolygon implements GeometryInterface, MultiPolygonInterface
 {

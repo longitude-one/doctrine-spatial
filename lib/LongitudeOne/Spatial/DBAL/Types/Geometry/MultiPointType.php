@@ -22,11 +22,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 
 /**
  * Doctrine MULTIPOINT type.
- *
- * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://alexandre-tranchant.mit-license.org MIT
- *
- * TODO create a MultiPointTypeTest as MultiPolygonTypeTest
  */
 class MultiPointType extends GeometryType
 {

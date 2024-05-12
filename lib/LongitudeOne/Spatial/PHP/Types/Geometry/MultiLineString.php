@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractMultiLineString;
 use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
 
 /**
- * MultiLineString object for MULTILINESTRING geometry type.
+ * MultiLineString object for the MULTILINESTRING geometry type.
  */
 class MultiLineString extends AbstractMultiLineString implements GeometryInterface, MultiLineStringInterface
 {

@@ -44,26 +44,10 @@ class MultiPolygonTest extends TestCase
      */
     public function testAddInvalidPolygon(): void
     {
-        $expected = 'AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter';
-
-        $polygon = new Polygon(
-            [
-                new LineString(
-                    [
-                        new Point(0, 0),
-                        new Point(10, 0),
-                        new Point(10, 10),
-                        new Point(0, 10),
-                        new Point(0, 0),
-                    ]
-                ),
-            ]
-        );
-
+        $polygon = new Polygon([]);
         $multiPolygon = new MultiPolygon([$polygon]);
 
-        self::expectException(InvalidValueException::class);
-        self::expectExceptionMessage($expected);
+        self::expectException(\TypeError::class);
         $multiPolygon->addPolygon('foo');
     }
 

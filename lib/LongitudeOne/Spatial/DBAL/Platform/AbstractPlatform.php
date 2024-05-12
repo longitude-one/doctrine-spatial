@@ -40,7 +40,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Check both arguments and return srid when possible.
      *
-     * @param array<string, mixed> $column array MAY contain 'srid' as key
+     * @param array<string, mixed> $column array MAY contain 'srid' key
      * @param ?int                 $srid   srid MAY be provided
      *
      * @throws InvalidValueException when SRID is not null nor an integer
@@ -64,7 +64,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Check both argument and return AbstractSpatialType when possible.
      *
-     * @param array<string, mixed> $column array SHOULD contain 'type' as key
+     * @param array<string, mixed> $column array SHOULD contain 'type' key
      * @param ?AbstractSpatialType $type   type is now provided
      *
      * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
@@ -86,11 +86,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param DoctrineSpatialTypeInterface $type    The abstract spatial type
      * @param resource|string              $sqlExpr the SQL expression
      *
-     * @return SpatialInterface
-     *
      * @throws ExceptionInterface|InvalidValueException when the provided type is not supported
      */
-    public function convertBinaryToPhpValue(DoctrineSpatialTypeInterface $type, $sqlExpr)
+    public function convertBinaryToPhpValue(DoctrineSpatialTypeInterface $type, $sqlExpr): SpatialInterface
     {
         if (is_resource($sqlExpr)) {
             $sqlExpr = stream_get_contents($sqlExpr);
@@ -111,11 +109,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
      *
-     * @return SpatialInterface
-     *
      * @throws InvalidValueException when the provided type is not supported
      */
-    public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr)
+    public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr): SpatialInterface
     {
         $parser = new StringParser($sqlExpr);
 
@@ -129,10 +125,8 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @param AbstractSpatialType $type  The spatial type
      * @param SpatialInterface    $value The geometry object
-     *
-     * @return string
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string
     {
         // the unused variable $type is used by overriding method
         return sprintf('%s(%s)', mb_strtoupper($value->getType()), $value);
@@ -147,7 +141,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string[]
      */
-    public function getMappedDatabaseTypes(AbstractSpatialType $type)
+    public function getMappedDatabaseTypes(AbstractSpatialType $type): array
     {
         $sqlType = mb_strtolower($type->getSQLType());
 
@@ -159,14 +153,14 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Create spatial object from parsed value.
+     * Create a spatial object from parsed value.
      *
      * @param DoctrineSpatialTypeInterface                  $type  The type spatial type
      * @param array{type: string, srid?: ?int, value:mixed} $value The value of the spatial object
      *
      * @throws InvalidValueException when the provided type is not supported
      */
-    private function newObjectFromValue(DoctrineSpatialTypeInterface $type, $value): SpatialInterface
+    private function newObjectFromValue(DoctrineSpatialTypeInterface $type, array $value): SpatialInterface
     {
         $typeFamily = $type->getTypeFamily();
         $typeName = mb_strtoupper($value['type']);

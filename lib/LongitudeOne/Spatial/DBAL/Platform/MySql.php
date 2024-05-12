@@ -23,7 +23,7 @@ use LongitudeOne\Spatial\Exception\MissingArgumentException;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
- * MySql5.7 and less spatial platform.
+ * MySql spatial platform.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -36,10 +36,8 @@ class MySql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr)
+    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr): string
     {
         return sprintf('ST_GeomFromText(%s)', $sqlExpr);
     }
@@ -49,10 +47,8 @@ class MySql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr)
+    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr): string
     {
         return sprintf('ST_AsBinary(%s)', $sqlExpr);
     }
@@ -60,7 +56,7 @@ class MySql extends AbstractPlatform
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array<string, mixed> $column array SHOULD contain 'type' as key
+     * @param array<string, mixed> $column array SHOULD contain 'type' key
      * @param ?AbstractSpatialType $type   type is now provided
      * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *

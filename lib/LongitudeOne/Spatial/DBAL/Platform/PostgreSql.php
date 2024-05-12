@@ -40,10 +40,8 @@ class PostgreSql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type  The spatial type
      * @param SpatialInterface    $value The geometry interface
-     *
-     * @return string
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value)
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string
     {
         $sridSQL = null;
         $srid = null;
@@ -68,10 +66,8 @@ class PostgreSql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr)
+    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr): string
     {
         if ($type instanceof GeographyType) {
             return sprintf('ST_GeographyFromText(%s)', $sqlExpr);
@@ -85,10 +81,8 @@ class PostgreSql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr)
+    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr): string
     {
         if ($type instanceof GeographyType) {
             return sprintf('ST_AsEWKT(%s)', $sqlExpr);

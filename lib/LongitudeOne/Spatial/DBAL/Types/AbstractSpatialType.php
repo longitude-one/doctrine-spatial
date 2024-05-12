@@ -28,7 +28,6 @@ use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -41,12 +40,12 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     /**
      * Does working with this column require SQL conversion functions?
      *
-     * This is a metadata function that is required for example in the ORM.
+     * This is a metadata function required, for example, in the ORM.
      * Usage of {@link convertToDatabaseValueSql} and
      * {@link convertToPhpValueSql} works for any type and mostly
-     * does nothing. This method can additionally be used for optimization purposes.
+     * does nothing. This method can additionally be used for optimization.
      *
-     * Spatial types requires conversion.
+     * Spatial types require conversion.
      *
      * @return bool
      */
@@ -100,11 +99,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      * @param null|resource|string $value    value to convert to PHP
      * @param AbstractPlatform     $platform platform database
      *
-     * @return null|GeometryInterface
-     *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?SpatialInterface
     {
         if (null === $value) {
             return null;

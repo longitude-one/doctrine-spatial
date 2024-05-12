@@ -20,4 +20,12 @@ namespace LongitudeOne\Spatial\PHP\Types;
 
 interface PolygonInterface extends SpatialInterface
 {
+    /**
+     * Convert any spatial polygon to its array representation.
+     *
+     * Array does NOT contain SpatialInterface, only floats, integers, and arrays.
+     *
+     * @return (float|int)[][][]
+     */
+    public function toArray(): array;
 }

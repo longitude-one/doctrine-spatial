@@ -23,9 +23,9 @@ interface PointInterface extends SpatialInterface
     /**
      * Convert point to its array representation.
      *
-     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
+     * Array does NOT contain SpatialInterface, only floats, integers, and arrays.
      *
      * @return (float|int)[]
      */
-    public function toArray();
+    public function toArray(): array;
 }
