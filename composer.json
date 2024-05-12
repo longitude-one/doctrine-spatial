@@ -2,7 +2,7 @@
     "name": "longitude-one/doctrine-spatial",
     "type": "library",
     "description": "Doctrine2 multi-platform support for spatial types and functions",
-    "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso/13249"],
+    "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso-13249"],
     "authors": [
         {
             "name": "Derek Lambert",
