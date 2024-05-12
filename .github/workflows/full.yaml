@@ -88,6 +88,9 @@ jobs:
       - name: Install libraries
         run: composer --prefer-stable update -vvv
 
+      - name: Show libraries
+        run: composer show
+
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
