@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 
 /**
  * Abstract Polygon object for POLYGON spatial types.
@@ -39,7 +38,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @throws InvalidValueException when a polygon is invalid
      */
-    public function __construct(array $polygons, $srid = null)
+    public function __construct(array $polygons, ?int $srid = null)
     {
         $this
             ->setPolygons($polygons)
@@ -54,7 +53,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @throws InvalidValueException when polygon is not an array nor an AbstractPolygon
      */
-    public function addPolygon($polygon): self
+    public function addPolygon(array|PolygonInterface $polygon): self
     {
         if ($polygon instanceof AbstractPolygon) {
             $polygon = $polygon->toArray();
@@ -72,10 +71,12 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygon getter.
      *
-     * @param int $index Index of polygon, use -1 to get last one
+     * @param int $index Index of polygon, use -1 to get the last one
      */
     public function getPolygon(int $index): PolygonInterface
     {
+        // TODO throw an error when index is out of range
+        // TODO throw an error when $this->polygons is empty
         // TODO replace by a function to be compliant with -1, -2, etc.
         if (-1 == $index) {
             $index = count($this->polygons) - 1;
@@ -92,7 +93,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @return PolygonInterface[]
      */
-    public function getPolygons()
+    public function getPolygons(): array
     {
         $polygons = [];
 
@@ -108,7 +109,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @return string MultiPolygon
      */
-    public function getType()
+    public function getType(): string
     {
         return self::MULTIPOLYGON;
     }
@@ -118,11 +119,9 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @param ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[] $polygons polygons to set
      *
-     * @return self
-     *
      * @throws InvalidValueException when a polygon is invalid
      */
-    public function setPolygons(array $polygons)
+    public function setPolygons(array $polygons): self
     {
         $this->polygons = $this->validateMultiPolygonValue($polygons);
 
@@ -130,7 +129,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     }
 
     /**
-     * Convert Polygon into array.
+     * Convert Polygon into an array.
      *
      * @return ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[]
      */

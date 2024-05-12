@@ -30,7 +30,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @var (float|int)[][][]
      */
-    protected $lineStrings = [];
+    protected array $lineStrings = [];
 
     /**
      * AbstractMultiLineString constructor.
@@ -38,7 +38,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $lineStrings array of linestring
      * @param null|int                                                                     $srid        Spatial Reference System Identifier
      *
-     * @throws InvalidValueException when rings contains an invalid linestring
+     * @throws InvalidValueException when rings contain an invalid linestring
      */
     public function __construct(array $lineStrings, $srid = null)
     {
@@ -52,11 +52,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param (float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[] $lineString the line string to add to Geometry
      *
-     * @return self
-     *
      * @throws InvalidValueException when linestring is not valid
      */
-    public function addLineString($lineString)
+    public function addLineString(array|LineStringInterface|MultiPointInterface $lineString): self
     {
         $this->lineStrings[] = $this->validateLineStringValue($lineString);
 
@@ -67,10 +65,8 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      * Return linestring at specified offset.
      *
      * @param int $index offset of line string to return. Use -1 to get last linestring.
-     *
-     * @return LineStringInterface
      */
-    public function getLineString($index)
+    public function getLineString(int $index): LineStringInterface
     {
         if (-1 == $index) {
             $index = count($this->lineStrings) - 1;
@@ -87,7 +83,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @return LineStringInterface[]
      */
-    public function getLineStrings()
+    public function getLineStrings(): array
     {
         $lineStrings = [];
 
@@ -103,7 +99,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @return string MultiLineString
      */
-    public function getType()
+    public function getType(): string
     {
         return self::MULTILINESTRING;
     }
@@ -113,11 +109,9 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[] $lineStrings array of LineString
      *
-     * @return self
-     *
      * @throws InvalidValueException when a linestring is not valid
      */
-    public function setLineStrings(array $lineStrings)
+    public function setLineStrings(array $lineStrings): self
     {
         $this->lineStrings = $this->validateMultiLineStringValue($lineStrings);
 
@@ -129,7 +123,7 @@ abstract class AbstractMultiLineString extends AbstractGeometry
      *
      * @return (float|int)[][][]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->lineStrings;
     }

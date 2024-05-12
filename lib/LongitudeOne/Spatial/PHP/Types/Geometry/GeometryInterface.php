@@ -21,7 +21,7 @@ namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
- * Geometry interface for Geometry objects.
+ * Geometry interface for any Geometry objects.
  */
 interface GeometryInterface extends SpatialInterface
 {

@@ -30,7 +30,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @var (float|int)[][][]
      */
-    protected $rings = [];
+    protected array $rings = [];
 
     /**
      * Abstract polygon constructor.
@@ -40,7 +40,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @throws InvalidValueException When a ring is invalid
      */
-    public function __construct(array $rings, $srid = null)
+    public function __construct(array $rings, ?int $srid = null)
     {
         $this->setRings($rings)
             ->setSrid($srid)
@@ -54,7 +54,7 @@ abstract class AbstractPolygon extends AbstractGeometry
      *
      * @throws InvalidValueException when a ring is invalid
      */
-    public function addRing(mixed $ring): self
+    public function addRing(array|LineStringInterface|MultiPointInterface|PolygonInterface $ring): self
     {
         if ($ring instanceof PolygonInterface) {
             throw new InvalidValueException('You cannot add a Polygon to another one. Use a Multipolygon.');
@@ -67,7 +67,7 @@ abstract class AbstractPolygon extends AbstractGeometry
     /**
      * Polygon getter.
      *
-     * @param int $index index of polygon, use -1 to get last one
+     * @param int $index index of polygon, use -1 to get the last one
      */
     public function getRing(int $index): LineStringInterface
     {

@@ -2,7 +2,7 @@
     "name": "longitude-one/doctrine-spatial",
     "type": "library",
     "description": "Doctrine2 multi-platform support for spatial types and functions",
-    "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography"],
+    "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso-13249"],
     "authors": [
         {
             "name": "Derek Lambert",
@@ -32,13 +32,9 @@
         "doctrine/orm": "^2.19|^3.1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
         "monolog/monolog": "^2.0",
-        "phpmd/phpmd": "^2.10",
         "phpunit/phpunit": "^10.0",
         "phpunit/phpcov": "^9",
-        "php-coveralls/php-coveralls": "^2.4",
-        "squizlabs/php_codesniffer": "^3.6",
         "cache/array-adapter": "^1.1",
         "dg/bypass-finals": "^1.3"
     },

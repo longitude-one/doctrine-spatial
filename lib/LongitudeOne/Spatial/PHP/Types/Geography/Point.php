@@ -26,7 +26,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
 use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
- * Point object for POINT geography type.
+ * Point object for the POINT geography type.
  */
 class Point extends AbstractPoint implements GeographyInterface, PointInterface
 {

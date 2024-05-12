@@ -25,20 +25,16 @@ abstract class AbstractLineString extends AbstractMultiPoint
 {
     /**
      * Type of this geometry: Linestring.
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return self::LINESTRING;
     }
 
     /**
-     * This line string is closed when first point is the same than last point.
-     *
-     * @return bool
+     * This line string is closed when the first point is the same as the last point.
      */
-    public function isClosed()
+    public function isClosed(): bool
     {
         return $this->points[0] === $this->points[count($this->points) - 1];
     }

@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractLineString;
 use LongitudeOne\Spatial\PHP\Types\LineStringInterface;
 
 /**
- * LineString object for LINESTRING geometry type.
+ * LineString object for the LINESTRING geometry type.
  */
 class LineString extends AbstractLineString implements GeometryInterface, LineStringInterface
 {

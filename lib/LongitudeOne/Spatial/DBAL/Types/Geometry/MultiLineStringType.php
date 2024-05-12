@@ -22,11 +22,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 
 /**
  * Doctrine MULTILineString type.
- *
- * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://alexandre-tranchant.mit-license.org MIT
- *
- * TODO create a MultiLineStringTypeTest as MultiPolygonTypeTest
  */
 class MultiLineStringType extends GeometryType
 {

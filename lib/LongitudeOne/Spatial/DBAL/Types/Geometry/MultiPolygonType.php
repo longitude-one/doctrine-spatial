@@ -22,9 +22,6 @@ use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 
 /**
  * Doctrine MULTIPOLYGON type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 class MultiPolygonType extends GeometryType
 {

@@ -22,7 +22,7 @@ use LongitudeOne\Spatial\PHP\Types\AbstractPolygon;
 use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
 
 /**
- * Polygon object for POLYGON geography type.
+ * Polygon object for the POLYGON geography type.
  */
 class Polygon extends AbstractPolygon implements GeographyInterface, PolygonInterface
 {

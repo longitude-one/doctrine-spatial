@@ -38,39 +38,33 @@ interface SpatialInterface
      *
      * @return ?int
      */
-    public function getSrid();
+    public function getSrid(): ?int;
 
     /**
      * Return the type of this geometry or geography.
      * This function is used by the spatial type to get the type of the object.
-     *
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Set the Spatial Reference Identifier (SRID) of this object.
      *
      * @param ?int $srid the Spatial Reference Identifier (SRID)
-     *
-     * @return self
      */
-    public function setSrid(?int $srid);
+    public function setSrid(?int $srid): self;
 
     /**
-     * Convert spatial object to its array representation.
+     * Convert any spatial object to its array representation.
      *
-     * Array does NOT contain SpatialInterface, only floats, integers and arrays.
+     * Array does NOT contain SpatialInterface, only floats, integers, and arrays.
      *
      * @return (float|int)[]|(float|int)[][]|(float|int)[][][]|(float|int)[][][][]
      */
-    public function toArray();
+    public function toArray(): array;
 
     /**
-     * Convert spatial object to its string representation.
+     * Convert any spatial object to its string representation.
      * Example: 'POINT(42 42)'.
-     *
-     * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 }
