@@ -64,11 +64,13 @@ abstract class OrmMockTestCase extends SpatialTestCase
 
         // Doctrine ORM ^2.19
         if (class_exists('\Doctrine\DBAL\Platforms\SqlitePlatform')) {
+            /** @phpstan-ignore-next-line */
             $platformClass = '\Doctrine\DBAL\Platforms\SqlitePlatform';
         }
 
         // Doctrine ORM ^3.0
         if (class_exists('\Doctrine\DBAL\Platforms\SQLitePlatform')) {
+            /** @phpstan-ignore-next-line */
             $platformClass = '\Doctrine\DBAL\Platforms\SQLitePlatform';
         }
 
@@ -76,6 +78,7 @@ abstract class OrmMockTestCase extends SpatialTestCase
             static::fail('Test cannot be performed, no SQLite platform found');
         }
 
+        /** @phpstan-ignore-next-line */
         $platform = new $platformClass();
 
         $driver->method('getDatabasePlatform')
