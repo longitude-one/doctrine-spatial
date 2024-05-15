@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
+use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Spatial platform interface.
@@ -26,52 +30,42 @@ interface PlatformInterface
     /**
      * Convert Binary to php value.
      *
-     * @param AbstractSpatialType $type    Spatial type
-     * @param string              $sqlExpr Sql expression
-     *
-     * @return GeometryInterface
+     * @param AbstractSpatialType  $type    Spatial type
+     * @param null|resource|string $sqlExpr Sql expression
      */
-    public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr);
+    public function convertBinaryToPhpValue(AbstractSpatialType $type, $sqlExpr): SpatialInterface;
 
     /**
      * Convert string data to a php value.
      *
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
-     *
-     * @return GeometryInterface
      */
-    public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr);
+    public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr): SpatialInterface;
 
     /**
      * Convert to database value.
      *
      * @param AbstractSpatialType $type  The spatial type
-     * @param GeometryInterface   $value The geometry interface
-     *
-     * @return string
+     * @param SpatialInterface    $value The geometry or geographic interface
      */
-    public function convertToDatabaseValue(AbstractSpatialType $type, GeometryInterface $value);
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string;
 
     /**
      * Convert to database value to SQL.
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr);
+    public function convertToDatabaseValueSql(AbstractSpatialType $type, $sqlExpr): string;
 
     /**
      * Convert to php value to SQL.
      *
      * @param AbstractSpatialType $type    The spatial type
      * @param string              $sqlExpr The SQL expression
-     *
-     * @return string
      */
-    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr);
+    public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr): string;
 
     /**
      * Get an array of database types that map to this Doctrine type.
@@ -80,14 +74,16 @@ interface PlatformInterface
      *
      * @return string[]
      */
-    public function getMappedDatabaseTypes(AbstractSpatialType $type);
+    public function getMappedDatabaseTypes(AbstractSpatialType $type): array;
 
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array $fieldDeclaration array SHALL contains 'type' as key
+     * @param array<string, mixed> $column array SHOULD contain 'type' key
+     * @param ?AbstractSpatialType $type   type is now provided
+     * @param ?int                 $srid   the srid SHOULD be forwarded when known
      *
-     * @return string
+     * @throws MissingArgumentException when $column doesn't contain 'type' and AbstractSpatialType is null
      */
-    public function getSqlDeclaration(array $fieldDeclaration);
+    public function getSqlDeclaration(array $column, ?AbstractSpatialType $type = null, ?int $srid = null): string;
 }

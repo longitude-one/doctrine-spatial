@@ -1,41 +1,58 @@
+<?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php"
-         cacheResultFile=".phpunit.cache/test-results"
-         executionOrder="depends,defects"
-         verbose="true">
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php" executionOrder="depends,defects" stopOnFailure="false"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         stopOnError="false" stopOnWarning="false" stopOnDefect="false" cacheDirectory=".phpunit.cache">
     <testsuites>
         <testsuite name="default">
             <directory>tests/LongitudeOne/Spatial/Tests</directory>
         </testsuite>
     </testsuites>
-
     <groups>
+        <include>
+            <group>php</group>
+            <group>dql</group>
+            <group>geometry</group>
+            <group>geography</group>
+            <group>srid</group>
+            <group>pgsql-only</group>
+            <group>issue</group>
+        </include>
         <exclude>
             <group>mysql-only</group>
         </exclude>
     </groups>
-
     <php>
         <var name="db_type" value="pdo_pgsql"/>
-<!--        <var name="db_host" value="spatial-postgis" />-->
-        <var name="db_host" value="127.0.0.1" />
-        <var name="db_username" value="main" />
-        <var name="db_password" value="main" /> <!-- Change it -->
-        <var name="db_name" value="main" />
-        <var name="db_port" value="5432" />
-        <!-- Execute dummy SELECT statement before each test to mark DB query log -->
-        <var name="opt_mark_sql" value="true" />
-        <!-- Enable SQLLoggerStack and query logging exception in tests -->
-        <var name="opt_use_debug_stack" value="true" />
-    </php>
+        <var name="db_host" value="127.0.0.1"/>
+        <var name="db_username" value="main"/>
+        <var name="db_password" value="main"/>
+        <var name="db_name" value="main"/>
+        <var name="db_port" value="5432"/>
+        <!-- PostgreSQL cannot drop current database, -->
+        <!-- Also, we connect on the alternate database, then we drop the main database -->
+        <var name="db_alternate" value="postgres"/>
 
-    <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
+        <!-- Select timezone for log -->
+        <var name="opt_log_timezone" value="Europe/Paris"/>
+        <!-- Select the log level -->
+        <var name="opt_log_level" value="debug"/>
+        <!-- Select the directory to store the log files -->
+        <var name="opt_log_dir" value=".phpunit.cache/logs"/>
+        <!-- Select the log file name -->
+        <var name="opt_log_file" value="pgsql.log"/>
+    </php>
+    <source>
         <include>
-            <directory suffix=".php">lib</directory>
+            <directory suffix=".php">lib/</directory>
         </include>
+    </source>
+    <coverage includeUncoveredFiles="true" cacheDirectory=".phpunit.cache/code-coverage">
         <report>
-            <clover outputFile=".phpunit.cache/clover-pgsql.xml"/>
+            <clover outputFile=".phpunit.cache/code-coverage/clover-pgsql.xml"/>
         </report>
     </coverage>
 </phpunit>

@@ -48,4 +48,4 @@ services:
       - ${APP_FOLDER}/docs:/etc/Sphinx/source
       - ${APP_FOLDER}/docs/build:/etc/Sphinx/build
     ports:
-      - 8100:80
+      - 8800:80

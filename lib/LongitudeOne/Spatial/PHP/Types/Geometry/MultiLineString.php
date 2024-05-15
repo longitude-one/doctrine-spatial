@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,16 +14,16 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractMultiLineString;
+use LongitudeOne\Spatial\PHP\Types\MultiLineStringInterface;
 
 /**
- * MultiLineString object for MULTILINESTRING geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
+ * MultiLineString object for the MULTILINESTRING geometry type.
  */
-class MultiLineString extends AbstractMultiLineString
+class MultiLineString extends AbstractMultiLineString implements GeometryInterface, MultiLineStringInterface
 {
 }

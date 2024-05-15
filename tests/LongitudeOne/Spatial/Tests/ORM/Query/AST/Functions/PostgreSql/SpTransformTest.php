@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_Transform DQL function tests.
@@ -33,17 +38,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversNothing
  */
-class SpTransformTest extends OrmTestCase
+class SpTransformTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -53,19 +58,18 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :proj)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpccs: enable
         );
-        $query->setParameter('proj', '+proj=longlat +datum=WGS84 +no_defs');
+        $query->setParameter('proj', '+proj=longlat +datum=WGS84 +no_defs', ParameterType::STRING);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($massachusetts, $result[0][0]);
         // too many error between OS, this test doesn't have to check the result (double float, etc.),
@@ -78,23 +82,22 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelectWith3Parameters()
+    public function testFunctionInSelectWith3Parameters(): void
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $massachusetts = $this->persistMassachusettsState(false);
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :from, :to)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
-        $query->setParameter('from', '+proj=lcc +lat_1=42.68333333333333 +lat_2=41.71666666666667 +lat_0=41 +lon_0=-71.5 +x_0=200000.0001016002 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs ');
-        $query->setParameter('to', '+proj=longlat +datum=WGS84 +no_defs');
+        $query->setParameter('from', '+proj=lcc +lat_1=42.68333333333333 +lat_2=41.71666666666667 +lat_0=41 +lon_0=-71.5 +x_0=200000.0001016002 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs ', ParameterType::STRING);
+        $query->setParameter('to', '+proj=longlat +datum=WGS84 +no_defs', ParameterType::STRING);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($massachusetts, $result[0][0]);
         static::assertStringStartsWith('POLYGON((', $result[0][1]);
-        // phpccs: enable
     }
 
     /**
@@ -102,7 +105,7 @@ class SpTransformTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelectWithSrid()
+    public function testFunctionInSelectWithSrid(): void
     {
         $massachusetts = $this->persistMassachusettsState();
         $this->getEntityManager()->flush();
@@ -111,17 +114,14 @@ class SpTransformTest extends OrmTestCase
         // TODO The test above failed because DQL SRID is seen as a string
         static::markTestSkipped('The test above failed because DQL SRID is seen as a string');
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_Transform(p.polygon, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpccs: enable
         );
-        $query->setParameter('srid', 4326, 'integer');
+        $query->setParameter('srid', 4326, ParameterType::INTEGER);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($massachusetts, $result[0][0]);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         static::assertSame('POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 42.3903829478009, -71.1775844305465 42.3903826677917,-71.1775825927231 42.3902893647987,-71.1776848522251 42.3902896512902))', $result[0][1]);
-        // phpcs: enable
     }
 }

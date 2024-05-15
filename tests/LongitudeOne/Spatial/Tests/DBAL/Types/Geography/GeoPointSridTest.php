@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,13 +14,15 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine GeographyType tests.
@@ -34,16 +37,15 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PointType
  */
-class GeoPointSridTest extends OrmTestCase
+class GeoPointSridTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEO_POINT_SRID_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
@@ -60,14 +62,15 @@ class GeoPointSridTest extends OrmTestCase
         $entity = new GeoPointSridEntity();
         $entity->setPoint($point);
 
-        $queryEntity = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
-        static::assertEquals(4326, $queryEntity[0]->getPoint()->getSrid());
+        /** @var GeoPointSridEntity[] $queryEntities */
+        $queryEntities = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
+        static::assertEquals(4326, $queryEntities[0]->getPoint()->getSrid());
     }
 
     /**
      * Test a null geography.
      */
-    public function testNullGeography()
+    public function testNullGeography(): void
     {
         $entity = new GeoPointSridEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -76,7 +79,7 @@ class GeoPointSridTest extends OrmTestCase
     /**
      * Test to persist a geographic point then find it by its id.
      */
-    public function testPointGeographyById()
+    public function testPointGeographyById(): void
     {
         $entity = new GeoPointSridEntity();
 
@@ -85,6 +88,8 @@ class GeoPointSridTest extends OrmTestCase
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to create a point (11 11): %s', $e->getMessage()));
         }
+
+        /** @var GeoPointSridEntity $queryEntity */
         $queryEntity = static::assertIsRetrievableById($this->getEntityManager(), $entity);
         static::assertEquals(4326, $queryEntity->getPoint()->getSrid());
     }

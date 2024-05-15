@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,11 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_ClosestPoint DQL function tests.
@@ -33,19 +37,19 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpClosestPointTest extends OrmTestCase
+class SpClosestPointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -55,7 +59,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $straight = $this->persistStraightLineString();
         $lineC = $this->persistLineStringC();
@@ -64,9 +68,7 @@ class SpClosestPointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(PgSql_ClosestPoint(l.lineString, ST_GeomFromText(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POINT(4 3)');
         $result = $query->getResult();
@@ -86,7 +88,7 @@ class SpClosestPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionWithPolygonInSelect()
+    public function testFunctionWithPolygonInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -94,15 +96,14 @@ class SpClosestPointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_AsText(PgSql_ClosestPoint(p.polygon, ST_GeomFromText(:p1))) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(2 2)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals('POINT(2 2)', $result[0][1]);

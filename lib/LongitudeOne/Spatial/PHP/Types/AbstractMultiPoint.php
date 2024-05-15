@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,32 +14,31 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract MultiPoint object for MULTIPOINT spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractMultiPoint extends AbstractGeometry
 {
     /**
-     * @var array[]
+     * @var (float|int)[][] Points
      */
-    protected $points = [];
+    protected array $points = [];
 
     /**
      * Abstract multipoint constructor.
      *
-     * @param AbstractPoint[]|array[] $points array of point
-     * @param int|null                $srid   Spatial Reference System Identifier
+     * @param ((float|int)[]|PointInterface)[] $points array of point
+     * @param null|int                         $srid   Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a point is not valid
      */
-    public function __construct(array $points, $srid = null)
+    public function __construct(array $points, ?int $srid = null)
     {
         $this->setPoints($points)
             ->setSrid($srid)
@@ -48,13 +48,11 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Add a point to geometry.
      *
-     * @param AbstractPoint|array $point Point to add to geometry
-     *
-     * @return self
+     * @param (float|int)[]|PointInterface $point Point to add to geometry
      *
      * @throws InvalidValueException when the point is not valid
      */
-    public function addPoint($point)
+    public function addPoint(array|PointInterface $point): self
     {
         $this->points[] = $this->validatePointValue($point);
 
@@ -64,21 +62,19 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Point getter.
      *
-     * @param int $index index of the point to retrieve. -1 to get last point.
-     *
-     * @return AbstractPoint
+     * @param int $index index of the point to retrieve. -1 to get the last point.
      */
-    public function getPoint($index)
+    public function getPoint(int $index): PointInterface
     {
-        switch ($index) {
-            case -1:
-                $point = $this->points[count($this->points) - 1];
-                break;
-            default:
-                $point = $this->points[$index];
-                break;
-        }
+        // TODO throw an error when index is out of range
+        // TODO throw an error when $this->points is empty
 
+        $point = match ($index) {
+            -1 => $this->points[count($this->points) - 1],
+            default => $this->points[$index],
+        };
+
+        /** @var class-string<PointInterface> $pointClass */
         $pointClass = $this->getNamespace().'\Point';
 
         return new $pointClass($point[0], $point[1], $this->srid);
@@ -87,9 +83,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Points getter.
      *
-     * @return AbstractPoint[]
+     * @return PointInterface[]
      */
-    public function getPoints()
+    public function getPoints(): array
     {
         $points = [];
 
@@ -105,7 +101,7 @@ abstract class AbstractMultiPoint extends AbstractGeometry
      *
      * @return string Multipoint
      */
-    public function getType()
+    public function getType(): string
     {
         return self::MULTIPOINT;
     }
@@ -113,13 +109,11 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Points fluent setter.
      *
-     * @param AbstractPoint[]|array[] $points the points
-     *
-     * @return self
+     * @param ((float|int)[]|PointInterface)[] $points the points
      *
      * @throws InvalidValueException when a point is invalid
      */
-    public function setPoints($points)
+    public function setPoints($points): self
     {
         $this->points = $this->validateMultiPointValue($points);
 
@@ -129,9 +123,9 @@ abstract class AbstractMultiPoint extends AbstractGeometry
     /**
      * Convert multipoint to array.
      *
-     * @return array[]
+     * @return (float|int)[][]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->points;
     }

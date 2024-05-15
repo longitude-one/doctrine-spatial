@@ -1,18 +1,20 @@
-name: Doctrine spatial test
+name: Full tests
 on:
-  push: ~
+  push:
   pull_request:
     branches: [ dev, main ]
+
+permissions:
+  contents: read
+
 jobs:
-  build:
+  stable-build:
     runs-on: ubuntu-latest
     environment: 'Test environment'
-    strategy:
-      matrix:
-        php: [ '8.1', '8.2', '8.3' ]
-    name: PHP${{ matrix.php }}/MySQL5.7/MySQL8.0/PgSQL
+    name: PHP 8.3 - doctrine/orm ^3.1
     env:
       HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
+      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
     services:
       mysql5:
         image: mysql:5.7
@@ -51,39 +53,216 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Validate composer.json
         run: composer validate --strict
-      - name: Get Composer Cache Directory
+
+      - name: Display Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+
+      - name: Restore cache Composer dependencies
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-      - name: Setup PHP ${{ matrix.php }}
+
+      - name: Setup PHP 8.3
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 8.3
+          coverage: pcov
+          tools: composer:v2
+
       - name: Echo PHP version
         run: php -v
-      - name: Copy testsuites
+
+      - name: Copy test suites
         run: cp .github/phpunit.*.xml .
+
       - name: Install libraries
-        run: composer update -vvv
-      - name: Run test suite and coverage
-        if: env.HAS_CC_SECRET == 'true'
+        run: composer --prefer-stable update -vvv
+
+      - name: Show libraries
+        run: composer show
+
+      - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
+        if: ${{ env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
-           coverageCommand: composer run-script test
-           coverageLocations: ${{github.workspace}}/.phpunit.cache/clover*.xml:clover
-      - name: Run test suite for forks
-        if: env.HAS_CC_SECRET != 'true'
+           coverageCommand: composer run-script test-coverage
+           coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
+
+      - name: Run test suite for forks or version without code coverage
+        if: ${{ env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
-      - name: Check quality code
-        run: composer run-script check-quality-code
+
+      - name: Coveralls.io steps
+        if: ${{ env.HAS_CA_SECRET == 'true' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          file: ${{github.workspace}}/.phpunit.cache/code-coverage/clover.xml
+
+      ## Quality checks
+      ## PHP-CS-Fixer is needed with only one version of PHP
+      - name: Cache Composer PHP-CS-FIXER packages
+        id: composer-phpcsfixer-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-phpcsfixer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-phpcsfixer-
+
+      - name: Install PHP-CS-Fixer
+        run: composer update --working-dir=quality/php-cs-fixer
+
+      - name: Run PHP-CS-Fixer
+        run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
+
+      ## PHP-MESS-DETECTOR
+      - name: Cache Composer PHP-MESS-DETECTOR packages
+        id: composer-phpmd-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-phpmd-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-phpmd-
+      - name: Install PHP-MESS-DETECTOR
+        run: composer update --working-dir=quality/php-mess-detector
+      - name: Run PHP-MESS-DETECTOR on lib directory
+        run: ./quality/php-mess-detector/vendor/bin/phpmd lib text quality/php-mess-detector/ruleset.xml
+      - name: Run PHP-MESS-DETECTOR on tests directory
+        run: ./quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml
+
+      ## PHP CODE SNIFFER
+      - name: Cache Composer PHP-CS packages
+        id: composer-php-cs-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-php-cs-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-cs-
+
+      - name: Install PHP-CS
+        run: composer update --working-dir=quality/php-code-sniffer
+
+      - name: Run PHP-CS
+        run: ./quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
+
+      ## PHP-STAN
+      - name: Cache Composer PHP-STAN packages
+        id: composer-php-stan-cache
+        uses: actions/cache@v4
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ runner.os }}-php-stan-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-stan-
+      - name: Install PHP-STAN
+        run: composer update --working-dir=quality/php-stan
+      - name: Run PHP-STAN
+        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v
+
+  other-version-build:
+    needs: stable-build
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.orm == '^3.2' || matrix.orm == '^4.0'}}
+    environment: 'Test environment'
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.1', '8.2', '8.3' ]
+        orm: [ '^2.9', '^3.1', '^3.2', '^4.0' ]
+        exclude:
+          # Already tested
+          -   php: '8.3'
+              orm: '^3.1'
+    name: PHP${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
+    services:
+      mysql5:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        ports:
+          - 3357:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql8:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        ports:
+          - 3380:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        # Docker Hub image
+        image: postgis/postgis
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: main
+          POSTGRES_USER: main
+          POSTGRES_DATABASE: main
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      -   name: Checkout code
+          uses: actions/checkout@v4
+
+      -   name: Validate composer.json
+          run: composer validate --strict
+
+      -   name: Display Composer Cache Directory
+          id: composer-cache
+          run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      -   name: Restore cache Composer dependencies
+          uses: actions/cache@v4
+          with:
+            path: ${{ steps.composer-cache.outputs.dir }}
+            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-composer-
+
+      -   name: Setup PHP ${{ matrix.php }}
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            coverage: pcov
+            tools: composer:v2
+
+      -   name: Echo PHP version
+          run: php -v
+
+      -   name: Copy test suites
+          run: cp .github/phpunit.*.xml .
+
+      -   name: Force doctrine/orm library to ${{ matrix.orm }}
+          run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
+
+      -   name: Run test suite for forks or version without code coverage
+          run: composer run-script test
+
+

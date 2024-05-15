@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -12,6 +13,8 @@
  * file that was distributed with this source code.
  *
  */
+
+declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Fixtures;
 
@@ -32,38 +35,28 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
  */
 #[Table]
 #[Entity]
-class LineStringEntity
+class LineStringEntity implements SingleEntityInterface
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var LineString
-     */
     #[Column(type: 'linestring', nullable: true)]
-    protected $lineString;
+    protected LineString $lineString;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get lineString.
-     *
-     * @return LineString
      */
-    public function getLineString()
+    public function getLineString(): LineString
     {
         return $this->lineString;
     }
@@ -72,10 +65,8 @@ class LineStringEntity
      * Set lineString.
      *
      * @param LineString $lineString linestring to set
-     *
-     * @return self
      */
-    public function setLineString(LineString $lineString)
+    public function setLineString(LineString $lineString): self
     {
         $this->lineString = $lineString;
 

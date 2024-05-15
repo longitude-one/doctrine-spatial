@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,11 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Distance DQL function tests.
@@ -32,19 +35,20 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StDistanceTest extends OrmTestCase
+class StDistanceTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
         $this->usesType('geopoint');
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
@@ -52,20 +56,16 @@ class StDistanceTest extends OrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @throws InvalidValueException when geometries are not valid
-     *
      * @group geography
      */
-    public function testSelectStDistanceGeographyCartesian()
+    public function testSelectStDistanceGeographyCartesian(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
         $dallas = $this->persistDallasGeography();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
@@ -73,6 +73,7 @@ class StDistanceTest extends OrmTestCase
         $result = $query->getResult();
 
         // TODO: Test should be fixed, distance are differents on Windows and on Linux.
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
@@ -90,7 +91,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geography
      */
-    public function testSelectStDistanceGeographySpheroid()
+    public function testSelectStDistanceGeographySpheroid(): void
     {
         $newYork = $this->persistNewYorkGeography();
         $losAngeles = $this->persistLosAngelesGeography();
@@ -100,15 +101,14 @@ class StDistanceTest extends OrmTestCase
 
         // TODO This test should be moved to a class implementing only PgSQL
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEquals(1309106.31458423, $result[0][1]);
@@ -123,7 +123,7 @@ class StDistanceTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceGeometryCartesian()
+    public function testSelectStDistanceGeometryCartesian(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();
@@ -132,15 +132,14 @@ class StDistanceTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_Distance(p.point, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);

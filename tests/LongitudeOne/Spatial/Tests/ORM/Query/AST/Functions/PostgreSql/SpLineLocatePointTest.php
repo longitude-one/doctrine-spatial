@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineLocatePoint DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineLocatePointTest extends OrmTestCase
+class SpLineLocatePointTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +55,7 @@ class SpLineLocatePointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $this->persistStraightLineString();
         $lineA = $this->persistLineStringA();
@@ -61,9 +65,7 @@ class SpLineLocatePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE PgSql_LineLocatePoint(l.lineString, ST_GeomFromText(:point)) < :percent'
-            // phpcs:enable
         );
 
         $query->setParameter('point', 'POINT(4 3)', 'string');
@@ -71,6 +73,7 @@ class SpLineLocatePointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($lineA, $result[0]);
         static::assertEquals($lineB, $result[1]);
@@ -81,7 +84,7 @@ class SpLineLocatePointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistLineStringA();
@@ -90,13 +93,12 @@ class SpLineLocatePointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT PgSql_LineLocatePoint(l.lineString, :point) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('point', 'POINT(4 3)');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(0.7, $result[0][1]);
         static::assertEquals(0.35, $result[1][1]);
         static::assertEqualsWithDelta(0.4, $result[2][1], 0.000000000001);

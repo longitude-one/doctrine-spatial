@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineCrossingDirection DQL function tests.
@@ -32,17 +36,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineCrossingDirectionTest extends OrmTestCase
+class SpLineCrossingDirectionTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -52,7 +56,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInPredicate()
+    public function testInPredicate(): void
     {
         $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -61,15 +65,14 @@ class SpLineCrossingDirectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE PgSql_LineCrossingDirection(l.lineString, ST_GeomFromText(:p1)) = 1'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(12 6,5 11,8 12,5 15)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineStringY, $result[0]);
     }
@@ -79,7 +82,7 @@ class SpLineCrossingDirectionTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testInSelect()
+    public function testInSelect(): void
     {
         $lineStringX = $this->persistLineStringX();
         $lineStringY = $this->persistLineStringY();
@@ -88,15 +91,14 @@ class SpLineCrossingDirectionTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, PgSql_LineCrossingDirection(l.lineString, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'LINESTRING(12 6,5 11,8 12,5 15)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringX, $result[0][0]);
         static::assertEquals(2, $result[0][1]);

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Distance_Sphere DQL function tests.
@@ -32,17 +36,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpDistanceSphereTest extends OrmTestCase
+class SpDistanceSphereTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -52,22 +56,21 @@ class SpDistanceSphereTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDistanceSphereGeometry()
+    public function testSelectStDistanceSphereGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();
         $losAngeles = $this->persistLosAngelesGeometry();
         $dallas = $this->persistDallasGeometry();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, PgSql_Distance_Sphere(p.point, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEquals(1305895.94823465, $result[0][1]);

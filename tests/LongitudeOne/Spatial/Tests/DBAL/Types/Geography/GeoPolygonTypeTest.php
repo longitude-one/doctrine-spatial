@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,15 +14,17 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * PolygonType tests.
@@ -35,16 +38,15 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType
  */
-class GeoPolygonTypeTest extends OrmTestCase
+class GeoPolygonTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEO_POLYGON_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
@@ -53,7 +55,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testFindByPolygon()
+    public function testFindByPolygon(): void
     {
         $rings = [
             new LineString([
@@ -82,7 +84,7 @@ class GeoPolygonTypeTest extends OrmTestCase
     /**
      * Test to store an empty polygon.
      */
-    public function testNullPolygon()
+    public function testNullPolygon(): void
     {
         $entity = new GeoPolygonEntity();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -104,7 +106,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testPolygonRing()
+    public function testPolygonRing(): void
     {
         $rings = [
             new LineString([
@@ -133,7 +135,7 @@ class GeoPolygonTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometry contains an invalid value
      */
-    public function testSolidPolygon()
+    public function testSolidPolygon(): void
     {
         $rings = [
             new LineString([

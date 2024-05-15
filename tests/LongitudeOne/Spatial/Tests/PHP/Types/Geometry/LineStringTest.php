@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +42,7 @@ class LineStringTest extends TestCase
     /**
      * Test LineString bad parameter.
      */
-    public function testBadLineString()
+    public function testBadLineString(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid LineString Point value of type "integer"');
@@ -49,7 +53,7 @@ class LineStringTest extends TestCase
     /**
      * Test an empty line string.
      */
-    public function testEmptyLineString()
+    public function testEmptyLineString(): void
     {
         $lineString = $this->createEmptyLineString();
 
@@ -59,7 +63,7 @@ class LineStringTest extends TestCase
     /**
      * Test to convert line string to json.
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"LineString","coordinates":[[0,0],[1,0],[1,1],[0,1],[0,0]],"srid":null}';
         $lineString = $this->createRingLineString();
@@ -74,7 +78,7 @@ class LineStringTest extends TestCase
     /**
      * Test to get last point.
      */
-    public function testLineStringFromArraysGetLastPoint()
+    public function testLineStringFromArraysGetLastPoint(): void
     {
         $expected = static::createPointE();
         $lineString = $this->createStraightLineString();
@@ -86,7 +90,7 @@ class LineStringTest extends TestCase
     /**
      * Test to get all points of a line string.
      */
-    public function testLineStringFromArraysGetPoints()
+    public function testLineStringFromArraysGetPoints(): void
     {
         $expected = [
             static::createPointOrigin(),
@@ -103,7 +107,7 @@ class LineStringTest extends TestCase
     /**
      * Test to get second point of a linestring.
      */
-    public function testLineStringFromArraysGetSinglePoint()
+    public function testLineStringFromArraysGetSinglePoint(): void
     {
         $expected = static::createPointB();
         $lineString = $this->createStraightLineString();
@@ -115,7 +119,7 @@ class LineStringTest extends TestCase
     /**
      * Test to verify that a line is closed.
      */
-    public function testLineStringFromArraysIsClosed()
+    public function testLineStringFromArraysIsClosed(): void
     {
         $lineString = $this->createRingLineString();
 
@@ -125,7 +129,7 @@ class LineStringTest extends TestCase
     /**
      * Test to verify that a line is opened.
      */
-    public function testLineStringFromArraysIsOpen()
+    public function testLineStringFromArraysIsOpen(): void
     {
         $lineString = $this->createStraightLineString();
 
@@ -135,7 +139,7 @@ class LineStringTest extends TestCase
     /**
      * Test to convert line to string.
      */
-    public function testLineStringFromArraysToString()
+    public function testLineStringFromArraysToString(): void
     {
         $expected = '0 0,1 0,1 1,0 1,0 0';
         $lineString = $this->createRingLineString();
@@ -146,12 +150,12 @@ class LineStringTest extends TestCase
     /**
      * Test to convert line to array.
      */
-    public function testLineStringFromObjectsToArray()
+    public function testLineStringFromObjectsToArray(): void
     {
         $expected = [
-            [0, 0],
-            [2, 2],
-            [5, 5],
+            ['0', '0'],
+            ['2', '2'],
+            ['5', '5'],
         ];
         $lineString = $this->createStraightLineString();
 

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MySQL_MbrOverlaps DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrOverlapsTest extends OrmTestCase
+class SpMbrOverlapsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +55,7 @@ class SpMbrOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -61,13 +65,12 @@ class SpMbrOverlapsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySQL_MbrOverlaps(p.polygon, ST_GeomFromText(:p)) = true'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POLYGON((4 4, 4 12, 12 12, 12 4, 4 4))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($polygonW, $result[2]);
@@ -78,7 +81,7 @@ class SpMbrOverlapsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $bigPolyon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -88,13 +91,12 @@ class SpMbrOverlapsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, MySQL_MbrOverlaps(p.polygon, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POLYGON((0 0, 0 12, 12 12, 12 0, 0 0))', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(4, $result);
         static::assertEquals($bigPolyon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,12 +14,16 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * PolygonType tests.
@@ -32,24 +37,26 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
  */
-class PolygonTypeTest extends OrmTestCase
+class PolygonTypeTest extends PersistOrmTestCase
 {
     use LineStringHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the test.
+     * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
     /**
      * Test to store a polygon and find it by its geometric.
      */
-    public function testFindByPolygon()
+    public function testFindByPolygon(): void
     {
         $polygon = $this->createBigPolygon();
         $entity = $this->persistPolygon($polygon);
@@ -62,7 +69,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a null polygon and find it by its id.
      */
-    public function testNullPolygon()
+    public function testNullPolygon(): void
     {
         $entity = new PolygonEntity();
 
@@ -79,7 +86,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a polygon ring and find it by its id.
      */
-    public function testPolygonRing()
+    public function testPolygonRing(): void
     {
         $entity = $this->persistHoleyPolygon();
         $id = $entity->getId();
@@ -91,7 +98,7 @@ class PolygonTypeTest extends OrmTestCase
     /**
      * Test to store a solid polygon and find it by its id.
      */
-    public function testSolidPolygon()
+    public function testSolidPolygon(): void
     {
         $entity = $this->persistBigPolygon();
         $id = $entity->getId();

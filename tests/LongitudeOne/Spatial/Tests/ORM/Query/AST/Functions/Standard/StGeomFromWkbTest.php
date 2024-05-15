@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_GeomFromWkb DQL function tests.
@@ -30,18 +35,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StGeomFromWkbTest extends OrmTestCase
+class StGeomFromWkbTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,21 +56,20 @@ class StGeomFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_AsText(ST_GeomFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('wkb', hex2bin('0101000000000000000000F03F000000000000F0BF'), 'blob');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POINT(1 -1)', $result[0][1]);
     }
@@ -75,22 +79,21 @@ class StGeomFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_SRID(ST_GeomFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('wkb', hex2bin('0101000000000000000000F03F000000000000F0BF'), 'blob');
         $query->setParameter('srid', 2154);
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals(2154, $result[0][1]);
     }

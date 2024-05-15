@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_PointN DQL function tests.
@@ -30,17 +34,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StPointNTest extends OrmTestCase
+class StPointNTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        // TODO Check if MySQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
@@ -50,7 +55,7 @@ class StPointNTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -59,9 +64,7 @@ class StPointNTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l, ST_AsText(ST_PointN(l.lineString, :p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('p', 2, 'integer');
         $result = $query->getResult();
@@ -81,7 +84,7 @@ class StPointNTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -90,9 +93,7 @@ class StPointNTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l where  ST_PointN(l.lineString, :n) = ST_GeomFromText(:p)'
-            // phpcs: enable
         );
         $query->setParameter('n', 2, 'integer');
         $query->setParameter('p', 'POINT(2 2)', 'string');

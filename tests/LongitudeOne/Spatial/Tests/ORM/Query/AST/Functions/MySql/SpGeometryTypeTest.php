@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,15 +14,18 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SC_GeometryType DQL function tests.
  * The SQL ST_GeometryType function does not respect the OGC.
- * It should sreturns the SQL MM Type ('ST_Linestring', 'ST_Polygon'),
+ * It should return the SQL MM Type ('ST_Linestring', 'ST_Polygon'),
  * But MySQL returns the type of the geometry as a string. Eg: 'LINESTRING', 'POLYGON', 'MULTIPOINT'.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -34,17 +38,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpGeometryTypeTest extends OrmTestCase
+class SpGeometryTypeTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -54,7 +58,7 @@ class SpGeometryTypeTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsText()
+    public function testStAsText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

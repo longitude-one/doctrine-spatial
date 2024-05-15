@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,15 +14,17 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\Persistence\Mapping\MappingException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Collect DQL function tests.
@@ -37,15 +40,15 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpCollectTest extends OrmTestCase
+class SpCollectTest extends PersistOrmTestCase
 {
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -54,13 +57,12 @@ class SpCollectTest extends OrmTestCase
      * Test a DQL containing function to test in the select.
      *
      * @throws ORMException            when cache is not set
-     * @throws MappingException        when mapping
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
      * @group geometry
      */
-    public function testFunctionSelect()
+    public function testFunctionSelect(): void
     {
         $entity = new PointEntity();
         $entity->setPoint(new Point(1, 2));
@@ -70,9 +72,7 @@ class SpCollectTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_Collect(p.point, ST_GeomFromText(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POINT(-2 3)');
         $result = $query->getResult();

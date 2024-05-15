@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Contains DQL function tests.
@@ -31,19 +36,19 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StContainsTest extends OrmTestCase
+class StContainsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->usesType('point');
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -53,7 +58,7 @@ class StContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStContains()
+    public function testSelectStContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -61,15 +66,14 @@ class StContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_Contains(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(2 2)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);
@@ -82,7 +86,7 @@ class StContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStContainsWhereParameter()
+    public function testStContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $holeyPolygon = $this->persistHoleyPolygon();
@@ -90,39 +94,36 @@ class StContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Contains(p.polygon, ST_GeomFromText(:p1)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(6 6)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Contains(p.polygon, ST_GeomFromText(:p1)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(2 2)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                // MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way
-                break;
-            case 'postgresql':
-            default:
-                static::assertEquals($holeyPolygon, $result[1]);
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            static::markTestSkipped(
+                'MySQL does not respect the initial polygon and reconstructs it in a bad (direction) way'
+            );
         }
+
+        static::assertEquals($holeyPolygon, $result[1]);
     }
 }

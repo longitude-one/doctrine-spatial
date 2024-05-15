@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * MySQL_MbrTouches DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrTouchesTest extends OrmTestCase
+class SpMbrTouchesTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +55,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInPredicate()
+    public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -59,13 +63,12 @@ class SpMbrTouchesTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySQL_MbrTouches(p.polygon, ST_GeomFromText(:p)) = true'
-            // phpcs:enable
         );
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -75,7 +78,7 @@ class SpMbrTouchesTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistSmallPolygon();
@@ -83,13 +86,12 @@ class SpMbrTouchesTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT MySQL_MbrTouches(p.polygon, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
         $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals(0, $result[1][1]);
     }

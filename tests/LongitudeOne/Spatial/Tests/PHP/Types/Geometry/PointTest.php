@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -12,6 +13,8 @@
  * file that was distributed with this source code.
  *
  */
+
+declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
@@ -34,9 +37,9 @@ class PointTest extends TestCase
     use PointHelperTrait;
 
     /**
-     * Test bad string parameters - latitude degrees greater that 90.
+     * Test bad string parameters - latitude degrees greater than 90.
      */
-    public function testBadLatitudeDegrees()
+    public function testBadLatitudeDegrees(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -90 to 90 in value "92:26:46N"');
@@ -47,12 +50,10 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - invalid latitude direction.
      */
-    public function testBadLatitudeDirection()
+    public function testBadLatitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('[Syntax Error] line 0, col 8: Error: Expected CrEOF\\Geo\\String\\Lexer::T_INTEGER or CrEOF\\Geo\\String\\Lexer::T_FLOAT, got "Q" in value "84:26:46Q"');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid coordinate value, got "84:26:46Q".');
 
         new Point('100:56:55W', '84:26:46Q');
     }
@@ -60,7 +61,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - latitude minutes greater than 59.
      */
-    public function testBadLatitudeMinutes()
+    public function testBadLatitudeMinutes(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "84:64:46N"');
@@ -71,7 +72,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - latitude seconds greater than 59.
      */
-    public function testBadLatitudeSeconds()
+    public function testBadLatitudeSeconds(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "84:23:75N"');
@@ -82,7 +83,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude degrees greater than 180.
      */
-    public function testBadLongitudeDegrees()
+    public function testBadLongitudeDegrees(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -180 to 180 in value "190:56:55W"');
@@ -93,12 +94,10 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - invalid longitude direction.
      */
-    public function testBadLongitudeDirection()
+    public function testBadLongitudeDirection(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('[Syntax Error] line 0, col 9: Error: Expected CrEOF\\Geo\\String\\Lexer::T_INTEGER or CrEOF\\Geo\\String\\Lexer::T_FLOAT, got "P" in value "100:56:55P"');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid coordinate value, got "100:56:55P".');
 
         new Point('100:56:55P', '84:26:46N');
     }
@@ -106,7 +105,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude minutes greater than 59.
      */
-    public function testBadLongitudeMinutes()
+    public function testBadLongitudeMinutes(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "108:62:55W"');
@@ -117,7 +116,7 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - longitude seconds greater than 59.
      */
-    public function testBadLongitudeSeconds()
+    public function testBadLongitudeSeconds(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "108:53:94W"');
@@ -126,9 +125,22 @@ class PointTest extends TestCase
     }
 
     /**
+     * Test exception on embedded arrays.
+     *
+     * @throws InvalidValueException This SHALL happen
+     */
+    public function testEmbeddedArrays(): void
+    {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array');
+
+        new Point([[3, []]]);
+    }
+
+    /**
      * Test getType method.
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $point = static::createPointOrigin();
         $result = $point->getType();
@@ -139,7 +151,7 @@ class PointTest extends TestCase
     /**
      * Test a valid numeric point.
      */
-    public function testGoodNumericPoint()
+    public function testGoodNumericPoint(): void
     {
         $point = $this->createLosAngelesGeometry();
 
@@ -148,8 +160,8 @@ class PointTest extends TestCase
 
         try {
             $point
-                ->setLatitude(32.782778)
-                ->setLongitude(-96.803889)
+                ->setLatitude('32.782778')
+                ->setLongitude('-96.803889')
             ;
         } catch (InvalidValueException $e) {
             static::fail(sprintf('Unable to update geometry point: %s', $e->getMessage()));
@@ -162,7 +174,7 @@ class PointTest extends TestCase
     /**
      * Test valid string points.
      */
-    public function testGoodStringPoints()
+    public function testGoodStringPoints(): void
     {
         $point = new Point('79:56:55W', '40:26:46N');
 
@@ -197,13 +209,13 @@ class PointTest extends TestCase
         $point = new Point('112:4:0W', '33:27:0N');
 
         static::assertEquals(33.45, $point->getLatitude());
-        static::assertEqualsWithDelta(-112.06666666666666, $point->getLongitude(), 0.000000000001);
+        static::assertEqualsWithDelta(-112.06666666666, $point->getLongitude(), 0.0000000001);
     }
 
     /**
      * Test to convert point to json.
      */
-    public function testJson()
+    public function testJson(): void
     {
         $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
         $point = static::createPointE();
@@ -220,12 +232,10 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - No parameters.
      */
-    public function testMissingArguments()
+    public function testMissingArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct:');
-        // phpcs:enable
 
         new Point();
     }
@@ -233,7 +243,7 @@ class PointTest extends TestCase
     /**
      * Test a point created with an array.
      */
-    public function testPointFromArrayToString()
+    public function testPointFromArrayToString(): void
     {
         $expected = '5 5';
         $point = static::createPointE();
@@ -244,12 +254,10 @@ class PointTest extends TestCase
     /**
      * Test error when point is created with too many arguments.
      */
-    public function testPointTooManyArguments()
+    public function testPointTooManyArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "5", "5", "5", "5"');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 5, 5, 5, 5');
 
         new Point(5, 5, 5, 5);
     }
@@ -257,7 +265,7 @@ class PointTest extends TestCase
     /**
      * Test point with srid.
      */
-    public function testPointWithSrid()
+    public function testPointWithSrid(): void
     {
         $point = static::createPointWithSrid(2154);
         $result = $point->getSrid();
@@ -268,23 +276,88 @@ class PointTest extends TestCase
     /**
      * Test error when point was created with wrong arguments type.
      */
-    public function testPointWrongArgumentTypes()
+    public function testPointWrongArgumentTypes(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: Array, Array, "1234"');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array, array, 1234');
 
         new Point([], [], '1234');
     }
 
     /**
+     * Test setX method with an array.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetFirstCoordinateWithAnArray(): void
+    {
+        $point = new Point(10, 10);
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid coordinate value, coordinate cannot be an array.');
+        $point->setX('10 20');
+    }
+
+    /**
+     * Test setY method with an array.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetSecondCoordinateWithAnArray(): void
+    {
+        $point = new Point(10, 10);
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid coordinate value, coordinate cannot be an array.');
+        $point->setY('10 20');
+    }
+
+    /**
+     * Test setX method.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetX(): void
+    {
+        $point = new Point(10, 10);
+        $point->setX('20');
+        static::assertSame(20, $point->getX());
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid coordinate value, got "foo".');
+        $point->setX('foo');
+    }
+
+    /**
+     * Test setY method.
+     *
+     * @throws InvalidValueException it should NOT happen
+     */
+    public function testSetY(): void
+    {
+        $point = new Point(10, 10);
+        $point->setY('20');
+        static::assertSame(20, $point->getLatitude());
+        static::assertSame(20, $point->getY());
+
+        self::expectException(InvalidValueException::class);
+        self::expectExceptionMessage('Invalid coordinate value, got "foo".');
+        $point->setY('foo');
+    }
+
+    /**
      * Test to convert a point to an array.
      */
-    public function testToArray()
+    public function testToArray(): void
     {
-        $expected = [0.0, 0.0];
+        $expected = [0, 0];
         $point = static::createPointOrigin();
+        $result = $point->toArray();
+
+        static::assertSame($expected, $result);
+
+        $expected = [-118.243, 34.0522];
+        $point = static::createLosAngelesGeometry();
         $result = $point->toArray();
 
         static::assertSame($expected, $result);
@@ -293,12 +366,10 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - Two invalid parameters.
      */
-    public function testTwoInvalidArguments()
+    public function testTwoInvalidArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "", ""');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: NULL, NULL');
 
         new Point(null, null);
     }
@@ -306,12 +377,10 @@ class PointTest extends TestCase
     /**
      * Test bad string parameters - More than 3 parameters.
      */
-    public function testUnusedArguments()
+    public function testUnusedArguments(): void
     {
         $this->expectException(InvalidValueException::class);
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: "1", "2", "3", "4", "", "5"');
-        // phpcs:enable
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 1, 2, 3, 4, NULL, 5');
 
         new Point(1, 2, 3, 4, null, 5);
     }

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Disjoint DQL function tests.
@@ -31,18 +36,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StDisjointTest extends OrmTestCase
+class StDisjointTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -52,7 +57,7 @@ class StDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStDisjoint()
+    public function testSelectStDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -61,15 +66,14 @@ class StDisjointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEmpty($result[0][1]);
@@ -84,7 +88,7 @@ class StDisjointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStDisjointWhereParameter()
+    public function testStDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -94,29 +98,27 @@ class StDisjointTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($outerPolygon, $result[0]);
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POLYGON((15 15,17 15,17 17,15 17,15 15))', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($smallPolygon, $result[1]);

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,18 +14,22 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
-use LongitudeOne\Spatial\Tests\Helper\GeometryHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine GeometryType tests.
@@ -38,19 +43,20 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
-class GeometryTypeTest extends OrmTestCase
+class GeometryTypeTest extends PersistOrmTestCase
 {
-    use GeometryHelperTrait;
-    use PersistHelperTrait;
-    use PolygonHelperTrait;
+    use PersistantGeometryHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the geography type test.
+     * Set up the geography type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesEntity(self::NO_HINT_GEOMETRY_ENTITY);
+        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
@@ -60,7 +66,7 @@ class GeometryTypeTest extends OrmTestCase
     public function testBadGeometryValue(): void
     {
         static::expectException(InvalidValueException::class);
-        static::expectExceptionMessage('Geometry column values must implement GeometryInterface');
+        static::expectExceptionMessage('Spatial column values must implement SpatialInterface');
 
         $entity = new NoHintGeometryEntity();
         $entity->setGeometry('POINT(0 0)');
@@ -75,6 +81,7 @@ class GeometryTypeTest extends OrmTestCase
     {
         $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
+        static::assertInstanceOf(GeometryInterface::class, $entity->getGeometry());
     }
 
     /**

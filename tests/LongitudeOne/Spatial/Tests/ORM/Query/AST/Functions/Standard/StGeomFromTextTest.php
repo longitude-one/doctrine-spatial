@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,11 +14,15 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_GeomFromText DQL function tests.
@@ -32,20 +37,20 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StGeomFromTextTest extends OrmTestCase
+class StGeomFromTextTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -55,22 +60,21 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testLineString()
+    public function testLineString(): void
     {
         $lineString = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE g.lineString = ST_GeomFromText(:geometry)'
-            // phpcs:enable
         );
 
         $query->setParameter('geometry', 'LINESTRING(0 0,2 2,5 5)', 'string');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($lineString, $result[0]);
     }
@@ -80,7 +84,7 @@ class StGeomFromTextTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPoint()
+    public function testPoint(): void
     {
         $pointA = $this->persistPointA();
         $this->getEntityManager()->flush();
@@ -94,6 +98,7 @@ class StGeomFromTextTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointA, $result[0]);
     }

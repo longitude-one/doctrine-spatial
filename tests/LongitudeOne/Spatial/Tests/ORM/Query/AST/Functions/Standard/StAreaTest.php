@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Area DQL function tests.
@@ -31,28 +36,28 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StAreaTest extends OrmTestCase
+class StAreaTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL containing function to test in the predicate.
      *
      * @group geometry
      */
-    public function testFunctionInPredicat()
+    public function testFunctionInPredicate(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -66,6 +71,7 @@ class StAreaTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($smallPolygon, $result[0]);
     }
@@ -75,7 +81,7 @@ class StAreaTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testFunctionInSelect()
+    public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();
         $this->persistHoleyPolygon();
@@ -89,6 +95,7 @@ class StAreaTest extends OrmTestCase
         );
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals(100, $result[0][1]);
         static::assertEquals(96, $result[1][1]);
         static::assertEquals(100, $result[2][1]);

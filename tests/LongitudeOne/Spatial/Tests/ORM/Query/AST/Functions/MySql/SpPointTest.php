@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * SP_LineString DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpPointTest extends OrmTestCase
+class SpPointTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,22 +55,21 @@ class SpPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT t, ST_AsText(MySql_Point(:x, :y)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
-            // phpcs:enable
         );
         $query->setParameter('x', 1, 'integer');
         $query->setParameter('y', 2, 'integer');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POINT(1 2)', $result[0][1]);
     }

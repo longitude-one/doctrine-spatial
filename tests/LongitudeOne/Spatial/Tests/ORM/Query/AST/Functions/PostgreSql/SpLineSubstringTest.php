@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_LineSubstring DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpLineSubstringTest extends OrmTestCase
+class SpLineSubstringTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +55,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -59,9 +63,7 @@ class SpLineSubstringTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE l.lineString = PgSql_LineSubstring(ST_GeomFromText(:p), :start, :end)'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'LINESTRING(0 0, 2 2, 10 10)', 'string');
@@ -70,6 +72,7 @@ class SpLineSubstringTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($straightLineString, $result[0]);
     }
@@ -79,7 +82,7 @@ class SpLineSubstringTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistStraightLineString();
         $this->persistLineStringA();
@@ -88,14 +91,13 @@ class SpLineSubstringTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_LineSubstring(l.lineString, :start, :end)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
-            // phpcs:enable
         );
         $query->setParameter('start', 0.4);
         $query->setParameter('end', 0.8);
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertEquals('LINESTRING(2 2,4 4)', $result[0][1]);
         static::assertEquals('LINESTRING(4 4,8 8)', $result[1][1]);
         static::assertEquals('LINESTRING(6 6,12 2)', $result[2][1]);

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,12 +14,17 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
  * ST_ConvexHull DQL function.
+ * TODO add test for this function.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org
@@ -63,11 +69,13 @@ class StConvexHull extends AbstractSpatialDQLFunction
      * Get the platforms accepted.
      *
      * @since 2.0 This function replace the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql'];
+        // This function didn't exist in MySQL until version 8.0.16
+        return [PostgreSQLPlatform::class, MySQLPlatform::class];
     }
 }

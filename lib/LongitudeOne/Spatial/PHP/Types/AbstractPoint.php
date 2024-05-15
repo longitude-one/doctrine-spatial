@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,37 +14,32 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use CrEOF\Geo\String\Exception\RangeException;
-use CrEOF\Geo\String\Exception\UnexpectedValueException;
-use CrEOF\Geo\String\Parser;
+use LongitudeOne\Geo\String\Exception\RangeException;
+use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
+use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract point object for POINT spatial types.
  *
- * https://stackoverflow.com/questions/7309121/preferred-order-of-writing-latitude-longitude-tuples
- * https://docs.geotools.org/latest/userguide/library/referencing/order.html
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
+ * @see https://stackoverflow.com/questions/7309121/preferred-order-of-writing-latitude-longitude-tuples
+ * @see https://docs.geotools.org/latest/userguide/library/referencing/order.html
  */
 abstract class AbstractPoint extends AbstractGeometry
 {
     /**
      * The X coordinate or the longitude.
-     *
-     * @var float
      */
-    protected $x;
+    protected float|int $x;
 
     /**
      * The Y coordinate or the latitude.
-     *
-     * @var float
      */
-    protected $y;
+    protected float|int $y;
 
     /**
      * AbstractPoint constructor.
@@ -52,57 +48,47 @@ abstract class AbstractPoint extends AbstractGeometry
      */
     public function __construct()
     {
-        $argv = $this->validateArguments(func_get_args());
+        $argv = $this->validateArguments(func_get_args(), '__construct');
 
         call_user_func_array([$this, 'construct'], $argv);
     }
 
     /**
      * Latitude getter.
-     *
-     * @return float
      */
-    public function getLatitude()
+    public function getLatitude(): float|int
     {
         return $this->getY();
     }
 
     /**
      * Longitude getter.
-     *
-     * @return float
      */
-    public function getLongitude()
+    public function getLongitude(): float|int
     {
         return $this->getX();
     }
 
     /**
      * Type getter.
-     *
-     * @return string Point
      */
-    public function getType()
+    public function getType(): string
     {
         return self::POINT;
     }
 
     /**
      * X getter. (Longitude getter).
-     *
-     * @return float
      */
-    public function getX()
+    public function getX(): float|int
     {
         return $this->x;
     }
 
     /**
      * Y getter. Latitude getter.
-     *
-     * @return float
      */
-    public function getY()
+    public function getY(): float|int
     {
         return $this->y;
     }
@@ -110,13 +96,11 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Latitude fluent setter.
      *
-     * @param mixed $latitude the new latitude of point
-     *
-     * @return self
+     * @param string $latitude the new latitude of point
      *
      * @throws InvalidValueException when latitude is not valid
      */
-    public function setLatitude($latitude)
+    public function setLatitude(string $latitude): self
     {
         return $this->setY($latitude);
     }
@@ -124,13 +108,11 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Longitude setter.
      *
-     * @param mixed $longitude the new longitude
-     *
-     * @return self
+     * @param string $longitude the new longitude
      *
      * @throws InvalidValueException when longitude is not valid
      */
-    public function setLongitude($longitude)
+    public function setLongitude(string $longitude): self
     {
         return $this->setX($longitude);
     }
@@ -138,21 +120,27 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * X setter. (Latitude setter).
      *
-     * @param mixed $x the new X
-     *
-     * @return self
+     * @param string $x the new X
      *
      * @throws InvalidValueException when x is not valid
      */
-    public function setX($x)
+    public function setX(string $x): self
     {
         $parser = new Parser($x);
 
         try {
-            $this->x = (float) $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+            $x = $parser->parse();
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $x), $e->getCode(), $e);
         }
+
+        if (is_array($x)) {
+            throw new InvalidValueException('Invalid coordinate value, coordinate cannot be an array.');
+        }
+
+        $this->x = $x;
 
         return $this;
     }
@@ -160,21 +148,27 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Y setter. Longitude Setter.
      *
-     * @param mixed $y the new Y value
-     *
-     * @return self
+     * @param string $y the new Y value
      *
      * @throws InvalidValueException when Y is invalid, not in valid range
      */
-    public function setY($y)
+    public function setY(string $y): self
     {
         $parser = new Parser($y);
 
         try {
-            $this->y = (float) $parser->parse();
-        } catch (RangeException|UnexpectedValueException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e->getPrevious());
+            $y = $parser->parse();
+        } catch (RangeException $e) {
+            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
+        } catch (UnexpectedValueException $e) {
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $y), $e->getCode(), $e);
         }
+
+        if (is_array($y)) {
+            throw new InvalidValueException('Invalid coordinate value, coordinate cannot be an array.');
+        }
+
+        $this->y = $y;
 
         return $this;
     }
@@ -183,23 +177,23 @@ abstract class AbstractPoint extends AbstractGeometry
      * Convert point into an array X, Y.
      * Latitude, longitude.
      *
-     * @return array
+     * @return array{0 : float|int, 1 : float|int}
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [$this->x, $this->y];
     }
 
     /**
-     * Abstract point constructor.
+     * Abstract point internal constructor.
      *
-     * @param int      $x    X, longitude
-     * @param int      $y    Y, latitude
-     * @param int|null $srid Spatial Reference System Identifier
+     * @param string   $x    X, longitude
+     * @param string   $y    Y, latitude
+     * @param null|int $srid Spatial Reference System Identifier
      *
      * @throws InvalidValueException if x or y are invalid
      */
-    protected function construct($x, $y, $srid = null)
+    protected function construct(string $x, string $y, ?int $srid = null): void
     {
         $this->setX($x)
             ->setY($y)
@@ -210,17 +204,26 @@ abstract class AbstractPoint extends AbstractGeometry
     /**
      * Validate arguments.
      *
-     * @param ?array $argv list of arguments
+     * @param mixed[] $argv   list of arguments
+     * @param string  $caller the calling method
      *
-     * @return array
+     * @return (float|int|string)[]
      *
      * @throws InvalidValueException when an argument is not valid
      */
-    protected function validateArguments(?array $argv = null)
+    protected function validateArguments(array $argv, string $caller): array
     {
         $argc = count($argv);
 
         if (1 == $argc && is_array($argv[0])) {
+            foreach ($argv[0] as $value) {
+                if (is_numeric($value) || is_string($value)) {
+                    continue;
+                }
+
+                throw $this->createException($argv, $caller);
+            }
+
             return $argv[0];
         }
 
@@ -245,18 +248,29 @@ abstract class AbstractPoint extends AbstractGeometry
             }
         }
 
+        throw $this->createException($argv, $caller);
+    }
+
+    /**
+     * Create a fluent message for InvalidException.
+     *
+     * @param mixed[] $argv   the arguments
+     * @param string  $caller the method calling the method calling exception :)
+     */
+    private function createException(array $argv, string $caller): InvalidValueException
+    {
         array_walk($argv, function (&$value) {
-            if (is_array($value)) {
-                $value = 'Array';
-            } else {
-                $value = sprintf('"%s"', $value);
+            if (is_numeric($value) || is_string($value)) {
+                return;
             }
+
+            $value = gettype($value);
         });
 
-        throw new InvalidValueException(sprintf(
+        return new InvalidValueException(sprintf(
             'Invalid parameters passed to %s::%s: %s',
-            get_class($this),
-            '__construct',
+            $this::class,
+            $caller,
             implode(', ', $argv)
         ));
     }

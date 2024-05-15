@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,16 +14,16 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
- * Point object for POINT geometry type.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
+ * Point object for the POINT geometry type.
  */
-class Point extends AbstractPoint
+class Point extends AbstractPoint implements GeometryInterface, PointInterface
 {
 }

@@ -326,6 +326,8 @@ If your application can be used with another database server than MySql, you sho
 +----------------------------------------+-------------+----------+
 | Sp_BufferStrategy                      |     YES     | Numeric  |
 +----------------------------------------+-------------+----------+
+| Sp_Distance_Sphere                     |     YES     | Numeric  |
++----------------------------------------+-------------+----------+
 | Sp_GeometryType                        |     YES     | Numeric  |
 +----------------------------------------+-------------+----------+
 | Sp_LineString                          |     YES     | Numeric  |

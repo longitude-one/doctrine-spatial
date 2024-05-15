@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,15 +14,17 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
-use LongitudeOne\Spatial\Tests\Helper\PersistHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Doctrine GeographyType tests.
@@ -32,16 +35,15 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
-class GeographyTypeTest extends OrmTestCase
+class GeographyTypeTest extends PersistOrmTestCase
 {
-    use PersistHelperTrait;
-
     /**
-     * Setup the geography type test.
+     * Set up the geography type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +53,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testLineStringGeography()
+    public function testLineStringGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -65,7 +67,7 @@ class GeographyTypeTest extends OrmTestCase
     /**
      * Test to store and retrieve a null geography.
      */
-    public function testNullGeography()
+    public function testNullGeography(): void
     {
         $entity = new GeographyEntity();
         $this->assertIsRetrievableById($this->getEntityManager(), $entity);
@@ -76,7 +78,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPointGeography()
+    public function testPointGeography(): void
     {
         $entity = new GeographyEntity();
 
@@ -89,7 +91,7 @@ class GeographyTypeTest extends OrmTestCase
      *
      * @throws InvalidValueException when geometries are not valid
      */
-    public function testPolygonGeography()
+    public function testPolygonGeography(): void
     {
         $entity = new GeographyEntity();
 

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * Contains DQL function tests.
@@ -31,17 +35,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpMbrContainsTest extends OrmTestCase
+class SpMbrContainsTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +55,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testContainsWhereParameter()
+    public function testContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -60,14 +64,13 @@ class SpMbrContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySql_MBRContains(p.polygon, ST_GeomFromText(:p)) = 1'
-            // phpcs:enable
         );
 
         $query->setParameter('p', 'POINT(6 6)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($smallPolygon, $result[1]);
@@ -75,13 +78,12 @@ class SpMbrContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MySQL_MBRContains(p.polygon, ST_GeomFromText(:p)) = 1'
-            // phpcs:enable
         );
         $query->setParameter('p', 'POINT(2 2)', 'string');
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0]);
         static::assertEquals($holeyPolygon, $result[1]);
@@ -92,7 +94,7 @@ class SpMbrContainsTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectContains()
+    public function testSelectContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -101,9 +103,7 @@ class SpMbrContainsTest extends OrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p, MySql_MBRContains(p.polygon, ST_GeomFromText(:p1)), MySql_MBRContains(p.polygon, ST_GeomFromText(:p2)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-            // phpcs:enable
         );
 
         $query->setParameter('p1', 'POINT(2 2)', 'string');
@@ -111,6 +111,7 @@ class SpMbrContainsTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);

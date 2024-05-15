@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_AsBinary DQL function tests.
@@ -31,18 +36,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StAsBinaryTest extends OrmTestCase
+class StAsBinaryTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -52,7 +57,7 @@ class StAsBinaryTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testStAsBinary()
+    public function testStAsBinary(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
@@ -64,20 +69,24 @@ class StAsBinaryTest extends OrmTestCase
         );
         $result = $query->getResult();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expectedA = '010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440';
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
-        // phpcs:enable
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-                static::assertEquals(pack('H*', $expectedA), $result[0][1]);
-                static::assertEquals(pack('H*', $expectedB), $result[1][1]);
-                break;
-            case 'postgresql':
-            default:
-                static::assertEquals($expectedA, bin2hex(stream_get_contents($result[0][1])));
-                static::assertEquals($expectedB, bin2hex(stream_get_contents($result[1][1])));
+        static::assertIsArray($result);
+
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            static::assertEquals(pack('H*', $expectedA), $result[0][1]);
+            static::assertEquals(pack('H*', $expectedB), $result[1][1]);
+        }
+
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            $actual = stream_get_contents($result[0][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedA, bin2hex($actual));
+
+            $actual = stream_get_contents($result[1][1]);
+            static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
+            static::assertEquals($expectedB, bin2hex($actual));
         }
     }
 }

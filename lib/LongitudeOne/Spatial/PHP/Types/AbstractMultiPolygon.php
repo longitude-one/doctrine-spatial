@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,32 +14,31 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
 /**
  * Abstract Polygon object for POLYGON spatial types.
- *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
- * @license https://dlambert.mit-license.org MIT
  */
 abstract class AbstractMultiPolygon extends AbstractGeometry
 {
     /**
-     * @var array[]
+     * @var ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[]
      */
     protected array $polygons = [];
 
     /**
      * AbstractMultiPolygon constructor.
      *
-     * @param AbstractPolygon[]|array[] $polygons Polygons
-     * @param int|null                  $srid     Spatial Reference System Identifier
+     * @param ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[] $polygons Polygons
+     * @param null|int                                                                                              $srid     Spatial Reference System Identifier
      *
      * @throws InvalidValueException when a polygon is invalid
      */
-    public function __construct(array $polygons, $srid = null)
+    public function __construct(array $polygons, ?int $srid = null)
     {
         $this
             ->setPolygons($polygons)
@@ -49,20 +49,18 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Add a polygon to geometry.
      *
-     * @param AbstractPolygon|array[] $polygon polygon to add
+     * @param ((float|int)[][]|LineStringInterface|MultiPointInterface|PointInterface[])[]|PolygonInterface $polygon polygon to add
      *
      * @throws InvalidValueException when polygon is not an array nor an AbstractPolygon
      */
-    public function addPolygon($polygon): self
+    public function addPolygon(array|PolygonInterface $polygon): self
     {
         if ($polygon instanceof AbstractPolygon) {
             $polygon = $polygon->toArray();
         }
 
         if (!is_array($polygon)) {
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             throw new InvalidValueException('AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter');
-            // phpcs:enable
         }
 
         $this->polygons[] = $this->validatePolygonValue($polygon);
@@ -73,15 +71,18 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygon getter.
      *
-     * @param int $index Index of polygon, use -1 to get last one
+     * @param int $index Index of polygon, use -1 to get the last one
      */
-    public function getPolygon(int $index): AbstractPolygon
+    public function getPolygon(int $index): PolygonInterface
     {
+        // TODO throw an error when index is out of range
+        // TODO throw an error when $this->polygons is empty
         // TODO replace by a function to be compliant with -1, -2, etc.
         if (-1 == $index) {
             $index = count($this->polygons) - 1;
         }
 
+        /** @var class-string<PolygonInterface> $polygonClass */
         $polygonClass = $this->getNamespace().'\Polygon';
 
         return new $polygonClass($this->polygons[$index], $this->srid);
@@ -90,9 +91,9 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygons getter.
      *
-     * @return AbstractPolygon[]
+     * @return PolygonInterface[]
      */
-    public function getPolygons()
+    public function getPolygons(): array
     {
         $polygons = [];
 
@@ -108,7 +109,7 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
      *
      * @return string MultiPolygon
      */
-    public function getType()
+    public function getType(): string
     {
         return self::MULTIPOLYGON;
     }
@@ -116,13 +117,11 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     /**
      * Polygon setter.
      *
-     * @param AbstractPolygon[] $polygons polygons to set
-     *
-     * @return self
+     * @param ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[] $polygons polygons to set
      *
      * @throws InvalidValueException when a polygon is invalid
      */
-    public function setPolygons(array $polygons)
+    public function setPolygons(array $polygons): self
     {
         $this->polygons = $this->validateMultiPolygonValue($polygons);
 
@@ -130,11 +129,11 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
     }
 
     /**
-     * Convert Polygon into array.
+     * Convert Polygon into an array.
      *
-     * @return array[]
+     * @return ((float|int)[][][]|LineStringInterface[]|MultiPointInterface[]|PointInterface[][]|PolygonInterface)[]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->polygons;
     }

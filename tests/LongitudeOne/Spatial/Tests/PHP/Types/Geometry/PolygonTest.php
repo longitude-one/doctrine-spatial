@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -12,6 +13,8 @@
  * file that was distributed with this source code.
  *
  */
+
+declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
@@ -40,7 +43,7 @@ class PolygonTest extends TestCase
     /**
      * Test to get last ring.
      */
-    public function testAddPolygonToPolygon()
+    public function testAddPolygonToPolygon(): void
     {
         static::expectExceptionMessage('You cannot add a Polygon to another one. Use a Multipolygon.');
         static::expectException(InvalidValueException::class);
@@ -64,16 +67,12 @@ class PolygonTest extends TestCase
      */
     public function testJson(): void
     {
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":null}';
-        // phpcs:enable
         $polygon = $this->createHoleyPolygon();
         static::assertEquals($expected, $polygon->toJson());
         static::assertEquals($expected, json_encode($polygon));
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $expected = '{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]],[[5,5],[7,5],[7,7],[5,7],[5,5]]],"srid":4326}';
-        // phpcs:enable
         $polygon->setSrid(4326);
         static::assertEquals($expected, $polygon->toJson());
         static::assertEquals($expected, json_encode($polygon));
@@ -82,7 +81,7 @@ class PolygonTest extends TestCase
     /**
      * Test Polygon with open ring.
      */
-    public function testOpenPolygonRing()
+    public function testOpenPolygonRing(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid polygon, ring "(0 0,10 0,10 10,0 10)" is not closed');
@@ -102,11 +101,12 @@ class PolygonTest extends TestCase
     /**
      * Test to get last ring.
      */
-    public function testRingPolygonFromObjectsGetLastRing()
+    public function testRingPolygonFromObjectsGetLastRing(): void
     {
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
         $polygon = $this->createEmptyPolygon();
+
         try {
             $polygon->addRing($ringA);
             $polygon->addRing($ringB);
@@ -120,11 +120,12 @@ class PolygonTest extends TestCase
     /**
      * Test to get the first ring.
      */
-    public function testRingPolygonFromObjectsGetSingleRing()
+    public function testRingPolygonFromObjectsGetSingleRing(): void
     {
         $ringA = $this->createRingLineString();
         $ringB = $this->createNodeLineString();
         $polygon = $this->createEmptyPolygon();
+
         try {
             $polygon->addRing($ringA);
             $polygon->addRing($ringB);
@@ -138,7 +139,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from array add rings.
      */
-    public function testSolidPolygonFromArrayAddRings()
+    public function testSolidPolygonFromArrayAddRings(): void
     {
         $expected = [$this->createRingLineString(), $this->createNodeLineString()];
         $ring = [
@@ -173,7 +174,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from an array of points.
      */
-    public function testSolidPolygonFromArrayOfPoints()
+    public function testSolidPolygonFromArrayOfPoints(): void
     {
         $expected = [
             [
@@ -198,7 +199,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from an array of rings.
      */
-    public function testSolidPolygonFromArraysOfRings()
+    public function testSolidPolygonFromArraysOfRings(): void
     {
         $expected = [$this->createRingLineString()];
         $rings = [
@@ -223,7 +224,7 @@ class PolygonTest extends TestCase
     /**
      * Test a solid polygon from arrays to string.
      */
-    public function testSolidPolygonFromArraysToString()
+    public function testSolidPolygonFromArraysToString(): void
     {
         $expected = '(0 0,10 0,10 10,0 10,0 0),(0 0,10 0,10 10,0 10,0 0)';
         $rings = [
@@ -242,6 +243,7 @@ class PolygonTest extends TestCase
                 [0, 0],
             ],
         ];
+
         try {
             $polygon = new Polygon($rings);
             $result = (string) $polygon;
@@ -255,7 +257,7 @@ class PolygonTest extends TestCase
     /**
      * Test solid polygon from objects to array.
      */
-    public function testSolidPolygonFromObjectsToArray()
+    public function testSolidPolygonFromObjectsToArray(): void
     {
         $expected = [
             [

@@ -44,3 +44,6 @@ plugins:
     enabled: true
   phpmd:
     enabled: true
+    checks:
+      NamingShortVariable:
+        enabled: false

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -12,6 +13,8 @@
  * file that was distributed with this source code.
  *
  */
+
+declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Fixtures;
 
@@ -32,38 +35,28 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
  */
 #[Table]
 #[Entity]
-class MultiPolygonEntity
+class MultiPolygonEntity implements SingleEntityInterface
 {
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
-    /**
-     * @var MultiPolygon
-     */
     #[Column(type: 'multipolygon', nullable: true)]
-    protected $multiPolygon;
+    protected MultiPolygon $multiPolygon;
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get multipolygon.
-     *
-     * @return MultiPolygon
      */
-    public function getMultiPolygon()
+    public function getMultiPolygon(): MultiPolygon
     {
         return $this->multiPolygon;
     }
@@ -72,10 +65,8 @@ class MultiPolygonEntity
      * Set multipolygon.
      *
      * @param MultiPolygon $multiPolygon multipolygon to set
-     *
-     * @return self
      */
-    public function setMultiPolygon(MultiPolygon $multiPolygon)
+    public function setMultiPolygon(MultiPolygon $multiPolygon): self
     {
         $this->multiPolygon = $multiPolygon;
 

@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -12,6 +13,8 @@
  * file that was distributed with this source code.
  *
  */
+
+declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\Fixtures;
 
@@ -31,33 +34,28 @@ use Doctrine\ORM\Mapping\Table;
  */
 #[Table]
 #[Entity]
-class NoHintGeometryEntity
+class NoHintGeometryEntity implements SingleEntityInterface
 {
     #[Column(type: 'geometry', nullable: true)]
-    protected $geometry;
+    protected mixed $geometry;
 
-    /**
-     * @var int
-     */
     #[Id]
     #[GeneratedValue(strategy: 'AUTO')]
     #[Column(type: 'integer')]
-    protected $id;
+    protected int $id;
 
     /**
      * Get geometry.
      */
-    public function getGeometry()
+    public function getGeometry(): mixed
     {
         return $this->geometry;
     }
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -66,10 +64,8 @@ class NoHintGeometryEntity
      * Set geometry.
      *
      * @param mixed $geometry the geometry to set
-     *
-     * @return self
      */
-    public function setGeometry($geometry)
+    public function setGeometry(mixed $geometry): self
     {
         $this->geometry = $geometry;
 

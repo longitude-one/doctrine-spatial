@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,14 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_PolyFromWkb DQL function tests.
@@ -30,18 +35,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StPolyFromWkbTest extends OrmTestCase
+class StPolyFromWkbTest extends PersistOrmTestCase
 {
-    use PolygonHelperTrait;
+    use PersistantPolygonHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform('postgresql');
-        $this->supportsPlatform('mysql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -51,7 +56,7 @@ class StPolyFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $this->getEntityManager()->flush();
@@ -60,12 +65,11 @@ class StPolyFromWkbTest extends OrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE p.polygon = ST_PolyFromWkb(:wkb)'
         );
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
-        // phpcs:enable
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($bigPolygon, $result[0]);
     }
@@ -75,20 +79,19 @@ class StPolyFromWkbTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->persistBigPolygon(); // Unused fake polygon
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        // phpcs:disable Generic.Files.LineLength.MaxExceeded
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(ST_PolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
         $result = $query->getResult();
-        // phpcs:enable
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals('POLYGON((0 0,10 0,10 10,0 10,0 0))', $result[0][1]);
     }

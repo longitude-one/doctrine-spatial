@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_Point DQL function tests.
@@ -31,17 +35,18 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class StPointTest extends OrmTestCase
+class StPointTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
@@ -51,7 +56,7 @@ class StPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testPredicate()
+    public function testPredicate(): void
     {
         $this->persistToursLambert93(false);
         $pointO = $this->persistPointO();
@@ -59,15 +64,14 @@ class StPointTest extends OrmTestCase
         $this->persistPointB();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p WHERE ST_EQUALS(p.point, ST_Point(:x, :y)) = true'
-            // phpcs:enable
         );
         $query->setParameter('x', 0, 'integer');
         $query->setParameter('y', 0, 'integer');
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($pointO, $result[0]);
     }
@@ -77,15 +81,13 @@ class StPointTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectWithSrid()
+    public function testSelectWithSrid(): void
     {
-        $tours = $this->persistToursLambert93(true);
-        $this->persistGeometryParisLambert93(true);
+        $tours = $this->persistToursLambert93();
+        $this->persistGeometryParisLambert93();
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p WHERE ST_EQUALS(p.point, ST_SetSRID(ST_Point(:x, :y), :srid)) = true'
-            // phpcs:enable
         );
 
         $query->setParameter('x', 525375.21);
@@ -94,6 +96,7 @@ class StPointTest extends OrmTestCase
 
         $result = $query->getResult();
 
+        static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($tours, $result[0]);
     }

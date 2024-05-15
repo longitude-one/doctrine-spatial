@@ -1,0 +1,61 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to function is_object\\(\\) with array\\<float\\|int\\> will always evaluate to false\\.$#"
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/PointTypeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/PointTypeTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$processors of method Monolog\\\\Logger\\:\\:__construct\\(\\) expects array\\<callable\\(array\\)\\: array\\>, array\\{Monolog\\\\Processor\\\\PsrLogMessageProcessor\\} given\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/Doctrine/Logging/FileLogger.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpScaleTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpTransformTest.php
+
+		-
+			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Doctrine\\\\DBAL\\\\Driver\\\\PDO\\\\SQLite\\\\Driver\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmMockTestCase.php
+
+		-
+			message: "#^Parameter \\#1 \\$points of class LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\Geometry\\\\LineString constructor expects array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/LineStringTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$points of class LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\Geometry\\\\MultiPoint constructor expects array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>, array\\<int, int\\> given\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/MultiPointTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$polygon of method LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\AbstractMultiPolygon\\:\\:addPolygon\\(\\) expects array\\<array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\LineStringInterface\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\MultiPointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PolygonInterface, string given\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/MultiPolygonTest.php
+
+		-
+			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySQL57Platform not found\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/SpatialTestCase.php

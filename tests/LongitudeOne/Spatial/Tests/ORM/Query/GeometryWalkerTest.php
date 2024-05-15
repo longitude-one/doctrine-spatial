@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,13 +14,17 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * GeometryWalker tests.
@@ -34,17 +39,19 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class GeometryWalkerTest extends OrmTestCase
+class GeometryWalkerTest extends PersistOrmTestCase
 {
-    use LineStringHelperTrait;
-    use PointHelperTrait;
+    use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         parent::setUp();
     }
 
@@ -74,6 +81,7 @@ class GeometryWalkerTest extends OrmTestCase
         );
 
         $result = $query->getResult();
+        static::assertIsArray($result);
         static::assertEquals(static::createPointOrigin(), $result[0][1]);
         static::assertEquals(static::createPointC(), $result[1][1]);
 
@@ -86,6 +94,7 @@ class GeometryWalkerTest extends OrmTestCase
         $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
 
         $result = $query->getResult();
+        static::assertIsArray($result);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
     }
@@ -95,22 +104,12 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testGeometryWalkerBinary()
+    public function testGeometryWalkerBinary(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-            case 'postgresql':
-            default:
-                $asBinary = 'ST_AsBinary';
-                $startPoint = 'ST_StartPoint';
-                $envelope = 'ST_Envelope';
-                break;
-        }
-
-        static::test($this->getEntityManager(), $asBinary, $startPoint, $envelope);
+        self::test($this->getEntityManager(), 'ST_AsBinary', 'ST_StartPoint', 'ST_Envelope');
     }
 
     /**
@@ -118,21 +117,11 @@ class GeometryWalkerTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testGeometryWalkerText()
+    public function testGeometryWalkerText(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
 
-        switch ($this->getPlatform()->getName()) {
-            case 'mysql':
-            case 'postgresql':
-            default:
-                $asText = 'ST_AsText';
-                $startPoint = 'ST_StartPoint';
-                $envelope = 'ST_Envelope';
-                break;
-        }
-
-        static::test($this->getEntityManager(), $asText, $startPoint, $envelope);
+        self::test($this->getEntityManager(), 'ST_AsText', 'ST_StartPoint', 'ST_Envelope');
     }
 }

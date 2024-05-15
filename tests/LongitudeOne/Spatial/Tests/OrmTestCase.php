@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,16 +14,19 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform;
-use Doctrine\DBAL\Platforms\MySQL80Platform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\UnknownColumnType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -31,7 +35,8 @@ use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
-use Doctrine\Persistence\Mapping\MappingException;
+use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
+use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType as GeographyPolygonType;
@@ -47,6 +52,7 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBufferStrategy;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistance;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistanceSphere as MySQLDistanceSphere;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpGeometryType as MySqlGeometryType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpLineString;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrContains;
@@ -140,6 +146,8 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StUnion;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StX;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StY;
+use LongitudeOne\Spatial\Tests\Doctrine\ConnectionParameters;
+use LongitudeOne\Spatial\Tests\Doctrine\Logging\FileLogger;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoLineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
@@ -152,8 +160,6 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\TestCase;
 
 // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
 // phpcs miss the Exception
@@ -161,7 +167,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Abstract ORM test class.
  */
-abstract class OrmTestCase extends TestCase
+abstract class OrmTestCase extends SpatialTestCase
 {
     // Fixtures and entities
     public const GEO_LINESTRING_ENTITY = GeoLineStringEntity::class;
@@ -178,24 +184,21 @@ abstract class OrmTestCase extends TestCase
     public const POLYGON_ENTITY = PolygonEntity::class;
 
     /**
-     * @var bool[]
+     * @var array<string, bool>
      */
-    protected static $addedTypes = [];
+    protected static array $addedTypes = [];
+
+    protected static Connection $connection;
 
     /**
-     * @var Connection
+     * @var array<class-string, bool>
      */
-    protected static $connection;
+    protected static array $createdEntities = [];
 
     /**
-     * @var bool[]
+     * @var array<class-string, array{types: string[], table: string}>
      */
-    protected static $createdEntities = [];
-
-    /**
-     * @var array[]
-     */
-    protected static $entities = [
+    protected static array $entities = [
         GeometryEntity::class => [
             'types' => ['geometry'],
             'table' => 'GeometryEntity',
@@ -247,9 +250,9 @@ abstract class OrmTestCase extends TestCase
     ];
 
     /**
-     * @var string[]
+     * @var array<string, class-string<AbstractSpatialType>>
      */
-    protected static $types = [
+    protected static array $types = [
         'geometry' => GeometryType::class,
         'point' => PointType::class,
         'linestring' => LineStringType::class,
@@ -263,26 +266,26 @@ abstract class OrmTestCase extends TestCase
         'geopolygon' => GeographyPolygonType::class,
     ];
 
+    private static FileLogger $logger;
+
     protected EntityManagerInterface $entityManager;
 
     /**
-     * @var bool[]
+     * @var array<class-string, bool>
      */
     protected array $supportedPlatforms = [];
 
     /**
-     * @var bool[]
+     * @var array<class-string, bool>
      */
     protected array $usedEntities = [];
 
     /**
-     * @var bool[]
+     * @var array<string, bool> the name of the type used
      */
     protected array $usedTypes = [];
 
     private SchemaTool $schemaTool;
-
-    private DebugStack $sqlLoggerStack;
 
     /**
      * Setup connection before class creation.
@@ -291,49 +294,39 @@ abstract class OrmTestCase extends TestCase
     {
         try {
             static::$connection = static::getConnection();
-        } catch (UnsupportedPlatformException|Exception $e) {
+        } catch (Exception|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to establish connection in %s: %s', __FILE__, $e->getMessage()));
         }
     }
 
     /**
-     * Creates a connection to the test database, if there is none yet, and creates the necessary tables.
+     * Creates a connection to the test database if there is none yet, and creates the necessary tables.
      */
     protected function setUp(): void
     {
-        try {
-            if (!isset($this->supportedPlatforms[$this->getPlatform()->getName()])) {
-                static::markTestSkipped(sprintf(
-                    'No support for platform %s in test class %s.',
-                    $this->getPlatform()->getName(),
-                    get_class($this)
-                ));
+        $skipped = true;
+        foreach ($this->supportedPlatforms as $platformInterface => $supported) {
+            if ($supported && $this->getPlatform() instanceof $platformInterface) {
+                $skipped = false;
             }
-
-            $this->entityManager = $this->getEntityManager();
-            $this->schemaTool = $this->getSchemaTool();
-
-            if ($GLOBALS['opt_mark_sql']) {
-                $query = sprintf('SELECT 1 /*%s*//*%s*/', get_class($this), $this->getName());
-                static::getConnection()->executeQuery($query);
-            }
-
-            $this->sqlLoggerStack->enabled = $GLOBALS['opt_use_debug_stack'];
-
-            $this->setUpTypes();
-            $this->setUpEntities();
-            $this->setUpFunctions();
-        } catch (UnsupportedPlatformException|Exception $e) {
-            static::fail(sprintf('Unable to setup test in %s: %s', __FILE__, $e->getMessage()));
         }
-    }
 
-    /**
-     * Teardown fixtures.
-     */
-    protected function tearDown(): void
-    {
-        $this->sqlLoggerStack->enabled = false;
+        if ($skipped) {
+            static::markTestSkipped(sprintf(
+                'No support for platform %s in test class %s.',
+                $this->getPlatform()::class,
+                get_class($this)
+            ));
+        }
+
+        $this->entityManager = $this->getEntityManager();
+        $this->schemaTool = $this->getSchemaTool();
+
+        self::$logger->info(sprintf('Starting test %s', get_class($this)));
+
+        $this->setUpTypes();
+        $this->setUpEntities();
+        $this->setUpFunctions();
 
         try {
             foreach (array_keys($this->usedEntities) as $entityName) {
@@ -344,176 +337,59 @@ abstract class OrmTestCase extends TestCase
             }
 
             $this->getEntityManager()->clear();
-        } catch (Exception|MappingException|UnsupportedPlatformException $e) {
-            static::fail(sprintf('Unable to clear table after test: %s', $e->getMessage()));
+        } catch (Exception|UnsupportedPlatformException $e) {
+            static::fail(sprintf('Unable to clear table before test: %s', $e->getMessage()));
         }
-    }
-
-    /**
-     * Assert empty geometry.
-     * MySQL5 does not return the standard answer, but this bug was solved in MySQL8.
-     * So test for an empty geometry is a little more complex than to compare two strings.
-     *
-     * @param mixed                 $value    Value to test
-     * @param AbstractPlatform|null $platform the platform
-     */
-    protected static function assertBigPolygon($value, ?AbstractPlatform $platform = null): void
-    {
-        switch ($platform->getName()) {
-            case 'mysql':
-                // MySQL does not respect creation order of points composing a Polygon.
-                static::assertSame('POLYGON((0 10,0 0,10 0,10 10,0 10))', $value);
-                break;
-            case 'postgresl':
-            default:
-                // Here is the good result.
-                // A linestring minus another crossing linestring returns initial linestring splited
-                static::assertSame('POLYGON((0 10,10 10,10 0,0 0,0 10))', $value);
-        }
-    }
-
-    /**
-     * Assert empty geometry.
-     * MySQL5 does not return the standard answer, but this bug was solved in MySQL8.
-     * So test for an empty geometry is a little more complex than to compare two strings.
-     *
-     * @param mixed                 $value    Value to test
-     * @param AbstractPlatform|null $platform the platform
-     */
-    protected static function assertEmptyGeometry($value, ?AbstractPlatform $platform = null): void
-    {
-        $expected = 'EMPTY';
-        $method = 'assertStringEndsWith';
-
-        if ($platform instanceof MySQL57Platform && !$platform instanceof MySQL80Platform) {
-            // MySQL5 does not return the standard answer
-            // This bug was solved in MySQL8
-            $expected = 'GEOMETRYCOLLECTION()';
-            $method = 'assertSame';
-        }
-
-        static::$method($expected, $value);
-    }
-
-    /**
-     * Return common connection parameters.
-     *
-     * @return array
-     */
-    protected static function getCommonConnectionParameters()
-    {
-        $connectionParams = [
-            'driver' => $GLOBALS['db_type'],
-            'user' => $GLOBALS['db_username'],
-            'password' => null,
-            'host' => $GLOBALS['db_host'],
-            'dbname' => null,
-            'port' => $GLOBALS['db_port'],
-        ];
-
-        if (isset($GLOBALS['db_server'])) {
-            $connectionParams['server'] = $GLOBALS['db_server'];
-        }
-
-        if (!empty($GLOBALS['db_password'])) {
-            $connectionParams['password'] = $GLOBALS['db_password'];
-        }
-
-        if (isset($GLOBALS['db_unix_socket'])) {
-            $connectionParams['unix_socket'] = $GLOBALS['db_unix_socket'];
-        }
-
-        if (isset($GLOBALS['db_version'])) {
-            $connectionParams['driverOptions']['server_version'] = (string) $GLOBALS['db_version'];
-        }
-
-        return $connectionParams;
     }
 
     /**
      * Establish the connection if it is not already done, then returns it.
      *
-     * @return Connection
-     *
      * @throws Exception                    when connection is not successful
      * @throws UnsupportedPlatformException when platform is unsupported
      */
-    protected static function getConnection()
+    protected static function getConnection(): Connection
     {
         if (isset(static::$connection)) {
             return static::$connection;
         }
+        $fileLogger = new FileLogger();
+        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($fileLogger)]);
+        self::$logger = $fileLogger;
 
-        $connection = DriverManager::getConnection(static::getConnectionParameters());
+        $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
+        if ($connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $connection->executeStatement('CREATE EXTENSION postgis');
 
-        switch ($connection->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-                $connection->executeStatement('CREATE EXTENSION postgis');
-                break;
-            case 'mysql':
-                break;
-            default:
-                throw new UnsupportedPlatformException(sprintf(
-                    'DBAL platform "%s" is not currently supported.',
-                    $connection->getDatabasePlatform()->getName()
-                ));
+            return $connection;
         }
 
-        return $connection;
-    }
+        if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            return $connection;
+        }
 
-    /**
-     * Return connection parameters.
-     *
-     * @return array
-     *
-     * @throws Exception when connection is not successful
-     */
-    protected static function getConnectionParameters()
-    {
-        $parameters = static::getCommonConnectionParameters();
-        $parameters['dbname'] = $GLOBALS['db_name'];
-
-        $connection = DriverManager::getConnection($parameters);
-        $dbName = $connection->getDatabase();
-
-        $connection->close();
-
-        $tmpConnection = DriverManager::getConnection(static::getCommonConnectionParameters());
-
-        $tmpConnection->getSchemaManager()->dropAndCreateDatabase($dbName);
-        $tmpConnection->close();
-
-        return $parameters;
-    }
-
-    /**
-     * Using the SQL Logger Stack this method retrieves the current query count executed in this test.
-     *
-     * @return int
-     */
-    protected function getCurrentQueryCount()
-    {
-        return count($this->sqlLoggerStack->queries);
+        throw new UnsupportedPlatformException(sprintf(
+            'DBAL platform "%s" is not currently supported.',
+            $connection->getDatabasePlatform()::class
+        ));
     }
 
     /**
      * Return the entity manager.
-     *
-     * @return EntityManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): EntityManagerInterface
     {
         if (isset($this->entityManager)) {
             return $this->entityManager;
         }
 
-        $this->sqlLoggerStack = new DebugStack();
-        $this->sqlLoggerStack->enabled = false;
-
         try {
-            static::getConnection()->getConfiguration()->setSQLLogger($this->sqlLoggerStack);
-            $realPaths = [realpath(__DIR__.'/Fixtures')];
+            $realPath = realpath(__DIR__.'/Fixtures');
+            if (false === $realPath) {
+                static::fail('Unable to find realpath of Fixtures directory. Check that the directory exists and is readable.');
+            }
+
+            $realPaths = [$realPath];
             $config = new Configuration();
 
             $config->setMetadataCache(new ArrayCachePool());
@@ -521,8 +397,8 @@ abstract class OrmTestCase extends TestCase
             $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
 
-            return EntityManager::create(static::getConnection(), $config);
-        } catch (ORMException|Exception|UnsupportedPlatformException $e) {
+            return new EntityManager(static::getConnection(), $config);
+        } catch (Exception|ORMException|UnsupportedPlatformException $e) {
             static::fail(sprintf('Unable to init the EntityManager: %s', $e->getMessage()));
         }
     }
@@ -530,37 +406,19 @@ abstract class OrmTestCase extends TestCase
     /**
      * Get platform.
      */
-    protected function getPlatform(): ?AbstractPlatform
+    protected function getPlatform(): AbstractPlatform
     {
         try {
             return static::getConnection()->getDatabasePlatform();
-        } catch (UnsupportedPlatformException|Exception $e) {
+        } catch (Exception|UnsupportedPlatformException $e) {
             static::fail('Unable to get database platform: '.$e->getMessage());
         }
     }
 
     /**
-     * Return the platform completed by the version number of the server for mysql.
-     */
-    protected function getPlatformAndVersion(): string
-    {
-        if ($this->getPlatform() instanceof MySQL80Platform) {
-            return 'mysql8';
-        }
-
-        if ($this->getPlatform() instanceof MySQL57Platform) {
-            return 'mysql5';
-        }
-
-        return $this->getPlatform()->getName();
-    }
-
-    /**
      * Return the schema tool.
-     *
-     * @return SchemaTool
      */
-    protected function getSchemaTool()
+    protected function getSchemaTool(): SchemaTool
     {
         if (isset($this->schemaTool)) {
             return $this->schemaTool;
@@ -572,77 +430,17 @@ abstract class OrmTestCase extends TestCase
     /**
      * Return the static created entity classes.
      *
-     * @return array
+     * @return array<class-string, bool>
      */
-    protected function getUsedEntityClasses()
+    protected function getUsedEntityClasses(): array
     {
         return static::$createdEntities;
     }
 
     /**
-     * On not successful test.
-     *
-     * @param \Throwable $throwable the exception
-     *
-     * @throws \InvalidArgumentException the formatted exception when sql logger is on
-     * @throws \Throwable                the exception provided as parameter
-     */
-    protected function onNotSuccessfulTest(\Throwable $throwable): void
-    {
-        if (!$GLOBALS['opt_use_debug_stack'] || $throwable instanceof AssertionFailedError) {
-            throw $throwable;
-        }
-
-        if (isset($this->sqlLoggerStack->queries) && count($this->sqlLoggerStack->queries)) {
-            $queries = '';
-            $count = count($this->sqlLoggerStack->queries) - 1;
-            $max = max(count($this->sqlLoggerStack->queries) - 25, 0);
-
-            for ($i = $count; $i > $max && isset($this->sqlLoggerStack->queries[$i]); --$i) {
-                $query = $this->sqlLoggerStack->queries[$i];
-                $params = array_map(function ($param) {
-                    if (is_object($param)) {
-                        return get_class($param);
-                    }
-
-                    return sprintf("'%s'", $param);
-                }, $query['params'] ?: []);
-
-                $queries .= sprintf(
-                    "%2d. SQL: '%s' Params: %s\n",
-                    $i,
-                    $query['sql'],
-                    implode(', ', $params)
-                );
-            }
-
-            $trace = $throwable->getTrace();
-            $traceMsg = '';
-
-            foreach ($trace as $part) {
-                if (isset($part['file'])) {
-                    if (false !== mb_strpos($part['file'], 'PHPUnit/')) {
-                        // Beginning with PHPUnit files we don't print the trace anymore.
-                        break;
-                    }
-
-                    $traceMsg .= sprintf("%s:%s\n", $part['file'], $part['line']);
-                }
-            }
-
-            $message = sprintf("[%s] %s\n\n", get_class($throwable), $throwable->getMessage());
-            $message .= sprintf("With queries:\n%s\nTrace:\n%s", $queries, $traceMsg);
-
-            throw new \InvalidArgumentException($message, $throwable->getCode(), $throwable);
-        }
-
-        throw $throwable;
-    }
-
-    /**
      * Create entities used by tests.
      */
-    protected function setUpEntities()
+    protected function setUpEntities(): void
     {
         $classes = [];
 
@@ -665,19 +463,19 @@ abstract class OrmTestCase extends TestCase
     /**
      * Setup DQL functions.
      */
-    protected function setUpFunctions()
+    protected function setUpFunctions(): void
     {
         $configuration = $this->getEntityManager()->getConfiguration();
 
         $this->addStandardFunctions($configuration);
 
-        if ('postgresql' === $this->getPlatformAndVersion()) {
-            // Specific functions of PostgreSQL server
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            // Specific functions of PostgreSQL database engine
             $this->addSpecificPostgreSqlFunctions($configuration);
         }
 
-        // This test does not work when we compare to 'mysql' (on Travis only)
-        if ('postgresql' !== $this->getPlatform()->getName()) {
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
         }
     }
@@ -685,7 +483,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Add types used by test to DBAL.
      */
-    protected function setUpTypes()
+    protected function setUpTypes(): void
     {
         foreach (array_keys($this->usedTypes) as $typeName) {
             if (!isset(static::$addedTypes[$typeName]) && !Type::hasType($typeName)) {
@@ -696,15 +494,18 @@ abstract class OrmTestCase extends TestCase
                 }
 
                 try {
-                    $type = Type::getType($typeName);
-
-                    // Since doctrineTypeComments may already be initialized check if added type requires comment
-                    $platform = $this->getPlatform();
-                    if ($type->requiresSQLCommentHint($platform) && !$platform->isCommentedDoctrineType($type)) {
-                        $this->getPlatform()->markDoctrineTypeCommented(Type::getType($typeName));
-                    }
+                    $message = sprintf('The type "%s" doesn\t implement DoctrineSpatialTypeInteface', $typeName);
+                    static::assertInstanceOf(
+                        DoctrineSpatialTypeInterface::class,
+                        Type::getType($typeName),
+                        $message
+                    );
+                } catch (UnknownColumnType $e) {
+                    static::fail(sprintf('Unregistered type %s: %s', $typeName, $e->getMessage()));
                 } catch (Exception $e) {
-                    static::fail(sprintf('Unable to get type %s: %s', $typeName, $e->getMessage()));
+                    static::fail(
+                        sprintf('Unknown exception when getting type %s: %s', $typeName, $e->getMessage())
+                    );
                 }
 
                 static::$addedTypes[$typeName] = true;
@@ -715,7 +516,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Set the supported platforms.
      *
-     * @param string $platform the platform to support
+     * @param class-string $platform the platform to support
      */
     protected function supportsPlatform(string $platform): void
     {
@@ -723,9 +524,9 @@ abstract class OrmTestCase extends TestCase
     }
 
     /**
-     * Declare the used entity class to initialized them (and delete its content before the test).
+     * Declare the used entity class to initialize them (and delete its content before the test).
      *
-     * @param string $entityClass the entity class
+     * @param class-string $entityClass the entity class
      */
     protected function usesEntity(string $entityClass): void
     {
@@ -739,7 +540,7 @@ abstract class OrmTestCase extends TestCase
     /**
      * Set the type used.
      *
-     * @param string $typeName the type name
+     * @param string $typeName the type name, this is not a class name
      */
     protected function usesType(string $typeName): void
     {
@@ -756,6 +557,7 @@ abstract class OrmTestCase extends TestCase
         $configuration->addCustomNumericFunction('Mysql_Distance', SpDistance::class);
         $configuration->addCustomNumericFunction('Mysql_Buffer', SpBuffer::class);
         $configuration->addCustomNumericFunction('Mysql_BufferStrategy', SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySQLDistanceSphere::class);
         $configuration->addCustomNumericFunction('Mysql_GeometryType', MySqlGeometryType::class);
         $configuration->addCustomNumericFunction('Mysql_LineString', SpLineString::class);
         $configuration->addCustomNumericFunction('Mysql_MBRContains', SpMbrContains::class);

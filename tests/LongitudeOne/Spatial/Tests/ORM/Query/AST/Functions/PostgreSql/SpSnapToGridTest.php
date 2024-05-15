@@ -2,7 +2,8 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP 8.1
+ * PHP          8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
  * Copyright Longitude One 2020-2024
@@ -13,10 +14,13 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
-use LongitudeOne\Spatial\Tests\OrmTestCase;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
+use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
  * ST_SnapToGrid DQL function tests.
@@ -32,17 +36,17 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
  *
  * @coversDefaultClass
  */
-class SpSnapToGridTest extends OrmTestCase
+class SpSnapToGridTest extends PersistOrmTestCase
 {
-    use PointHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
-     * Setup the function type test.
+     * Set up the function type test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
-        $this->supportsPlatform('postgresql');
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
@@ -52,9 +56,9 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature2Parameters()
+    public function testSelectStSnapToGridSignature2Parameters(): void
     {
-        $this->persistGeometryPoint('in grid', 1.25, 2.55);
+        $this->createAndPersistGeometricPoint('in grid', '1.25', '2.55');
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 0.5)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
@@ -73,14 +77,12 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature3Parameters()
+    public function testSelectStSnapToGridSignature3Parameters(): void
     {
-        $this->persistGeometryPoint('in grid', 1.25, 2.55);
+        $this->createAndPersistGeometricPoint('in grid', '1.25', '2.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 0.5, 1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
@@ -96,14 +98,12 @@ class SpSnapToGridTest extends OrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature5Parameters()
+    public function testSelectStSnapToGridSignature5Parameters(): void
     {
-        $this->persistGeometryPoint('in grid', 5.25, 6.55);
+        $this->createAndPersistGeometricPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, 5.55, 6.25, 0.5, 0.5)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
@@ -115,18 +115,16 @@ class SpSnapToGridTest extends OrmTestCase
     }
 
     /**
-     * Test a DQL containing function with six paramters to test in the select.
+     * Test a DQL containing function with six parameters to test in the select.
      *
      * @group geometry
      */
-    public function testSelectStSnapToGridSignature6Parameters()
+    public function testSelectStSnapToGridSignature6Parameters(): void
     {
-        $this->persistGeometryPoint('in grid', 5.25, 6.55);
+        $this->createAndPersistGeometricPoint('in grid', '5.25', '6.55');
 
         $query = $this->getEntityManager()->createQuery(
-            // phpcs:disable Generic.Files.LineLength.MaxExceeded
             'SELECT ST_AsText(PgSql_SnapToGrid(p.point, p.point, 0.005, 0.025, 0.5, 0.01)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-            // phpcs:enable
         );
         $result = $query->getResult();
 
