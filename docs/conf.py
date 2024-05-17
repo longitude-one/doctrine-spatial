@@ -14,15 +14,18 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import datetime
+
 # -- Project information -----------------------------------------------------
 
 project = 'Doctrine spatial extension'
-copyright = '2021, Alexandre Tranchant - Longitude One'
+current_year = datetime.datetime.now().year
+copyright = f"2021-{current_year}, Alexandre Tranchant - Longitude-One"
 author = 'Alexandre Tranchant'
 master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
-release = '3.0.0'
+release = '5.0.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -59,6 +62,6 @@ html_context = {
     "display_github": True, # Integrate GitHub
     "github_user": "longitude-one", # Username
     "github_repo": "doctrine-spatial", # Repo name
-    "github_version": "master", # Version
-    "conf_py_path": "/docs/source/", # Path in the checkout to the docs root
+    "github_version": "main", # Version
+    "conf_py_path": "/docs/", # Path in the checkout to the docs root
 }
