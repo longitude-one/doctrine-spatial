@@ -59,14 +59,10 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
 
-      - name: Display Composer Cache Directory
-        id: composer-cache
-        run: echo "DIR=:$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
       - name: Restore cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ GITHUB_OUTPUT }}
+          path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -232,14 +228,10 @@ jobs:
       -   name: Validate composer.json
           run: composer validate --strict
 
-      -   name: Display Composer Cache Directory
-          id: composer-cache
-          run: echo "DIR=:$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
       -   name: Restore cache Composer dependencies
           uses: actions/cache@v4
           with:
-            path: ${{ GITHUB_OUTPUT }}
+            path: vendor/
             key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
             restore-keys: |
               ${{ runner.os }}-composer-
