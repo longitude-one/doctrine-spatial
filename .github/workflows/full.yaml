@@ -118,8 +118,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: quality/php-cs-fixer/vendor/
-          key: ${{ format('{0}-phpcsfixer-', runner.os, hashFiles('quality/php-cs-fixer/vendor/composer.lock')) }}
-          restore-keys: ${{ format('{0}-phpcsfixer-{1}', runner.os) }}
+          key: ${{ format('{0}-phpcsfixer-{1}', runner.os, hashFiles('quality/php-cs-fixer/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpcsfixer-', runner.os) }}
 
       - name: Install PHP-CS-Fixer
         run: composer install --working-dir=quality/php-cs-fixer
