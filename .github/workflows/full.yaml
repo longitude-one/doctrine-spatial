@@ -63,9 +63,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: ${{ runner.os }}-composer-php83-orm31-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          key: format('{0}-composer-php83-orm31-{1}', ${{ runner.os }}, ${{ hashFiles('**/composer.lock') }})
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Setup PHP 8.3
         uses: shivammathur/setup-php@v2
