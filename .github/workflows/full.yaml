@@ -61,13 +61,12 @@ jobs:
 
       - name: Display Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "DIR=:$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Restore cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ GITHUB_OUTPUT }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -235,13 +234,12 @@ jobs:
 
       -   name: Display Composer Cache Directory
           id: composer-cache
-          run: |
-            echo "::set-output name=dir::$(composer config cache-files-dir)"
+          run: echo "DIR=:$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       -   name: Restore cache Composer dependencies
           uses: actions/cache@v4
           with:
-            path: ${{ steps.composer-cache.outputs.dir }}
+            path: ${{ GITHUB_OUTPUT }}
             key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
             restore-keys: |
               ${{ runner.os }}-composer-
