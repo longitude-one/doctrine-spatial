@@ -59,18 +59,15 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
 
-      - name: Display Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Create the composer.lock for the cache key
+        run: composer update --no-install
 
       - name: Restore cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          path: vendor/
+          key: ${{ format('{0}-composer-php83-orm31-{1}', runner.os, hashFiles('composer.lock')) }}
+          restore-keys: ${{ format('{0}-composer-php83-orm31-', runner.os, matrix.php, matrix.orm) }}
 
       - name: Setup PHP 8.3
         uses: shivammathur/setup-php@v2
@@ -86,7 +83,7 @@ jobs:
         run: cp .github/phpunit.*.xml .
 
       - name: Install libraries
-        run: composer --prefer-stable update -vvv
+        run: composer install -vvv
 
       - name: Show libraries
         run: composer show
@@ -113,30 +110,35 @@ jobs:
 
       ## Quality checks
       ## PHP-CS-Fixer is needed with only one version of PHP
+      - name: Create the PHP-CS-Fixer composer.lock for the cache key
+        run: composer update --working-dir=quality/php-cs-fixer --no-install
+
       - name: Cache Composer PHP-CS-FIXER packages
         id: composer-phpcsfixer-cache
         uses: actions/cache@v4
         with:
           path: quality/php-cs-fixer/vendor/
-          key: ${{ runner.os }}-phpcsfixer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-phpcsfixer-
+          key: ${{ format('{0}-phpcsfixer-{1}', runner.os, hashFiles('quality/php-cs-fixer/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpcsfixer-', runner.os) }}
 
       - name: Install PHP-CS-Fixer
-        run: composer update --working-dir=quality/php-cs-fixer
+        run: composer install --working-dir=quality/php-cs-fixer
 
       - name: Run PHP-CS-Fixer
         run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
 
       ## PHP-MESS-DETECTOR
+      - name: Create the PHP-MESS-DETECTOR composer.lock for the cache key
+        run: composer update --working-dir=quality/php-mess-detector --no-install
+
       - name: Cache Composer PHP-MESS-DETECTOR packages
         id: composer-phpmd-cache
         uses: actions/cache@v4
         with:
-          path: quality/php-cs-fixer/vendor/
-          key: ${{ runner.os }}-phpmd-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-phpmd-
+          path: quality/php-mess-detector/vendor/
+          key: ${{ format('{0}-phpmd-{1}', runner.os, hashFiles('quality/php-mess-detector/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpmd-', runner.os) }}
+
       - name: Install PHP-MESS-DETECTOR
         run: composer update --working-dir=quality/php-mess-detector
       - name: Run PHP-MESS-DETECTOR on lib directory
@@ -145,14 +147,16 @@ jobs:
         run: ./quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml
 
       ## PHP CODE SNIFFER
+      - name: Create the PHP CODE SNIFFER composer.lock for the cache key
+        run: composer update --working-dir=quality/php-code-sniffer --no-install
+
       - name: Cache Composer PHP-CS packages
         id: composer-php-cs-cache
         uses: actions/cache@v4
         with:
-          path: quality/php-cs-fixer/vendor/
-          key: ${{ runner.os }}-php-cs-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-cs-
+          path: quality/php-code-sniffer/vendor/
+          key: ${{ format('{0}-phpcs-{1}', runner.os, hashFiles('quality/php-code-sniffer/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpcs-', runner.os) }}
 
       - name: Install PHP-CS
         run: composer update --working-dir=quality/php-code-sniffer
@@ -161,14 +165,17 @@ jobs:
         run: ./quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
 
       ## PHP-STAN
+      - name: Create the PHP-STAN composer.lock for the cache key
+        run: composer update --working-dir=quality/php-stan --no-install
+
       - name: Cache Composer PHP-STAN packages
         id: composer-php-stan-cache
         uses: actions/cache@v4
         with:
-          path: quality/php-cs-fixer/vendor/
-          key: ${{ runner.os }}-php-stan-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-stan-
+          path: quality/php-stan/vendor/
+          key: ${{ format('{0}-phpstan-{1}', runner.os, hashFiles('quality/php-stan/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpstan-', runner.os) }}
+
       - name: Install PHP-STAN
         run: composer update --working-dir=quality/php-stan
       - name: Run PHP-STAN
@@ -233,18 +240,15 @@ jobs:
       -   name: Validate composer.json
           run: composer validate --strict
 
-      -   name: Display Composer Cache Directory
-          id: composer-cache
-          run: |
-            echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Create the composer.lock for the cache key
+        run: composer update --no-install
 
       -   name: Restore cache Composer dependencies
           uses: actions/cache@v4
           with:
-            path: ${{ steps.composer-cache.outputs.dir }}
-            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-composer-
+            path: vendor/
+            key: ${{ format('{0}-composer-php{1}-orm{2}-{3}', runner.os, matrix.php, matrix.orm, hashFiles('composer.lock')) }}
+            restore-keys: ${{ format('{0}-composer-php{1}-orm{2}-', runner.os, matrix.php, matrix.orm) }}
 
       -   name: Setup PHP ${{ matrix.php }}
           uses: shivammathur/setup-php@v2
