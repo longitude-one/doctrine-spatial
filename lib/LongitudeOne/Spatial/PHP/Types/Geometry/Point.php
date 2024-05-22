@@ -18,12 +18,44 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types\Geometry;
 
+use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
+use LongitudeOne\Spatial\PHP\Types\CartesianInterface;
 use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
  * Point object for the POINT geometry type.
  */
-class Point extends AbstractPoint implements GeometryInterface, PointInterface
+class Point extends AbstractPoint implements CartesianInterface, GeometryInterface, PointInterface
 {
+    public function setLatitude(float|int|string $latitude): static
+    {
+        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setY or a geographic point instead.
+        return parent::setLatitude($latitude);
+    }
+
+    public function setLongitude(float|int|string $longitude): static
+    {
+        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setX or a geographic point instead.
+        return parent::setLongitude($longitude);
+    }
+
+    /**
+     * Point internal constructor.
+     *
+     * It uses X and Y setters.
+     *
+     * @param string   $x    X, longitude
+     * @param string   $y    Y, latitude
+     * @param null|int $srid Spatial Reference System Identifier
+     *
+     * @throws InvalidValueException if x or y are invalid
+     */
+    protected function construct(string $x, string $y, ?int $srid = null): void
+    {
+        $this->setX($x)
+            ->setY($y)
+            ->setSrid($srid)
+        ;
+    }
 }

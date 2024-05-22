@@ -25,4 +25,8 @@ namespace LongitudeOne\Spatial\Exception;
  */
 class InvalidValueException extends \Exception implements ExceptionInterface
 {
+    public const OUT_OF_RANGE_LATITUDE = 'Out of range latitude value, latitude must be between -90 and 90, got "%s".';
+    public const OUT_OF_RANGE_LONGITUDE = 'Out of range longitude value, longitude must be between -180 and 180, got "%s".';
+    public const OUT_OF_RANGE_MINUTE = 'Out of range minute value, minute must be between 0 and 59, got "%s".';
+    public const OUT_OF_RANGE_SECOND = 'Out of range second value, second must be between 0 and 59, got "%s".';
 }
