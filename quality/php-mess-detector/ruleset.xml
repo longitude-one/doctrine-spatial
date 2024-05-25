@@ -6,9 +6,12 @@
                      http://pmd.sf.net/ruleset_xml_schema.xsd"
          xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
     <description>Alexandre Tranchant rule set.</description>
-    <rule ref="rulesets/cleancode.xml" />
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="BooleanArgumentFlag"/>
+    </rule>
     <rule ref="rulesets/codesize.xml">
         <exclude name="CyclomaticComplexity"/>
+        <exclude name="ExcessiveClassComplexity"/>
         <exclude name="NPathComplexity"/>
     </rule>
     <rule ref="rulesets/controversial.xml"/>

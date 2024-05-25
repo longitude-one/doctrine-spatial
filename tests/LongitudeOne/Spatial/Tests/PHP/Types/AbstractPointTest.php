@@ -254,6 +254,34 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * Test argument 1 with too few values - Two invalid parameters.
+     *
+     * @param class-string<AbstractPoint> $abstractPoint
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testInvalidArrayWithTooFewValues(string $abstractPoint): void
+    {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(1)', $abstractPoint));
+
+        new $abstractPoint([1]);
+    }
+
+    /**
+     * Test argument 1 with too many values - Two invalid parameters.
+     *
+     * @param class-string<AbstractPoint> $abstractPoint
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testInvalidArrayWithTooManyValues(string $abstractPoint): void
+    {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(1, 2, 3, 4)', $abstractPoint));
+
+        new $abstractPoint([1, 2, 3, 4]);
+    }
+
+    /**
      * Test to convert point to json.
      *
      * @param class-string<AbstractPoint> $abstractPoint

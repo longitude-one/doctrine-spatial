@@ -188,6 +188,11 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
         $argc = count($argv);
 
         if (1 == $argc && is_array($argv[0])) {
+            $count = count($argv[0]);
+            if ($count < 2 || $count > 3) {
+                throw $this->createException($argv[0], $caller, true);
+            }
+
             foreach ($argv[0] as $value) {
                 if (is_numeric($value) || is_string($value)) {
                     continue;
@@ -243,7 +248,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      * @param mixed[] $argv   the arguments
      * @param string  $caller the method calling the method calling exception :)
      */
-    private function createException(array $argv, string $caller): InvalidValueException
+    private function createException(array $argv, string $caller, bool $subArray = false): InvalidValueException
     {
         array_walk($argv, function (&$value) {
             if (is_numeric($value) || is_string($value)) {
@@ -253,8 +258,13 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
             $value = gettype($value);
         });
 
+        $message = 'Invalid parameters passed to %s::%s: %s';
+        if ($subArray) {
+            $message = 'Invalid parameters passed to %s::%s: array(%s)';
+        }
+
         return new InvalidValueException(sprintf(
-            'Invalid parameters passed to %s::%s: %s',
+            $message,
             static::class,
             $caller,
             implode(', ', $argv)
