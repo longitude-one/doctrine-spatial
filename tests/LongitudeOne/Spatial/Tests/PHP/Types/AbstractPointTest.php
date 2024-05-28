@@ -198,7 +198,7 @@ class AbstractPointTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array{0: float|int|string, 1: float|int|string, 2: float|int, 3: float|int}, null, void>
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: float|int|string, 2: float|int|string, 3: float|int, 4: float|int}, null, void>
      */
     public static function validGeodesicCoordinateProvider(): \Generator
     {
@@ -239,11 +239,11 @@ class AbstractPointTest extends TestCase
     /**
      * Test geodesic setters.
      *
-     * @param string           $pointType         Geometric or geographic point
-     * @param float|int|string $longitude         the actual longitude
-     * @param float|int|string $latitude          the actual latitude
-     * @param float|int        $expectedLongitude the expected longitude
-     * @param float|int        $expectedLatitude  the expected latitude
+     * @param class-string<AbstractPoint> $pointType         Geometric or geographic point
+     * @param float|int|string            $longitude         the actual longitude
+     * @param float|int|string            $latitude          the actual latitude
+     * @param float|int                   $expectedLongitude the expected longitude
+     * @param float|int                   $expectedLatitude  the expected latitude
      */
     #[DataProvider('validGeodesicCoordinateProvider')]
     public function testGoodGeodesicCoordinate(string $pointType, float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
