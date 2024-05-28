@@ -27,14 +27,22 @@ namespace LongitudeOne\Spatial\PHP\Types;
  */
 interface CartesianInterface
 {
+    /**
+     * @return float|int the abscissa coordinate
+     */
     public function getX(): float|int;
 
+    /**
+     * @return float|int the ordinate coordinate
+     */
     public function getY(): float|int;
 
     /**
      * The interface doesn't fix the return type.
      * Usually, fluent setters return "self".
      * Cartesian interfaces are used in AbstractPoint. It can return a geometry interface or a geographic one.
+     *
+     * @param float|int|string $x the abscissa coordinate
      */
     public function setX(float|int|string $x): CartesianInterface|PointInterface;
 
@@ -42,6 +50,8 @@ interface CartesianInterface
      * The interface doesn't fix the return type.
      * Usually, fluent setters return "self".
      * Cartesian interfaces are used in AbstractPoint. It can return a geometry interface or a geographic one.
+     *
+     * @param float|int|string $y the ordinate coordinate
      */
     public function setY(float|int|string $y): CartesianInterface|PointInterface;
 }

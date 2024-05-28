@@ -26,14 +26,22 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
  */
 interface GeodeticInterface
 {
+    /**
+     * @return float|int the converted latitude coordinate
+     */
     public function getLatitude(): float|int;
 
+    /**
+     * @return float|int the converted longitude coordinate
+     */
     public function getLongitude(): float|int;
 
     /**
      * The interface doesn't fix the return type.
      * Usually, fluent setters return "self".
      * Geodetic interfaces are used in AbstractPoint. It can return a geometry interface or a geographic one.
+     *
+     * @param float|int|string $latitude latitude to set. Out of range values are not allowed.
      *
      * @throws InvalidValueException when latitude is out of range
      */
@@ -43,6 +51,8 @@ interface GeodeticInterface
      * The interface doesn't fix the return type.
      * Usually, fluent setters return "self".
      * Geodetic interfaces are used in AbstractPoint. It can return a geometry interface or a geographic one.
+     *
+     * @param float|int|string $longitude longitude to set. Out of range values are not allowed.
      *
      * @throws InvalidValueException when longitude is out of range
      */

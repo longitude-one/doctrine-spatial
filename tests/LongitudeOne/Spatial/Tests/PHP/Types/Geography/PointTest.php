@@ -182,6 +182,11 @@ class PointTest extends TestCase
         static::assertEqualsWithDelta(-112.06666666666666, $point->getLongitude(), 0.00000000001);
     }
 
+    /**
+     * Test out-of-range latitude with constructor.
+     *
+     * @param float|int|string $latitude the out-of-range latitude
+     */
     #[DataProvider('outOfRangeLatitudeProvider')]
     public function testOutOfRangeLatitudeConstructor(float|int|string $latitude): void
     {
@@ -190,6 +195,13 @@ class PointTest extends TestCase
         new Point(0, $latitude);
     }
 
+    /**
+     * Test out of range longitude with constructor.
+     *
+     * @param float|int|string $longitude the out-of-range longitude
+     *
+     * @throws InvalidValueException the expected exception
+     */
     #[DataProvider('outOfRangeLongitudeProvider')]
     public function testOutOfRangeLongitudeConstructor(float|int|string $longitude): void
     {
@@ -198,6 +210,13 @@ class PointTest extends TestCase
         new Point($longitude, 0);
     }
 
+    /**
+     * Test out of range latitude with latitude setters.
+     *
+     * @param float|int|string $latitude the out-of-range latitude
+     *
+     * @throws InvalidValueException the expected exception
+     */
     #[DataProvider('outOfRangeLatitudeProvider')]
     public function testOutOfRangeSetLatitude(float|int|string $latitude): void
     {
@@ -207,6 +226,13 @@ class PointTest extends TestCase
         $point->setLatitude($latitude);
     }
 
+    /**
+     * Test out of range longitude with longitude setters.
+     *
+     * @param float|int|string $longitude the out-of-range longitude
+     *
+     * @throws InvalidValueException the expected exception
+     */
     #[DataProvider('outOfRangeLongitudeProvider')]
     public function testOutOfRangeSetLongitude(float|int|string $longitude): void
     {
@@ -216,6 +242,13 @@ class PointTest extends TestCase
         $point->setLongitude($longitude);
     }
 
+    /**
+     * Test out of range longitude.
+     *
+     * @param float|int|string $longitude the out-of-range longitude
+     *
+     * @throws InvalidValueException the expected exception
+     */
     #[DataProvider('outOfRangeLongitudeProvider')]
     public function testOutOfRangeSetX(float|int|string $longitude): void
     {
@@ -225,6 +258,13 @@ class PointTest extends TestCase
         $point->setX($longitude);
     }
 
+    /**
+     * Test out of range latitude.
+     *
+     * @param float|int|string $latitude the out-of-range latitude
+     *
+     * @throws InvalidValueException the expected exception
+     */
     #[DataProvider('outOfRangeLatitudeProvider')]
     public function testOutOfRangeSetY(float|int|string $latitude): void
     {

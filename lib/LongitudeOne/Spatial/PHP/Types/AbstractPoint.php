@@ -229,6 +229,12 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     }
 
     /**
+     * Check the range of a coordinate.
+     *
+     * @param float|int $coordinate the coordinate to check
+     * @param int       $min        the minimum accepted value
+     * @param int       $max        the maximum accepted value
+     *
      * @return float|int $coordinate or throw a RangeException
      *
      * @throws RangeException when coordinate is out of range fixed by min and max
@@ -245,8 +251,9 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     /**
      * Create a fluent message for InvalidException.
      *
-     * @param mixed[] $argv   the arguments
-     * @param string  $caller the method calling the method calling exception :)
+     * @param mixed[] $argv     the arguments
+     * @param string  $caller   the method calling the method calling exception :)
+     * @param bool    $subArray when the first argument was a subarray converted into an array
      */
     private function createException(array $argv, string $caller, bool $subArray = false): InvalidValueException
     {
@@ -272,7 +279,11 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     }
 
     /**
-     * @throws InvalidValueException
+     * Use the longitude-one/geo-parser to parse a coordinate.
+     *
+     * @param string $coordinate the coordinate to parse
+     *
+     * @throws InvalidValueException when coordinate is invalid
      */
     private function geoParse(string $coordinate): float|int
     {
@@ -303,8 +314,11 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 
     /**
      * Set a cartesian coordinate.
+     * Abscissa or ordinate.
      *
-     * @throws InvalidValueException
+     * @param float|int|string $coordinate the coordinate to set
+     *
+     * @throws InvalidValueException when coordinate is invalid, RangeException is never thrown
      */
     private function setCartesianCoordinate(float|int|string $coordinate): float|int
     {
@@ -318,7 +332,14 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     }
 
     /**
-     * @throws InvalidValueException|RangeException
+     * Set a geodesic coordinate.
+     * Latitude or longitude.
+     *
+     * @param float|int|string $coordinate the coordinate to set
+     * @param int              $min        the minimum value
+     * @param int              $max        the maximum value
+     *
+     * @throws InvalidValueException|RangeException when coordinate is invalid or out of range
      */
     private function setGeodesicCoordinate(float|int|string $coordinate, int $min, int $max): float|int
     {

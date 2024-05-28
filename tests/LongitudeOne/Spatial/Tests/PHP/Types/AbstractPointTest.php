@@ -41,6 +41,8 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractPointTest extends TestCase
 {
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectTypeHint
+
     use PointHelperTrait;
 
     private const DELTA = 0.000000000001;
@@ -200,11 +202,23 @@ class AbstractPointTest extends TestCase
      */
     public static function validGeodesicCoordinateProvider(): \Generator
     {
-        foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
-            yield $key => $value;
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+        foreach ($points as $point) {
+            foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
+                yield sprintf('%s(%s)', $point, $key) => array_merge([$point], $value);
+            }
         }
     }
 
+    /**
+     * Assert that the object has the method.
+     *
+     * @param object $object object to test
+     * @param string $method the method to test
+     */
     private static function assertObjectHasMethod(object $object, string $method): void
     {
         static::assertTrue(method_exists($object, $method), sprintf('Method "%s":"%s" does not exist.', $object::class, $method));
@@ -213,7 +227,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test getType method.
      *
-     * @param class-string<AbstractPoint> $class
+     * @param class-string<AbstractPoint> $class the classname to test, Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testGetType(string $class): void
@@ -222,11 +236,19 @@ class AbstractPointTest extends TestCase
         static::assertEquals('Point', $point->getType());
     }
 
-    // FIXME : Should this test use geometric points too? Or should I move it in GeometricPointTest?
+    /**
+     * Test geodesic setters.
+     *
+     * @param string           $pointType         Geometric or geographic point
+     * @param float|int|string $longitude         the actual longitude
+     * @param float|int|string $latitude          the actual latitude
+     * @param float|int        $expectedLongitude the expected longitude
+     * @param float|int        $expectedLatitude  the expected latitude
+     */
     #[DataProvider('validGeodesicCoordinateProvider')]
-    public function testGoodGeodesicCoordinate(float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
+    public function testGoodGeodesicCoordinate(string $pointType, float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
     {
-        $geographicPoint = new GeographicPoint(0, 0);
+        $geographicPoint = new $pointType(0, 0);
         $geographicPoint->setLongitude($longitude);
         $geographicPoint->setLatitude($latitude);
 
@@ -237,7 +259,11 @@ class AbstractPointTest extends TestCase
     /**
      * Test valid string points.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint     Geometric point and geographic point
+     * @param float|int|string            $longitude         the longitude to test
+     * @param float|int|string            $latitude          the latitude to test
+     * @param float|int                   $expectedLongitude the expected longitude
+     * @param float|int                   $expectedLatitude  the expected latitude
      */
     #[DataProvider('mixedGeodesicCoordinateProvider')]
     public function testGoodStringPoints(string $abstractPoint, float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
@@ -256,7 +282,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test argument 1 with too few values - Two invalid parameters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testInvalidArrayWithTooFewValues(string $abstractPoint): void
@@ -270,7 +296,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test argument 1 with too many values - Two invalid parameters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testInvalidArrayWithTooManyValues(string $abstractPoint): void
@@ -284,7 +310,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test to convert point to json.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testJson(string $abstractPoint): void
@@ -304,7 +330,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test bad string parameters - No parameters.
      *
-     * @param class-string $pointType
+     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testMissingArguments(string $pointType): void
@@ -318,7 +344,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test a point created with an array.
      *
-     * @param class-string<AbstractPoint> $pointType
+     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testPointFromArrayToString(string $pointType): void
@@ -331,7 +357,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test error when point is created with too many arguments.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testPointTooManyArguments(string $abstractPoint): void
@@ -345,7 +371,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test point with srid.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testPointWithSrid(string $abstractPoint): void
@@ -362,7 +388,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test error when point was created with the wrong arguments type.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testPointWrongArgumentTypes(string $abstractPoint): void
@@ -377,7 +403,10 @@ class AbstractPointTest extends TestCase
      * This test checks that the geo-parser range exceptions are caught and "converted" to InvalidValueException.
      * This test focuses on constructor.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint    Geometric point and geographic point
+     * @param string                      $firstCoordinate  the first coordinate to test
+     * @param string                      $secondCoordinate the second coordinate to test
+     * @param string                      $expectedMessage  the expected message
      */
     #[DataProvider('rangeExceptionProvider')]
     public function testRangeExceptionAreCaughtWithConstructor(string $abstractPoint, string $firstCoordinate, string $secondCoordinate, string $expectedMessage): void
@@ -392,7 +421,10 @@ class AbstractPointTest extends TestCase
      * This test checks that the geo-parser range exceptions are caught and "converted" to InvalidValueException.
      * This test focuses on X and Y setters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint    Geometric point and geographic point
+     * @param string                      $firstCoordinate  the first coordinate to test
+     * @param string                      $secondCoordinate the second coordinate to test
+     * @param string                      $expectedMessage  the expected message
      */
     #[DataProvider('rangeExceptionProvider')]
     public function testRangeExceptionAreCaughtWithNonExpectedSetters(string $abstractPoint, string $firstCoordinate, string $secondCoordinate, string $expectedMessage): void
@@ -409,7 +441,10 @@ class AbstractPointTest extends TestCase
      * This test checks that the geo-parser range exceptions are caught and "converted" to InvalidValueException.
      * This test focuses on longitude and latitude setters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint    Geometric point and geographic point
+     * @param string                      $firstCoordinate  the first coordinate to test
+     * @param string                      $secondCoordinate the second coordinate to test
+     * @param string                      $expectedMessage  the expected message
      */
     #[DataProvider('rangeExceptionProvider')]
     public function testRangeExceptionAreCaughtWithSetters(string $abstractPoint, string $firstCoordinate, string $secondCoordinate, string $expectedMessage): void
@@ -425,8 +460,11 @@ class AbstractPointTest extends TestCase
     /**
      * Test setX method.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
-     * @param array{0: string, 1: string} $getters
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
+     * @param string                      $setter        the setter to test
+     * @param array{0: string, 1: string} $getters       the getters to test
+     * @param float|int|string            $actual        the actual value to set
+     * @param float|int                   $expected      the expected value
      *
      * @throws InvalidValueException it should NOT happen
      */
@@ -450,7 +488,8 @@ class AbstractPointTest extends TestCase
      * This test checks that an exception is thrown when passing two coordinates separated by a space.
      * This test checks all setters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
+     * @param string                      $method        the method to test
      */
     #[DataProvider('setterProvider')]
     public function testSettersWithAnArray(string $abstractPoint, string $method): void
@@ -466,7 +505,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test to convert point to array.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testToArray(string $abstractPoint): void
@@ -485,7 +524,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test bad string parameters - Two invalid parameters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testTwoInvalidArguments(string $abstractPoint): void
@@ -499,7 +538,7 @@ class AbstractPointTest extends TestCase
     /**
      * Test bad string parameters - More than 3 parameters.
      *
-     * @param class-string<AbstractPoint> $abstractPoint
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
      */
     #[DataProvider('pointTypeProvider')]
     public function testUnusedArguments(string $abstractPoint): void

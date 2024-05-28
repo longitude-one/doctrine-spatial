@@ -123,6 +123,16 @@ class PointTest extends TestCase
         static::assertEquals('Point', $geometricPoint->getType());
     }
 
+    /**
+     * Test to set geodesic coordinates.
+     *
+     * @param float|int|string $longitude         longitude to set
+     * @param float|int|string $latitude          latitude to set
+     * @param float|int        $expectedLongitude expected longitude
+     * @param float|int        $expectedLatitude  expected latitude
+     *
+     * @throws InvalidValueException It shall NOT happen
+     */
     #[DataProvider('goodGeodesicCoordinateProvider')]
     public function testGoodGeodesicCoordinate(float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
     {
@@ -157,14 +167,28 @@ class PointTest extends TestCase
         static::assertEquals(-96.803889, $point->getLongitude());
     }
 
+    /**
+     * Test out of range latitude constructor.
+     *
+     * @param float|int|string $latitude out-of-range value
+     *
+     * @throws InvalidValueException It shall NOT happen
+     */
     #[DataProvider('outOfRangeLatitudeProvider')]
-    public function testOutOfRangeConstructor(float|int|string $latitude): void
+    public function testOutOfRangeLatitudeConstructor(float|int|string $latitude): void
     {
         $geometricPoint = new GeometricPoint(0, $latitude);
         static::assertIsNumeric($geometricPoint->getLatitude());
         static::assertNotEmpty($geometricPoint->getLatitude());
     }
 
+    /**
+     * Test out of range longitude constructor.
+     *
+     * @param float|int|string $longitude out-of-range value
+     *
+     * @throws InvalidValueException It shall NOT happen
+     */
     #[DataProvider('outOfRangeLongitudeProvider')]
     public function testOutOfRangeLongitudeConstructor(float|int|string $longitude): void
     {
@@ -173,6 +197,13 @@ class PointTest extends TestCase
         static::assertNotEmpty($geometricPoint->getLongitude());
     }
 
+    /**
+     * Test setLatitude with out-of-range values.
+     *
+     * @param float|int|string $latitude out-of-range value
+     *
+     * @throws InvalidValueException exception is expected
+     */
     #[DataProvider('outOfRangeLatitudeProvider')]
     public function testOutOfRangeSetLatitude(float|int|string $latitude): void
     {
@@ -182,6 +213,13 @@ class PointTest extends TestCase
         $point->setLatitude($latitude);
     }
 
+    /**
+     * Test setLongitude with out-of-range values.
+     *
+     * @param float|int|string $longitude out-of-range value
+     *
+     * @throws InvalidValueException expected exception
+     */
     #[DataProvider('outOfRangeLongitudeProvider')]
     public function testOutOfRangeSetLongitude(float|int|string $longitude): void
     {
@@ -191,6 +229,9 @@ class PointTest extends TestCase
         $point->setLongitude($longitude);
     }
 
+    /**
+     * Test setCoordinates with big integer.
+     */
     public function testSetCoordinatesWithBigInteger(): void
     {
         $point = new GeometricPoint(10, 10);
@@ -200,8 +241,8 @@ class PointTest extends TestCase
         $point->setY('100');
         static::assertSame(100, $point->getY());
 
-        $point->setX('180.3');
-        static::assertSame(180.3, $point->getX());
+        $point->setX('-180.3');
+        static::assertSame(-180.3, $point->getX());
 
         $point->setY('-190.3');
         static::assertSame(-190.3, $point->getY());
@@ -209,6 +250,8 @@ class PointTest extends TestCase
 
     /**
      * Test setLatitude with out-of-range values.
+     *
+     * @param float|int|string $latitude the out-of-range value
      *
      * @throws InvalidValueException it SHALL happen
      */
@@ -225,6 +268,8 @@ class PointTest extends TestCase
 
     /**
      * Test setLongitude with out-of-range values.
+     *
+     * @param float|int|string $longitude the out-of-range value
      *
      * @throws InvalidValueException it SHALL happen
      */

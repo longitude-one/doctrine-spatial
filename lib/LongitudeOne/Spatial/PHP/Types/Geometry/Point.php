@@ -28,18 +28,6 @@ use LongitudeOne\Spatial\PHP\Types\PointInterface;
  */
 class Point extends AbstractPoint implements CartesianInterface, GeometryInterface, PointInterface
 {
-    public function setLatitude(float|int|string $latitude): static
-    {
-        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setY or a geographic point instead.
-        return parent::setLatitude($latitude);
-    }
-
-    public function setLongitude(float|int|string $longitude): static
-    {
-        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setX or a geographic point instead.
-        return parent::setLongitude($longitude);
-    }
-
     /**
      * Point internal constructor.
      *
