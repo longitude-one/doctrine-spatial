@@ -18,79 +18,58 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
-use LongitudeOne\Geo\String\Exception\RangeException;
-use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
-use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\AbstractPoint;
+use LongitudeOne\Spatial\PHP\Types\GeodeticInterface;
 use LongitudeOne\Spatial\PHP\Types\PointInterface;
 
 /**
  * Point object for the POINT geography type.
  */
-class Point extends AbstractPoint implements GeographyInterface, PointInterface
+class Point extends AbstractPoint implements GeodeticInterface, GeographyInterface, PointInterface
 {
     /**
      * X setter.
      *
-     * @param string $x X coordinate
+     * @param float|int|string $x X coordinate
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setX(string $x): self
+    public function setX(float|int|string $x): static
     {
-        $parser = new Parser($x);
-
-        try {
-            $x = $parser->parse();
-        } catch (RangeException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
-        } catch (UnexpectedValueException $e) {
-            throw new InvalidValueException(sprintf('Invalid longitude value, got "%s".', $x), $e->getCode(), $e);
-        }
-
-        if (is_array($x)) {
-            throw new InvalidValueException('Invalid longitude value, longitude cannot be an array.');
-        }
-
-        if ($x < -180 || $x > 180) {
-            throw new InvalidValueException(sprintf('Invalid longitude value "%s", must be in range -180 to 180.', $x));
-        }
-
-        $this->x = $x;
-
-        return $this;
+        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setLongitude instead.
+        return parent::setLongitude($x);
     }
 
     /**
      * Y setter.
      *
-     * @param string $y the Y coordinate
+     * @param float|int|string $y the Y coordinate
      *
      * @throws InvalidValueException when y is not in range of accepted value, or is totally invalid
      */
-    public function setY(string $y): self
+    public function setY(float|int|string $y): static
     {
-        $parser = new Parser($y);
+        // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setLongitude instead.
+        return parent::setLatitude($y);
+    }
 
-        try {
-            $y = $parser->parse();
-        } catch (RangeException $e) {
-            throw new InvalidValueException($e->getMessage(), $e->getCode(), $e);
-        } catch (UnexpectedValueException $e) {
-            throw new InvalidValueException(sprintf('Invalid latitude value, got "%s".', $y), $e->getCode(), $e);
-        }
-
-        if (is_array($y)) {
-            throw new InvalidValueException('Invalid latitude value, latitude cannot be an array.');
-        }
-
-        if ($y < -90 || $y > 90) {
-            throw new InvalidValueException(sprintf('Invalid latitude value "%s", must be in range -90 to 90.', $y));
-        }
-
-        $this->y = $y;
-
-        return $this;
+    /**
+     * Point internal constructor.
+     *
+     * It uses Longitude and Latitude setters.
+     *
+     * @param string   $x    X, longitude
+     * @param string   $y    Y, latitude
+     * @param null|int $srid Spatial Reference System Identifier
+     *
+     * @throws InvalidValueException if x or y are invalid
+     */
+    protected function construct(string $x, string $y, ?int $srid = null): void
+    {
+        $this->setLongitude($x)
+            ->setLatitude($y)
+            ->setSrid($srid)
+        ;
     }
 }

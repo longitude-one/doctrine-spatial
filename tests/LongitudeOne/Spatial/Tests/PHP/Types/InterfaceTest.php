@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\CartesianInterface;
+use LongitudeOne\Spatial\PHP\Types\GeodeticInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\GeographyInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
@@ -65,6 +67,8 @@ class InterfaceTest extends TestCase
         static::assertInstanceOf(GeographyInterface::class, $lineString);
         static::assertInstanceOf(LineStringInterface::class, $lineString);
         static::assertNotInstanceOf(PointInterface::class, $lineString);
+        static::assertNotInstanceOf(GeodeticInterface::class, $lineString);
+        static::assertNotInstanceOf(CartesianInterface::class, $lineString);
         static::assertNotInstanceOf(PolygonInterface::class, $lineString);
         static::assertNotInstanceOf(MultiPointInterface::class, $lineString);
         static::assertNotInstanceOf(MultiLineStringInterface::class, $lineString);
@@ -82,6 +86,8 @@ class InterfaceTest extends TestCase
         static::assertInstanceOf(SpatialInterface::class, $point);
         static::assertInstanceOf(GeographyInterface::class, $point);
         static::assertInstanceOf(PointInterface::class, $point);
+        static::assertInstanceOf(GeodeticInterface::class, $point);
+        static::assertNotInstanceOf(CartesianInterface::class, $point);
         static::assertNotInstanceOf(LineStringInterface::class, $point);
         static::assertNotInstanceOf(PolygonInterface::class, $point);
         static::assertNotInstanceOf(MultiPointInterface::class, $point);
@@ -122,6 +128,8 @@ class InterfaceTest extends TestCase
         static::assertInstanceOf(SpatialInterface::class, $lineString);
         static::assertInstanceOf(GeometryInterface::class, $lineString);
         static::assertInstanceOf(LineStringInterface::class, $lineString);
+        static::assertNotInstanceOf(GeodeticInterface::class, $lineString);
+        static::assertNotInstanceOf(CartesianInterface::class, $lineString);
         static::assertNotInstanceOf(PointInterface::class, $lineString);
         static::assertNotInstanceOf(PolygonInterface::class, $lineString);
         static::assertNotInstanceOf(MultiPointInterface::class, $lineString);
@@ -142,6 +150,8 @@ class InterfaceTest extends TestCase
         static::assertInstanceOf(SpatialInterface::class, $point);
         static::assertInstanceOf(GeometryInterface::class, $point);
         static::assertInstanceOf(PointInterface::class, $point);
+        static::assertInstanceOf(CartesianInterface::class, $point);
+        static::assertNotInstanceOf(GeodeticInterface::class, $point);
         static::assertNotInstanceOf(LineStringInterface::class, $point);
         static::assertNotInstanceOf(PolygonInterface::class, $point);
         static::assertNotInstanceOf(MultiPointInterface::class, $point);

@@ -1,8 +1,21 @@
 name: Full tests
 on:
+  schedule:
+    - cron: '0 17 * * 4'
   push:
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
   pull_request:
-    branches: [ dev, main ]
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
 
 permissions:
   contents: read
@@ -90,7 +103,7 @@ jobs:
 
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
-        uses: paambaati/codeclimate-action@v5.0.0
+        uses: paambaati/codeclimate-action@v6.0.0
         env:
            CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:

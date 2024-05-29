@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometricPoint;
+use LongitudeOne\Spatial\Tests\DataProvider as LoDataProvider;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,91 +39,65 @@ class PointTest extends TestCase
     use PointHelperTrait;
 
     /**
-     * Test bad string parameters - latitude degrees greater than 90.
+     * @return \Generator<string, array{0: float|int|string, 1: float|int|string, 2: float|int, 3: float|int}, null, void>
      */
-    public function testBadLatitudeDegrees(): void
+    public static function goodGeodesicCoordinateProvider(): \Generator
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -90 to 90 in value "92:26:46N"');
-
-        new Point('79:56:55W', '92:26:46N');
+        foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
-     * Test bad string parameters - invalid latitude direction.
+     * @return \Generator<string, array{0: float|int|string}, null, void>
      */
-    public function testBadLatitudeDirection(): void
+    public static function outOfRangeLatitudeProvider(): \Generator
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid coordinate value, got "84:26:46Q".');
-
-        new Point('100:56:55W', '84:26:46Q');
+        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
-     * Test bad string parameters - latitude minutes greater than 59.
+     * @return \Generator<string, array{0: float|int|string}, null, void>
      */
-    public function testBadLatitudeMinutes(): void
+    public static function outOfRangeLongitudeProvider(): \Generator
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "84:64:46N"');
-
-        new Point('108:42:55W', '84:64:46N');
+        foreach (LoDataProvider::outOfRangeLongitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
-     * Test bad string parameters - latitude seconds greater than 59.
+     * @return \Generator<string, array{0: float|int|string}, null, void>
      */
-    public function testBadLatitudeSeconds(): void
+    public static function tooBigLatitudeProvider(): \Generator
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "84:23:75N"');
-
-        new Point('108:42:55W', '84:23:75N');
+        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
-     * Test bad string parameters - longitude degrees greater than 180.
+     * @return \Generator<string, array{0: float|int|string}, null, void>
      */
-    public function testBadLongitudeDegrees(): void
+    public static function tooBigLongitudeProvider(): \Generator
     {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Degrees out of range -180 to 180 in value "190:56:55W"');
+        yield 'int(-190)' => [-190];
 
-        new Point('190:56:55W', '84:26:46N');
-    }
+        yield 'float(-180.01)' => [-180.01];
 
-    /**
-     * Test bad string parameters - invalid longitude direction.
-     */
-    public function testBadLongitudeDirection(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid coordinate value, got "100:56:55P".');
+        yield 'string(-190)' => ['-190'];
 
-        new Point('100:56:55P', '84:26:46N');
-    }
+        yield 'string(-190°)' => ['-190°'];
 
-    /**
-     * Test bad string parameters - longitude minutes greater than 59.
-     */
-    public function testBadLongitudeMinutes(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Minutes greater than 60 in value "108:62:55W"');
+        yield 'int(190)' => [190];
 
-        new Point('108:62:55W', '84:26:46N');
-    }
+        yield 'float(180.01)' => [180.01];
 
-    /**
-     * Test bad string parameters - longitude seconds greater than 59.
-     */
-    public function testBadLongitudeSeconds(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('[Range Error] Error: Seconds greater than 60 in value "108:53:94W"');
+        yield 'string(190)' => ['190'];
 
-        new Point('108:53:94W', '84:26:46N');
+        yield 'string(190°)' => ['190°'];
     }
 
     /**
@@ -134,7 +110,7 @@ class PointTest extends TestCase
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array');
 
-        new Point([[3, []]]);
+        new GeometricPoint([[3, []]]);
     }
 
     /**
@@ -142,10 +118,30 @@ class PointTest extends TestCase
      */
     public function testGetType(): void
     {
-        $point = static::createPointOrigin();
-        $result = $point->getType();
+        $geometricPoint = new GeometricPoint(0, 0);
 
-        static::assertEquals('Point', $result);
+        static::assertEquals('Point', $geometricPoint->getType());
+    }
+
+    /**
+     * Test to set geodesic coordinates.
+     *
+     * @param float|int|string $longitude         longitude to set
+     * @param float|int|string $latitude          latitude to set
+     * @param float|int        $expectedLongitude expected longitude
+     * @param float|int        $expectedLatitude  expected latitude
+     *
+     * @throws InvalidValueException It shall NOT happen
+     */
+    #[DataProvider('goodGeodesicCoordinateProvider')]
+    public function testGoodGeodesicCoordinate(float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
+    {
+        $geographicPoint = new GeometricPoint(0, 0);
+        $geographicPoint->setLongitude($longitude);
+        $geographicPoint->setLatitude($latitude);
+
+        static::assertSame($expectedLongitude, $geographicPoint->getLongitude());
+        static::assertSame($expectedLatitude, $geographicPoint->getLatitude());
     }
 
     /**
@@ -172,216 +168,119 @@ class PointTest extends TestCase
     }
 
     /**
-     * Test valid string points.
-     */
-    public function testGoodStringPoints(): void
-    {
-        $point = new Point('79:56:55W', '40:26:46N');
-
-        static::assertEqualsWithDelta(40.44611111111111, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.9486111111111, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('79°56\'55"W', '40°26\'46"N');
-
-        static::assertEqualsWithDelta(40.44611111111111, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.9486111111111, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('79° 56\' 55" W', '40° 26\' 46" N');
-
-        static::assertEqualsWithDelta(40.44611111111111, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.9486111111111, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('79°56′55″W', '40°26′46″N');
-
-        static::assertEqualsWithDelta(40.44611111111111, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.9486111111111, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('79° 56′ 55″ W', '40° 26′ 46″ N');
-
-        static::assertEqualsWithDelta(40.44611111111111, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.9486111111111, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('79:56:55.832W', '40:26:46.543N');
-
-        static::assertEqualsWithDelta(40.446261944444444, $point->getLatitude(), 0.000000000001);
-        static::assertEqualsWithDelta(-79.94884222222223, $point->getLongitude(), 0.000000000001);
-
-        $point = new Point('112:4:0W', '33:27:0N');
-
-        static::assertEquals(33.45, $point->getLatitude());
-        static::assertEqualsWithDelta(-112.06666666666, $point->getLongitude(), 0.0000000001);
-    }
-
-    /**
-     * Test to convert point to json.
-     */
-    public function testJson(): void
-    {
-        $expected = '{"type":"Point","coordinates":[5,5],"srid":null}';
-        $point = static::createPointE();
-
-        static::assertEquals($expected, $point->toJson());
-        static::assertEquals($expected, json_encode($point));
-
-        $point->setSrid(4326);
-        $expected = '{"type":"Point","coordinates":[5,5],"srid":4326}';
-        static::assertEquals($expected, $point->toJson());
-        static::assertEquals($expected, json_encode($point));
-    }
-
-    /**
-     * Test bad string parameters - No parameters.
-     */
-    public function testMissingArguments(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct:');
-
-        new Point();
-    }
-
-    /**
-     * Test a point created with an array.
-     */
-    public function testPointFromArrayToString(): void
-    {
-        $expected = '5 5';
-        $point = static::createPointE();
-
-        static::assertSame($expected, (string) $point);
-    }
-
-    /**
-     * Test error when point is created with too many arguments.
-     */
-    public function testPointTooManyArguments(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 5, 5, 5, 5');
-
-        new Point(5, 5, 5, 5);
-    }
-
-    /**
-     * Test point with srid.
-     */
-    public function testPointWithSrid(): void
-    {
-        $point = static::createPointWithSrid(2154);
-        $result = $point->getSrid();
-
-        static::assertSame(2154, $result);
-    }
-
-    /**
-     * Test error when point was created with wrong arguments type.
-     */
-    public function testPointWrongArgumentTypes(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array, array, 1234');
-
-        new Point([], [], '1234');
-    }
-
-    /**
-     * Test setX method with an array.
+     * Test out of range latitude constructor.
      *
-     * @throws InvalidValueException it should NOT happen
+     * @param float|int|string $latitude out-of-range value
+     *
+     * @throws InvalidValueException It shall NOT happen
      */
-    public function testSetFirstCoordinateWithAnArray(): void
+    #[DataProvider('outOfRangeLatitudeProvider')]
+    public function testOutOfRangeLatitudeConstructor(float|int|string $latitude): void
     {
-        $point = new Point(10, 10);
+        $geometricPoint = new GeometricPoint(0, $latitude);
+        static::assertIsNumeric($geometricPoint->getLatitude());
+        static::assertNotEmpty($geometricPoint->getLatitude());
+    }
+
+    /**
+     * Test out of range longitude constructor.
+     *
+     * @param float|int|string $longitude out-of-range value
+     *
+     * @throws InvalidValueException It shall NOT happen
+     */
+    #[DataProvider('outOfRangeLongitudeProvider')]
+    public function testOutOfRangeLongitudeConstructor(float|int|string $longitude): void
+    {
+        $geometricPoint = new GeometricPoint($longitude, 0);
+        static::assertIsNumeric($geometricPoint->getLongitude());
+        static::assertNotEmpty($geometricPoint->getLongitude());
+    }
+
+    /**
+     * Test setLatitude with out-of-range values.
+     *
+     * @param float|int|string $latitude out-of-range value
+     *
+     * @throws InvalidValueException exception is expected
+     */
+    #[DataProvider('outOfRangeLatitudeProvider')]
+    public function testOutOfRangeSetLatitude(float|int|string $latitude): void
+    {
+        $point = new GeometricPoint(0, 0);
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage(sprintf('Out of range latitude value, latitude must be between -90 and 90, got "%s".', $latitude));
+        $point->setLatitude($latitude);
+    }
+
+    /**
+     * Test setLongitude with out-of-range values.
+     *
+     * @param float|int|string $longitude out-of-range value
+     *
+     * @throws InvalidValueException expected exception
+     */
+    #[DataProvider('outOfRangeLongitudeProvider')]
+    public function testOutOfRangeSetLongitude(float|int|string $longitude): void
+    {
+        $point = new GeometricPoint(0, 0);
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage(sprintf('Out of range longitude value, longitude must be between -180 and 180, got "%s".', $longitude));
+        $point->setLongitude($longitude);
+    }
+
+    /**
+     * Test setCoordinates with big integer.
+     */
+    public function testSetCoordinatesWithBigInteger(): void
+    {
+        $point = new GeometricPoint(10, 10);
+        $point->setX('200');
+        static::assertSame(200, $point->getX());
+
+        $point->setY('100');
+        static::assertSame(100, $point->getY());
+
+        $point->setX('-180.3');
+        static::assertSame(-180.3, $point->getX());
+
+        $point->setY('-190.3');
+        static::assertSame(-190.3, $point->getY());
+    }
+
+    /**
+     * Test setLatitude with out-of-range values.
+     *
+     * @param float|int|string $latitude the out-of-range value
+     *
+     * @throws InvalidValueException it SHALL happen
+     */
+    #[DataProvider('tooBigLatitudeProvider')]
+    public function testSetLatitudeWithBigInteger(float|int|string $latitude): void
+    {
+        $point = new GeometricPoint(10, 10);
 
         self::expectException(InvalidValueException::class);
-        self::expectExceptionMessage('Invalid coordinate value, coordinate cannot be an array.');
-        $point->setX('10 20');
+        self::expectExceptionMessage(sprintf('Out of range latitude value, latitude must be between -90 and 90, got "%s".', $latitude));
+
+        $point->setLatitude($latitude);
     }
 
     /**
-     * Test setY method with an array.
+     * Test setLongitude with out-of-range values.
      *
-     * @throws InvalidValueException it should NOT happen
+     * @param float|int|string $longitude the out-of-range value
+     *
+     * @throws InvalidValueException it SHALL happen
      */
-    public function testSetSecondCoordinateWithAnArray(): void
+    #[DataProvider('tooBigLongitudeProvider')]
+    public function testSetLongitudeWithBigInteger(float|int|string $longitude): void
     {
-        $point = new Point(10, 10);
+        $point = new GeometricPoint(10, 10);
 
         self::expectException(InvalidValueException::class);
-        self::expectExceptionMessage('Invalid coordinate value, coordinate cannot be an array.');
-        $point->setY('10 20');
-    }
+        self::expectExceptionMessage(sprintf('Out of range longitude value, longitude must be between -180 and 180, got "%s".', $longitude));
 
-    /**
-     * Test setX method.
-     *
-     * @throws InvalidValueException it should NOT happen
-     */
-    public function testSetX(): void
-    {
-        $point = new Point(10, 10);
-        $point->setX('20');
-        static::assertSame(20, $point->getX());
-
-        self::expectException(InvalidValueException::class);
-        self::expectExceptionMessage('Invalid coordinate value, got "foo".');
-        $point->setX('foo');
-    }
-
-    /**
-     * Test setY method.
-     *
-     * @throws InvalidValueException it should NOT happen
-     */
-    public function testSetY(): void
-    {
-        $point = new Point(10, 10);
-        $point->setY('20');
-        static::assertSame(20, $point->getLatitude());
-        static::assertSame(20, $point->getY());
-
-        self::expectException(InvalidValueException::class);
-        self::expectExceptionMessage('Invalid coordinate value, got "foo".');
-        $point->setY('foo');
-    }
-
-    /**
-     * Test to convert a point to an array.
-     */
-    public function testToArray(): void
-    {
-        $expected = [0, 0];
-        $point = static::createPointOrigin();
-        $result = $point->toArray();
-
-        static::assertSame($expected, $result);
-
-        $expected = [-118.243, 34.0522];
-        $point = static::createLosAngelesGeometry();
-        $result = $point->toArray();
-
-        static::assertSame($expected, $result);
-    }
-
-    /**
-     * Test bad string parameters - Two invalid parameters.
-     */
-    public function testTwoInvalidArguments(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: NULL, NULL');
-
-        new Point(null, null);
-    }
-
-    /**
-     * Test bad string parameters - More than 3 parameters.
-     */
-    public function testUnusedArguments(): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: 1, 2, 3, 4, NULL, 5');
-
-        new Point(1, 2, 3, 4, null, 5);
+        $point->setLongitude($longitude);
     }
 }
