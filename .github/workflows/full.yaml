@@ -1,8 +1,21 @@
 name: Full tests
 on:
+  schedule:
+    - cron: '0 17 * * 4'
   push:
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
   pull_request:
-    branches: [ dev, main ]
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
 
 permissions:
   contents: read
