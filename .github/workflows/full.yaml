@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - '**.md'
       - '**.rst'
+      - '.readthedocs.yaml'
       - 'LICENSE'
   pull_request:
     branches:
@@ -17,6 +18,7 @@ on:
     paths-ignore:
       - '**.md'
       - '**.rst'
+      - '.readthedocs.yaml'
       - 'LICENSE'
 
 permissions:
