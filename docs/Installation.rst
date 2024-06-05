@@ -12,26 +12,29 @@ Add the `longitude-one/doctrine-spatial` package in your composer.json.
 
 Or you can edit directly `composer.json` file by adding this line on your requirements:
 
-.. code-block:: javascript
+.. code-block:: json
 
     "require": {
-    	...
-        "longitude-one/doctrine-spatial": "^3.0"
-
-Be careful, the version 3.0.0 will only be available during summer 2021.
+        "longitude-one/doctrine-spatial": "^5.0"
 
 Installation without composer
 -----------------------------
 
-If you're not using composer, you can
-:download:`download the library  <https://github.com/longitude-one/doctrine-spatial/archive/master.zip>`.
-Then copy and paste the lib directory where you store all libraries of your application.
+While Composer is the recommended method for library management, you can
+:download:`download the library  <https://github.com/longitude-one/doctrine-spatial/archive/master.zip>` manually
+if needed.
+Once downloaded, locate the directory within the archive named `lib`.
+This directory typically contains the library's core files. Copy and paste this lib directory into the location where
+you store all your application's libraries.
 
 Installation to contribute
 --------------------------
 
-If you want to contribute, do not hesitate. Any help is welcomed. The simplest way is too fork the Github project, then
-to locally clone your forked project. The :doc:`contribution <./Contributing>` page explains how to proceed and how to test your updates.
+We welcome your contributions to this project! Here's how you can easily get involved:
+
+1. Fork the Project on GitHub: Head over to the project's GitHub repository and create a fork. This creates your own copy of the codebase that you can modify.
+2. Clone Your Fork Locally: Once you've forked the project, clone your forked repository to your local machine. This will allow you to work on the code locally.
+3. Refer to the Contribution Guide: The provided contribution guide (doc) offers detailed instructions on setting up your development environment, making code changes, and testing your contributions. This guide will ensure your contributions are aligned with the project's standards.
 
 
 

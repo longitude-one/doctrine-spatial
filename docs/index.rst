@@ -1,23 +1,24 @@
 .. Doctrine spatial extension documentation master file, created by Alexandre Tranchant
 
-Welcome to Doctrine spatial extension's documentation!
+Welcome to Doctrine-Spatial extension's documentation!
 ######################################################
 
-Doctrine spatial extension provides spatial types and spatial functions for doctrine. It allows you to manage
-spatial entity and to store them into your database server.
+Doctrine-Spatial extension provides spatial types and spatial functions for doctrine. It allows you to manage
+spatial entities and to store them into your database server.
 
-Currently, doctrine spatial extension provides two dimension general geometric and geographic spatial types,
-two-dimension points, linestrings, polygon and two-dimension multi-points, multi-linestrings, multi-polygons. Doctrine
-spatial is only compatible with MySql and PostgreSql. For better security and better resilience of your spatial data,
-we recommend that you favor the PostgreSql database server because of `the shortcomings and vulnerabilities of MySql`_.
+Currently, Doctrine-Spatial extension supports two-dimension geometric and geographic spatial types.
+These include points, linestrings, polygons, and their multi-dimensional counterparts
+(multi-points, multi-linestrings, and multi-polygons). It is compatible with MySQL and PostgreSQL databases.
 
 This project was initially created by Derek J. Lambert in 2015. In March 2020, Alexandre Tranchant forked the originally
-project because of unactivity for two years. Feel free to :doc:`contribute <./Contributing>`. Any help is welcomed:
+project due to inactivity for two years. We welcome contribution (see the contribution :doc:`guide <./Contributing>`.
 
-* to implement third and fourth dimension in spatial data,
-* to implement new spatial function,
-* to complete documentation and fix typos, *(I'm not fluent in english)*
-* to implement new abstracted platforms like Microsoft Sql Server.
+Here are some areas where your help would be appreciated:
+
+* Implementing support for third and fourth dimensions in spatial data,
+* Implementing new spatial functions,
+* Improving documentation by completing it and fixing typos *(even if your English isn't perfect, we can still use your help!)*
+* Implementing support for new database platforms, such as Microsoft SQL Server.
 
 Contents
 ********
@@ -33,4 +34,3 @@ Contents
    Contributing
    Test
 
-.. _the shortcomings and vulnerabilities of MySql: https://sqlpro.developpez.com/tutoriel/dangers-mysql-mariadb/

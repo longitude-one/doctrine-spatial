@@ -1,5 +1,16 @@
-Contributing
-************
+Contributing to Doctrine Spatial
+********************************
+
+Welcome to the contribution guide for Doctrine Spatial! This document provides comprehensive instructions and guidelines for those interested in making valuable contributions to the project's development and enhancement. We encourage participation from all levels of expertise, from beginners to seasoned developers.
+
+Contributing Avenues
+====================
+
+The Doctrine Spatial project welcomes contributions in two primary areas:
+
+1. **Documentation Enhancement:** Improve the project's documentation by addressing typos, clarifying instructions, adding helpful examples, or translating documentation into other languages. This helps ensure that users have clear and accessible information to guide them effectively in using Doctrine Spatial.
+
+2. **Codebase Improvement:** Contribute to the project's codebase by fixing bugs, adding new features, optimizing performance, or enhancing existing functionalities. This direct involvement in the code helps maintain and strengthen Doctrine Spatial's core capabilities.
 
 Documentation
 =============
