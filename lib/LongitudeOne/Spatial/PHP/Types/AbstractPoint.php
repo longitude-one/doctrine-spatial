@@ -237,7 +237,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
                     continue;
                 }
 
-                throw $this->createException($argv, $caller);
+                throw $this->createException($argv[0], $caller, true);
             }
 
             return $argv[0];
