@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
+ * @covers \LongitudeOne\Spatial\PHP\Types\AbstractPoint
  */
 class DeprecationTest extends TestCase
 {

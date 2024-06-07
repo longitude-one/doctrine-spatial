@@ -239,11 +239,12 @@ class AbstractPointTest extends TestCase
     /**
      * Test geodesic setters.
      *
-     * @param class-string<AbstractPoint> $pointType         Geometric or geographic point
-     * @param float|int|string            $longitude         the actual longitude
-     * @param float|int|string            $latitude          the actual latitude
-     * @param float|int                   $expectedLongitude the expected longitude
-     * @param float|int                   $expectedLatitude  the expected latitude
+     * @param class-string<AbstractPoint> $pointType Geometric or geographic point
+     * @param float|int|string $longitude the actual longitude
+     * @param float|int|string $latitude the actual latitude
+     * @param float|int $expectedLongitude the expected longitude
+     * @param float|int $expectedLatitude the expected latitude
+     * @throws InvalidValueException It shall NOT happen in this test
      */
     #[DataProvider('validGeodesicCoordinateProvider')]
     public function testGoodGeodesicCoordinate(string $pointType, float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void

@@ -88,19 +88,6 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
                 static::class,
                 $caller
             );
-
-            return;
-        }
-
-        // WKT cases
-        if (1 === $argc && is_string($argv[0])) {
-            Deprecation::trigger(
-                'longitude-one/doctrine-spatial',
-                self::LINK,
-                'Passing a WKT string on %s::%s is deprecated since 5.0.2. Please use two arguments instead.',
-                static::class,
-                $caller
-            );
         }
     }
 
