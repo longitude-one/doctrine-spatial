@@ -8,6 +8,7 @@
     <description>Alexandre Tranchant rule set.</description>
     <rule ref="rulesets/cleancode.xml">
         <exclude name="BooleanArgumentFlag"/>
+        <exclude name="StaticAccess"/>
     </rule>
     <rule ref="rulesets/codesize.xml">
         <exclude name="CyclomaticComplexity"/>
