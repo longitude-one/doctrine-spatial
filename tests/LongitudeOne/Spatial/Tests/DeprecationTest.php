@@ -30,9 +30,9 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
+ * @covers \LongitudeOne\Spatial\PHP\Types\AbstractPoint
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
- * @covers \LongitudeOne\Spatial\PHP\Types\AbstractPoint
  */
 class DeprecationTest extends TestCase
 {
@@ -41,7 +41,7 @@ class DeprecationTest extends TestCase
     /**
      * Use an array with two coordinates as constructor is deprecated.
      *
-     * @throws InvalidValueException It shall NOT happen in this test
+     * @throws InvalidValueException it shall NOT happen in this test
      */
     public function testDeprecationWithAnArrayAsConstructor(): void
     {
@@ -52,7 +52,7 @@ class DeprecationTest extends TestCase
     /**
      * Use an array with two coordinates as constructor is deprecated.
      *
-     * @throws InvalidValueException It shall NOT happen in this test
+     * @throws InvalidValueException it shall NOT happen in this test
      */
     public function testDeprecationWithAnArrayAsConstructorAndSrid(): void
     {
@@ -64,7 +64,7 @@ class DeprecationTest extends TestCase
      * No deprecations are expected when providing two coordinates as constructor and an optional Srid.
      * Even if coordinates are provided as float, integer, strings or as degrees, minutes and seconds.
      *
-     * @throws InvalidValueException It shall NOT happen in this test
+     * @throws InvalidValueException it shall NOT happen in this test
      */
     public function testNoDeprecations(): void
     {
