@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
+use Doctrine\Deprecations\Deprecation;
 use LongitudeOne\Geo\String\Exception\RangeException as GeoParserRangeException;
 use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
 use LongitudeOne\Geo\String\Parser;
@@ -32,6 +33,8 @@ use LongitudeOne\Spatial\Exception\RangeException;
  */
 abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 {
+    private const LINK = 'https://github.com/longitude-one/doctrine-spatial/issues/81';
+
     /**
      * The X coordinate or the longitude.
      */
@@ -52,6 +55,40 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
         $argv = $this->validateArguments(func_get_args(), '__construct');
 
         call_user_func_array([$this, 'construct'], $argv);
+    }
+
+    /**
+     * This method triggers deprecation messages when developers don't use the next gen constructors.
+     *
+     * @param mixed[] $argv   arguments passed to the constructor or the calling method
+     * @param string  $caller the calling method
+     */
+    private static function triggerEventualDeprecations(array $argv, string $caller): void
+    {
+        $argc = count($argv);
+
+        // Array cases
+        if (1 === $argc && is_array($argv[0])) {
+            Deprecation::trigger(
+                'longitude-one/doctrine-spatial',
+                self::LINK,
+                'Passing an array of coordinates on %s::%s is deprecated since 5.0.2. Please use two arguments instead.',
+                static::class,
+                $caller
+            );
+
+            return;
+        }
+
+        if (2 === $argc && is_array($argv[0]) && is_numeric($argv[1])) {
+            Deprecation::trigger(
+                'longitude-one/doctrine-spatial',
+                self::LINK,
+                'Passing an array of coordinates and a SRID on %s::%s is deprecated since 5.0.2. Please use three arguments instead.',
+                static::class,
+                $caller
+            );
+        }
     }
 
     /**
@@ -185,6 +222,8 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      */
     protected function validateArguments(array $argv, string $caller): array
     {
+        self::triggerEventualDeprecations($argv, $caller);
+
         $argc = count($argv);
 
         if (1 == $argc && is_array($argv[0])) {
@@ -198,7 +237,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
                     continue;
                 }
 
-                throw $this->createException($argv, $caller);
+                throw $this->createException($argv[0], $caller, true);
             }
 
             return $argv[0];

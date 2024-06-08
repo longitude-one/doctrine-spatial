@@ -225,6 +225,20 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * Test bad array parameter - Object as value.
+     *
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testArrayWithObject(string $abstractPoint): void
+    {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(object, NULL)', $abstractPoint));
+
+        new $abstractPoint([new \stdClass(), null]);
+    }
+
+    /**
      * Test getType method.
      *
      * @param class-string<AbstractPoint> $class the classname to test, Geometric point and geographic point
@@ -244,6 +258,8 @@ class AbstractPointTest extends TestCase
      * @param float|int|string            $latitude          the actual latitude
      * @param float|int                   $expectedLongitude the expected longitude
      * @param float|int                   $expectedLatitude  the expected latitude
+     *
+     * @throws InvalidValueException It shall NOT happen in this test
      */
     #[DataProvider('validGeodesicCoordinateProvider')]
     public function testGoodGeodesicCoordinate(string $pointType, float|int|string $longitude, float|int|string $latitude, float|int $expectedLongitude, float|int $expectedLatitude): void
