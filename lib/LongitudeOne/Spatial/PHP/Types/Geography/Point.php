@@ -29,6 +29,25 @@ use LongitudeOne\Spatial\PHP\Types\PointInterface;
 class Point extends AbstractPoint implements GeodeticInterface, GeographyInterface, PointInterface
 {
     /**
+     * Point constructor.
+     *
+     * It uses longitude and latitude setters.
+     *
+     * @param float|int|string $x    X, longitude
+     * @param float|int|string $y    Y, latitude
+     * @param null|int         $srid Spatial Reference System Identifier
+     *
+     * @throws InvalidValueException if x or y are invalid
+     */
+    public function __construct(float|int|string $x, float|int|string $y, ?int $srid = null)
+    {
+        $this->setLongitude($x)
+            ->setLatitude($y)
+            ->setSrid($srid)
+        ;
+    }
+
+    /**
      * X setter.
      *
      * @param float|int|string $x X coordinate
@@ -52,24 +71,5 @@ class Point extends AbstractPoint implements GeodeticInterface, GeographyInterfa
     {
         // TODO #67 - Trigger a deprecation notice when using this method. Advice to use setLongitude instead.
         return parent::setLatitude($y);
-    }
-
-    /**
-     * Point internal constructor.
-     *
-     * It uses Longitude and Latitude setters.
-     *
-     * @param string   $x    X, longitude
-     * @param string   $y    Y, latitude
-     * @param null|int $srid Spatial Reference System Identifier
-     *
-     * @throws InvalidValueException if x or y are invalid
-     */
-    protected function construct(string $x, string $y, ?int $srid = null): void
-    {
-        $this->setLongitude($x)
-            ->setLatitude($y)
-            ->setSrid($srid)
-        ;
     }
 }

@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use Doctrine\Deprecations\Deprecation;
 use LongitudeOne\Geo\String\Exception\RangeException as GeoParserRangeException;
 use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
 use LongitudeOne\Geo\String\Parser;
@@ -33,8 +32,6 @@ use LongitudeOne\Spatial\Exception\RangeException;
  */
 abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 {
-    private const LINK = 'https://github.com/longitude-one/doctrine-spatial/issues/81';
-
     /**
      * The X coordinate or the longitude.
      */
@@ -44,52 +41,6 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      * The Y coordinate or the latitude.
      */
     protected float|int $y;
-
-    /**
-     * AbstractPoint constructor.
-     *
-     * @throws InvalidValueException when point is invalid
-     */
-    public function __construct()
-    {
-        $argv = $this->validateArguments(func_get_args(), '__construct');
-
-        call_user_func_array([$this, 'construct'], $argv);
-    }
-
-    /**
-     * This method triggers deprecation messages when developers don't use the next gen constructors.
-     *
-     * @param mixed[] $argv   arguments passed to the constructor or the calling method
-     * @param string  $caller the calling method
-     */
-    private static function triggerEventualDeprecations(array $argv, string $caller): void
-    {
-        $argc = count($argv);
-
-        // Array cases
-        if (1 === $argc && is_array($argv[0])) {
-            Deprecation::trigger(
-                'longitude-one/doctrine-spatial',
-                self::LINK,
-                'Passing an array of coordinates on %s::%s is deprecated since 5.0.2. Please use two arguments instead.',
-                static::class,
-                $caller
-            );
-
-            return;
-        }
-
-        if (2 === $argc && is_array($argv[0]) && is_numeric($argv[1])) {
-            Deprecation::trigger(
-                'longitude-one/doctrine-spatial',
-                self::LINK,
-                'Passing an array of coordinates and a SRID on %s::%s is deprecated since 5.0.2. Please use three arguments instead.',
-                static::class,
-                $caller
-            );
-        }
-    }
 
     /**
      * Latitude getter.
@@ -211,63 +162,6 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     }
 
     /**
-     * Validate arguments.
-     *
-     * @param mixed[] $argv   list of arguments
-     * @param string  $caller the calling method
-     *
-     * @return (float|int|string)[]
-     *
-     * @throws InvalidValueException when an argument is not valid
-     */
-    protected function validateArguments(array $argv, string $caller): array
-    {
-        self::triggerEventualDeprecations($argv, $caller);
-
-        $argc = count($argv);
-
-        if (1 == $argc && is_array($argv[0])) {
-            $count = count($argv[0]);
-            if ($count < 2 || $count > 3) {
-                throw $this->createException($argv[0], $caller, true);
-            }
-
-            foreach ($argv[0] as $value) {
-                if (is_numeric($value) || is_string($value)) {
-                    continue;
-                }
-
-                throw $this->createException($argv[0], $caller, true);
-            }
-
-            return $argv[0];
-        }
-
-        if (2 == $argc) {
-            if (is_array($argv[0]) && (is_numeric($argv[1]) || null === $argv[1] || is_string($argv[1]))) {
-                $argv[0][] = $argv[1];
-
-                return $argv[0];
-            }
-
-            if ((is_numeric($argv[0]) || is_string($argv[0])) && (is_numeric($argv[1]) || is_string($argv[1]))) {
-                return $argv;
-            }
-        }
-
-        if (3 == $argc) {
-            if ((is_numeric($argv[0]) || is_string($argv[0]))
-                && (is_numeric($argv[1]) || is_string($argv[1]))
-                && (is_numeric($argv[2]) || null === $argv[2] || is_string($argv[2]))
-            ) {
-                return $argv;
-            }
-        }
-
-        throw $this->createException($argv, $caller);
-    }
-
-    /**
      * Check the range of a coordinate.
      *
      * @param float|int $coordinate the coordinate to check
@@ -285,36 +179,6 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
         }
 
         return $coordinate;
-    }
-
-    /**
-     * Create a fluent message for InvalidException.
-     *
-     * @param mixed[] $argv     the arguments
-     * @param string  $caller   the method calling the method calling exception :)
-     * @param bool    $subArray when the first argument was a subarray converted into an array
-     */
-    private function createException(array $argv, string $caller, bool $subArray = false): InvalidValueException
-    {
-        array_walk($argv, function (&$value) {
-            if (is_numeric($value) || is_string($value)) {
-                return;
-            }
-
-            $value = gettype($value);
-        });
-
-        $message = 'Invalid parameters passed to %s::%s: %s';
-        if ($subArray) {
-            $message = 'Invalid parameters passed to %s::%s: array(%s)';
-        }
-
-        return new InvalidValueException(sprintf(
-            $message,
-            static::class,
-            $caller,
-            implode(', ', $argv)
-        ));
     }
 
     /**
@@ -396,15 +260,4 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 
         return $parsedCoordinate;
     }
-
-    /**
-     * Abstract point internal constructor.
-     *
-     * @param string   $x    X, longitude
-     * @param string   $y    Y, latitude
-     * @param null|int $srid Spatial Reference System Identifier
-     *
-     * @throws InvalidValueException if x or y are invalid
-     */
-    abstract protected function construct(string $x, string $y, ?int $srid = null): void;
 }
