@@ -26,6 +26,7 @@ use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\PHP\Types\PointInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -177,10 +178,12 @@ abstract class AbstractPlatform implements PlatformInterface
         /** @var class-string<SpatialInterface> $class */
         $class = sprintf('LongitudeOne\Spatial\PHP\Types\%s\%s', $typeFamily, $constValue);
 
-        if (isset($value['srid'])) {
-            return new $class($value['value'], $value['srid']);
+        if (is_a($class, PointInterface::class, true)) {
+            if (is_array($value['value']) && isset($value['value'][0], $value['value'][1])) {
+                return new $class($value['value'][0], $value['value'][1], $value['srid'] ?? null);
+            }
         }
 
-        return new $class($value['value']);
+        return new $class($value['value'], $value['srid'] ?? null);
     }
 }
