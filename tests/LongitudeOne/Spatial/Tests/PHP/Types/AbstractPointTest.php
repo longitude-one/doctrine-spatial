@@ -225,20 +225,6 @@ class AbstractPointTest extends TestCase
     }
 
     /**
-     * Test bad array parameter - Object as value.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testArrayWithObject(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(object, NULL)', $abstractPoint));
-
-        new $abstractPoint([new \stdClass(), null]);
-    }
-
-    /**
      * Test getType method.
      *
      * @param class-string<AbstractPoint> $class the classname to test, Geometric point and geographic point
@@ -296,34 +282,6 @@ class AbstractPointTest extends TestCase
     }
 
     /**
-     * Test argument 1 with too few values - Two invalid parameters.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testInvalidArrayWithTooFewValues(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(1)', $abstractPoint));
-
-        new $abstractPoint([1]);
-    }
-
-    /**
-     * Test argument 1 with too many values - Two invalid parameters.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testInvalidArrayWithTooManyValues(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array(1, 2, 3, 4)', $abstractPoint));
-
-        new $abstractPoint([1, 2, 3, 4]);
-    }
-
-    /**
      * Test to convert point to json.
      *
      * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
@@ -344,47 +302,6 @@ class AbstractPointTest extends TestCase
     }
 
     /**
-     * Test bad string parameters - No parameters.
-     *
-     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testMissingArguments(string $pointType): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct:', $pointType));
-
-        new $pointType();
-    }
-
-    /**
-     * Test a point created with an array.
-     *
-     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testPointFromArrayToString(string $pointType): void
-    {
-        $point = new $pointType([5, 5]);
-
-        static::assertSame('5 5', (string) $point);
-    }
-
-    /**
-     * Test error when point is created with too many arguments.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testPointTooManyArguments(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: 5, 5, 5, 5', $abstractPoint));
-
-        new $abstractPoint(5, 5, 5, 5);
-    }
-
-    /**
      * Test point with srid.
      *
      * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
@@ -399,20 +316,6 @@ class AbstractPointTest extends TestCase
         $point->setSrid(4326);
         $actual = $point->getSrid();
         static::assertSame(4326, $actual);
-    }
-
-    /**
-     * Test error when point was created with the wrong arguments type.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testPointWrongArgumentTypes(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: array, array, 1234', $abstractPoint));
-
-        new $abstractPoint([], [], '1234');
     }
 
     /**
@@ -535,33 +438,5 @@ class AbstractPointTest extends TestCase
         $point = new $abstractPoint(-42.42, 42.43);
         $actual = $point->toArray();
         static::assertEquals($expected, $actual);
-    }
-
-    /**
-     * Test bad string parameters - Two invalid parameters.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testTwoInvalidArguments(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: NULL, NULL', $abstractPoint));
-
-        new $abstractPoint(null, null);
-    }
-
-    /**
-     * Test bad string parameters - More than 3 parameters.
-     *
-     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
-     */
-    #[DataProvider('pointTypeProvider')]
-    public function testUnusedArguments(string $abstractPoint): void
-    {
-        $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: 1, 2, 3, 4, NULL, 5', $abstractPoint));
-
-        new $abstractPoint(1, 2, 3, 4, null, 5);
     }
 }

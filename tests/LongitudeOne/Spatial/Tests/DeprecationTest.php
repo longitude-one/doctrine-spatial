@@ -39,28 +39,6 @@ class DeprecationTest extends TestCase
     use VerifyDeprecations;
 
     /**
-     * Use an array with two coordinates as constructor is deprecated.
-     *
-     * @throws InvalidValueException it shall NOT happen in this test
-     */
-    public function testDeprecationWithAnArrayAsConstructor(): void
-    {
-        $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/81');
-        new Point([0, 0]);
-    }
-
-    /**
-     * Use an array with two coordinates as constructor is deprecated.
-     *
-     * @throws InvalidValueException it shall NOT happen in this test
-     */
-    public function testDeprecationWithAnArrayAsConstructorAndSrid(): void
-    {
-        $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/81');
-        new Point([0, 0], 4326);
-    }
-
-    /**
      * No deprecations are expected when providing two coordinates as constructor and an optional Srid.
      * Even if coordinates are provided as float, integer, strings or as degrees, minutes and seconds.
      *
