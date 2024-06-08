@@ -17,7 +17,6 @@
     <rule ref="rulesets/codesize.xml">
         <!-- There are never too many tests -->
         <exclude name="TooManyPublicMethods"/>
-        <exclude name="TooManyMethods"/>
     </rule>
     <!-- Import the entire controversial code rule set, but SuperGlobals -->
     <rule ref="rulesets/controversial.xml">
