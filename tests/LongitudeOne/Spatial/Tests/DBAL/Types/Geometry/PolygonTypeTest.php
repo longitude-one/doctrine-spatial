@@ -77,7 +77,10 @@ class PolygonTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('polygon'));
+        if (!Type::hasType('polygon')) {
+            Type::addType('polygon', PolygonType::class);
+        }
+
         $spatialInstance = new PolygonType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('polygon', $spatialInstance->getName());

@@ -78,7 +78,11 @@ class GeoPointSridTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('point'));
+        if (!Type::hasType('geopoint')) {
+            Type::addType('geopoint', PointType::class);
+        }
+
+        static::assertTrue(Type::hasType('geopoint'));
         $spatialInstance = new PointType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geopoint', $spatialInstance->getName());

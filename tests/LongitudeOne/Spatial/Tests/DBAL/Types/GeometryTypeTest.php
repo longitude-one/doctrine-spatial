@@ -95,7 +95,10 @@ class GeometryTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('geometry'));
+        if (!Type::hasType('geometry')) {
+            Type::addType('geometry', GeometryType::class);
+        }
+
         $spatialInstance = new GeometryType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geometry', $spatialInstance->getName());

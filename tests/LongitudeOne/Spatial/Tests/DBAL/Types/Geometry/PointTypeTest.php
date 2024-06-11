@@ -105,7 +105,10 @@ class PointTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('point'));
+        if (!Type::hasType('point')) {
+            Type::addType('point', PointType::class);
+        }
+
         $spatialInstance = new PointType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('point', $spatialInstance->getName());

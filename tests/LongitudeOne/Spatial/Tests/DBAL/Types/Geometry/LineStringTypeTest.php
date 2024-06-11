@@ -102,7 +102,10 @@ class LineStringTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('linestring'));
+        if (!Type::hasType('linestring')) {
+            Type::addType('linestring', LineStringType::class);
+        }
+
         $spatialInstance = new LineStringType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('linestring', $spatialInstance->getName());

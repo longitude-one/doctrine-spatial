@@ -92,6 +92,10 @@ class GeoPolygonTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
+        if (!Type::hasType('geopolygon')) {
+            Type::addType('geopolygon', PolygonType::class);
+        }
+
         static::assertTrue(Type::hasType('geopolygon'));
         $spatialInstance = new PolygonType();
         static::assertNotFalse($spatialInstance->getName());

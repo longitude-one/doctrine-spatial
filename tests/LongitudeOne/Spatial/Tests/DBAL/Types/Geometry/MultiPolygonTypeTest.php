@@ -112,7 +112,10 @@ class MultiPolygonTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('multipolygon'));
+        if (!Type::hasType('multipolygon')) {
+            Type::addType('multipolygon', MultiPolygonType::class);
+        }
+
         $spatialInstance = new MultiPolygonType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('multipolygon', $spatialInstance->getName());

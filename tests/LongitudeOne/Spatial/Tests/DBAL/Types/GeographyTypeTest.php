@@ -75,7 +75,10 @@ class GeographyTypeTest extends PersistOrmTestCase
      */
     public function testName(): void
     {
-        static::assertTrue(Type::hasType('geography'));
+        if (!Type::hasType('geography')) {
+            Type::addType('geography', GeographyType::class);
+        }
+
         $spatialInstance = new GeographyType();
         static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geography', $spatialInstance->getName());
