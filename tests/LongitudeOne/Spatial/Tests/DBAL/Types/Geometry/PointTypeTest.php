@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -92,6 +96,21 @@ class PointTypeTest extends PersistOrmTestCase
         $result = $this->getEntityManager()->getRepository(self::POINT_ENTITY)->findByPoint($point);
 
         static::assertEquals($entity, $result[0]);
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        static::assertTrue(Type::hasType('point'));
+        $spatialInstance = new PointType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('point', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('Point', $spatialInstance->getSQLType());
     }
 
     /**

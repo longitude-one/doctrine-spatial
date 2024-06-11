@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
@@ -89,6 +93,21 @@ class LineStringTypeTest extends PersistOrmTestCase
 
         $entity->setLineString($lineString);
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        static::assertTrue(Type::hasType('linestring'));
+        $spatialInstance = new LineStringType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('linestring', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('LineString', $spatialInstance->getSQLType());
     }
 
     /**
