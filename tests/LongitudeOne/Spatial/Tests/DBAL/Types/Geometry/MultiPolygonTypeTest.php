@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
@@ -99,6 +103,24 @@ class MultiPolygonTypeTest extends PersistOrmTestCase
         ;
 
         static::assertEquals($entity, $result[0]);
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        if (!Type::hasType('multipolygon')) {
+            Type::addType('multipolygon', MultiPolygonType::class);
+        }
+
+        $spatialInstance = new MultiPolygonType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('multipolygon', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('MultiPolygon', $spatialInstance->getSQLType());
     }
 
     /**

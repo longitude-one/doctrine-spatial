@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
@@ -82,6 +86,24 @@ class GeometryTypeTest extends PersistOrmTestCase
         $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
         static::assertInstanceOf(GeometryInterface::class, $entity->getGeometry());
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        if (!Type::hasType('geometry')) {
+            Type::addType('geometry', GeometryType::class);
+        }
+
+        $spatialInstance = new GeometryType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('geometry', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('Geometry', $spatialInstance->getSQLType());
     }
 
     /**
