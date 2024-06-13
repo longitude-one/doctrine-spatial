@@ -18,7 +18,11 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geography\PointType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
@@ -65,6 +69,25 @@ class GeoPointSridTest extends PersistOrmTestCase
         /** @var GeoPointSridEntity[] $queryEntities */
         $queryEntities = static::assertIsRetrievableByGeo($this->getEntityManager(), $entity, $point, 'findByPoint');
         static::assertEquals(4326, $queryEntities[0]->getPoint()->getSrid());
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        if (!Type::hasType('geopoint')) {
+            Type::addType('geopoint', PointType::class);
+        }
+
+        static::assertTrue(Type::hasType('geopoint'));
+        $spatialInstance = new PointType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('geopoint', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('Point', $spatialInstance->getSQLType());
     }
 
     /**
