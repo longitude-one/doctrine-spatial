@@ -18,7 +18,11 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geography;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
@@ -79,6 +83,25 @@ class GeoPolygonTypeTest extends PersistOrmTestCase
         ;
 
         static::assertEquals($entity, $result[0]);
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        if (!Type::hasType('geopolygon')) {
+            Type::addType('geopolygon', PolygonType::class);
+        }
+
+        static::assertTrue(Type::hasType('geopolygon'));
+        $spatialInstance = new PolygonType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('geopolygon', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('Polygon', $spatialInstance->getSQLType());
     }
 
     /**

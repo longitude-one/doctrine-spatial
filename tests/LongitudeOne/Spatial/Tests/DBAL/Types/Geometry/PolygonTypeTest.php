@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\DBAL\Types\Geometry;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
+use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
@@ -64,6 +68,24 @@ class PolygonTypeTest extends PersistOrmTestCase
 
         static::assertCount(1, $result);
         static::assertEquals($entity, $result[0]);
+    }
+
+    /**
+     * Unit test the getName, getSQLType and getBindingType methods.
+     *
+     * @throws TypeNotRegistered It shall not happen
+     */
+    public function testName(): void
+    {
+        if (!Type::hasType('polygon')) {
+            Type::addType('polygon', PolygonType::class);
+        }
+
+        $spatialInstance = new PolygonType();
+        static::assertNotFalse($spatialInstance->getName());
+        static::assertSame('polygon', $spatialInstance->getName());
+        static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
+        static::assertSame('Polygon', $spatialInstance->getSQLType());
     }
 
     /**
