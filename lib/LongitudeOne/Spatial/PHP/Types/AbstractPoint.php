@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use LongitudeOne\Geo\String\Exception\RangeException as GeoParserRangeException;
-use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
 use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\RangeException;
@@ -32,6 +30,9 @@ use LongitudeOne\Spatial\Exception\RangeException;
  */
 abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 {
+    use CartesianTrait;
+    use GeodesicTrait;
+
     /**
      * The X coordinate or the longitude.
      */
@@ -159,105 +160,5 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     public function toArray(): array
     {
         return [$this->x, $this->y];
-    }
-
-    /**
-     * Check the range of a coordinate.
-     *
-     * @param float|int $coordinate the coordinate to check
-     * @param int       $min        the minimum accepted value
-     * @param int       $max        the maximum accepted value
-     *
-     * @return float|int $coordinate or throw a RangeException
-     *
-     * @throws RangeException when coordinate is out of range fixed by min and max
-     */
-    private function checkRange(float|int $coordinate, int $min, int $max): float|int
-    {
-        if ($coordinate < $min || $coordinate > $max) {
-            throw new RangeException(sprintf('Coordinate must be comprised between %d and %d, got "%s".', $min, $max, $coordinate));
-        }
-
-        return $coordinate;
-    }
-
-    /**
-     * Use the longitude-one/geo-parser to parse a coordinate.
-     *
-     * @param string $coordinate the coordinate to parse
-     *
-     * @throws InvalidValueException when coordinate is invalid
-     */
-    private function geoParse(string $coordinate): float|int
-    {
-        try {
-            $parser = new Parser($coordinate);
-
-            $parsedCoordinate = $parser->parse();
-        } catch (GeoParserRangeException $e) {
-            $message = match ($e->getCode()) {
-                GeoParserRangeException::LATITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LATITUDE, $coordinate),
-                GeoParserRangeException::LONGITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LONGITUDE, $coordinate),
-                GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $coordinate),
-                GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $coordinate),
-                default => $e->getMessage(),
-            };
-
-            throw new InvalidValueException($message, $e->getCode(), $e);
-        } catch (UnexpectedValueException $e) {
-            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $coordinate), $e->getCode(), $e);
-        }
-
-        if (is_array($parsedCoordinate)) {
-            throw new InvalidValueException('Invalid coordinate value, coordinate cannot be an array.');
-        }
-
-        return $parsedCoordinate;
-    }
-
-    /**
-     * Set a cartesian coordinate.
-     * Abscissa or ordinate.
-     *
-     * @param float|int|string $coordinate the coordinate to set
-     *
-     * @throws InvalidValueException when coordinate is invalid, RangeException is never thrown
-     */
-    private function setCartesianCoordinate(float|int|string $coordinate): float|int
-    {
-        if (is_integer($coordinate) || is_float($coordinate)) {
-            // We don't check the range of the value.
-            return $coordinate;
-        }
-
-        // $y is a string, let's use the geo-parser.
-        return $this->geoParse($coordinate);
-    }
-
-    /**
-     * Set a geodesic coordinate.
-     * Latitude or longitude.
-     *
-     * @param float|int|string $coordinate the coordinate to set
-     * @param int              $min        the minimum value
-     * @param int              $max        the maximum value
-     *
-     * @throws InvalidValueException|RangeException when coordinate is invalid or out of range
-     */
-    private function setGeodesicCoordinate(float|int|string $coordinate, int $min, int $max): float|int
-    {
-        if (is_integer($coordinate) || is_float($coordinate)) {
-            // We check the range of the value.
-            return $this->checkRange($coordinate, $min, $max);
-        }
-
-        // $y is a string, let's use the geo-parser.
-        $parsedCoordinate = $this->geoParse($coordinate);
-
-        if ($parsedCoordinate < $min || $parsedCoordinate > $max) {
-            throw new RangeException(sprintf('Coordinate must be comprised between %d and %d, got "%s".', $min, $max, $coordinate));
-        }
-
-        return $parsedCoordinate;
     }
 }

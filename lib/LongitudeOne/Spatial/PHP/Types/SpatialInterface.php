@@ -31,7 +31,10 @@ interface SpatialInterface
     public const MULTIPOINT = 'MultiPoint';
     public const MULTIPOLYGON = 'MultiPolygon';
     public const POINT = 'Point';
+    public const POINT_Z = 'PointZ';
+
     public const POLYGON = 'Polygon';
+    public const POINT_ZM = 'PointZM';
 
     /**
      * Return the Spatial Reference Identifier (SRID) of this object.

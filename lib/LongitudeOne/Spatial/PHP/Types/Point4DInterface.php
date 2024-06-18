@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-interface Point4DInterface extends SpatialInterface
+interface Point4DInterface extends Point3DInterface
 {
     /**
      * Point constructor.

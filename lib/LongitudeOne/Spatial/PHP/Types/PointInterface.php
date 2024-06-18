@@ -21,17 +21,6 @@ namespace LongitudeOne\Spatial\PHP\Types;
 interface PointInterface extends SpatialInterface
 {
     /**
-     * Point constructor.
-     *
-     * @since 6.0 does no-longer accept array as first argument.
-     *
-     * @param float|int|string $x    X coordinate
-     * @param float|int|string $y    Y coordinate
-     * @param null|int         $srid SRID
-     */
-    public function __construct(float|int|string $x, float|int|string $y, ?int $srid = null);
-
-    /**
      * Convert point to its array representation.
      *
      * Array does NOT contain SpatialInterface, only floats, integers, and arrays.

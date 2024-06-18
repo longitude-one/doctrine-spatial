@@ -18,18 +18,8 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-interface Point3DInterface extends SpatialInterface
+interface Point3DInterface extends PointInterface
 {
-    /**
-     * Point constructor.
-     *
-     * @param float|int|string $x    X coordinate
-     * @param float|int|string $y    Y coordinate
-     * @param float|int        $z    Z coordinate, elevation
-     * @param null|int         $srid SRID
-     */
-    public function __construct(float|int|string $x, float|int|string $y, float|int $z, ?int $srid = null);
-
     /**
      * Get the Z coordinate, the elevation.
      */
