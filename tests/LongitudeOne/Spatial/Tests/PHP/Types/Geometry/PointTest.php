@@ -108,7 +108,7 @@ class PointTest extends TestCase
     public function testEmbeddedArrays(): void
     {
         $this->expectException(InvalidValueException::class);
-        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\Point::__construct: array');
+        $this->expectExceptionMessage('Invalid parameters passed to LongitudeOne\Spatial\PHP\Types\Geometry\Point::__construct: array');
 
         new GeometricPoint([[3, []]]);
     }
