@@ -36,6 +36,11 @@ parameters:
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpTransformTest.php
 
 		-
+			message: "#^Instantiated class \\\\Doctrine\\\\DBAL\\\\Platforms\\\\SqlitePlatform not found\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmMockTestCase.php
+
+		-
 			message: "#^Return type of call to method PHPUnit\\\\Framework\\\\MockObject\\\\MockBuilder\\<Doctrine\\\\DBAL\\\\Driver\\\\PDO\\\\SQLite\\\\Driver\\>\\:\\:getMock\\(\\) contains unresolvable type\\.$#"
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/OrmMockTestCase.php

@@ -76,7 +76,6 @@ abstract class OrmMockTestCase extends SpatialTestCase
             static::fail('Test cannot be performed, no SQLite platform found');
         }
 
-        /** @phpstan-ignore-next-line */
         $platform = new $platformClass();
 
         $driver->method('getDatabasePlatform')
