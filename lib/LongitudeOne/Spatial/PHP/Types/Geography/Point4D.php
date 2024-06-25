@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
+use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point3D;
 use LongitudeOne\Spatial\PHP\Types\Point3DInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
@@ -38,6 +39,8 @@ class Point4D extends Point3D implements Point3DInterface
      * @param float|int          $z        The z coordinate
      * @param \DateTimeInterface $dateTime The moment
      * @param null|int           $srid     The SRID
+     *
+     * @throws InvalidValueException when coordinate is invalid, RangeException is never thrown
      */
     public function __construct(float|int|string $x, float|int|string $y, float|int $z, \DateTimeInterface $dateTime, ?int $srid = null)
     {
