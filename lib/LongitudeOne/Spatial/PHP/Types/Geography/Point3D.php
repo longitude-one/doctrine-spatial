@@ -16,15 +16,16 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types\Geometry;
+namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Point3DInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\PHP\Types\Utils\ElevationTrait;
 
 /**
- * Geometric 3D Point object for the POINT Z geometry type.
+ * Geographic 3D Point object for the POINT Z geography type.
  */
 class Point3D extends Point implements Point3DInterface
 {
@@ -47,7 +48,7 @@ class Point3D extends Point implements Point3DInterface
     }
 
     /**
-     * Get the type of this geometry.
+     * Get the type of this geography.
      */
     public function getType(): string
     {
@@ -55,19 +56,15 @@ class Point3D extends Point implements Point3DInterface
     }
 
     /**
-     * Convert the geometry coordinates to their array representation.
-     *
      * @return array{0: float|int, 1: float|int, 2: float|int}
      */
     public function toArray(): array
     {
-        return [$this->getX(), $this->getY(), $this->getZ()];
+        return [$this->getLongitude(), $this->getLatitude(), $this->getZ()];
     }
 
     /**
-     * Convert the geometry coordinates to their string representation.
-     *
-     * @example "42 43 44"
+     * Convert the geography coordinates to their string representation.
      */
     public function __toString(): string
     {

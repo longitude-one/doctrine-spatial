@@ -16,15 +16,15 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types\Geometry;
+namespace LongitudeOne\Spatial\PHP\Types\Geography;
 
-use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point3D;
 use LongitudeOne\Spatial\PHP\Types\Point3DInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 use LongitudeOne\Spatial\PHP\Types\Utils\MomentTrait;
 
 /**
- * Geometric 4D Point object for the POINT ZM geometry type.
+ * Geographic 4D Point object for the POINT ZM geography type.
  */
 class Point4D extends Point3D implements Point3DInterface
 {
@@ -38,8 +38,6 @@ class Point4D extends Point3D implements Point3DInterface
      * @param float|int          $z        The z coordinate
      * @param \DateTimeInterface $dateTime The moment
      * @param null|int           $srid     The SRID
-     *
-     * @throws InvalidValueException when coordinate is invalid, RangeException is never thrown
      */
     public function __construct(float|int|string $x, float|int|string $y, float|int $z, \DateTimeInterface $dateTime, ?int $srid = null)
     {
@@ -49,7 +47,7 @@ class Point4D extends Point3D implements Point3DInterface
     }
 
     /**
-     * Get the type of this geometry.
+     * Get the type of this geography.
      */
     public function getType(): string
     {
@@ -57,24 +55,20 @@ class Point4D extends Point3D implements Point3DInterface
     }
 
     /**
-     * Convert the geometry coordinates to their array representation.
-     *
      * @return array{0: float|int, 1: float|int, 2: float|int, 3: int} The coordinates and the moment converted into timestamp
      */
     public function toArray(): array
     {
         return [
-            $this->getLongitude(),
-            $this->getLatitude(),
+            $this->getX(),
+            $this->getY(),
             $this->getZ(),
             (int) $this->getMoment()->format(self::TIMESTAMP),
         ];
     }
 
     /**
-     * Convert the geometry coordinates to their string representation.
-     *
-     * @example "42 43 44 2020-01-01 00:00:00"
+     * Convert the geography coordinates to their string representation.
      */
     public function __toString(): string
     {

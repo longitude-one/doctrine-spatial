@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^8.2",
         "phpstan/phpstan": "^1.9",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan-doctrine": "^1.3",

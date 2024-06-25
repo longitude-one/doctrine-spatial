@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types;
+namespace LongitudeOne\Spatial\PHP\Types\Utils;
 
 use LongitudeOne\Geo\String\Exception\RangeException as GeoParserRangeException;
 use LongitudeOne\Geo\String\Exception\UnexpectedValueException;

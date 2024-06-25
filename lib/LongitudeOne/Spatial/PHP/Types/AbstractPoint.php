@@ -18,9 +18,11 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use LongitudeOne\Geo\String\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\RangeException;
+use LongitudeOne\Spatial\PHP\Types\Utils\CartesianTrait;
+use LongitudeOne\Spatial\PHP\Types\Utils\GeodesicTrait;
+use LongitudeOne\Spatial\PHP\Types\Utils\GeoParseTrait;
 
 /**
  * Abstract point object for POINT spatial types.
@@ -32,6 +34,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 {
     use CartesianTrait;
     use GeodesicTrait;
+    use GeoParseTrait;
 
     /**
      * The X coordinate or the longitude.

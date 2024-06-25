@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types;
+namespace LongitudeOne\Spatial\PHP\Types\Utils;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 
@@ -27,8 +27,6 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
  */
 trait CartesianTrait
 {
-    use GeoParseTrait;
-
     /**
      * Set a cartesian coordinate.
      * Abscissa or ordinate.
