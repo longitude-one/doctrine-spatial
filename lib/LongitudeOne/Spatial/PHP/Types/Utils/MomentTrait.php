@@ -27,8 +27,6 @@ namespace LongitudeOne\Spatial\PHP\Types\Utils;
  */
 trait MomentTrait
 {
-    private const TIMESTAMP = 'U'; // Unix timestamp
-
     /**
      * Internally, the moment is a date time interface.
      */

@@ -63,7 +63,7 @@ class Point4D extends Point3D implements Point3DInterface
             $this->getX(),
             $this->getY(),
             $this->getZ(),
-            (int) $this->getMoment()->format(self::TIMESTAMP),
+            (int) $this->getMoment()->format('U'),
         ];
     }
 

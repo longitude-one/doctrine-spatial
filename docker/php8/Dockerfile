@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.1-fpm-alpine
 
 RUN apk --update --no-cache add bash git postgresql-dev mysql-dev autoconf gcc make g++ \
         && docker-php-ext-install pdo_pgsql pdo_mysql  \
