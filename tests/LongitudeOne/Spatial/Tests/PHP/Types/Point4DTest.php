@@ -52,6 +52,19 @@ class Point4DTest extends TestCase
     }
 
     /**
+     * Test type of 3D points.
+     *
+     * @param class-string<GeographicPoint4D|GeometricPoint4D> $pointClassName the point class name
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testGetType(string $pointClassName): void
+    {
+        $point = new $pointClassName(0, 0, 0, new \DateTime());
+
+        static::assertSame('PointZM', $point->getType());
+    }
+
+    /**
      * Test a valid numeric point.
      *
      * @param class-string<GeographicPoint4D|GeometricPoint4D> $pointClassName the point class name

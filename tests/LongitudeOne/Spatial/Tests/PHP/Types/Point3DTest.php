@@ -49,6 +49,19 @@ class Point3DTest extends TestCase
     }
 
     /**
+     * Test type of 3D points.
+     *
+     * @param class-string<GeographicPoint3D|GeometricPoint3D> $pointClassName the point class name
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testGetType(string $pointClassName): void
+    {
+        $point = new $pointClassName(0, 0, 0);
+
+        static::assertSame('PointZ', $point->getType());
+    }
+
+    /**
      * Test a valid numeric point.
      *
      * @param class-string<GeographicPoint3D|GeometricPoint3D> $pointClassName the point class name
@@ -58,12 +71,12 @@ class Point3DTest extends TestCase
     {
         $point = new $pointClassName(34.0522, -118.2430, 0.0);
 
-        static::assertEquals(34.0522, $point->getX());
-        static::assertEquals(-118.2430, $point->getY());
-        static::assertEquals(0.0, $point->getZ());
+        static::assertSame(34.0522, $point->getX());
+        static::assertSame(-118.2430, $point->getY());
+        static::assertSame(0.0, $point->getZ());
 
         $point->setZ(0);
-        static::assertEquals(0, $point->getZ());
+        static::assertSame(0, $point->getZ());
     }
 
     /**
@@ -75,10 +88,10 @@ class Point3DTest extends TestCase
     public function testToArray(string $pointClassName): void
     {
         $point = new $pointClassName(34.0522, -118.2430, 42.0);
-        static::assertEquals([34.0522, -118.2430, 42.0], $point->toArray());
+        static::assertSame([34.0522, -118.2430, 42.0], $point->toArray());
 
         $point = new $pointClassName(34, -118, 42);
-        static::assertEquals([34, -118, 42], $point->toArray());
+        static::assertSame([34, -118, 42], $point->toArray());
     }
 
     /**
@@ -90,10 +103,10 @@ class Point3DTest extends TestCase
     public function testToString(string $pointClassName): void
     {
         $point = new $pointClassName(34.0522, -118.2430, 42.5);
-        static::assertEquals('34.0522 -118.243 42.5', $point->__toString());
-        static::assertEquals('34.0522 -118.243 42.5', (string) $point);
+        static::assertSame('34.0522 -118.243 42.5', $point->__toString());
+        static::assertSame('34.0522 -118.243 42.5', (string) $point);
 
         $point = new $pointClassName(34, -118, 42);
-        static::assertEquals('34 -118 42', (string) $point);
+        static::assertSame('34 -118 42', (string) $point);
     }
 }
