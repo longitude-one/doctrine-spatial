@@ -39,6 +39,7 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\Point3DType as GeographyPoint3DType;
+use LongitudeOne\Spatial\DBAL\Types\Geography\Point4DType as GeographyPoint4DType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType as GeographyPolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
@@ -47,6 +48,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\Point3DType;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\Point4DType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
@@ -282,6 +284,7 @@ abstract class OrmTestCase extends SpatialTestCase
         'geometry' => GeometryType::class,
         'point' => PointType::class,
         'point3d' => Point3DType::class,
+        'point4d' => Point4DType::class,
         'linestring' => LineStringType::class,
         'polygon' => PolygonType::class,
         'multipoint' => MultiPointType::class,
@@ -290,6 +293,7 @@ abstract class OrmTestCase extends SpatialTestCase
         'geography' => GeographyType::class,
         'geopoint' => GeographyPointType::class,
         'geopoint3d' => GeographyPoint3DType::class,
+        'geopoint4d' => GeographyPoint4DType::class,
         'geolinestring' => GeographyLineStringType::class,
         'geopolygon' => GeographyPolygonType::class,
     ];
