@@ -23,12 +23,32 @@ parameters:
 		-
 			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
 			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geography/GeoPoint4DTypeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geography/GeoPoint4DTypeTest.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
+			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/Point3DTypeTest.php
 
 		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/Point3DTypeTest.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/Point4DTypeTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/Point4DTypeTest.php
 
 		-
 			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
