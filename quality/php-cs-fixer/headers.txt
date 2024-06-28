@@ -1,10 +1,10 @@
 This file is part of the doctrine spatial extension.
 
-PHP          8.1 | 8.2 | 8.3
+PHP 8.1 | 8.2 | 8.3
 Doctrine ORM 2.19 | 3.1
 
 Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> %year%
-Copyright Longitude One 2020-2024
+Copyright Longitude One %lo-year%
 Copyright 2015 Derek J. Lambert
 
 For the full copyright and license information, please view the LICENSE
