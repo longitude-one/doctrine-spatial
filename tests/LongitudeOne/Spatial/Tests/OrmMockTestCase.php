@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP          8.1 | 8.2 | 8.3
+ * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
@@ -76,7 +76,6 @@ abstract class OrmMockTestCase extends SpatialTestCase
             static::fail('Test cannot be performed, no SQLite platform found');
         }
 
-        /** @phpstan-ignore-next-line */
         $platform = new $platformClass();
 
         $driver->method('getDatabasePlatform')

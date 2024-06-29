@@ -12,6 +12,7 @@
 
 //Replace the value of this variable with the project's launch year.
 $firstYear = 2017;
+$loFirstYear = 2020;
 
 function __copyright(int $launchYear): string
 {
@@ -25,6 +26,7 @@ function __copyright(int $launchYear): string
 
 $header = file_get_contents(__DIR__ . '/headers.txt');
 $header = str_replace("%year%", __copyright($firstYear), $header);
+$header = str_replace("%lo-year%", __copyright($loFirstYear), $header);
 
 $finder = PhpCsFixer\Finder::create()
     ->in([
