@@ -35,13 +35,18 @@ This useful library was created by Derek J. Lambert.
 Alexandre Tranchant forked it from [creof/doctrine-spatial](https://github.com/creof/doctrine-spatial)
 because project seems to be non-active since 2017.
 
-The `dev` branch can be used, but be careful backward compatibility aren't warrantied.
-The `main` branch is dedicated to fix issue in the last stable version.
+The longitude-one/doctrine-spatial repository employs a well-structured branching strategy:
+
+* main: Stable 5.0 releases, bug fixes and minor new features (no backward incompatibilities).
+* 6.0.x-dev: Major new features (**potential** backward incompatibilities).
+* 5.1.x-dev: Controlled deprecations for a smooth 5.1 to 6.0 transition (no backward incompatibilities).
+
+This approach ensures clarity, stability, and maintainability for the project.
 
 Compatibility
 -------------
-### PHP
-This doctrine extension is compatible with PHP 8.1+
+### PHP and Doctrine ORM
+This Doctrine extension is compatible with PHP 8.1+ and Doctrine ORM versions `^2.9`, `^3.1`, and aims for continued compatibility with the upcoming major version `^4.x-dev`.
 Security fixes will follow the [PHP Roadmap](https://www.php.net/supported-versions.php).
 
 ### MySQL 5.7 and 8.0
