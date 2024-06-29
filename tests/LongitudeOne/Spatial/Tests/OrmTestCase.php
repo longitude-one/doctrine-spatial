@@ -38,6 +38,8 @@ use Doctrine\ORM\Tools\ToolsException;
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\Geography\LineStringType as GeographyLineStringType;
+use LongitudeOne\Spatial\DBAL\Types\Geography\Point3DType as GeographyPoint3DType;
+use LongitudeOne\Spatial\DBAL\Types\Geography\Point4DType as GeographyPoint4DType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PointType as GeographyPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType as GeographyPolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
@@ -45,6 +47,8 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiLineStringType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\Point3DType;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\Point4DType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
@@ -151,6 +155,8 @@ use LongitudeOne\Spatial\Tests\Doctrine\Logging\FileLogger;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoLineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\GeoPoint3DEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\GeoPoint4DEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
@@ -158,6 +164,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiLineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\Point3DEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\Point4DEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
@@ -171,6 +179,8 @@ abstract class OrmTestCase extends SpatialTestCase
 {
     // Fixtures and entities
     public const GEO_LINESTRING_ENTITY = GeoLineStringEntity::class;
+    public const GEO_POINT_3D_ENTITY = GeoPoint3DEntity::class;
+    public const GEO_POINT_4D_ENTITY = GeoPoint4DEntity::class;
     public const GEO_POINT_SRID_ENTITY = GeoPointSridEntity::class;
     public const GEO_POLYGON_ENTITY = GeoPolygonEntity::class;
     public const GEOGRAPHY_ENTITY = GeographyEntity::class;
@@ -180,6 +190,8 @@ abstract class OrmTestCase extends SpatialTestCase
     public const MULTIPOINT_ENTITY = MultiPointEntity::class;
     public const MULTIPOLYGON_ENTITY = MultiPolygonEntity::class;
     public const NO_HINT_GEOMETRY_ENTITY = NoHintGeometryEntity::class;
+    public const POINT3D_ENTITY = Point3DEntity::class;
+    public const POINT4D_ENTITY = Point4DEntity::class;
     public const POINT_ENTITY = PointEntity::class;
     public const POLYGON_ENTITY = PolygonEntity::class;
 
@@ -210,6 +222,14 @@ abstract class OrmTestCase extends SpatialTestCase
         PointEntity::class => [
             'types' => ['point'],
             'table' => 'PointEntity',
+        ],
+        Point3DEntity::class => [
+            'types' => ['point3d'],
+            'table' => 'Point3DEntity',
+        ],
+        Point4DEntity::class => [
+            'types' => ['point4d'],
+            'table' => 'Point4DEntity',
         ],
         LineStringEntity::class => [
             'types' => ['linestring'],
@@ -247,6 +267,14 @@ abstract class OrmTestCase extends SpatialTestCase
             'types' => ['geopolygon'],
             'table' => 'GeoPolygonEntity',
         ],
+        GeoPoint3DEntity::class => [
+            'types' => ['geopoint3d'],
+            'table' => 'GeoPoint3DEntity',
+        ],
+        GeoPoint4DEntity::class => [
+            'types' => ['geopoint4d'],
+            'table' => 'GeoPoint4DEntity',
+        ],
     ];
 
     /**
@@ -255,6 +283,8 @@ abstract class OrmTestCase extends SpatialTestCase
     protected static array $types = [
         'geometry' => GeometryType::class,
         'point' => PointType::class,
+        'point3d' => Point3DType::class,
+        'point4d' => Point4DType::class,
         'linestring' => LineStringType::class,
         'polygon' => PolygonType::class,
         'multipoint' => MultiPointType::class,
@@ -262,6 +292,8 @@ abstract class OrmTestCase extends SpatialTestCase
         'multipolygon' => MultiPolygonType::class,
         'geography' => GeographyType::class,
         'geopoint' => GeographyPointType::class,
+        'geopoint3d' => GeographyPoint3DType::class,
+        'geopoint4d' => GeographyPoint4DType::class,
         'geolinestring' => GeographyLineStringType::class,
         'geopolygon' => GeographyPolygonType::class,
     ];

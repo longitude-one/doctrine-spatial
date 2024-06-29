@@ -439,4 +439,21 @@ class AbstractPointTest extends TestCase
         $actual = $point->toArray();
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Test to convert point to string.
+     *
+     * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testToString(string $abstractPoint): void
+    {
+        $point = new $abstractPoint(34.0522, -18.2430);
+        static::assertSame('34.0522 -18.243', $point->__toString());
+        static::assertSame('34.0522 -18.243', (string) $point);
+
+        $point = new $abstractPoint(34, -18);
+        static::assertSame('34 -18', $point->__toString());
+        static::assertSame('34 -18', (string) $point);
+    }
 }
