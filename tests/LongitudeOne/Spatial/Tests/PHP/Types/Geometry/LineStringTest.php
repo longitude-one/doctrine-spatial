@@ -2,7 +2,7 @@
 /**
  * This file is part of the doctrine spatial extension.
  *
- * PHP          8.1 | 8.2 | 8.3
+ * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
@@ -58,6 +58,41 @@ class LineStringTest extends TestCase
         $lineString = $this->createEmptyLineString();
 
         static::assertEmpty($lineString->getPoints());
+    }
+
+    /**
+     * Test isClosed method.
+     *
+     * @see https://github.com/longitude-one/doctrine-spatial/issues/88
+     */
+    public function testIsClosedIssue88(): void
+    {
+        $lineString = new LineString([
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 1),
+            new Point(0, 1),
+            new Point(0, 0),
+        ]);
+
+        static::assertTrue($lineString->isClosed());
+
+        $lineString = new LineString([
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 1),
+            new Point(0, 1),
+        ]);
+
+        static::assertFalse($lineString->isClosed());
+
+        $lineString = new LineString([]);
+        static::assertFalse($lineString->isClosed());
+
+        $lineString = new LineString([
+            new Point(0, 0),
+        ]);
+        static::assertFalse($lineString->isClosed());
     }
 
     /**
