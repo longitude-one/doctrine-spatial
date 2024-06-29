@@ -61,6 +61,41 @@ class LineStringTest extends TestCase
     }
 
     /**
+     * Test isClosed method.
+     *
+     * @see https://github.com/longitude-one/doctrine-spatial/issues/88
+     */
+    public function testIsClosedIssue88(): void
+    {
+        $lineString = new LineString([
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 1),
+            new Point(0, 1),
+            new Point(0, 0),
+        ]);
+
+        static::assertTrue($lineString->isClosed());
+
+        $lineString = new LineString([
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 1),
+            new Point(0, 1),
+        ]);
+
+        static::assertFalse($lineString->isClosed());
+
+        $lineString = new LineString([]);
+        static::assertFalse($lineString->isClosed());
+
+        $lineString = new LineString([
+            new Point(0, 0),
+        ]);
+        static::assertFalse($lineString->isClosed());
+    }
+
+    /**
      * Test to convert line string to json.
      */
     public function testJson(): void
