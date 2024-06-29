@@ -100,7 +100,7 @@ class PointTest extends TestCase
         yield 'string(190°)' => ['190°'];
     }
 
-   /**
+    /**
      * Test getType method.
      */
     public function testGetType(): void
@@ -263,7 +263,7 @@ class PointTest extends TestCase
     #[DataProvider('tooBigLongitudeProvider')]
     public function testSetLongitudeWithBigInteger(float|int|string $longitude): void
     {
-        $point = new GeometricPoint(10, 14);
+        $point = new GeometricPoint(10, 10);
 
         self::expectException(InvalidValueException::class);
         self::expectExceptionMessage(sprintf('Out of range longitude value, longitude must be between -180 and 180, got "%s".', $longitude));
