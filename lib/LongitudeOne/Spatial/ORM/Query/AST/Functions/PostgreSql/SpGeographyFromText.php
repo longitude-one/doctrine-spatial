@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
@@ -25,7 +26,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  * SC_GeographyFromText DQL function.
  *
  * The SQL ST_GeographyFromText is not issue from the OGC Standard, so we do not have to implement it in DQL
- * But it is useful, so we call it with an other prefixe, because it is specific to this database server.
+ * But it is useful, so we call it with another prefix, because it is specific to this database server.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -73,7 +74,7 @@ class SpGeographyFromText extends AbstractSpatialDQLFunction
      * @since 2.0 This function replace the protected property platforms.
      * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return class-string[] a non-empty array of accepted platforms
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
