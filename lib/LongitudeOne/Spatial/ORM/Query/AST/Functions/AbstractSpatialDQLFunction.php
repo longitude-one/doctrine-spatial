@@ -196,7 +196,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      * @see https://github.com/doctrine/dbal/issues/4749
      * @see https://github.com/longitude-one/doctrine-spatial/issues/40
      *
-     * @return class-string[] a non-empty array of accepted platforms
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
      */
     abstract protected function getPlatforms(): array;
 }
