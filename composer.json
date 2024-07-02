@@ -44,17 +44,26 @@
         "test": [
             "phpunit --configuration phpunit.mysql5.7.xml",
             "phpunit --configuration phpunit.mysql8.0.xml",
-            "phpunit --configuration phpunit.pgsql.xml"
+            "phpunit --configuration phpunit.pgsql.xml",
+            "phpunit --configuration phpunit.mssql2017.xml",
+            "phpunit --configuration phpunit.mssql2019.xml",
+            "phpunit --configuration phpunit.mssql2022.xml"
         ],
         "test-coverage": [
             "phpunit --configuration phpunit.mysql5.7.xml --coverage-php .phpunit.cache/code-coverage/mysql5.7.cov",
             "phpunit --configuration phpunit.mysql8.0.xml --coverage-php .phpunit.cache/code-coverage/mysql8.0.cov",
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
+            "phpunit --configuration phpunit.mssql2017.xml --coverage-php .phpunit.cache/code-coverage/mssql2017.cov",
+            "phpunit --configuration phpunit.mssql2019.xml --coverage-php .phpunit.cache/code-coverage/mssql2019.cov",
+            "phpunit --configuration phpunit.mssql2022.xml --coverage-php .phpunit.cache/code-coverage/mssql2022.cov",
             "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
         ],
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
-        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"
+        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml",
+        "test-mssql2017": "phpunit --configuration phpunit.mssql2017.xml",
+        "test-mssql2019": "phpunit --configuration phpunit.mssql2019.xml",
+        "test-mssql2022": "phpunit --configuration phpunit.mssql2022.xml"
     },
     "autoload": {
         "psr-0": {
