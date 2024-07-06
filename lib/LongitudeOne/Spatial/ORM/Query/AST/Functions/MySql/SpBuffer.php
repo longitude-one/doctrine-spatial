@@ -18,13 +18,14 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
  * Sp_Buffer DQL function.
  * MySQL ST_Buffer function is not able to receive a CHARACTER VARYING as third parameter.
- * This SQL function can only received the result of a ST_Buffer_Strategy function as third parameter.
+ * This SQL function can only receive the result of an ST_Buffer_Strategy function as third parameter.
  * So Sp_Buffer DQL function is specific to MySQL.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -72,7 +73,7 @@ class SpBuffer extends AbstractSpatialDQLFunction
      * @since 2.0 This function replace the protected property platforms.
      * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return class-string[] a non-empty array of accepted platforms
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {

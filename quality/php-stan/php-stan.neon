@@ -8,4 +8,5 @@ parameters:
         - ../../quality
         - ../../lib
         - ../../tests
-    ignoreErrors:
+    excludePaths:
+        - ../../tests/LongitudeOne/Spatial/Tests/OrmMockTestCase.php
