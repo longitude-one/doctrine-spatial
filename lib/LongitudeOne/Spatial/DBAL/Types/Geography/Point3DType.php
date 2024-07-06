@@ -16,16 +16,24 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\PHP\Types;
+namespace LongitudeOne\Spatial\DBAL\Types\Geography;
 
-interface PointInterface extends SpatialInterface
+use LongitudeOne\Spatial\DBAL\Types\GeographyType;
+
+/**
+ * Doctrine POINT type.
+ */
+class Point3DType extends GeographyType
 {
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+
     /**
-     * Convert point to its array representation.
-     *
-     * Array does NOT contain SpatialInterface, only floats, integers, and arrays.
-     *
-     * @return (float|int)[]
+     * @return 'POINTZ'
      */
-    public function toArray(): array;
+    public function getSQLType()
+    {
+        return 'POINTZ';
+    }
+
+    // phpcs:enable
 }

@@ -31,6 +31,9 @@ interface SpatialInterface
     public const MULTIPOINT = 'MultiPoint';
     public const MULTIPOLYGON = 'MultiPolygon';
     public const POINT = 'Point';
+    public const POINT_Z = 'PointZ';
+    public const POINT_ZM = 'PointZM';
+
     public const POLYGON = 'Polygon';
 
     /**
@@ -63,8 +66,8 @@ interface SpatialInterface
     public function toArray(): array;
 
     /**
-     * Convert any spatial object to its string representation.
-     * Example: 'POINT(42 42)'.
+     * Convert any spatial object to the string representation of its coordinates.
+     * Example: 42 42.
      */
     public function __toString(): string;
 }

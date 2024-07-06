@@ -18,12 +18,24 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-interface PointInterface extends SpatialInterface
+interface Point3DInterface extends PointInterface
 {
+    /**
+     * Get the Z coordinate, the elevation.
+     */
+    public function getZ(): null|float|int;
+
+    /**
+     * Set the Z coordinate, the elevation.
+     *
+     * @param float|int $z Z coordinate, elevation
+     */
+    public function setZ(float|int $z): self;
+
     /**
      * Convert point to its array representation.
      *
-     * Array does NOT contain SpatialInterface, only floats, integers, and arrays.
+     * Array does NOT contain SpatialInterface, only floats and integers.
      *
      * @return (float|int)[]
      */
