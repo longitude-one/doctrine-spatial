@@ -146,6 +146,7 @@ jobs:
       - name: Create the main database for mssql-2022
         run: sqlcmd -S localhost,2022 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
 
+      # Run the tests
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
         uses: paambaati/codeclimate-action@v6.0.0
@@ -291,6 +292,30 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mssql-2017:
+        # Docker Hub image
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: mainExtendedToMoreThan8Chars
+        ports:
+          - 2017:1433
+      mssql-2019:
+        # Docker Hub image
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: mainExtendedToMoreThan8Chars
+        ports:
+          - 2019:1433
+      mssql-2022:
+        # Docker Hub image
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: mainExtendedToMoreThan8Chars
+        ports:
+          - 2022:1433
     steps:
       -   name: Checkout code
           uses: actions/checkout@v4
@@ -324,6 +349,17 @@ jobs:
       -   name: Force doctrine/orm library to ${{ matrix.orm }}
           run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
 
+      # Create the main databases
+      - name: Create the main database for mssql-2017
+        run: sqlcmd -S localhost,2017 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
+
+      - name: Create the main database for mssql-2019
+        run: sqlcmd -S localhost,2019 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
+
+      - name: Create the main database for mssql-2022
+        run: sqlcmd -S localhost,2022 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
+
+      # Run the tests
       -   name: Run test suite for forks or version without code coverage
           run: composer run-script test
 
