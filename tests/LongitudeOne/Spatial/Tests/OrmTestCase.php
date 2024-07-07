@@ -558,6 +558,16 @@ abstract class OrmTestCase extends SpatialTestCase
     }
 
     /**
+     * Complete configuration with MS SQL Server spatial functions.
+     *
+     * @param Configuration $configuration the current configuration
+     */
+    private function addSpecificMsSqlFunctions(Configuration $configuration): void
+    {
+        // ready to add related functions for Microsoft SQL Server
+    }
+
+    /**
      * Complete configuration with MySQL spatial functions.
      *
      * @param Configuration $configuration the current configuration
@@ -617,16 +627,6 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('PgSql_Summary', SpSummary::class);
         $configuration->addCustomNumericFunction('PgSql_Transform', SpTransform::class);
         $configuration->addCustomNumericFunction('PgSql_Translate', SpTranslate::class);
-    }
-
-    /**
-     * Complete configuration with MS SQL Server spatial functions.
-     *
-     * @param Configuration $configuration the current configuration
-     */
-    private function addSpecificMsSqlFunctions(Configuration $configuration): void
-    {
-        // ready to add related functions for Microsoft SQL Server
     }
 
     /**
