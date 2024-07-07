@@ -565,6 +565,7 @@ abstract class OrmTestCase extends SpatialTestCase
     private function addSpecificMsSqlFunctions(Configuration $configuration): void
     {
         // ready to add related functions for Microsoft SQL Server
+        // $configuration->addCustomNumericFunction('foo', SpSqlFoo::class);
     }
 
     /**
