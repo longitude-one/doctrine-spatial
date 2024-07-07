@@ -122,7 +122,10 @@ jobs:
         run: composer show
 
       - name: Create database main on SQL Server 2017
-        run: docker exec -i mssql-2017 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlclient
+        run: sqlcmd -S localhost -p 2017 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
 
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
