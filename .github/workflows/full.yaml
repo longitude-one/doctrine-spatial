@@ -71,6 +71,20 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mssql-2017:
+        # Docker Hub image
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: mainExtendedToMoreThan8Chars
+        ports:
+          - 2017:1433
+        # Set health checks to wait until mssql-server has started
+        options: >-            
+          --health-cmd="sqlcmd -S localhost -U sa -P mainExtendedToMoreThan8Chars -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
