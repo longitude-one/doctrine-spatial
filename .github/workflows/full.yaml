@@ -80,11 +80,11 @@ jobs:
         ports:
           - 2017:1433
         # Set health checks to wait until mssql-server has started
-        options: >-            
-          --health-cmd="sqlcmd -S localhost -U sa -P mainExtendedToMoreThan8Chars -Q 'SELECT 1'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+#        options: >-
+#          --health-cmd="sqlcmd -S localhost -U sa -P mainExtendedToMoreThan8Chars -Q 'SELECT 1'"
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
