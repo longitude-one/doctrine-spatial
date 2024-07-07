@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php" executionOrder="depends,defects" stopOnFailure="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         stopOnError="true" stopOnWarning="true" stopOnDefect="true" cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests/LongitudeOne/Spatial/Tests</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <include>
+            <group>php</group>
+            <group>dql</group>
+            <group>geometry</group>
+            <group>geography</group>
+            <group>srid</group>
+            <group>pgsql-only</group>
+            <group>issue</group>
+            <group>mssql-only</group>
+        </include>
+        <exclude>
+            <group>mysql-only</group>
+            <group>pgsql-only</group>
+        </exclude>
+    </groups>
+    <php>
+        <var name="db_type" value="pdo_sqlsrv"/>
+        <var name="db_host" value="localhost"/>
+        <var name="db_username" value="sa"/>
+        <var name="db_password" value="mainExtendedToMoreThan8Chars"/>
+        <var name="db_name" value="main"/>
+        <var name="db_port" value="2017"/>
+        <var name="db_driver_options" value="TrustServerCertificate=1"/>
+        <!-- mssql cannot drop current database, -->
+        <!-- Also, we connect on the alternate database, then we drop the main database -->
+        <var name="db_alternate" value="master"/>
+        <!-- Select timezone for log -->
+        <var name="opt_log_timezone" value="Europe/Paris"/>
+        <!-- Select the log level: debug to get each request, info to get each starting test and disconnection -->
+        <var name="opt_log_level" value="debug"/>
+        <!-- Select the directory to store the log files -->
+        <var name="opt_log_dir" value=".phpunit.cache/logs"/>
+        <!-- Select the log file name -->
+        <var name="opt_log_file" value="mssql2017.log"/>
+    </php>
+    <source>
+        <include>
+            <directory suffix=".php">lib/</directory>
+        </include>
+    </source>
+</phpunit>
