@@ -127,7 +127,7 @@ jobs:
           install: sqlclient
 
       - name: Create the main database for mssql-2017
-        run: sqlcmd -S localhost -p 2017 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
+        run: sqlcmd -S localhost,2017 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
 
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
