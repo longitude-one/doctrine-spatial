@@ -121,10 +121,12 @@ jobs:
       - name: Show libraries
         run: composer show
 
-      - name: Create database main on SQL Server 2017
+      - name: Install sqlclient for mssql
         uses: potatoqualitee/mssqlsuite@v1.7
         with:
           install: sqlclient
+
+      - name: Create the main database for mssql-2017
         run: sqlcmd -S localhost -p 2017 -U sa -P mainExtendedToMoreThan8Chars -Q "CREATE DATABASE main;"
 
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
