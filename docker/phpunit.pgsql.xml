@@ -23,7 +23,6 @@
         </include>
         <exclude>
             <group>mysql-only</group>
-            <group>mssql-only</group>
         </exclude>
     </groups>
     <php>

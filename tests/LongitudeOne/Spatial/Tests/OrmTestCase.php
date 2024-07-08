@@ -26,7 +26,6 @@ use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Exception\UnknownColumnType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -369,10 +368,6 @@ abstract class OrmTestCase extends SpatialTestCase
             return $connection;
         }
 
-        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-            return $connection;
-        }
-
         throw new UnsupportedPlatformException(sprintf(
             'DBAL platform "%s" is not currently supported.',
             $connection->getDatabasePlatform()::class
@@ -483,11 +478,6 @@ abstract class OrmTestCase extends SpatialTestCase
             // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
         }
-
-        if ($this->getPlatform() instanceof SQLServerPlatform) {
-            // Specific functions of Microsoft SQL Server 2017, 2019, 2022
-            $this->addSpecificMsSqlFunctions($configuration);
-        }
     }
 
     /**
@@ -555,17 +545,6 @@ abstract class OrmTestCase extends SpatialTestCase
     protected function usesType(string $typeName): void
     {
         $this->usedTypes[$typeName] = true;
-    }
-
-    /**
-     * Complete configuration with MS SQL Server spatial functions.
-     *
-     * @param Configuration $configuration the current configuration
-     */
-    private function addSpecificMsSqlFunctions(Configuration $configuration): void
-    {
-        // ready to add related functions for Microsoft SQL Server
-        // $configuration->addCustomNumericFunction('foo', SpSqlFoo::class);
     }
 
     /**
