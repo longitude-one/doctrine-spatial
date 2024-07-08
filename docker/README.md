@@ -19,6 +19,3 @@ docker exec spatial-php8 cp docker/phpunit*.xml .
 docker exec spatial-php8 composer test-mysql5
 docker exec spatial-php8 composer test-mysql8
 docker exec spatial-php8 composer test-pgsql
-docker exec spatial-php8 composer test-mssql2017
-docker exec spatial-php8 composer test-mssql2019
-docker exec spatial-php8 composer test-mssql2022

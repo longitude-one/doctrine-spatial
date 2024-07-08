@@ -22,7 +22,6 @@
         </include>
         <exclude>
             <group>pgsql-only</group>
-            <group>mssql-only</group>
             <group>srid</group>
             <group>deprecation</group>
         </exclude>
