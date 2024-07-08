@@ -28,6 +28,8 @@
         <exclude name="CouplingBetweenObjects"/>
         <exclude name="NumberOfChildren"/>
     </rule>
-    <!-- Import the entire unused code rule set -->
-    <rule ref="rulesets/unusedcode.xml"/>
+    <!-- Import the entire unused code rule set but Unused code rule (because no specific functions for MSSQL Server -->
+    <rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedFormalParameter"/>
+    </rule>
 </ruleset>
