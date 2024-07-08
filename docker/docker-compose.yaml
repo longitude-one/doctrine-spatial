@@ -40,6 +40,43 @@ services:
       MYSQL_PORT: 3306
     ports:
       - "3380:3306"
+  database-mssql2017:
+    build:
+      context: ./mssql
+      args:
+        IMAGE_TAG: "2017-latest"
+        USER_NAME: "root"
+    container_name: "spatial-mssql2017"
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: mainExtendedToMoreThan8Chars
+    ports:
+      - "1433:1433"
+  database-mssql2019:
+    build:
+      context: ./mssql
+      args:
+        IMAGE_TAG: "2019-latest"
+    container_name: "spatial-mssql2019"
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: mainExtendedToMoreThan8Chars
+    ports:
+       - "1434:1433"
+  database-mssql2022:
+    build:
+      context: ./mssql
+      args:
+        IMAGE_TAG: "2022-latest"
+    container_name: "spatial-mssql2022"
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: mainExtendedToMoreThan8Chars
+    ports:
+      - "1435:1433"
   service_doc:
     container_name: "spatial-doc"
     build:
