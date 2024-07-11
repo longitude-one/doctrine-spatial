@@ -54,8 +54,11 @@ MySQL5.7 is supported, but is deprecated.
 MySQL8.0 is supported.
 
 ### PostgreSQL
-This spatial library is compatible with PostgreSql. 
+This spatial library is compatible with PostgreSql.
 This library is tested with the last versions of Postgis and PostgreSql.
+
+### MariaDB
+This spatial library is compatible with MariaDB 10.6.
 
 ## Help wanted
 
@@ -68,7 +71,3 @@ contact me by mail, specified in `composer.json`.
 **Microsoft SQL Server**
 I'm searching help to create a docker delivering a Microsoft SQL Server service. So I'll be able to implement
 compatibility with this database server.
-
-**MariaDB**
-I'm searching help to create a Github action delivering a MariaDB service, to launch test and determine if
-this library is compatible.
