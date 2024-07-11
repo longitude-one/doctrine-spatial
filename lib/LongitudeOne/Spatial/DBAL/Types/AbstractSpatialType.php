@@ -19,10 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
@@ -244,6 +246,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
     {
         if ($platform instanceof MySQLPlatform) {
             return new MySql();
+        }
+
+        if ($platform instanceof MariaDBPlatform) {
+            return new MariaDB();
         }
 
         if ($platform instanceof PostgreSQLPlatform) {

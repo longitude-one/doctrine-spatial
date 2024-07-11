@@ -24,6 +24,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Exception\UnknownColumnType;
@@ -49,50 +50,9 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBufferStrategy;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistance;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistanceSphere as MySQLDistanceSphere;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpGeometryType as MySqlGeometryType;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpLineString;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrContains;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrDisjoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrEquals;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrIntersects;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrOverlaps;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrTouches;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrWithin;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpPoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpAsGeoJson;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpAzimuth;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpClosestPoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpCollect;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpContainsProperly;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpCoveredBy;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpCovers;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpDistanceSphere;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpDWithin;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpExpand;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeogFromText;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeographyFromText;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeometryType as PgSqlGeometryType;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeomFromEwkt;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineCrossingDirection;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineInterpolatePoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineLocatePoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineSubstring;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpMakeBox2D;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpMakeEnvelope;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpMakeLine;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpMakePoint;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpNPoints;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpScale;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSimplify;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSnapToGrid;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSplit;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSummary;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpTransform;
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpTranslate;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StArea;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsBinary;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsText;
@@ -368,6 +328,10 @@ abstract class OrmTestCase extends SpatialTestCase
             return $connection;
         }
 
+        if ($connection->getDatabasePlatform() instanceof MariaDBPlatform) {
+            return $connection;
+        }
+
         throw new UnsupportedPlatformException(sprintf(
             'DBAL platform "%s" is not currently supported.',
             $connection->getDatabasePlatform()::class
@@ -474,6 +438,11 @@ abstract class OrmTestCase extends SpatialTestCase
             $this->addSpecificPostgreSqlFunctions($configuration);
         }
 
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            // Specific functions of MariaDB database engines
+            $this->addSpecificMariaDbFunctions($configuration);
+        }
+
         if ($this->getPlatform() instanceof MySQLPlatform) {
             // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
@@ -554,20 +523,43 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     private function addSpecificMySqlFunctions(Configuration $configuration): void
     {
-        $configuration->addCustomNumericFunction('Mysql_Distance', SpDistance::class);
-        $configuration->addCustomNumericFunction('Mysql_Buffer', SpBuffer::class);
-        $configuration->addCustomNumericFunction('Mysql_BufferStrategy', SpBufferStrategy::class);
-        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySQLDistanceSphere::class);
-        $configuration->addCustomNumericFunction('Mysql_GeometryType', MySqlGeometryType::class);
-        $configuration->addCustomNumericFunction('Mysql_LineString', SpLineString::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRContains', SpMbrContains::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRDisjoint', SpMbrDisjoint::class);
-        $configuration->addCustomNumericFunction('Mysql_MBREquals', SpMbrEquals::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRIntersects', SpMbrIntersects::class);
-        $configuration->addCustomNumericFunction('Mysql_MBROverlaps', SpMbrOverlaps::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRTouches', SpMbrTouches::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRWithin', SpMbrWithin::class);
-        $configuration->addCustomNumericFunction('Mysql_Point', SpPoint::class);
+        $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
+        $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
+        $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
+        $configuration->addCustomNumericFunction('Mysql_GeometryType', MySql\SpGeometryType::class);
+        $configuration->addCustomNumericFunction('Mysql_LineString', MySql\SpLineString::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRContains', MySql\SpMbrContains::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRDisjoint', MySql\SpMbrDisjoint::class);
+        $configuration->addCustomNumericFunction('Mysql_MBREquals', MySql\SpMbrEquals::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRIntersects', MySql\SpMbrIntersects::class);
+        $configuration->addCustomNumericFunction('Mysql_MBROverlaps', MySql\SpMbrOverlaps::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRTouches', MySql\SpMbrTouches::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRWithin', MySql\SpMbrWithin::class);
+        $configuration->addCustomNumericFunction('Mysql_Point', MySql\SpPoint::class);
+    }
+
+    /**
+     * Complete configuration with MariaDB spatial functions.
+     *
+     * @param Configuration $configuration the current configuration
+     */
+    private function addSpecificMariaDbFunctions(Configuration $configuration): void
+    {
+        $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
+        $configuration->addCustomNumericFunction('MariaDB_Buffer', MariaDB\SpBuffer::class);
+        $configuration->addCustomNumericFunction('MariaDB_BufferStrategy', MariaDB\SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('MariaDB_DistanceSphere', MariaDB\SpDistanceSphere::class);
+        $configuration->addCustomNumericFunction('MariaDB_GeometryType', MariaDB\SpGeometryType::class);
+        $configuration->addCustomNumericFunction('MariaDB_LineString', MariaDB\SpLineString::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBRContains', MariaDB\SpMbrContains::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBRDisjoint', MariaDB\SpMbrDisjoint::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBREquals', MariaDB\SpMbrEquals::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBRIntersects', MariaDB\SpMbrIntersects::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBROverlaps', MariaDB\SpMbrOverlaps::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBRTouches', MariaDB\SpMbrTouches::class);
+        $configuration->addCustomNumericFunction('MariaDB_MBRWithin', MariaDB\SpMbrWithin::class);
+        $configuration->addCustomNumericFunction('MariaDB_Point', MariaDB\SpPoint::class);
     }
 
     /**
@@ -577,36 +569,36 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     private function addSpecificPostgreSqlFunctions(Configuration $configuration): void
     {
-        $configuration->addCustomStringFunction('PgSql_AsGeoJson', SpAsGeoJson::class);
-        $configuration->addCustomStringFunction('PgSql_Azimuth', SpAzimuth::class);
-        $configuration->addCustomStringFunction('PgSql_ClosestPoint', SpClosestPoint::class);
-        $configuration->addCustomStringFunction('PgSql_Collect', SpCollect::class);
-        $configuration->addCustomNumericFunction('PgSql_ContainsProperly', SpContainsProperly::class);
-        $configuration->addCustomNumericFunction('PgSql_CoveredBy', SpCoveredBy::class);
-        $configuration->addCustomNumericFunction('PgSql_Covers', SpCovers::class);
-        $configuration->addCustomNumericFunction('PgSql_Distance_Sphere', SpDistanceSphere::class);
-        $configuration->addCustomNumericFunction('PgSql_DWithin', SpDWithin::class);
-        $configuration->addCustomNumericFunction('PgSql_Expand', SpExpand::class);
-        $configuration->addCustomStringFunction('PgSql_GeogFromText', SpGeogFromText::class);
-        $configuration->addCustomStringFunction('PgSql_GeographyFromText', SpGeographyFromText::class);
-        $configuration->addCustomNumericFunction('PgSql_GeomFromEwkt', SpGeomFromEwkt::class);
-        $configuration->addCustomNumericFunction('PgSql_GeometryType', PgSqlGeometryType::class);
-        $configuration->addCustomNumericFunction('PgSql_LineCrossingDirection', SpLineCrossingDirection::class);
-        $configuration->addCustomNumericFunction('PgSql_LineSubstring', SpLineSubstring::class);
-        $configuration->addCustomNumericFunction('PgSql_LineLocatePoint', SpLineLocatePoint::class);
-        $configuration->addCustomStringFunction('PgSql_LineInterpolatePoint', SpLineInterpolatePoint::class);
-        $configuration->addCustomStringFunction('PgSql_MakeEnvelope', SpMakeEnvelope::class);
-        $configuration->addCustomStringFunction('PgSql_MakeBox2D', SpMakeBox2D::class);
-        $configuration->addCustomStringFunction('PgSql_MakeLine', SpMakeLine::class);
-        $configuration->addCustomStringFunction('PgSql_MakePoint', SpMakePoint::class);
-        $configuration->addCustomNumericFunction('PgSql_NPoints', SpNPoints::class);
-        $configuration->addCustomNumericFunction('PgSql_Scale', SpScale::class);
-        $configuration->addCustomNumericFunction('PgSql_Simplify', SpSimplify::class);
-        $configuration->addCustomNumericFunction('PgSql_Split', SpSplit::class);
-        $configuration->addCustomStringFunction('PgSql_SnapToGrid', SpSnapToGrid::class);
-        $configuration->addCustomStringFunction('PgSql_Summary', SpSummary::class);
-        $configuration->addCustomNumericFunction('PgSql_Transform', SpTransform::class);
-        $configuration->addCustomNumericFunction('PgSql_Translate', SpTranslate::class);
+        $configuration->addCustomStringFunction('PgSql_AsGeoJson', PostgreSql\SpAsGeoJson::class);
+        $configuration->addCustomStringFunction('PgSql_Azimuth', PostgreSql\SpAzimuth::class);
+        $configuration->addCustomStringFunction('PgSql_ClosestPoint', PostgreSql\SpClosestPoint::class);
+        $configuration->addCustomStringFunction('PgSql_Collect', PostgreSql\SpCollect::class);
+        $configuration->addCustomNumericFunction('PgSql_ContainsProperly', PostgreSql\SpContainsProperly::class);
+        $configuration->addCustomNumericFunction('PgSql_CoveredBy', PostgreSql\SpCoveredBy::class);
+        $configuration->addCustomNumericFunction('PgSql_Covers', PostgreSql\SpCovers::class);
+        $configuration->addCustomNumericFunction('PgSql_Distance_Sphere', PostgreSql\SpDistanceSphere::class);
+        $configuration->addCustomNumericFunction('PgSql_DWithin', PostgreSql\SpDWithin::class);
+        $configuration->addCustomNumericFunction('PgSql_Expand', PostgreSql\SpExpand::class);
+        $configuration->addCustomStringFunction('PgSql_GeogFromText', PostgreSql\SpGeogFromText::class);
+        $configuration->addCustomStringFunction('PgSql_GeographyFromText', PostgreSql\SpGeographyFromText::class);
+        $configuration->addCustomNumericFunction('PgSql_GeomFromEwkt', PostgreSql\SpGeomFromEwkt::class);
+        $configuration->addCustomNumericFunction('PgSql_GeometryType', PostgreSql\SpGeometryType::class);
+        $configuration->addCustomNumericFunction('PgSql_LineCrossingDirection', PostgreSql\SpLineCrossingDirection::class);
+        $configuration->addCustomNumericFunction('PgSql_LineSubstring', PostgreSql\SpLineSubstring::class);
+        $configuration->addCustomNumericFunction('PgSql_LineLocatePoint', PostgreSql\SpLineLocatePoint::class);
+        $configuration->addCustomStringFunction('PgSql_LineInterpolatePoint', PostgreSql\SpLineInterpolatePoint::class);
+        $configuration->addCustomStringFunction('PgSql_MakeEnvelope', PostgreSql\SpMakeEnvelope::class);
+        $configuration->addCustomStringFunction('PgSql_MakeBox2D', PostgreSql\SpMakeBox2D::class);
+        $configuration->addCustomStringFunction('PgSql_MakeLine', PostgreSql\SpMakeLine::class);
+        $configuration->addCustomStringFunction('PgSql_MakePoint', PostgreSql\SpMakePoint::class);
+        $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);
+        $configuration->addCustomNumericFunction('PgSql_Scale', PostgreSql\SpScale::class);
+        $configuration->addCustomNumericFunction('PgSql_Simplify', PostgreSql\SpSimplify::class);
+        $configuration->addCustomNumericFunction('PgSql_Split', PostgreSql\SpSplit::class);
+        $configuration->addCustomStringFunction('PgSql_SnapToGrid', PostgreSql\SpSnapToGrid::class);
+        $configuration->addCustomStringFunction('PgSql_Summary', PostgreSql\SpSummary::class);
+        $configuration->addCustomNumericFunction('PgSql_Transform', PostgreSql\SpTransform::class);
+        $configuration->addCustomNumericFunction('PgSql_Translate', PostgreSql\SpTranslate::class);
     }
 
     /**

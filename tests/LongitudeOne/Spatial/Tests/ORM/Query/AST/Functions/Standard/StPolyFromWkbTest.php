@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
@@ -46,6 +48,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
@@ -65,7 +68,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE p.polygon = ST_PolyFromWkb(:wkb)'
         );
-        $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
+        $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), ParameterType::BINARY);
 
         $result = $query->getResult();
 
@@ -88,7 +91,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $query = $this->getEntityManager()->createQuery(
             'SELECT p, ST_AsText(ST_PolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
-        $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), 'blob');
+        $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), ParameterType::BINARY);
         $result = $query->getResult();
 
         static::assertIsArray($result);

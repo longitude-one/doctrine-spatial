@@ -55,6 +55,17 @@ jobs:
         ports:
           - 3380:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mariadb:
+        image: mariadb:10.6
+        ports:
+          - 3406:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: main
+          MYSQL_USER: main
+          MYSQL_PASSWORD: main
+          MYSQL_ROOT_PASSWORD: main
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
       postgres:
         # Docker Hub image
         image: postgis/postgis
