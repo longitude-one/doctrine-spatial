@@ -26,6 +26,7 @@ use LongitudeOne\Spatial\DBAL\Types\DoctrineSpatialTypeInterface;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\Exception\UnsupportedTypeException;
 use LongitudeOne\Spatial\PHP\Types\PointInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
@@ -110,7 +111,8 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param AbstractSpatialType $type    The abstract spatial type
      * @param string              $sqlExpr the SQL expression
      *
-     * @throws InvalidValueException when the provided type is not supported
+     * @throws InvalidValueException    when this extension does not support the provided type
+     * @throws UnsupportedTypeException when the provided type is not supported by the current platform
      */
     public function convertStringToPhpValue(AbstractSpatialType $type, $sqlExpr): SpatialInterface
     {
@@ -119,31 +121,21 @@ abstract class AbstractPlatform implements PlatformInterface
         return $this->newObjectFromValue($type, $parser->parse());
     }
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.FoundInImplementedInterfaceBeforeLastUsed
-
-    /**
-     * Convert binary data to a php value.
-     *
-     * @param AbstractSpatialType $type  The spatial type
-     * @param SpatialInterface    $value The geometry object
-     */
-    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string
-    {
-        // the unused variable $type is used by overriding method
-        return sprintf('%s(%s)', mb_strtoupper($value->getType()), $value);
-    }
-
-    // phpcs:enable
-
     /**
      * Get an array of database types that map to this Doctrine type.
      *
      * @param AbstractSpatialType $type the spatial type
      *
      * @return string[]
+     *
+     * @throws UnsupportedTypeException when the provided type is not supported
      */
     public function getMappedDatabaseTypes(AbstractSpatialType $type): array
     {
+        if (!$type->supportsPlatform($this)) {
+            throw new UnsupportedTypeException(sprintf('Platform %s does not currently supported the type %s.', $this::class, $type::class));
+        }
+
         $sqlType = mb_strtolower($type->getSQLType());
 
         if ($type instanceof GeographyType && 'geography' !== $sqlType) {

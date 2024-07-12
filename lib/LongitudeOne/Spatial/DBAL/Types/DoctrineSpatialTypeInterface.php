@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\DBAL\Types;
 
+use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
+
 interface DoctrineSpatialTypeInterface
 {
     /**
@@ -26,4 +28,11 @@ interface DoctrineSpatialTypeInterface
      * @return ('Geography'|'Geometry')
      */
     public function getTypeFamily(): string;
+
+    /**
+     * Is this type supported by the specified database platform?
+     *
+     * @param PlatformInterface $platform The specified database platform
+     */
+    public function supportsPlatform(PlatformInterface $platform): bool;
 }

@@ -221,6 +221,16 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
         return $platform instanceof AbstractPlatform;
     }
 
+    /**
+     * Is this type supported by the specified database platform?
+     *
+     * @param PlatformInterface $platform the spatial platform
+     */
+    public function supportsPlatform(PlatformInterface $platform): bool
+    {
+        return in_array($platform::class, $this->getSupportedPlatforms(), true);
+    }
+
     // phpcs:enable
 
     /**
@@ -228,11 +238,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      *
      * @param AbstractPlatform $platform the database platform
      *
-     * @return PlatformInterface
-     *
      * @throws UnsupportedPlatformException when platform is unknown by the library
      */
-    private function getSpatialPlatform(AbstractPlatform $platform)
+    private function getSpatialPlatform(AbstractPlatform $platform): PlatformInterface
     {
         if ($platform instanceof MySQLPlatform) {
             return new MySql();
@@ -247,4 +255,11 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
             $platform::class
         ));
     }
+
+    /**
+     * Return an array of all platform supporting the current type.
+     *
+     * @return class-string<PlatformInterface>[]
+     */
+    abstract protected function getSupportedPlatforms(): array;
 }

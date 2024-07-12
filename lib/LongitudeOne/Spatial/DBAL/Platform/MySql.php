@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\DBAL\Platform;
 
 use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\Exception\UnsupportedTypeException;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -31,6 +32,23 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  */
 class MySql extends AbstractPlatform
 {
+    /**
+     * Convert binary data to a php value.
+     *
+     * @param AbstractSpatialType $type  The spatial type
+     * @param SpatialInterface    $value The geometry object
+     *
+     * @throws UnsupportedTypeException when the provided type is not supported
+     */
+    public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string
+    {
+        if (!$type->supportsPlatform($this)) {
+            throw new UnsupportedTypeException(sprintf('Platform %s is not currently supported.', $this::class));
+        }
+
+        return sprintf('%s(%s)', mb_strtoupper($value->getType()), $value);
+    }
+
     /**
      * Convert to database value.
      *

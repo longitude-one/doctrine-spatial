@@ -127,9 +127,10 @@ class PlatformTest extends OrmMockTestCase
     /**
      * Test non-supported platform.
      *
-     * @throws Exception      when connection failed
-     * @throws ORMException   when cache is not set
-     * @throws ToolsException this should not happen
+     * @throws Exception             when connection failed
+     * @throws ORMException          when cache is not set
+     * @throws ToolsException        this should not happen
+     * @throws InvalidValueException this should not happen
      */
     public function testWithUnsupportedPlatform(): void
     {
