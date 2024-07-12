@@ -22,6 +22,7 @@ use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
 use LongitudeOne\Spatial\DBAL\Types\GeographyType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\MissingArgumentException;
+use LongitudeOne\Spatial\Exception\UnsupportedTypeException;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
@@ -40,25 +41,29 @@ class PostgreSql extends AbstractPlatform
      *
      * @param AbstractSpatialType $type  The spatial type
      * @param SpatialInterface    $value The geometry interface
+     *
+     * @throws UnsupportedTypeException when the provided type is not supported
      */
     public function convertToDatabaseValue(AbstractSpatialType $type, SpatialInterface $value): string
     {
+        if (!$type->supportsPlatform($this)) {
+            throw new UnsupportedTypeException(sprintf('Platform %s is not currently supported.', $this::class));
+        }
+
         $sridSQL = null;
-        $srid = null;
 
         if ($type instanceof GeographyType && null === $value->getSrid()) {
             $value->setSrid(self::DEFAULT_SRID);
         }
 
-        if (method_exists($value, 'getSrid')) {
-            $srid = $value->getSrid();
-        }
+        $srid = $value->getSrid();
 
         if (null !== $srid) {
             $sridSQL = sprintf('SRID=%d;', $srid);
         }
 
-        return sprintf('%s%s', $sridSQL, parent::convertToDatabaseValue($type, $value));
+        // the unused variable $type is used by overriding method
+        return sprintf('%s%s(%s)', $sridSQL, mb_strtoupper($value->getType()), $value);
     }
 
     /**
