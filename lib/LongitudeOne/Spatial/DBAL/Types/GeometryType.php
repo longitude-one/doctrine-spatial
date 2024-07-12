@@ -18,6 +18,10 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\DBAL\Types;
 
+use LongitudeOne\Spatial\DBAL\Platform\MySql;
+use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
+use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
+
 /**
  * Doctrine GEOMETRY type.
  *
@@ -26,4 +30,16 @@ namespace LongitudeOne\Spatial\DBAL\Types;
  */
 class GeometryType extends AbstractSpatialType
 {
+    /**
+     * Return an array of all platform supporting the current type.
+     *
+     * @return class-string<PlatformInterface>[]
+     */
+    protected function getSupportedPlatforms(): array
+    {
+        return [
+            MySql::class,
+            PostgreSql::class,
+        ];
+    }
 }
