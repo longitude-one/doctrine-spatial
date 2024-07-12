@@ -20,19 +20,16 @@ namespace LongitudeOne\Spatial\Tests\Issues;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\DBAL\Platform\MySql;
-use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
-use LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType;
-use LongitudeOne\Spatial\DBAL\Types\Geography\PointType;
-use LongitudeOne\Spatial\DBAL\Types\GeographyType;
-use LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType;
-use LongitudeOne\Spatial\DBAL\Types\GeometryType;
+use Generator;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\Exception\MissingArgumentException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographicPoint;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometricPoint;
+use LongitudeOne\Spatial\PHP\Types\Geometry\LineString as GeometricLineString;
+use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
+use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Issue 42 test.
@@ -48,31 +45,63 @@ use PHPUnit\Framework\TestCase;
 class Issue17Test extends PersistOrmTestCase
 {
     /**
+     * @return Generator<string, object[], null, void>
+     *
+     * @throws InvalidValueException this should not happen, we provide only valid values.
+     */
+    public static function entityProvider(): Generator
+    {
+        $point = new GeometricPoint(42, 42);
+        $point->setSrid(4326);
+
+        $pointEntity = new PointEntity();
+        $pointEntity->setPoint($point);
+
+        yield 'Geometric point with SRID' => [$pointEntity];
+
+        $anotherPointWithSrid = new GeometricPoint(43, 43);
+        $anotherPointWithSrid->setSrid(4326);
+
+        $lineString = new GeometricLineString([$point, $anotherPointWithSrid]);
+        $lineString->setSrid(4326);
+        $lineStringEntity = new LineStringEntity();
+        $lineStringEntity->setLineString($lineString);
+
+        yield 'Geometric LineString with SRID' => [$pointEntity];
+
+        $point = new GeographicPoint(42, 42);
+        $point->setSrid(4326);
+        $pointEntity = new GeoPointSridEntity();
+        $pointEntity->setPoint($point);
+
+        yield 'Geographic point with SRID' => [$pointEntity];
+    }
+
+    /**
      * Set up the test.
      */
     protected function setUp(): void
     {
         $this->usesEntity(self::POINT_ENTITY);
+        $this->usesEntity(self::GEO_POINT_SRID_ENTITY);
+        $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(MySQLPlatform::class);
+        // This test was only failing on MySQL Platform, but let's check PostGreSQL too.
+        $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
     }
 
     /**
      * Test issue with MySQL.
      */
-    public function testToPersistPointWithSrid(): void
+    #[DataProvider('entityProvider')]
+    public function testToPersistPointWithSrid(object $entity): void
     {
-        $point = new Point(42, 42);
-        $point->setSrid(4326);
-
-        $entity = new PointEntity();
-        $entity->setPoint($point);
-
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $result = $this->getEntityManager()->getRepository(PointEntity::class)->findById($entity->getId());
+        $result = $this->getEntityManager()->getRepository($entity::class)->findBy(['id' => $entity->getId()]);
 
         static::assertEquals($entity, $result[0]);
     }
