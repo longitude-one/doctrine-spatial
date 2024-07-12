@@ -36,6 +36,8 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
+ * @group php
+ *
  * @coversNothing
  */
 class Issue42Test extends TestCase
