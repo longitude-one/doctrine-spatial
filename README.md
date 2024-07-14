@@ -53,17 +53,13 @@ Security fixes will follow the [PHP Roadmap](https://www.php.net/supported-versi
 MySQL5.7 is supported, but is deprecated.
 MySQL8.0 is supported.
 
+Known Limitation: `longitude-one/doctrine-spatial` CANNOT store SRID on MySQL. Internally, this extension uses Well Known Text to convert internal types to database type. As `doctrine/orm` does not allow custom persister nor collection persister, we cannot provide two parameters (WKT and SRID). Extented Well Known Text (EWKT) could be used to convert internal types to databases but EWKT is only supported by Postgis. I'm trying a new solution: create an external Well Known Bytes converter to be able to use it `convertToDatabaseValue` methods of `doctrine/orm` and `longitude-one/doctrine-spatial`.
+
 ### PostgreSQL
 This spatial library is compatible with PostgreSql. 
 This library is tested with the last versions of Postgis and PostgreSql.
 
 ## Help wanted
-
-**RFC**
-I don't have enough money to buy the last edition of the [ISO/IEC 13249-3:2016](https://www.iso.org/standard/60343.html).
-I only bought the previous version. This document is essential to know which functions are in Standard and which one
-are specific to a database engine. If anyone has bought one and don't use it anymore, feel free to forward it. You can
-contact me by mail, specified in `composer.json`.
 
 **Microsoft SQL Server**
 I'm searching help to create a docker delivering a Microsoft SQL Server service. So I'll be able to implement
