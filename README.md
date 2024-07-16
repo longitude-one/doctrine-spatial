@@ -32,7 +32,7 @@ The documentation contains a glossary of all available types and all available s
 
 ## Project origins
 This useful library was created by Derek J. Lambert. 
-Alexandre Tranchant forked it from [creof/doctrine-spatial](https://github.com/creof/doctrine-spatial)
+Alexandre Tranchant forked it from [creof/doctrine-spatial](https://github.com/creof/doctrine2-spatial)
 because project seems to be non-active since 2017.
 
 The longitude-one/doctrine-spatial repository employs a well-structured branching strategy:
