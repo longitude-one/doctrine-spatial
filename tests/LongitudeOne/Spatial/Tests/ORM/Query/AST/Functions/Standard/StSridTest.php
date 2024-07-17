@@ -75,7 +75,36 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
+        static::assertSame(4326, $result[0][1]);
+    }
+
+    /**
+     * @group geometry
+     */
+    public function testFunctionSqlGenerationWithTwoParameters(): void
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT ST_SRID(g.geography, 2154) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
+        );
+
+        static::assertSame('SELECT ST_SRID(g0_.geography, 2154) AS sclr_0 FROM GeographyEntity g0_', $query->getSQL());
+    }
+
+    /**
+     * @group geometry
+     */
+    public function testFunctionWithGeometryAndChangedSrid(): void
+    {
+        $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT ST_SRID(ST_SRID(g.point, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
+        );
+        $result = $query->getResult();
+
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertCount(1, $result[0]);
         static::assertSame(4326, $result[0][1]);
     }
 
@@ -101,7 +130,6 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
-        static::assertIsArray($result);
         static::assertSame(2154, $result[0][1]);
     }
 }
