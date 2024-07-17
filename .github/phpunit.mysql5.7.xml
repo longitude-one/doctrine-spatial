@@ -16,7 +16,6 @@
             <group>php</group>
             <group>dql</group>
             <group>geometry</group>
-            <group>srid</group>
             <group>mysql-only</group>
             <group>issue</group>
         </include>
