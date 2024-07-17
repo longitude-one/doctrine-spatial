@@ -79,7 +79,7 @@ class StSridTest extends PersistOrmTestCase
     }
 
     /**
-     * @group srid
+     * @group srid-2-parameters
      */
     public function testFunctionSqlGenerationWithTwoParameters(): void
     {
@@ -91,7 +91,7 @@ class StSridTest extends PersistOrmTestCase
     }
 
     /**
-     * @group srid
+     * @group srid-2-parameters
      */
     public function testFunctionWithGeometryAndChangedSrid(): void
     {
