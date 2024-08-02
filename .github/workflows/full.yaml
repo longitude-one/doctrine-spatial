@@ -158,7 +158,7 @@ jobs:
         run: composer install --working-dir=quality/php-cs-fixer
 
       - name: Run PHP-CS-Fixer
-        run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
+        run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes --diff
 
       ## PHP-MESS-DETECTOR
       - name: Create the PHP-MESS-DETECTOR composer.lock for the cache key
