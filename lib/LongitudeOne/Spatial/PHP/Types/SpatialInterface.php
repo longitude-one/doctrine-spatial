@@ -35,8 +35,6 @@ interface SpatialInterface
 
     /**
      * Return the Spatial Reference Identifier (SRID) of this object.
-     *
-     * @return ?int
      */
     public function getSrid(): ?int;
 
