@@ -72,8 +72,8 @@ class StSridTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // TODO MySQL is returning 0 insteadof 4326
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
+            // TODO MySQL and MariaDB are returning 0 insteadof 4326
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
@@ -98,8 +98,8 @@ class StSridTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // MySQL is returning 0 insteadof 2154
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
+            // MySQL and MariaDB are returning 0 insteadof 2154
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 

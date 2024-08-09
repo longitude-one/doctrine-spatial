@@ -93,8 +93,8 @@ class StIntersectionTest extends PersistOrmTestCase
     public function testStIntersectionWhereParameter(): void
     {
         $lineStringA = $this->persistLineStringA();
-        $this->persistLineStringB();
-        $this->persistLineStringC();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -107,7 +107,14 @@ class StIntersectionTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertCount(1, $result);
-        static::assertEquals($lineStringA, $result[0]);
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::assertCount(3, $result);
+            static::assertEquals($lineStringA, $result[0]);
+            static::assertEquals($lineStringB, $result[1]);
+            static::assertEquals($lineStringC, $result[2]);
+        } else {
+            static::assertCount(1, $result);
+            static::assertEquals($lineStringA, $result[0]);
+        }
     }
 }

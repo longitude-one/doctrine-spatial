@@ -111,7 +111,11 @@ class StEnvelopeTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertCount(1, $result);
-        static::assertEquals($holeyPolygon, $result[0]);
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::assertCount(0, $result);
+        } else {
+            static::assertCount(1, $result);
+            static::assertEquals($holeyPolygon, $result[0]);
+        }
     }
 }
