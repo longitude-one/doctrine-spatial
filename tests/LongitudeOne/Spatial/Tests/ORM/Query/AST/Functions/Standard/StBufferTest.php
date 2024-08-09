@@ -45,7 +45,6 @@ class StBufferTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::POINT_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
-        // TODO check if this function is supported by MySQL or if I missed a platform
 
         parent::setUp();
     }
