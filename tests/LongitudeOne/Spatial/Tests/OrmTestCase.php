@@ -546,9 +546,8 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     private function addSpecificMariaDbFunctions(Configuration $configuration): void
     {
-        $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
         $configuration->addCustomNumericFunction('MariaDB_Buffer', MariaDB\SpBuffer::class);
-        $configuration->addCustomNumericFunction('MariaDB_BufferStrategy', MariaDB\SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
         $configuration->addCustomNumericFunction('MariaDB_DistanceSphere', MariaDB\SpDistanceSphere::class);
         $configuration->addCustomNumericFunction('MariaDB_GeometryType', MariaDB\SpGeometryType::class);
         $configuration->addCustomNumericFunction('MariaDB_LineString', MariaDB\SpLineString::class);
@@ -559,6 +558,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('MariaDB_MBROverlaps', MariaDB\SpMbrOverlaps::class);
         $configuration->addCustomNumericFunction('MariaDB_MBRTouches', MariaDB\SpMbrTouches::class);
         $configuration->addCustomNumericFunction('MariaDB_MBRWithin', MariaDB\SpMbrWithin::class);
+        $configuration->addCustomNumericFunction('MariaDB_NumInteriorRings', MariaDB\StNumInteriorRings::class);
         $configuration->addCustomNumericFunction('MariaDB_Point', MariaDB\SpPoint::class);
     }
 

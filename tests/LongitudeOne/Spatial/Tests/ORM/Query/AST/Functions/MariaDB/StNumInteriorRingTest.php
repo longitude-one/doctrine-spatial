@@ -16,11 +16,9 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -46,8 +44,7 @@ class StNumInteriorRingTest extends PersistOrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::POLYGON_ENTITY);
-        $this->supportsPlatform(PostgreSQLPlatform::class);
-        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(MariaDBPlatform::class);
 
         parent::setUp();
     }
@@ -66,7 +63,7 @@ class StNumInteriorRingTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_NumInteriorRing(p.polygon) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+            'SELECT p, MariaDB_NumInteriorRings(p.polygon) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
         $result = $query->getResult();
 
@@ -94,7 +91,7 @@ class StNumInteriorRingTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_NumInteriorRing(p.polygon) = :p'
+            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE MariaDB_NumInteriorRings(p.polygon) = :p'
         );
         $query->setParameter('p', 1);
         $result = $query->getResult();
