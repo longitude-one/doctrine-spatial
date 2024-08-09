@@ -16,20 +16,21 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
- * ST_NumInteriorRing DQL function.
+ * ST_NumInteriorRings DQL function.
+ *
+ * MariaDB does not implements ST_NumInteriorRing, but ST_NumInteriorRings
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  */
-class StNumInteriorRing extends AbstractSpatialDQLFunction
+class StNumInteriorRings extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.
@@ -38,15 +39,15 @@ class StNumInteriorRing extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        return 'ST_NumInteriorRing';
+        return 'ST_NumInteriorRings';
     }
 
     /**
      * Maximum number of parameters for the spatial function.
      *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
-     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      */
     protected function getMaxParameter(): int
     {
@@ -56,9 +57,9 @@ class StNumInteriorRing extends AbstractSpatialDQLFunction
     /**
      * Minimum number of parameters for the spatial function.
      *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
-     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      */
     protected function getMinParameter(): int
     {
@@ -68,13 +69,13 @@ class StNumInteriorRing extends AbstractSpatialDQLFunction
     /**
      * Get the platforms accepted.
      *
-     * @since 2.0 This function replace the protected property platforms.
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
      * @since 5.0 This function returns the class-string[] instead of string[]
      *
-     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
+     * @since 2.0 This function replace the protected property platforms.
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class, MySQLPlatform::class];
+        return [MariaDBPlatform::class];
     }
 }
