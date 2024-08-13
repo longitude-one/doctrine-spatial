@@ -19,7 +19,7 @@ docker exec spatial-php8 composer update --working-dir=quality/php-cs-fixer
 
 To test all files:
 ```bash
-docker exec spatial-php8 quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes
+docker exec spatial-php8 quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes --diff
 ```
 To fix all files:
 ```bash
@@ -41,7 +41,7 @@ docker exec spatial-php8 quality/php-stan/vendor/bin/phpstan analyse --configura
 
 To add a file at exception baseline:
 ```bash
-docker exec spatial-php8 quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --generate-baseline quality/php-stan/phpstan-baseline.neon
+docker exec spatial-php8 quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M --generate-baseline quality/php-stan/phpstan-baseline.neon
 ```
 
 ## PHP Mess Detector
