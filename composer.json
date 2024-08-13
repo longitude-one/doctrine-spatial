@@ -1,7 +1,7 @@
 {
     "name": "longitude-one/doctrine-spatial",
     "type": "library",
-    "description": "Doctrine2 multi-platform support for spatial types and functions",
+    "description": "Doctrine multi-platform support for spatial types and functions, compliant with Doctrine 2.19, 3.1, and dev ones (3.2 and 4.0).",
     "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso-13249"],
     "authors": [
         {
