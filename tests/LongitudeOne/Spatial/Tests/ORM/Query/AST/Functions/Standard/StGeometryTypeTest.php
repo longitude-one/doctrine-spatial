@@ -46,7 +46,6 @@ class StGeometryTypeTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
-        // TODO Check if I missed MySQL80Platform
 
         parent::setUp();
     }
