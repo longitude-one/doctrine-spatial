@@ -22,7 +22,7 @@
         </include>
         <exclude>
             <group>pgsql-only</group>
-            <group>srid</group>
+            <group>srid-2-parameters</group>
             <group>deprecation</group>
         </exclude>
     </groups>
