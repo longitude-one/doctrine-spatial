@@ -94,7 +94,7 @@ trait PersistantPointHelperTrait
     /**
      * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
      *
-     * @param bool $setSrid initialize the SRID to 2154 if true
+     * @param bool $setSrid initialize the SRID to 4326 if true
      */
     protected function persistGeographyLosAngeles(bool $setSrid = true): GeographyEntity
     {
