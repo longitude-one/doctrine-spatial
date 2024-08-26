@@ -34,6 +34,8 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Abstract Doctrine GEOMETRY type.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeInterface
 {
