@@ -112,9 +112,11 @@ class StIntersectionTest extends PersistOrmTestCase
             static::assertEquals($lineStringA, $result[0]);
             static::assertEquals($lineStringB, $result[1]);
             static::assertEquals($lineStringC, $result[2]);
-        } else {
-            static::assertCount(1, $result);
-            static::assertEquals($lineStringA, $result[0]);
+
+            return;
         }
+
+        static::assertCount(1, $result);
+        static::assertEquals($lineStringA, $result[0]);
     }
 }

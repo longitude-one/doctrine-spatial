@@ -118,10 +118,12 @@ class StDifferenceTest extends PersistOrmTestCase
             static::assertEquals($lineStringA, $result[0]);
             static::assertEquals($lineStringB, $result[1]);
             static::assertEquals($lineStringC, $result[2]);
-        } else {
-            static::assertCount(2, $result);
-            static::assertEquals($lineStringB, $result[0]);
-            static::assertEquals($lineStringC, $result[1]);
+
+            return;
         }
+
+        static::assertCount(2, $result);
+        static::assertEquals($lineStringB, $result[0]);
+        static::assertEquals($lineStringC, $result[1]);
     }
 }
