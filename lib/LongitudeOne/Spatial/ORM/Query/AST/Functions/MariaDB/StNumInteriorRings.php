@@ -46,8 +46,8 @@ class StNumInteriorRings extends AbstractSpatialDQLFunction
      * Maximum number of parameters for the spatial function.
      *
      * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
-     * @since 2.0 This function replace the protected property maxGeomExpr.
      *
+     * @since 2.0 This function replace the protected property maxGeomExpr.
      */
     protected function getMaxParameter(): int
     {
@@ -58,8 +58,8 @@ class StNumInteriorRings extends AbstractSpatialDQLFunction
      * Minimum number of parameters for the spatial function.
      *
      * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
-     * @since 2.0 This function replace the protected property minGeomExpr.
      *
+     * @since 2.0 This function replace the protected property minGeomExpr.
      */
     protected function getMinParameter(): int
     {
@@ -70,8 +70,8 @@ class StNumInteriorRings extends AbstractSpatialDQLFunction
      * Get the platforms accepted.
      *
      * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
-     * @since 5.0 This function returns the class-string[] instead of string[]
      *
+     * @since 5.0 This function returns the class-string[] instead of string[]
      * @since 2.0 This function replace the protected property platforms.
      */
     protected function getPlatforms(): array

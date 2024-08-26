@@ -517,29 +517,6 @@ abstract class OrmTestCase extends SpatialTestCase
     }
 
     /**
-     * Complete configuration with MySQL spatial functions.
-     *
-     * @param Configuration $configuration the current configuration
-     */
-    private function addSpecificMySqlFunctions(Configuration $configuration): void
-    {
-        $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
-        $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
-        $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
-        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
-        $configuration->addCustomNumericFunction('Mysql_GeometryType', MySql\SpGeometryType::class);
-        $configuration->addCustomNumericFunction('Mysql_LineString', MySql\SpLineString::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRContains', MySql\SpMbrContains::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRDisjoint', MySql\SpMbrDisjoint::class);
-        $configuration->addCustomNumericFunction('Mysql_MBREquals', MySql\SpMbrEquals::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRIntersects', MySql\SpMbrIntersects::class);
-        $configuration->addCustomNumericFunction('Mysql_MBROverlaps', MySql\SpMbrOverlaps::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRTouches', MySql\SpMbrTouches::class);
-        $configuration->addCustomNumericFunction('Mysql_MBRWithin', MySql\SpMbrWithin::class);
-        $configuration->addCustomNumericFunction('Mysql_Point', MySql\SpPoint::class);
-    }
-
-    /**
      * Complete configuration with MariaDB spatial functions.
      *
      * @param Configuration $configuration the current configuration
@@ -560,6 +537,29 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('MariaDB_MBRWithin', MariaDB\SpMbrWithin::class);
         $configuration->addCustomNumericFunction('MariaDB_NumInteriorRings', MariaDB\StNumInteriorRings::class);
         $configuration->addCustomNumericFunction('MariaDB_Point', MariaDB\SpPoint::class);
+    }
+
+    /**
+     * Complete configuration with MySQL spatial functions.
+     *
+     * @param Configuration $configuration the current configuration
+     */
+    private function addSpecificMySqlFunctions(Configuration $configuration): void
+    {
+        $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
+        $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
+        $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
+        $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
+        $configuration->addCustomNumericFunction('Mysql_GeometryType', MySql\SpGeometryType::class);
+        $configuration->addCustomNumericFunction('Mysql_LineString', MySql\SpLineString::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRContains', MySql\SpMbrContains::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRDisjoint', MySql\SpMbrDisjoint::class);
+        $configuration->addCustomNumericFunction('Mysql_MBREquals', MySql\SpMbrEquals::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRIntersects', MySql\SpMbrIntersects::class);
+        $configuration->addCustomNumericFunction('Mysql_MBROverlaps', MySql\SpMbrOverlaps::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRTouches', MySql\SpMbrTouches::class);
+        $configuration->addCustomNumericFunction('Mysql_MBRWithin', MySql\SpMbrWithin::class);
+        $configuration->addCustomNumericFunction('Mysql_Point', MySql\SpPoint::class);
     }
 
     /**
