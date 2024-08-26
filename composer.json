@@ -2,7 +2,7 @@
     "name": "longitude-one/doctrine-spatial",
     "type": "library",
     "description": "Doctrine multi-platform support for spatial types and functions, compliant with Doctrine 2.19, 3.1, and dev ones (3.2 and 4.0).",
-    "keywords": ["orm", "dbal", "database", "postgresql", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso-13249"],
+    "keywords": ["orm", "dbal", "database", "postgresql", "mariadb", "mysql", "opengis", "postgis", "gis", "spatial", "geometry", "geography", "iso-13249"],
     "authors": [
         {
             "name": "Derek Lambert",
@@ -42,16 +42,19 @@
     "minimum-stability": "dev",
     "scripts": {
         "test": [
+            "phpunit --configuration phpunit.mariadb10.6.xml",
             "phpunit --configuration phpunit.mysql5.7.xml",
             "phpunit --configuration phpunit.mysql8.0.xml",
             "phpunit --configuration phpunit.pgsql.xml"
         ],
         "test-coverage": [
+            "phpunit --configuration phpunit.mariadb10.6.xml --coverage-php .phpunit.cache/code-coverage/mariadb10.6.cov",
             "phpunit --configuration phpunit.mysql5.7.xml --coverage-php .phpunit.cache/code-coverage/mysql5.7.cov",
             "phpunit --configuration phpunit.mysql8.0.xml --coverage-php .phpunit.cache/code-coverage/mysql8.0.cov",
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
             "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
         ],
+        "test-mariadb10.6": "phpunit --configuration phpunit.mariadb10.6.xml",
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
         "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\DBAL\Types;
 
+use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
@@ -38,6 +39,7 @@ class GeometryType extends AbstractSpatialType
     protected function getSupportedPlatforms(): array
     {
         return [
+            MariaDB::class,
             MySql::class,
             PostgreSql::class,
         ];
