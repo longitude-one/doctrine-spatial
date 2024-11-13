@@ -86,7 +86,9 @@ class SpatialTestCase extends TestCase
      */
     protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
-        return $platform instanceof MySQL57Platform
-            || !$platform instanceof MySQL80Platform && $platform instanceof MySQLPlatform;
+        return null !== $platform
+            && $platform::class === 'Doctrine\DBAL\Platforms\MySQL57Platform'
+            || $platform instanceof MySQLPlatform
+            && $platform::class !== 'Doctrine\DBAL\Platforms\MySQL80Platform';
     }
 }
