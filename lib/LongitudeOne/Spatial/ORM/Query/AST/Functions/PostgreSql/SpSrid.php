@@ -16,10 +16,9 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
@@ -29,12 +28,10 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  */
-class StSrid extends AbstractSpatialDQLFunction
+class SpSrid extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.
-     *
-     * @since 2.0 This function replace the protected property functionName.
      */
     protected function getFunctionName(): string
     {
@@ -44,19 +41,19 @@ class StSrid extends AbstractSpatialDQLFunction
     /**
      * Maximum number of parameters for the spatial function.
      *
-     * @since 2.0 This function replace the protected property maxGeomExpr.
+     * Be careful, this function is different from the standard function.
+     * PostgreSQL doesn't respect the standard. The ST_SRID function has only one parameter.
+     * So we created this specific function.
      *
      * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      */
     protected function getMaxParameter(): int
     {
-        return 2;
+        return 1;
     }
 
     /**
      * Minimum number of parameters for the spatial function.
-     *
-     * @since 2.0 This function replace the protected property minGeomExpr.
      *
      * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
      */
@@ -75,7 +72,6 @@ class StSrid extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        // TODO PostGreSQLPlatform should be deprecated to be removed in next major version
-        return [PostgreSQLPlatform::class, MySQLPlatform::class];
+        return [PostgreSQLPlatform::class];
     }
 }

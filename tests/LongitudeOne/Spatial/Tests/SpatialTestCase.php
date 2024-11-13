@@ -84,7 +84,7 @@ class SpatialTestCase extends TestCase
      *
      * @param null|AbstractPlatform $platform the platform
      */
-    private static function platformIsMySql57(?AbstractPlatform $platform): bool
+    protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
         return $platform instanceof MySQL57Platform
             || !$platform instanceof MySQL80Platform && $platform instanceof MySQLPlatform;

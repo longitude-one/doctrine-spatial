@@ -16,16 +16,26 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
- * ST_SRID DQL function tests.
+ * ST_SRID PostGreSQL function tests.
+ *
+ * Be warned that PostGreSQL is not respecting the ISO/IEC 13249-3 standard.
+ * PostGreSQL only accepts one parameter with ST_SRID function.
+ *
+ * ```sql
+ * SELECT ST_SRID(g.point, 4326) FROM PointEntity g
+ * [42883] ERROR: function st_srid(geometry, integer) does not exist.
+ * Indice: No function matches the given name and argument types.
+ * You might need to add explicit type casts.
+ * ```
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -36,7 +46,7 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversDefaultClass
  */
-class StSridTest extends PersistOrmTestCase
+class SpSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
     use PersistantPointHelperTrait;
@@ -48,21 +58,9 @@ class StSridTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::POINT_ENTITY);
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
-        $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
-    }
-
-    /**
-     * @group srid-2-parameters
-     */
-    public function testFunctionSqlGenerationWithTwoParameters(): void
-    {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.geography, 2154) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-        );
-
-        static::assertSame('SELECT ST_SRID(g0_.geography, 2154) AS sclr_0 FROM GeographyEntity g0_', $query->getSQL());
     }
 
     /**
@@ -75,7 +73,7 @@ class StSridTest extends PersistOrmTestCase
         $this->persistGeographyLosAngeles();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
+            'SELECT PgSQL_SRID(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
         $result = $query->getResult();
 
@@ -99,40 +97,13 @@ class StSridTest extends PersistOrmTestCase
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
+            'SELECT PgSQL_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
         );
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // MySQL is returning 0 insteadof 2154
-            static::markTestSkipped('SRID not yet implemented in Abstraction of MySQL');
-        }
-
         static::assertSame(2154, $result[0][1]);
-    }
-
-    /**
-     * @group srid-2-parameters
-     */
-    public function testFunctionWithGeometryAndChangedSrid(): void
-    {
-        $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
-
-        if (static::platformIsMySql57($this->getPlatform())) {
-            static::expectException(DriverException::class);
-        }
-
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(ST_SRID(g.point, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
-        );
-        $result = $query->getResult();
-
-        static::assertIsArray($result);
-        static::assertIsArray($result[0]);
-        static::assertCount(1, $result[0]);
-        static::assertSame(4326, $result[0][1]);
     }
 }
