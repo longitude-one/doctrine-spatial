@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\Deprecations\Deprecation;
 use Doctrine\ORM\Query\AST\ASTException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
@@ -127,6 +128,28 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
     }
 
     /**
+     * Get the deprecated platforms with this function.
+     *
+     * If a function is deprecated on a platform, it is possible to add this platform in this array.
+     *
+     * Example of implementation:
+     * return [
+     *      PostGreSQLPlatform::class => [
+     *          'link' => 'http://github.com/longitude-one/doctrine-spatial/issues/42',
+     *          'message' => 'The StSrid function is deprecated with PostGreSQL since longitude-one/doctrine-spatial. Use SpSrid instead.',
+     *      ],
+     * ];
+     *
+     * @see https://github.com/doctrine/deprecations?tab=readme-ov-file#usage-from-a-libraryproducer-perspective
+     *
+     * @return array<class-string<AbstractPlatform>, array{link: string, message: string}> an array where key is the platform and value an array of the arguments provided to the trigger method
+     */
+    protected function getDeprecatedPlatforms(): array
+    {
+        return [];
+    }
+
+    /**
      * Geometry expressions getter.
      *
      * @since 2.0 This function replace the protected property geomExpr which is now private.
@@ -151,6 +174,16 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      */
     protected function validatePlatform(AbstractPlatform $platform): bool
     {
+        foreach ($this->getDeprecatedPlatforms() as $deprecatedPlatform => $arguments) {
+            if ($platform instanceof $deprecatedPlatform) {
+                Deprecation::trigger(
+                    'longitude-one/doctrine-spatial',
+                    $arguments['link'],
+                    $arguments['message']
+                );
+            }
+        }
+
         foreach ($this->getPlatforms() as $acceptedPlatform) {
             if ($platform instanceof $acceptedPlatform) {
                 return true;

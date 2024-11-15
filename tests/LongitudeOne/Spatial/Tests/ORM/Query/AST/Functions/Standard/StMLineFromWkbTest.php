@@ -87,9 +87,12 @@ class StMLineFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_SRID(ST_MLineFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
-        );
+        $dql = 'SELECT t, ST_SRID(ST_MLineFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            $dql = 'SELECT t, PgSql_SRID(ST_MLineFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
+        }
+
+        $query = $this->getEntityManager()->createQuery($dql);
         $query->setParameter('wkb', hex2bin(self::DATA), 'blob');
         $query->setParameter('srid', 2154);
 
