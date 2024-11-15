@@ -62,7 +62,7 @@ class SpGeomFromEwktTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_SRID(PgSql_GeomFromEwkt(:ewkt)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
+            'SELECT t, PgSql_SRID(PgSql_GeomFromEwkt(:ewkt)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
         );
         $query->setParameter('ewkt', 'SRID=2249;POINT(0 0)');
 

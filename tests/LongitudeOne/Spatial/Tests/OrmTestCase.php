@@ -90,6 +90,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpScale;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSimplify;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSnapToGrid;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSplit;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSrid;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSummary;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpTransform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpTranslate;
@@ -601,6 +602,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('PgSql_MakePoint', SpMakePoint::class);
         $configuration->addCustomNumericFunction('PgSql_NPoints', SpNPoints::class);
         $configuration->addCustomNumericFunction('PgSql_Scale', SpScale::class);
+        $configuration->addCustomNumericFunction('PgSql_SRID', SpSrid::class);
         $configuration->addCustomNumericFunction('PgSql_Simplify', SpSimplify::class);
         $configuration->addCustomNumericFunction('PgSql_Split', SpSplit::class);
         $configuration->addCustomStringFunction('PgSql_SnapToGrid', SpSnapToGrid::class);

@@ -64,8 +64,3 @@ parameters:
 			message: "#^Parameter \\#1 \\$polygon of method LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\AbstractMultiPolygon\\:\\:addPolygon\\(\\) expects array\\<array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\LineStringInterface\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\MultiPointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PolygonInterface, string given\\.$#"
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/MultiPolygonTest.php
-
-		-
-			message: "#^Class Doctrine\\\\DBAL\\\\Platforms\\\\MySQL57Platform not found\\.$#"
-			count: 1
-			path: ../../tests/LongitudeOne/Spatial/Tests/SpatialTestCase.php
