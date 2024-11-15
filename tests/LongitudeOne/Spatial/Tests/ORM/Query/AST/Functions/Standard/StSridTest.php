@@ -81,7 +81,7 @@ class StSridTest extends PersistOrmTestCase
     public function testFunctionWithGeography(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
-            $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/17');
+            $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/100');
         }
 
         $this->persistGeographyLosAngeles();

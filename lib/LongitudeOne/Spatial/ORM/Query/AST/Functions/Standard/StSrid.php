@@ -40,8 +40,8 @@ class StSrid extends AbstractSpatialDQLFunction
     {
         return [
             PostgreSQLPlatform::class => [
-                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/17',
-                'message' => 'The function ST_SRID is deprecated with PostGreSQL since longitude-one/doctrine-spatial. Use SpSrid instead.',
+                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/100',
+                'message' => 'The function Standard/ST_SRID is deprecated with PostGreSQL since longitude-one/doctrine-spatial because internal SRID PostGreSql function should accept two parameters and it doesn\'t. Use Standard/StSetSrid or PostGreSql/SpSrid instead.',
             ],
         ];
     }
