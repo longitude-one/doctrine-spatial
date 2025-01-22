@@ -16,9 +16,8 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
-use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
@@ -26,11 +25,20 @@ use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
- * ST_Length DQL function tests.
+ * ST_SRID PostGreSQL function tests.
  *
- * @author  Derek J. Lambert <dlambert@dereklambert.com>
+ * Be warned that PostGreSQL is not respecting the ISO/IEC 13249-3 standard.
+ * PostGreSQL only accepts one parameter with ST_SRID function.
+ *
+ * ```sql
+ * SELECT ST_SRID(g.point, 4326) FROM PointEntity g
+ * [42883] ERROR: function st_srid(geometry, integer) does not exist.
+ * Indice: No function matches the given name and argument types.
+ * You might need to add explicit type casts.
+ * ```
+ *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://dlambert.mit-license.org MIT
+ * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @group dql
  *
@@ -38,7 +46,7 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversDefaultClass
  */
-class StLengthTest extends PersistOrmTestCase
+class SpSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
     use PersistantPointHelperTrait;
@@ -48,10 +56,9 @@ class StLengthTest extends PersistOrmTestCase
      */
     protected function setUp(): void
     {
-        $this->usesEntity(self::LINESTRING_ENTITY);
+        $this->usesEntity(self::POINT_ENTITY);
+        $this->usesEntity(self::GEOGRAPHY_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
-        $this->supportsPlatform(MariaDBPlatform::class);
-        $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
     }
@@ -61,44 +68,42 @@ class StLengthTest extends PersistOrmTestCase
      *
      * @group geometry
      */
-    public function testSelectStLength(): void
+    public function testFunctionWithGeography(): void
     {
-        $angularLineString = $this->persistAngularLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->persistGeographyLosAngeles();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l, ST_Length(l.lineString) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+            'SELECT PgSQL_SRID(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertEquals($angularLineString, $result[0][0]);
-        static::assertEqualsWithDelta(19.1126623906578, $result[0][1], 0.000000000001);
+        if ($this->getPlatform() instanceof MySQLPlatform) {
+            // MySQL is returning 0 insteadof 4326
+            static::markTestSkipped('SRID not yet implemented in Abstraction of MySQL');
+        }
+
+        static::assertSame(4326, $result[0][1]);
     }
 
     /**
-     * Test a DQL containing function to test in the predicate.
+     * Test a DQL containing function to test in the select.
      *
      * @group geometry
      */
-    public function testStLengthWhereParameter(): void
+    public function testFunctionWithGeometry(): void
     {
-        $angularLineString = $this->persistAngularLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Length(ST_GeomFromText(:p1)) > ST_Length(l.lineString)'
+            'SELECT PgSQL_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
         );
-
-        $query->setParameter('p1', 'LINESTRING(0 0,21 21)', 'string');
-
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertCount(1, $result);
-        static::assertEquals($angularLineString, $result[0]);
+        static::assertIsArray($result[0]);
+        static::assertCount(1, $result[0]);
+        static::assertSame(2154, $result[0][1]);
     }
 }

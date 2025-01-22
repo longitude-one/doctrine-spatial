@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
- * Copyright Longitude One 2020-2024
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
+ * Copyright Longitude One 2020-2025
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -593,6 +593,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('PgSql_MakePoint', PostgreSql\SpMakePoint::class);
         $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);
         $configuration->addCustomNumericFunction('PgSql_Scale', PostgreSql\SpScale::class);
+        $configuration->addCustomNumericFunction('PgSql_SRID', PostgreSql\SpSrid::class);
         $configuration->addCustomNumericFunction('PgSql_Simplify', PostgreSql\SpSimplify::class);
         $configuration->addCustomNumericFunction('PgSql_Split', PostgreSql\SpSplit::class);
         $configuration->addCustomStringFunction('PgSql_SnapToGrid', PostgreSql\SpSnapToGrid::class);

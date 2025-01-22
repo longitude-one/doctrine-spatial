@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
- * Copyright Longitude One 2020-2024
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
+ * Copyright Longitude One 2020-2025
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -33,6 +33,21 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 class StSrid extends AbstractSpatialDQLFunction
 {
     /**
+     * Get the deprecated platforms with this function.
+     *
+     * @return array<class-string<AbstractPlatform>, array{link: string, message: string}> a non-empty array of deprecated platforms
+     */
+    protected function getDeprecatedPlatforms(): array
+    {
+        return [
+            PostgreSQLPlatform::class => [
+                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/100',
+                'message' => 'The function Standard/ST_SRID is deprecated with PostGreSQL since longitude-one/doctrine-spatial because internal SRID PostGreSql function should accept two parameters and it doesn\'t. Use Standard/StSetSrid or PostGreSql/SpSrid instead.',
+            ],
+        ];
+    }
+
+    /**
      * Function SQL name getter.
      *
      * @since 2.0 This function replace the protected property functionName.
@@ -51,7 +66,7 @@ class StSrid extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        return 1;
+        return 2;
     }
 
     /**

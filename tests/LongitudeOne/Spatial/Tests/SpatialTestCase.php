@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
- * Copyright Longitude One 2020-2024
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
+ * Copyright Longitude One 2020-2025
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -87,9 +87,11 @@ class SpatialTestCase extends TestCase
      *
      * @param null|AbstractPlatform $platform the platform
      */
-    private static function platformIsMySql57(?AbstractPlatform $platform): bool
+    protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
-        return $platform instanceof MySQL57Platform
-            || !$platform instanceof MySQL80Platform && $platform instanceof MySQLPlatform;
+        return null !== $platform
+            && 'Doctrine\DBAL\Platforms\MySQL57Platform' === $platform::class
+            || $platform instanceof MySQLPlatform
+            && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $platform::class;
     }
 }

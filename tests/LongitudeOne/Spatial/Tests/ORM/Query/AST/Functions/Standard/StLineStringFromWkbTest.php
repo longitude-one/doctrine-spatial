@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
- * Copyright Longitude One 2020-2024
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
+ * Copyright Longitude One 2020-2025
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -84,9 +84,12 @@ class StLineStringFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT g, ST_SRID(ST_LineStringFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g'
-        );
+        $dql = 'SELECT g, ST_SRID(ST_LineStringFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g';
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            $dql = 'SELECT g, PgSQL_SRID(ST_LineStringFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity g';
+        }
+
+        $query = $this->getEntityManager()->createQuery($dql);
         $query->setParameter('wkb', hex2bin('010200000003000000000000000000000000000000000000000000000000000040000000000000004000000000000014400000000000001440'), 'blob');
         $query->setParameter('srid', 2154);
 

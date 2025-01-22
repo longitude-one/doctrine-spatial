@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2024
- * Copyright Longitude One 2020-2024
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
+ * Copyright Longitude One 2020-2025
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -94,7 +94,7 @@ trait PersistantPointHelperTrait
     /**
      * Create Paris city in Lambert93 (French SRID) as geometry Point entity and store it in database.
      *
-     * @param bool $setSrid initialize the SRID to 2154 if true
+     * @param bool $setSrid initialize the SRID to 4326 if true
      */
     protected function persistGeographyLosAngeles(bool $setSrid = true): GeographyEntity
     {
