@@ -50,6 +50,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
@@ -537,6 +538,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('MariaDB_MBRWithin', MariaDB\SpMbrWithin::class);
         $configuration->addCustomNumericFunction('MariaDB_NumInteriorRings', MariaDB\StNumInteriorRings::class);
         $configuration->addCustomNumericFunction('MariaDB_Point', MariaDB\SpPoint::class);
+        $configuration->addCustomNumericFunction('Common_SRID', Common\ScSrid::class);
     }
 
     /**
@@ -594,6 +596,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);
         $configuration->addCustomNumericFunction('PgSql_Scale', PostgreSql\SpScale::class);
         $configuration->addCustomNumericFunction('PgSql_SRID', PostgreSql\SpSrid::class);
+        $configuration->addCustomNumericFunction('Common_SRID', Common\SpSrid::class);
         $configuration->addCustomNumericFunction('PgSql_Simplify', PostgreSql\SpSimplify::class);
         $configuration->addCustomNumericFunction('PgSql_Split', PostgreSql\SpSplit::class);
         $configuration->addCustomStringFunction('PgSql_SnapToGrid', PostgreSql\SpSnapToGrid::class);

@@ -137,6 +137,10 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('PostgreSQL does not support two parameters for ST_SRID function.');
         }
 
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::markTestSkipped('MariaDB does not support two parameters for ST_SRID function.');
+        }
+
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         if (static::platformIsMySql57($this->getPlatform())) {
