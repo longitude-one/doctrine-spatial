@@ -596,7 +596,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);
         $configuration->addCustomNumericFunction('PgSql_Scale', PostgreSql\SpScale::class);
         $configuration->addCustomNumericFunction('PgSql_SRID', PostgreSql\SpSrid::class);
-        $configuration->addCustomNumericFunction('Common_SRID', Common\SpSrid::class);
+        $configuration->addCustomNumericFunction('Common_SRID', Common\ScSrid::class);
         $configuration->addCustomNumericFunction('PgSql_Simplify', PostgreSql\SpSimplify::class);
         $configuration->addCustomNumericFunction('PgSql_Split', PostgreSql\SpSplit::class);
         $configuration->addCustomStringFunction('PgSql_SnapToGrid', PostgreSql\SpSnapToGrid::class);

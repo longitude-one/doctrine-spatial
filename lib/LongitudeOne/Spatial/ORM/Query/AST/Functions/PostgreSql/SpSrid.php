@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
-use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common\SpSrid as CommonSpSrid;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common\ScSrid as CommonScSrid;
 
 /**
  * ST_SRID DQL function.
@@ -26,6 +26,6 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common\SpSrid as CommonSpSrid;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  */
-class SpSrid extends CommonSpSrid
+class SpSrid extends CommonScSrid
 {
 }
