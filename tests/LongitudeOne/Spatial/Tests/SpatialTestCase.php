@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
@@ -47,6 +48,8 @@ class SpatialTestCase extends TestCase
         if ($platform instanceof MySQLPlatform) {
             // MySQL does not respect creation order of points composing a Polygon.
             $expected = 'POLYGON((0 10,0 0,10 0,10 10,0 10))';
+        } elseif ($platform instanceof MariaDBPlatform) {
+            $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
         }
 
         static::assertSame($expected, $value);
@@ -69,7 +72,7 @@ class SpatialTestCase extends TestCase
             $expected = 'GEOMETRYCOLLECTION()';
         }
 
-        if ($platform instanceof MySQL80Platform) {
+        if ($platform instanceof MySQL80Platform || $platform instanceof MariaDBPlatform) {
             // MySQL8 does not return the standard answer
             $expected = 'GEOMETRYCOLLECTION EMPTY';
         }

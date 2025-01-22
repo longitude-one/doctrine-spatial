@@ -49,3 +49,15 @@ services:
       - ${APP_FOLDER}/docs/build:/etc/Sphinx/build
     ports:
       - 8800:80
+  database-mariadb:
+    image: mariadb:latest
+    container_name: "spatial-mariadb"
+    restart: always
+    environment:
+      MYSQL_DATABASE: main
+      MYSQL_USER: main
+      MYSQL_PASSWORD: main
+      MYSQL_ROOT_PASSWORD: main
+      MYSQL_PORT: 3306
+    ports:
+      - "3390:3306"

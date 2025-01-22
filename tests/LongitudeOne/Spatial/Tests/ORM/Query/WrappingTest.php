@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -53,6 +54,7 @@ class WrappingTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesType('point');
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         parent::setUp();
     }
