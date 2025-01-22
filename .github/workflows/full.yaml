@@ -60,12 +60,12 @@ jobs:
         ports:
           - 3406:3306
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: main
-          MYSQL_USER: main
-          MYSQL_PASSWORD: main
-          MYSQL_ROOT_PASSWORD: main
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
+          MARIADB_ALLOW_EMPTY_PASSWORD: yes
+          MARIADB_DATABASE: main
+          MARIADB_USER: main
+          MARIADB_PASSWORD: main
+          MARIADB_ROOT_PASSWORD: main
+        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       postgres:
         # Docker Hub image
         image: postgis/postgis
@@ -229,6 +229,17 @@ jobs:
               orm: '^3.1'
     name: PHP${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
     services:
+      mariadb:
+        image: mariadb:10.6
+        ports:
+          - 3406:3306
+        env:
+          MARIADB_ALLOW_EMPTY_PASSWORD: yes
+          MARIADB_DATABASE: main
+          MARIADB_USER: main
+          MARIADB_PASSWORD: main
+          MARIADB_ROOT_PASSWORD: main
+        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       mysql5:
         image: mysql:5.7
         env:
