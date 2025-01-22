@@ -21,7 +21,6 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Common;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -91,7 +90,6 @@ class ScSridTest extends PersistOrmTestCase
             // MySQL is returning 0 insteadof 4326
             static::markTestSkipped('SRID not yet implemented in Abstraction of MySQL');
         }
-        
 
         static::assertSame(4326, $result[0][1]);
     }
@@ -106,7 +104,7 @@ class ScSridTest extends PersistOrmTestCase
         $actual = $expected = 2154;
         if ($this->getPlatform() instanceof MariaDBPlatform) {
             $expected = 0;
-        }  
+        }
 
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
