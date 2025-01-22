@@ -65,7 +65,7 @@ jobs:
           MARIADB_USER: main
           MARIADB_PASSWORD: main
           MARIADB_ROOT_PASSWORD: main
-        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
+#        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       postgres:
         # Docker Hub image
         image: postgis/postgis
@@ -239,7 +239,7 @@ jobs:
           MARIADB_USER: main
           MARIADB_PASSWORD: main
           MARIADB_ROOT_PASSWORD: main
-        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
+#        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       mysql5:
         image: mysql:5.7
         env:
