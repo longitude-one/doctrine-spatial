@@ -106,7 +106,7 @@ class ScSridTest extends PersistOrmTestCase
             $expected = 0;
         }
 
-        $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
+        $this->createAndPersistGeometricPoint('A', '1', '1', $actual);
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT Common_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
