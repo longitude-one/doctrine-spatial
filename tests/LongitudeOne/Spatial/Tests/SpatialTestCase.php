@@ -45,11 +45,11 @@ class SpatialTestCase extends TestCase
     protected static function assertBigPolygon($value, AbstractPlatform $platform): void
     {
         $expected = 'POLYGON((0 10,10 10,10 0,0 0,0 10))';
-        if ($platform instanceof MySQLPlatform) {
+        if ($platform instanceof MariaDBPlatform) {
+            $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
+        } elseif ($platform instanceof MySQLPlatform) {
             // MySQL does not respect creation order of points composing a Polygon.
             $expected = 'POLYGON((0 10,0 0,10 0,10 10,0 10))';
-        } elseif ($platform instanceof MariaDBPlatform) {
-            $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
         }
 
         static::assertSame($expected, $value);

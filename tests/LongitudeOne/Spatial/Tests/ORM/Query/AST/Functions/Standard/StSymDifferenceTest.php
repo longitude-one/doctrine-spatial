@@ -83,10 +83,10 @@ class StSymDifferenceTest extends PersistOrmTestCase
         // MySQL failed ST_SymDifference implementation. A linestring minus another one should cut the line.
         // The result SHALL be a multilinestring with two lineStrings.
         $expected = 'MULTILINESTRING((0 0,6 6),(0 10,6 6),(6 6,12 12),(6 6,15 0))';
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            $expected = 'MULTILINESTRING((0 0,12 12),(0 10,15 0))';
-        } elseif ($this->getPlatform() instanceof MariaDBPlatform) {
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
             $expected = 'MULTILINESTRING((0 0,6 6),(15 0,6 6),(6 6,0 10),(6 6,12 12))';
+        } elseif ($this->getPlatform() instanceof MySQLPlatform) {
+            $expected = 'MULTILINESTRING((0 0,12 12),(0 10,15 0))';
         }
 
         static::assertIsArray($result);

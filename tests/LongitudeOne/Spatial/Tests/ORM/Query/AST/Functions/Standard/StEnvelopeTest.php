@@ -72,10 +72,10 @@ class StEnvelopeTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // polygon is equals, but different order
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
             $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
-        } elseif ($this->getPlatform() instanceof MariaDBPlatform) {
+        } elseif ($this->getPlatform() instanceof MySQLPlatform) {
+            // polygon is equals, but different order
             $expected = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
         }
 

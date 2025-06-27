@@ -441,14 +441,10 @@ abstract class OrmTestCase extends SpatialTestCase
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             // Specific functions of PostgreSQL database engine
             $this->addSpecificPostgreSqlFunctions($configuration);
-        }
-
-        if ($this->getPlatform() instanceof MariaDBPlatform) {
+        } elseif ($this->getPlatform() instanceof MariaDBPlatform) {
             // Specific functions of MariaDB database engines
             $this->addSpecificMariaDbFunctions($configuration);
-        }
-
-        if ($this->getPlatform() instanceof MySQLPlatform) {
+        } elseif ($this->getPlatform() instanceof MySQLPlatform) {
             // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
         }
