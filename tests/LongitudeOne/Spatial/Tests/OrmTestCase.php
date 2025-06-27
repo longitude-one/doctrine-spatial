@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -127,6 +129,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
  * Abstract ORM test class.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class OrmTestCase extends SpatialTestCase
 {
@@ -480,6 +484,16 @@ abstract class OrmTestCase extends SpatialTestCase
 
                 static::$addedTypes[$typeName] = true;
             }
+        }
+    }
+
+    /**
+     * Skip the entire test if we are running against MariaDB and Doctrine ORM 2.9.
+     */
+    protected function skipIfMariaDbAndOrm29(): void
+    {
+        if ($this->getPlatform() instanceof MariaDBPlatform && InstalledVersions::satisfies(new VersionParser(), 'doctrine/orm', '^2.9')) {
+            static::markTestSkipped('*FromWkb functions cannot work implemented on MariaDB with ORM 2.9');
         }
     }
 

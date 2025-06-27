@@ -57,6 +57,8 @@ class SpBufferTest extends PersistOrmTestCase
      */
     public function testSelectSpBuffer(): void
     {
+        $this->skipIfMariaDbAndOrm29();
+
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();

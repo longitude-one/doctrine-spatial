@@ -80,6 +80,8 @@ class StLineStringFromWkbTest extends PersistOrmTestCase
      */
     public function testSelectWithSrid(): void
     {
+        $this->skipIfMariaDbAndOrm29();
+
         $this->persistGeometryStraightLine();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
