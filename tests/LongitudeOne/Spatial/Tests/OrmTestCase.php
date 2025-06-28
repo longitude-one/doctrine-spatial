@@ -271,7 +271,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $skipped = true;
         foreach ($this->supportedPlatforms as $platformInterface => $supported) {
-            if ($supported && $this->getPlatform() instanceof $platformInterface) {
+            if ($supported && $this->getPlatform() instanceof $platformInterface && (MariaDBPlatform::class === $platformInterface || !($this->getPlatform() instanceof MariaDBPlatform))) {
                 $skipped = false;
             }
         }
