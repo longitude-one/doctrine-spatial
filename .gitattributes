@@ -1,0 +1,18 @@
+# Exclude development, documentation, and CI-related files from exported archives (e.g., Composer/Packagist packages)
+
+# Ignore Git metadata and CI/CD configs
+/.github export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/.codeclimate.yml export-ignore
+/.readthedocs.yaml export-ignore
+
+# Ignore documentation and quality tools
+/docs export-ignore
+/quality export-ignore
+
+# Ignore Docker and local development files
+/docker export-ignore
+
+# Ignore tests and related resources
+/tests export-ignore
