@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -127,6 +129,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 
 /**
  * Abstract ORM test class.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class OrmTestCase extends SpatialTestCase
 {
@@ -267,7 +271,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $skipped = true;
         foreach ($this->supportedPlatforms as $platformInterface => $supported) {
-            if ($supported && $this->getPlatform() instanceof $platformInterface) {
+            if ($supported && $this->getPlatform() instanceof $platformInterface && (MariaDBPlatform::class === $platformInterface || !($this->getPlatform() instanceof MariaDBPlatform))) {
                 $skipped = false;
             }
         }
@@ -437,14 +441,10 @@ abstract class OrmTestCase extends SpatialTestCase
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             // Specific functions of PostgreSQL database engine
             $this->addSpecificPostgreSqlFunctions($configuration);
-        }
-
-        if ($this->getPlatform() instanceof MariaDBPlatform) {
+        } elseif ($this->getPlatform() instanceof MariaDBPlatform) {
             // Specific functions of MariaDB database engines
             $this->addSpecificMariaDbFunctions($configuration);
-        }
-
-        if ($this->getPlatform() instanceof MySQLPlatform) {
+        } elseif ($this->getPlatform() instanceof MySQLPlatform) {
             // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
         }
@@ -480,6 +480,16 @@ abstract class OrmTestCase extends SpatialTestCase
 
                 static::$addedTypes[$typeName] = true;
             }
+        }
+    }
+
+    /**
+     * Skip the entire test if we are running against MariaDB and Doctrine ORM 2.9.
+     */
+    protected function skipIfMariaDbAndOrm29(): void
+    {
+        if ($this->getPlatform() instanceof MariaDBPlatform && InstalledVersions::satisfies(new VersionParser(), 'doctrine/orm', '^2.9')) {
+            static::markTestSkipped('*FromWkb functions cannot work implemented on MariaDB with ORM 2.9');
         }
     }
 
