@@ -44,7 +44,6 @@ Then, you can launch the test on php8:
 
 .. code-block:: bash
 
-    docker exec spatial-php8 composer test-mysql5.7
     docker exec spatial-php8 composer test-mysql8.0
     docker exec spatial-php8 composer test-pgsql
 
