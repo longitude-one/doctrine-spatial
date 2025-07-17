@@ -35,6 +35,8 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 use LongitudeOne\Spatial\Tests\SpatialTestCase;
+use Doctrine\DBAL\Platforms\MySQL57Platform;
+
 
 /**
  * Spatial platform tests.
@@ -145,6 +147,6 @@ class PlatformTest extends OrmMockTestCase
 
     public function testMySql57TriggersDeprecation(): void
     {
-        $this::assertTrue(SpatialTestCase::platformIsMySql57(new MySqlPlatform57()));
+        $this::assertTrue(SpatialTestCase::platformIsMySql57(new MySQL57Platform()));
     }
 }
