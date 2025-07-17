@@ -27,7 +27,7 @@ sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.7
 sphinxcontrib-serializinghtml==1.1.10
 starlette==0.40.0
-urllib3==2.2.2
+urllib3==2.5.0
 uvicorn==0.29.0
 watchfiles==0.21.0
 websockets==12.0
