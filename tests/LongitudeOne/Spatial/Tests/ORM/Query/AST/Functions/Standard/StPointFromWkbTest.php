@@ -58,6 +58,8 @@ class StPointFromWkbTest extends PersistOrmTestCase
      */
     public function testSelect(): void
     {
+        $this->skipIfMariaDbAndOrm29();
+
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
@@ -81,6 +83,8 @@ class StPointFromWkbTest extends PersistOrmTestCase
      */
     public function testSelectWithSrid(): void
     {
+        $this->skipIfMariaDbAndOrm29();
+
         $this->persistNewYorkGeometry(); // Unused fake point
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();

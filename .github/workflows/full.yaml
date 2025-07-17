@@ -55,6 +55,17 @@ jobs:
         ports:
           - 3380:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mariadb:
+        image: mariadb:10.6
+        ports:
+          - 3406:3306
+        env:
+          MARIADB_ALLOW_EMPTY_PASSWORD: yes
+          MARIADB_DATABASE: main
+          MARIADB_USER: main
+          MARIADB_PASSWORD: main
+          MARIADB_ROOT_PASSWORD: main
+#        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       postgres:
         # Docker Hub image
         image: postgis/postgis
@@ -210,14 +221,32 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.1', '8.2', '8.3' ]
+        php: [ '8.1', '8.2', '8.3', '8.4' ]
         orm: [ '^2.9', '^3.1', '^3.2', '^4.0' ]
         exclude:
           # Already tested
           -   php: '8.3'
               orm: '^3.1'
+          # ORM 4.0 is not compatible with PHP 8.3 or lower
+          -   php: '8.3'
+              orm: '^4.0'
+          -   php: '8.2'
+              orm: '^4.0'
+          -   php: '8.1'
+              orm: '^4.0'
     name: PHP${{ matrix.php }} - doctrine/orm ${{ matrix.orm }}
     services:
+      mariadb:
+        image: mariadb:10.6
+        ports:
+          - 3406:3306
+        env:
+          MARIADB_ALLOW_EMPTY_PASSWORD: yes
+          MARIADB_DATABASE: main
+          MARIADB_USER: main
+          MARIADB_PASSWORD: main
+          MARIADB_ROOT_PASSWORD: main
+#        options: --health-cmd="healthcheck.sh --connect --innodb-initialized" --health-interval=5s --health-timeout=2s --health-retries=5
       mysql5:
         image: mysql:5.7
         env:
