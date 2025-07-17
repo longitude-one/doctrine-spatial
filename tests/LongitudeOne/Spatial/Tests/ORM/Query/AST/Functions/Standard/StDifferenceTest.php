@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
@@ -46,6 +47,7 @@ class StDifferenceTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
@@ -80,7 +82,7 @@ class StDifferenceTest extends PersistOrmTestCase
         // Here is the only good result one.
         // A linestring minus another crossing linestring returns initial linestring split
         $expected = 'MULTILINESTRING((0 0,6 6),(6 6,12 12))';
-        if ($this->getPlatform() instanceof MySQLPlatform) {
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
             // MySQL failed ST_Difference implementation, so I test the bad result.
             $expected = 'LINESTRING(0 0,12 12)';
         }
@@ -96,7 +98,7 @@ class StDifferenceTest extends PersistOrmTestCase
      */
     public function testStDifferenceWhereParameter(): void
     {
-        $this->persistLineStringA();
+        $lineStringA = $this->persistLineStringA();
         $lineStringB = $this->persistLineStringB();
         $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
@@ -111,6 +113,15 @@ class StDifferenceTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::assertCount(3, $result);
+            static::assertEquals($lineStringA, $result[0]);
+            static::assertEquals($lineStringB, $result[1]);
+            static::assertEquals($lineStringC, $result[2]);
+
+            return;
+        }
+
         static::assertCount(2, $result);
         static::assertEquals($lineStringB, $result[0]);
         static::assertEquals($lineStringC, $result[1]);

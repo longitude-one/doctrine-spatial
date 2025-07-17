@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
@@ -77,6 +78,6 @@ class StSymDifference extends AbstractSpatialDQLFunction implements ReturnsGeome
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class, MySQLPlatform::class];
+        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class];
     }
 }

@@ -19,10 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
@@ -32,6 +34,8 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
 
 /**
  * Abstract Doctrine GEOMETRY type.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeInterface
 {
@@ -242,6 +246,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      */
     private function getSpatialPlatform(AbstractPlatform $platform): PlatformInterface
     {
+        if ($platform instanceof MariaDBPlatform) {
+            return new MariaDB();
+        }
+
         if ($platform instanceof MySQLPlatform) {
             return new MySql();
         }

@@ -136,7 +136,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      * return [
      *      PostGreSQLPlatform::class => [
      *          'link' => 'http://github.com/longitude-one/doctrine-spatial/issues/42',
-     *          'message' => 'The StSrid function is deprecated with PostGreSQL since longitude-one/doctrine-spatial. Use SpSrid instead.',
+     *          'message' => 'The StSrid function is deprecated with PostGreSQL since longitude-one/doctrine-spatial. Use ScSrid instead.',
      *      ],
      * ];
      *

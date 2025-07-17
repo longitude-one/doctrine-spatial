@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/LongitudeOne/Spatial/Tests/TestInit.php" executionOrder="depends,defects" stopOnFailure="false"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         stopOnError="false" stopOnWarning="false" stopOnDefect="false" cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests/LongitudeOne/Spatial/Tests</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <include>
+            <group>php</group>
+            <group>dql</group>
+            <group>geometry</group>
+            <group>srid</group>
+            <group>mariadb-only</group>
+            <group>issue</group>
+        </include>
+        <exclude>
+            <group>pgsql-only</group>
+            <group>srid</group>
+            <group>deprecation</group>
+        </exclude>
+    </groups>
+    <php>
+        <var name="db_type" value="pdo_mysql"/>
+        <var name="db_host" value="127.0.0.1"/>
+        <var name="db_username" value="main"/>
+        <var name="db_password" value="main"/>
+        <var name="db_name" value="main"/>
+        <var name="db_port" value="3406"/>
+        <!-- Select timezone for log -->
+        <var name="opt_log_timezone" value="Europe/Paris"/>
+        <!-- Select the log level : debug to get each request, info to get each starting test and disconnection -->
+        <var name="opt_log_level" value="critical"/>
+        <!-- Select the directory to store the log files -->
+        <var name="opt_log_dir" value=".phpunit.cache/logs"/>
+        <!-- Select the log file name -->
+        <var name="opt_log_file" value="maria106.log"/>
+    </php>
+    <source>
+        <include>
+            <directory suffix=".php">lib</directory>
+        </include>
+    </source>
+    <coverage includeUncoveredFiles="true" cacheDirectory=".phpunit.cache/code-coverage">
+        <report>
+            <clover outputFile=".phpunit.cache/code-coverage/clover-maria106.xml"/>
+        </report>
+    </coverage>
+</phpunit>

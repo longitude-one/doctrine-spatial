@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
@@ -51,6 +52,7 @@ class StSridTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::POINT_ENTITY);
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
 
@@ -93,9 +95,9 @@ class StSridTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // MySQL is returning 0 insteadof 4326
-            static::markTestSkipped('SRID not yet implemented in Abstraction of MySQL');
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
+            // TODO MySQL and MariaDB are returning 0 insteadof 4326
+            static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
         static::assertSame(4326, $result[0][1]);
@@ -118,9 +120,9 @@ class StSridTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        if ($this->getPlatform() instanceof MySQLPlatform) {
-            // MySQL is returning 0 insteadof 2154
-            static::markTestSkipped('SRID not yet implemented in Abstraction of MySQL');
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
+            // MySQL and MariaDB are returning 0 insteadof 2154
+            static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
         static::assertSame(2154, $result[0][1]);
@@ -133,6 +135,10 @@ class StSridTest extends PersistOrmTestCase
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             static::markTestSkipped('PostgreSQL does not support two parameters for ST_SRID function.');
+        }
+
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::markTestSkipped('MariaDB does not support two parameters for ST_SRID function.');
         }
 
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);

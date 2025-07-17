@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
@@ -47,6 +48,7 @@ class StIntersectionTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
 
         parent::setUp();
@@ -91,8 +93,8 @@ class StIntersectionTest extends PersistOrmTestCase
     public function testStIntersectionWhereParameter(): void
     {
         $lineStringA = $this->persistLineStringA();
-        $this->persistLineStringB();
-        $this->persistLineStringC();
+        $lineStringB = $this->persistLineStringB();
+        $lineStringC = $this->persistLineStringC();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
@@ -105,6 +107,15 @@ class StIntersectionTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        if ($this->getPlatform() instanceof MariaDBPlatform) {
+            static::assertCount(3, $result);
+            static::assertEquals($lineStringA, $result[0]);
+            static::assertEquals($lineStringB, $result[1]);
+            static::assertEquals($lineStringC, $result[2]);
+
+            return;
+        }
+
         static::assertCount(1, $result);
         static::assertEquals($lineStringA, $result[0]);
     }

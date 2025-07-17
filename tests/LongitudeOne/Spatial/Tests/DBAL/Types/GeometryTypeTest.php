@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
@@ -59,6 +60,7 @@ class GeometryTypeTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->usesEntity(self::NO_HINT_GEOMETRY_ENTITY);
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
