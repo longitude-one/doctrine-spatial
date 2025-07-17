@@ -89,9 +89,16 @@ class SpatialTestCase extends TestCase
      */
     protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
-        return null !== $platform
-            && 'Doctrine\DBAL\Platforms\MySQL57Platform' === $platform::class
-            || $platform instanceof MySQLPlatform
-            && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $platform::class;
+        if ($platform !== null && $platform::class === MySqlPlatform57::class) {
+            trigger_deprecation(
+                'longitude-one/doctrine-spatial',
+                '5.3',
+                'MySQL 5.7 is deprecated since October 2023 and support for MySqlPlatform57 will be removed in a future version.'
+            );
+
+            return true;
+        }
+
+        return false;
     }
 }
