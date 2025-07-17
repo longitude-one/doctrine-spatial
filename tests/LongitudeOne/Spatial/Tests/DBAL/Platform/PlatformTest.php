@@ -34,6 +34,7 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
+use LongitudeOne\Spatial\Tests\SpatialTestCase;
 
 /**
  * Spatial platform tests.
