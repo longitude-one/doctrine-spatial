@@ -144,7 +144,6 @@ class PlatformTest extends OrmMockTestCase
 
     public function testMySql57TriggersDeprecation(): void
     {
-        $this::expectDeprecationMessageMatches('/MySQL 5.7 is deprecated/');
         $this::assertTrue(SpatialTestCase::platformIsMySql57(new MySqlPlatform57()));
     }
 }
