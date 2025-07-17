@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\DBAL\Types;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -56,6 +57,7 @@ class SchemaTest extends OrmTestCase
             $this->usesEntity(self::GEO_POLYGON_ENTITY);
         }
 
+        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
