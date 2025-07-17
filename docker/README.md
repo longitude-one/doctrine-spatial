@@ -9,13 +9,14 @@ How to start services?
 ```bash
 cd docker
 docker-compose up
-docker exec spatial-php composer update
+docker exec spatial-php8 composer update
 ```
 
 How to start test
 -----------------
 ```bash
 docker exec spatial-php8 cp docker/phpunit*.xml . 
+docker exec spatial-php8 composer test-mariadb
 docker exec spatial-php8 composer test-mysql5
 docker exec spatial-php8 composer test-mysql8
 docker exec spatial-php8 composer test-pgsql
