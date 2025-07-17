@@ -39,68 +39,6 @@ class PointTest extends TestCase
     use PointHelperTrait;
 
     /**
-     * @return \Generator<string, array{0: float|int|string, 1: float|int|string, 2: float|int, 3: float|int}, null, void>
-     */
-    public static function goodGeodesicCoordinateProvider(): \Generator
-    {
-        foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function outOfRangeLatitudeProvider(): \Generator
-    {
-        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function outOfRangeLongitudeProvider(): \Generator
-    {
-        foreach (LoDataProvider::outOfRangeLongitudeProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function tooBigLatitudeProvider(): \Generator
-    {
-        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function tooBigLongitudeProvider(): \Generator
-    {
-        yield 'int(-190)' => [-190];
-
-        yield 'float(-180.01)' => [-180.01];
-
-        yield 'string(-190)' => ['-190'];
-
-        yield 'string(-190°)' => ['-190°'];
-
-        yield 'int(190)' => [190];
-
-        yield 'float(180.01)' => [180.01];
-
-        yield 'string(190)' => ['190'];
-
-        yield 'string(190°)' => ['190°'];
-    }
-
-    /**
      * Test exception on embedded arrays.
      *
      * @throws InvalidValueException This SHALL happen
@@ -142,6 +80,16 @@ class PointTest extends TestCase
 
         static::assertSame($expectedLongitude, $geographicPoint->getLongitude());
         static::assertSame($expectedLatitude, $geographicPoint->getLatitude());
+    }
+
+    /**
+     * @return \Generator<string, array{0: float|int|string, 1: float|int|string, 2: float|int, 3: float|int}, null, void>
+     */
+    public static function goodGeodesicCoordinateProvider(): \Generator
+    {
+        foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
@@ -214,6 +162,16 @@ class PointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function outOfRangeLatitudeProvider(): \Generator
+    {
+        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
+    }
+
+    /**
      * Test setLongitude with out-of-range values.
      *
      * @param float|int|string $longitude out-of-range value
@@ -227,6 +185,16 @@ class PointTest extends TestCase
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage(sprintf('Out of range longitude value, longitude must be between -180 and 180, got "%s".', $longitude));
         $point->setLongitude($longitude);
+    }
+
+    /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function outOfRangeLongitudeProvider(): \Generator
+    {
+        foreach (LoDataProvider::outOfRangeLongitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 
     /**
@@ -267,6 +235,16 @@ class PointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function tooBigLatitudeProvider(): \Generator
+    {
+        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
+    }
+
+    /**
      * Test setLongitude with out-of-range values.
      *
      * @param float|int|string $longitude the out-of-range value
@@ -282,5 +260,27 @@ class PointTest extends TestCase
         self::expectExceptionMessage(sprintf('Out of range longitude value, longitude must be between -180 and 180, got "%s".', $longitude));
 
         $point->setLongitude($longitude);
+    }
+
+    /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function tooBigLongitudeProvider(): \Generator
+    {
+        yield 'int(-190)' => [-190];
+
+        yield 'float(-180.01)' => [-180.01];
+
+        yield 'string(-190)' => ['-190'];
+
+        yield 'string(-190°)' => ['-190°'];
+
+        yield 'int(190)' => [190];
+
+        yield 'float(180.01)' => [180.01];
+
+        yield 'string(190)' => ['190'];
+
+        yield 'string(190°)' => ['190°'];
     }
 }

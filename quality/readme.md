@@ -31,7 +31,7 @@ docker exec spatial-php8 quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --conf
 To install PHP-Stan, run this command:
 
 ```bash
-docker exec spatial-php8 composer update --working-dir=quality/php-stan
+docker exec spatial-php8 composer install --working-dir=quality/php-stan
 ```
 
 To test files:
@@ -49,7 +49,7 @@ docker exec spatial-php8 quality/php-stan/vendor/bin/phpstan analyse --configura
 To install PHP-Mess-Detector, run this command:
 
 ```bash
-docker exec spatial-php8 composer update --working-dir=quality/php-mess-detector
+docker exec spatial-php8 composer install --working-dir=quality/php-mess-detector
 ```
 
 To test files:
@@ -63,7 +63,7 @@ docker exec spatial-php8 quality/php-mess-detector/vendor/bin/phpmd tests text q
 To install PHP-Code-Sniffer, run this command:
 
 ```bash
-docker exec spatial-php8 composer update --working-dir=quality/php-code-sniffer
+docker exec spatial-php8 composer install --working-dir=quality/php-code-sniffer
 ```
 
 To test files:
