@@ -8,6 +8,7 @@ services:
   database-pgsql:
     container_name: "spatial-postgis"
     image: postgis/postgis
+    platform: linux/amd64 # Force amd64 for Apple M1/M2 and ARM environments    
     environment:
       POSTGRES_USER: main
       POSTGRES_PASSWORD: main
@@ -17,6 +18,7 @@ services:
       - "5432:5432"
   database-mysql5:
     image: mysql:5.7
+    platform: linux/amd64 # Force amd64 for Apple M1/M2 and ARM environments    
     container_name: "spatial-mysql5"
     restart: always
     environment:

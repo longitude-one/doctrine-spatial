@@ -48,172 +48,6 @@ class AbstractPointTest extends TestCase
     private const DELTA = 0.000000000001;
 
     /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function easyValuesProvider(): \Generator
-    {
-        $points = [
-            'GeometricPoint' => GeometricPoint::class,
-            'GeographicPoint' => GeographicPoint::class,
-        ];
-
-        $methods = [
-            'setX' => ['getX', 'getLongitude'],
-            'setY' => ['getY', 'getLatitude'],
-            'setLongitude' => ['getX', 'getLongitude'],
-            'setLatitude' => ['getY', 'getLatitude'],
-        ];
-
-        $values = [
-            'int(20)' => ['actual' => 20, 'expected' => 20],
-            'float(20.0)' => ['actual' => 20.0, 'expected' => 20.0],
-            'string(20)' => ['actual' => '20', 'expected' => 20],
-            'string(20.0)' => ['actual' => '20.0', 'expected' => 20],
-        ];
-
-        foreach ($points as $className => $class) {
-            foreach ($methods as $setter => $getters) {
-                foreach ($values as $valueName => $value) {
-                    yield sprintf('%s with %s and %s', $className, $setter, $valueName) => [$class, $setter, $getters, $value['actual'], $value['expected']];
-                }
-            }
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: class-string, 1: float|int|string, 2: float|int|string, 3: float|int, 4: float|int}, null, void>
-     */
-    public static function mixedGeodesicCoordinateProvider(): \Generator
-    {
-        $points = [
-            'GeometricPoint' => GeometricPoint::class,
-            'GeographicPoint' => GeographicPoint::class,
-        ];
-
-        /** @var array<string, array{0: float, 1: float}> $geodesicCoordinates */
-        $geodesicCoordinates = [
-            '79:56:55W, 40:26:46N' => [-79.9486111111111, 40.44611111111111],
-            '79° 56\' 55" W, 40° 26\' 46" N' => [-79.9486111111111, 40.44611111111111],
-            '79°56′55″W, 40°26′46″N' => [-79.9486111111111, 40.44611111111111],
-            '79° 56′ 55″ W, 40° 26′ 46″ N' => [-79.9486111111111, 40.44611111111111],
-            '79:56:55.832W, 40:26:46.543N' => [-79.94884222222223, 40.446261944444444],
-            '112:4:0W, 33:27:0N' => [-112.066666666666, 33.45],
-        ];
-
-        foreach ($points as $className => $class) {
-            foreach ($geodesicCoordinates as $coordinatesString => $expected) {
-                $coordinates = explode(', ', $coordinatesString);
-
-                yield sprintf('%s(%s, %s)', $className, $coordinates[0], $coordinates[1]) => [$class, $coordinates[0], $coordinates[1], $expected[0], $expected[1]];
-            }
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: class-string<AbstractPoint>}, null, void>
-     */
-    public static function pointTypeProvider(): \Generator
-    {
-        yield 'GeometricPoint' => [GeometricPoint::class];
-
-        yield 'GeographicPoint' => [GeographicPoint::class];
-    }
-
-    /**
-     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: string, 2: string, 3: string}, null, void>
-     */
-    public static function rangeExceptionProvider(): \Generator
-    {
-        $points = [
-            'GeometricPoint' => GeometricPoint::class,
-            'GeographicPoint' => GeographicPoint::class,
-        ];
-
-        $exceptions = [
-            'Out of range latitude' => [
-                '79:56:55W', '92:26:46N',
-                'Out of range latitude value, latitude must be between -90 and 90, got "92:26:46N".',
-            ],
-            'Out of range longitude' => [
-                '190:56:55W', '84:26:46N',
-                'Out of range longitude value, longitude must be between -180 and 180, got "190:56:55W".',
-            ],
-            'Invalid latitude direction' => [
-                '100:56:55W', '84:26:46Q',
-                'Invalid coordinate value, got "84:26:46Q".',
-            ],
-            'Latitude minutes greater than 59' => [
-                '108:42:55W', '84:64:46N',
-                'Out of range minute value, minute must be between 0 and 59, got "84:64:46N".',
-            ],
-            'Latitude seconds greater than 59' => [
-                '108:42:55W', '84:23:75N',
-                'Out of range second value, second must be between 0 and 59, got "84:23:75N".',
-            ],
-            'Longitude degrees greater than 180' => [
-                '190:56:55W', '84:26:46N',
-                'Out of range longitude value, longitude must be between -180 and 180, got "190:56:55W".',
-            ],
-            'Invalid longitude direction' => [
-                '100:56:55P', '84:26:46N',
-                'Invalid coordinate value, got "100:56:55P".',
-            ],
-            'Longitude minutes greater than 59' => [
-                '108:62:55W', '84:26:46N',
-                'Out of range minute value, minute must be between 0 and 59, got "108:62:55W".',
-            ],
-            'Longitude seconds greater than 59' => [
-                '108:53:94W', '84:26:46N',
-                'Out of range second value, second must be between 0 and 59, got "108:53:94W".',
-            ],
-        ];
-
-        foreach ($points as $className => $class) {
-            foreach ($exceptions as $dataTestName => $dataTest) {
-                yield sprintf('%s with a %s', $dataTestName, $className) => [$class, $dataTest[0], $dataTest[1], $dataTest[2]];
-            }
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: string}, null, void>
-     */
-    public static function setterProvider(): \Generator
-    {
-        $points = [
-            'GeometricPoint' => GeometricPoint::class,
-            'GeographicPoint' => GeographicPoint::class,
-        ];
-        $methods = [
-            'setX',
-            'setY',
-            'setLongitude',
-            'setLatitude',
-        ];
-        foreach ($points as $className => $class) {
-            foreach ($methods as $method) {
-                yield sprintf('%s with %s', $className, $method) => [$class, $method];
-            }
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: float|int|string, 2: float|int|string, 3: float|int, 4: float|int}, null, void>
-     */
-    public static function validGeodesicCoordinateProvider(): \Generator
-    {
-        $points = [
-            'GeometricPoint' => GeometricPoint::class,
-            'GeographicPoint' => GeographicPoint::class,
-        ];
-        foreach ($points as $point) {
-            foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
-                yield sprintf('%s(%s)', $point, $key) => array_merge([$point], $value);
-            }
-        }
-    }
-
-    /**
      * Assert that the object has the method.
      *
      * @param object $object object to test
@@ -273,6 +107,22 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: float|int|string, 2: float|int|string, 3: float|int, 4: float|int}, null, void>
+     */
+    public static function validGeodesicCoordinateProvider(): \Generator
+    {
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+        foreach ($points as $point) {
+            foreach (LoDataProvider::validGeodesicCoordinateProvider() as $key => $value) {
+                yield sprintf('%s(%s)', $point, $key) => array_merge([$point], $value);
+            }
+        }
+    }
+
+    /**
      * Test valid string points.
      *
      * @param class-string<AbstractPoint> $abstractPoint     Geometric point and geographic point
@@ -293,6 +143,35 @@ class AbstractPointTest extends TestCase
         $point->setLatitude($latitude);
         static::assertEqualsWithDelta($expectedLongitude, $point->getLongitude(), self::DELTA);
         static::assertEqualsWithDelta($expectedLatitude, $point->getLatitude(), self::DELTA);
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string, 1: float|int|string, 2: float|int|string, 3: float|int, 4: float|int}, null, void>
+     */
+    public static function mixedGeodesicCoordinateProvider(): \Generator
+    {
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+
+        /** @var array<string, array{0: float, 1: float}> $geodesicCoordinates */
+        $geodesicCoordinates = [
+            '79:56:55W, 40:26:46N' => [-79.9486111111111, 40.44611111111111],
+            '79° 56\' 55" W, 40° 26\' 46" N' => [-79.9486111111111, 40.44611111111111],
+            '79°56′55″W, 40°26′46″N' => [-79.9486111111111, 40.44611111111111],
+            '79° 56′ 55″ W, 40° 26′ 46″ N' => [-79.9486111111111, 40.44611111111111],
+            '79:56:55.832W, 40:26:46.543N' => [-79.94884222222223, 40.446261944444444],
+            '112:4:0W, 33:27:0N' => [-112.066666666666, 33.45],
+        ];
+
+        foreach ($points as $className => $class) {
+            foreach ($geodesicCoordinates as $coordinatesString => $expected) {
+                $coordinates = explode(', ', $coordinatesString);
+
+                yield sprintf('%s(%s, %s)', $className, $coordinates[0], $coordinates[1]) => [$class, $coordinates[0], $coordinates[1], $expected[0], $expected[1]];
+            }
+        }
     }
 
     /**
@@ -474,6 +353,62 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: string, 2: string, 3: string}, null, void>
+     */
+    public static function rangeExceptionProvider(): \Generator
+    {
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+
+        $exceptions = [
+            'Out of range latitude' => [
+                '79:56:55W', '92:26:46N',
+                'Out of range latitude value, latitude must be between -90 and 90, got "92:26:46N".',
+            ],
+            'Out of range longitude' => [
+                '190:56:55W', '84:26:46N',
+                'Out of range longitude value, longitude must be between -180 and 180, got "190:56:55W".',
+            ],
+            'Invalid latitude direction' => [
+                '100:56:55W', '84:26:46Q',
+                'Invalid coordinate value, got "84:26:46Q".',
+            ],
+            'Latitude minutes greater than 59' => [
+                '108:42:55W', '84:64:46N',
+                'Out of range minute value, minute must be between 0 and 59, got "84:64:46N".',
+            ],
+            'Latitude seconds greater than 59' => [
+                '108:42:55W', '84:23:75N',
+                'Out of range second value, second must be between 0 and 59, got "84:23:75N".',
+            ],
+            'Longitude degrees greater than 180' => [
+                '190:56:55W', '84:26:46N',
+                'Out of range longitude value, longitude must be between -180 and 180, got "190:56:55W".',
+            ],
+            'Invalid longitude direction' => [
+                '100:56:55P', '84:26:46N',
+                'Invalid coordinate value, got "100:56:55P".',
+            ],
+            'Longitude minutes greater than 59' => [
+                '108:62:55W', '84:26:46N',
+                'Out of range minute value, minute must be between 0 and 59, got "108:62:55W".',
+            ],
+            'Longitude seconds greater than 59' => [
+                '108:53:94W', '84:26:46N',
+                'Out of range second value, second must be between 0 and 59, got "108:53:94W".',
+            ],
+        ];
+
+        foreach ($points as $className => $class) {
+            foreach ($exceptions as $dataTestName => $dataTest) {
+                yield sprintf('%s with a %s', $dataTestName, $className) => [$class, $dataTest[0], $dataTest[1], $dataTest[2]];
+            }
+        }
+    }
+
+    /**
      * Test setX method.
      *
      * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
@@ -501,6 +436,39 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function easyValuesProvider(): \Generator
+    {
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+
+        $methods = [
+            'setX' => ['getX', 'getLongitude'],
+            'setY' => ['getY', 'getLatitude'],
+            'setLongitude' => ['getX', 'getLongitude'],
+            'setLatitude' => ['getY', 'getLatitude'],
+        ];
+
+        $values = [
+            'int(20)' => ['actual' => 20, 'expected' => 20],
+            'float(20.0)' => ['actual' => 20.0, 'expected' => 20.0],
+            'string(20)' => ['actual' => '20', 'expected' => 20],
+            'string(20.0)' => ['actual' => '20.0', 'expected' => 20],
+        ];
+
+        foreach ($points as $className => $class) {
+            foreach ($methods as $setter => $getters) {
+                foreach ($values as $valueName => $value) {
+                    yield sprintf('%s with %s and %s', $className, $setter, $valueName) => [$class, $setter, $getters, $value['actual'], $value['expected']];
+                }
+            }
+        }
+    }
+
+    /**
      * This test checks that an exception is thrown when passing two coordinates separated by a space.
      * This test checks all setters.
      *
@@ -516,6 +484,28 @@ class AbstractPointTest extends TestCase
         self::expectExceptionMessage('Invalid coordinate value, coordinate cannot be an array.');
         static::assertTrue(method_exists($point, $method), sprintf('Method "%s":"%s" does not exist.', $abstractPoint, $method));
         $point->{$method}('10 20');
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: string}, null, void>
+     */
+    public static function setterProvider(): \Generator
+    {
+        $points = [
+            'GeometricPoint' => GeometricPoint::class,
+            'GeographicPoint' => GeographicPoint::class,
+        ];
+        $methods = [
+            'setX',
+            'setY',
+            'setLongitude',
+            'setLatitude',
+        ];
+        foreach ($points as $className => $class) {
+            foreach ($methods as $method) {
+                yield sprintf('%s with %s', $className, $method) => [$class, $method];
+            }
+        }
     }
 
     /**
@@ -563,5 +553,15 @@ class AbstractPointTest extends TestCase
         $this->expectExceptionMessage(sprintf('Invalid parameters passed to %s::__construct: 1, 2, 3, 4, NULL, 5', $abstractPoint));
 
         new $abstractPoint(1, 2, 3, 4, null, 5);
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>}, null, void>
+     */
+    public static function pointTypeProvider(): \Generator
+    {
+        yield 'GeometricPoint' => [GeometricPoint::class];
+
+        yield 'GeographicPoint' => [GeographicPoint::class];
     }
 }

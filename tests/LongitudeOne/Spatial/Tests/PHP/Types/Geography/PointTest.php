@@ -36,26 +36,6 @@ use PHPUnit\Framework\TestCase;
 class PointTest extends TestCase
 {
     /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function outOfRangeLatitudeProvider(): \Generator
-    {
-        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
-     * @return \Generator<string, array{0: float|int|string}, null, void>
-     */
-    public static function outOfRangeLongitudeProvider(): \Generator
-    {
-        foreach (LoDataProvider::outOfRangeLongitudeProvider() as $key => $value) {
-            yield $key => $value;
-        }
-    }
-
-    /**
      * Test bad numeric parameters - longitude greater than 180.
      *
      * @throws InvalidValueException it should happen
@@ -259,6 +239,16 @@ class PointTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function outOfRangeLongitudeProvider(): \Generator
+    {
+        foreach (LoDataProvider::outOfRangeLongitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
+    }
+
+    /**
      * Test out of range latitude.
      *
      * @param float|int|string $latitude the out-of-range latitude
@@ -272,5 +262,15 @@ class PointTest extends TestCase
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage(sprintf('Out of range latitude value, latitude must be between -90 and 90, got "%s".', $latitude));
         $point->setY($latitude);
+    }
+
+    /**
+     * @return \Generator<string, array{0: float|int|string}, null, void>
+     */
+    public static function outOfRangeLatitudeProvider(): \Generator
+    {
+        foreach (LoDataProvider::outOfRangeLatitudeProvider() as $key => $value) {
+            yield $key => $value;
+        }
     }
 }
