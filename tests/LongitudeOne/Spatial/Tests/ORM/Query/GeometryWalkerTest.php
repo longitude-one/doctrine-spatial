@@ -80,7 +80,7 @@ class GeometryWalkerTest extends PersistOrmTestCase
         $query = $entityManager->createQuery($queryString);
         $query->setHint(
             Query::HINT_CUSTOM_OUTPUT_WALKER,
-            'LongitudeOne\Spatial\ORM\Query\GeometryWalker'
+            \LongitudeOne\Spatial\ORM\Query\GeometryWalker::class
         );
 
         $result = $query->getResult();
@@ -94,12 +94,12 @@ class GeometryWalkerTest extends PersistOrmTestCase
             $envelope
         );
         $query = $entityManager->createQuery($queryString);
-        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, \LongitudeOne\Spatial\ORM\Query\GeometryWalker::class);
 
         $result = $query->getResult();
         static::assertIsArray($result);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
+        static::assertInstanceOf(\LongitudeOne\Spatial\PHP\Types\Geometry\Polygon::class, $result[0][1]);
+        static::assertInstanceOf(\LongitudeOne\Spatial\PHP\Types\Geometry\Polygon::class, $result[1][1]);
     }
 
     /**

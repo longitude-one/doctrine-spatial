@@ -92,6 +92,6 @@ class SpatialTestCase extends TestCase
         return null !== $platform
             && 'Doctrine\DBAL\Platforms\MySQL57Platform' === $platform::class
             || $platform instanceof MySQLPlatform
-            && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $platform::class;
+            && \Doctrine\DBAL\Platforms\MySQL80Platform::class !== $platform::class;
     }
 }
