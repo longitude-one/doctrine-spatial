@@ -389,11 +389,7 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     protected function getSchemaTool(): SchemaTool
     {
-        if (isset($this->schemaTool)) {
-            return $this->schemaTool;
-        }
-
-        return new SchemaTool($this->getEntityManager());
+        return $this->schemaTool ?? new SchemaTool($this->getEntityManager());
     }
 
     /**
