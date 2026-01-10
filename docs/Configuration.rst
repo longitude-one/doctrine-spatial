@@ -24,7 +24,7 @@ Declare your geometric types
                 point:      LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
                 polygon:    LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
                 linestring: LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType
-             mapping_types:
+            mapping_types:
                 point: point
 
 Now, you can :doc:`create an entity <./Entity>` with a ``geometry``, ``point``, ``polygon`` and a ``linestring`` type.
