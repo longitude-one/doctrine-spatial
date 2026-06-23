@@ -20,7 +20,11 @@ use Composer\Autoload\ClassLoader;
 
 require __DIR__.'/../../../../vendor/autoload.php';
 
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
+
+if (PHP_VERSION_ID < 80400) {
+    error_reporting(E_ALL | E_STRICT);
+}
 
 $loader = new ClassLoader();
 $loader->add('LongitudeOne\Spatial\Tests', __DIR__.'/../../..');

@@ -106,9 +106,6 @@ abstract class OrmMockTestCase extends SpatialTestCase
         $config->setProxyDir(__DIR__.'/Proxies');
         $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
         $config->setMetadataDriverImpl(new AttributeDriver($path));
-        if (PHP_VERSION_ID >= 80400) {
-            $config->enableNativeLazyObjects(true);
-        }
 
         $this->mockEntityManager = new EntityManager($this->getMockConnection(), $config);
 

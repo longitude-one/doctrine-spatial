@@ -321,9 +321,6 @@ abstract class OrmTestCase extends SpatialTestCase
         $fileLogger = new FileLogger();
         $configuration = new Configuration();
         $configuration->setMiddlewares([new Logging\Middleware($fileLogger)]);
-        if (PHP_VERSION_ID >= 80400) {
-            $configuration->enableNativeLazyObjects(true);
-        }
 
         self::$logger = $fileLogger;
 
