@@ -32,8 +32,7 @@ jobs:
     environment: 'Test environment'
     name: PHP 8.3 - doctrine/orm ^3.1
     env:
-      HAS_CC_SECRET: ${{secrets.CC_TEST_REPORTER_ID != '' }}
-      HAS_CA_SECRET: ${{secrets.COVERALLS_REPO_TOKEN != '' }}
+      HAS_CC_SECRET: ${{secrets.CODECOV_TOKEN != '' }}
     services:
       mysql5:
         image: mysql:5.7
@@ -134,24 +133,20 @@ jobs:
 
       - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
-        uses: paambaati/codeclimate-action@v6.0.0
-        env:
-           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        run: composer run-script test-coverage
+
+      - name: Upload coverage to Codecov
+        if: ${{ env.HAS_CC_SECRET == 'true' }}
+        uses: codecov/codecov-action@v5
         with:
-           coverageCommand: composer run-script test-coverage
-           coverageLocations: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml:clover
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml
+          fail_ci_if_error: true
+          verbose: true
 
       - name: Run test suite for forks or version without code coverage
         if: ${{ env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
-
-      - name: Coveralls.io steps
-        if: ${{ env.HAS_CA_SECRET == 'true' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          file: ${{github.workspace}}/.phpunit.cache/code-coverage/clover.xml
-
       ## Quality checks
       ## PHP-CS-Fixer is needed with only one version of PHP
       - name: Cache Composer PHP-CS-FIXER packages
