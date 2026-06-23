@@ -65,7 +65,6 @@ class SpatialTestCase extends TestCase
     {
         $expected = match (true) {
             self::platformIsMySql57($platform) => 'GEOMETRYCOLLECTION()',
-            class_exists('\Doctrine\ORM\Version') && $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION()',
             $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION EMPTY',
             $platform instanceof MySQLPlatform => 'GEOMETRYCOLLECTION EMPTY',
             default => 'POINT EMPTY',
@@ -83,10 +82,21 @@ class SpatialTestCase extends TestCase
      */
     protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
-        return null !== $platform
-            && 'Doctrine\DBAL\Platforms\MySQL57Platform' === $platform::class
-            || $platform instanceof MySQLPlatform
-            && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $platform::class
-            && 'Doctrine\DBAL\Platforms\MySQL84Platform' !== $platform::class;
+        if (null === $platform) {
+            return false;
+        }
+
+        $class = $platform::class;
+
+        if (str_contains($class, 'MariaDb')) { // Because of Doctrine 2.9
+            return false;
+        }
+
+        return 'Doctrine\DBAL\Platforms\MySQL57Platform' === $class
+            || (
+                $platform instanceof MySQLPlatform
+                && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $class
+                && 'Doctrine\DBAL\Platforms\MySQL84Platform' !== $class
+            );
     }
 }
