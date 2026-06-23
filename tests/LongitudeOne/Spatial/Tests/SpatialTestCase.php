@@ -65,6 +65,7 @@ class SpatialTestCase extends TestCase
     {
         $expected = match (true) {
             self::platformIsMySql57($platform) => 'GEOMETRYCOLLECTION()',
+            class_exists('\Doctrine\ORM\Version') && $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION()',
             $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION EMPTY',
             $platform instanceof MySQLPlatform => 'GEOMETRYCOLLECTION EMPTY',
             default => 'POINT EMPTY',
