@@ -28,7 +28,7 @@
         "longitude-one/geo-parser": "^3.0.1",
         "longitude-one/wkt-parser": "^3.0.0",
         "longitude-one/wkb-parser": "^3.0.0",
-        "doctrine/orm": "^3.1"
+        "doctrine/orm": "^2.19|^3.1"
     },
     "require-dev": {
         "monolog/monolog": "^2.0",
