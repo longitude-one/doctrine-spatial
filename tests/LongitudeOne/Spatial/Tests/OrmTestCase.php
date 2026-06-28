@@ -319,7 +319,9 @@ abstract class OrmTestCase extends SpatialTestCase
             return static::$connection;
         }
         $fileLogger = new FileLogger();
-        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($fileLogger)]);
+        $configuration = new Configuration();
+        $configuration->setMiddlewares([new Logging\Middleware($fileLogger)]);
+
         self::$logger = $fileLogger;
 
         $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);

@@ -20,8 +20,6 @@ namespace LongitudeOne\Spatial\Tests;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQL57Platform;
-use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PHPUnit\Framework\TestCase;
 
@@ -65,17 +63,12 @@ class SpatialTestCase extends TestCase
      */
     protected static function assertEmptyPoint($value, ?AbstractPlatform $platform = null): void
     {
-        $expected = 'POINT EMPTY';
-
-        if (self::platformIsMySql57($platform)) {
-            // MySQL5 does not return the standard answer
-            $expected = 'GEOMETRYCOLLECTION()';
-        }
-
-        if ($platform instanceof MySQL80Platform || $platform instanceof MariaDBPlatform) {
-            // MySQL8 does not return the standard answer
-            $expected = 'GEOMETRYCOLLECTION EMPTY';
-        }
+        $expected = match (true) {
+            self::platformIsMySql57($platform) => 'GEOMETRYCOLLECTION()',
+            $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION EMPTY',
+            $platform instanceof MySQLPlatform => 'GEOMETRYCOLLECTION EMPTY',
+            default => 'POINT EMPTY',
+        };
 
         static::assertSame($expected, $value);
     }
@@ -89,9 +82,21 @@ class SpatialTestCase extends TestCase
      */
     protected static function platformIsMySql57(?AbstractPlatform $platform): bool
     {
-        return null !== $platform
-            && 'Doctrine\DBAL\Platforms\MySQL57Platform' === $platform::class
-            || $platform instanceof MySQLPlatform
-            && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $platform::class;
+        if (null === $platform) {
+            return false;
+        }
+
+        $class = $platform::class;
+
+        if (str_contains($class, 'MariaDb')) { // Because of Doctrine 2.9
+            return false;
+        }
+
+        return 'Doctrine\DBAL\Platforms\MySQL57Platform' === $class
+            || (
+                $platform instanceof MySQLPlatform
+                && 'Doctrine\DBAL\Platforms\MySQL80Platform' !== $class
+                && 'Doctrine\DBAL\Platforms\MySQL84Platform' !== $class
+            );
     }
 }
