@@ -5,8 +5,8 @@
  * PHP 8.1 | 8.2 | 8.3
  * Doctrine ORM 2.19 | 3.1
  *
- * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2025
- * Copyright Longitude One 2020-2025
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
+ * Copyright Longitude One 2020-2026
  * Copyright 2015 Derek J. Lambert
  *
  * For the full copyright and license information, please view the LICENSE
@@ -319,7 +319,9 @@ abstract class OrmTestCase extends SpatialTestCase
             return static::$connection;
         }
         $fileLogger = new FileLogger();
-        $configuration = (new Configuration())->setMiddlewares([new Logging\Middleware($fileLogger)]);
+        $configuration = new Configuration();
+        $configuration->setMiddlewares([new Logging\Middleware($fileLogger)]);
+
         self::$logger = $fileLogger;
 
         $connection = DriverManager::getConnection(ConnectionParameters::getConnectionParameters(), $configuration);
