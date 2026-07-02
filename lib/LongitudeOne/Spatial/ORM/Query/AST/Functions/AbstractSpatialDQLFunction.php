@@ -165,7 +165,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      * Check that the current platform supports current spatial function.
      *
      * TODO when support for 8.1 will be dropped, this method will only return true.
-     * 
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      *
      * @param AbstractPlatform $platform database spatial
