@@ -106,7 +106,7 @@ jobs:
         run: composer update --no-install
 
       - name: Restore cache Composer dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: vendor/
           key: ${{ format('{0}-composer-php83-orm31-{1}', runner.os, hashFiles('composer.lock')) }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ env.HAS_CC_SECRET == 'true' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml
@@ -152,7 +152,7 @@ jobs:
       ## PHP-CS-Fixer is needed with only one version of PHP
       - name: Cache Composer PHP-CS-FIXER packages
         id: composer-phpcsfixer-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: quality/php-cs-fixer/vendor/
           key: ${{ format('{0}-phpcsfixer-{1}', runner.os, hashFiles('quality/php-cs-fixer/vendor/composer.lock')) }}
@@ -167,7 +167,7 @@ jobs:
       ## PHP-MESS-DETECTOR
       - name: Cache Composer PHP-MESS-DETECTOR packages
         id: composer-phpmd-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: quality/php-mess-detector/vendor/
           key: ${{ format('{0}-phpmd-{1}', runner.os, hashFiles('quality/php-mess-detector/vendor/composer.lock')) }}
@@ -183,7 +183,7 @@ jobs:
       ## PHP CODE SNIFFER
       - name: Cache Composer PHP-CS packages
         id: composer-php-cs-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: quality/php-code-sniffer/vendor/
           key: ${{ format('{0}-phpcs-{1}', runner.os, hashFiles('quality/php-code-sniffer/vendor/composer.lock')) }}
@@ -198,7 +198,7 @@ jobs:
       ## PHP-STAN
       - name: Cache Composer PHP-STAN packages
         id: composer-php-stan-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: quality/php-stan/vendor/
           key: ${{ format('{0}-phpstan-{1}', runner.os, hashFiles('quality/php-stan/vendor/composer.lock')) }}
@@ -281,7 +281,7 @@ jobs:
           --health-retries 5
     steps:
       -   name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v7
 
       -   name: Validate composer.json
           run: composer validate --strict
@@ -292,7 +292,7 @@ jobs:
         run: composer update --no-install
 
       -   name: Restore cache Composer dependencies
-          uses: actions/cache@v5
+          uses: actions/cache@v6
           with:
             path: vendor/
             key: ${{ format('{0}-composer-php{1}-orm{2}-{3}', runner.os, matrix.php, matrix.orm, hashFiles('composer.lock')) }}
@@ -312,7 +312,7 @@ jobs:
           run: cp .github/phpunit.*.xml .
 
       -   name: Force doctrine/orm library to ${{ matrix.orm }}
-          run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} --with-all-dependencies
+          run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} phpunit/phpunit phpunit/phpcov --with-all-dependencies
 
       -   name: Run test suite for forks or version without code coverage
           run: composer run-script test
