@@ -14,7 +14,7 @@ docker exec spatial-php8 composer install --working-dir=quality/php-cs-fixer
 
 To install PHP-CS-Fixer, run this command:
 ```bash
-docker exec spatial-php8 composer update --working-dir=quality/php-cs-fixer
+docker exec spatial-php8 composer install --working-dir=quality/php-cs-fixer
 ```
 
 To test all files:
