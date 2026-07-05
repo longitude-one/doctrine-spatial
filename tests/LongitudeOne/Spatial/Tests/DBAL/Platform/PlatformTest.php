@@ -56,7 +56,7 @@ class PlatformTest extends OrmMockTestCase
      */
     public function setUp(): void
     {
-        BypassFinals::enable();
+        BypassFinals::enable(bypassReadOnly: false);
 
         if (!Type::hasType('point')) {
             Type::addType('point', PointType::class);

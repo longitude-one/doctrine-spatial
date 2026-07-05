@@ -124,7 +124,10 @@
       Disallows usage of call-time pass-by-reference
       http://php.net/manual/en/language.references.pass.php
     -->
-    <rule ref="Generic.Functions.CallTimePassByReference"/>
+    <!--
+      This sniff has been deprecated since v3.12.1 and will be removed in v4.0.0.
+      <rule ref="Generic.Functions.CallTimePassByReference"/> 
+    -->
 
     <!--
       Function declarations must follow the "BSD/Allman style".
@@ -211,23 +214,31 @@
     </rule>
 
     <!-- Ensures that eval() is not used to create objects. -->
-    <rule ref="MySource.PHP.EvalObjectFactory"/>
+    <!-- 
+        This sniff has been deprecated since v3.9.0 and will be removed in v4.0.0.
+        <rule ref="MySource.PHP.EvalObjectFactory"/> 
+    -->
 
     <!--
       Disallows the direct usage of $_REQUEST, $_GET, $_POST and $_FILES.
       It's only allowed in a class called "Security" in a function called "getRequestData".
     -->
-    <rule ref="MySource.PHP.GetRequestData" />
+    <!--
+      This sniff has been deprecated since v3.9.0 and will be removed in v4.0.0.       
+      <rule ref="MySource.PHP.GetRequestData" /> 
+    -->
 
     <!--
       Warns when function values are returned directly.
       The Sniff enforces that the result of a function call should be
       assigned to a variable before being returned.
     -->
-    <rule ref="MySource.PHP.ReturnFunctionValue">
+    <!--
+      This sniff has been deprecated since v3.9.0 and will be removed in v4.0.0. 
+      <rule ref="MySource.PHP.ReturnFunctionValue">
         <severity>0</severity>
-    </rule>
-
+      </rule>
+    -->
     <!--
       Ensure that parameters defined for a function that have a default value
       come at the end of the function signature.
@@ -458,8 +469,10 @@
       Ensures all language constructs (without brackets) contain a single
       space between themselves and their content.
     -->
-    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
-
+    <!--
+      This sniff has been deprecated since v3.3.0 and will be removed in v4.0.0.
+      <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+    -->
     <!--
       Ensures that there is one space before and after a logical operator.
     -->
