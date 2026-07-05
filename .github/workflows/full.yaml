@@ -312,7 +312,7 @@ jobs:
           run: cp .github/phpunit.*.xml .
 
       -   name: Force doctrine/orm library to ${{ matrix.orm }}
-          run: composer --prefer-stable require doctrine/orm:${{ matrix.orm }} phpunit/phpunit phpunit/phpcov --with-all-dependencies
+          run: composer --prefer-stable require "doctrine/orm:${{ matrix.orm }}" "phpunit/phpunit:^10.0|^11.0" "phpunit/phpcov:^9|^10" --with-all-dependencies
 
       -   name: Run test suite for forks or version without code coverage
           run: composer run-script test
