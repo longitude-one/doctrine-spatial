@@ -72,6 +72,9 @@ This library is compatible with PostgreSQL and is tested against the latest vers
 
 This library is compatible with MariaDB 10.6.
 
+### MariaDB
+This spatial library is compatible with MariaDB 10.6.
+
 ## Help wanted
 
 **Microsoft SQL Server**
