@@ -3,7 +3,7 @@ WORKDIR /docs
 RUN mkdir -p /etc/Sphinx/build
 ADD requirements.txt /etc/Sphinx/requirements.txt
 
-RUN apk add --no-cache python3 make git py3-pip
+RUN apk add --no-cache python3 make git py3-pip build-base
 RUN python3 -m venv .venv && \
     source .venv/bin/activate && \
     pip install -r /etc/Sphinx/requirements.txt
