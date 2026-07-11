@@ -78,7 +78,16 @@ class ConnectionParameters
         $connection = DriverManager::getConnection($parameters);
         $manager = $connection->createSchemaManager();
         $dbName = (string) $GLOBALS['db_name'];
-        $manager->dropDatabase($dbName);
+
+        // Drop the database if it exists and create a new one
+        foreach ($manager->listDatabases() as $database) {
+            if ($database === $dbName) {
+                $manager->dropDatabase($dbName);
+
+                break;
+            }
+        }
+
         $manager->createDatabase($dbName);
         $parameters['dbname'] = $dbName;
 

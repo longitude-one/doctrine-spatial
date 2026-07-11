@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\ORM\Query\AST\ASTException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -74,6 +75,11 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
         $arguments = [];
         foreach ($this->getGeometryExpressions() as $expression) {
             $arguments[] = $expression->dispatch($sqlWalker);
+        }
+
+        // FIXME This is a temporary fix for SQL Server.
+        if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof SQLServerPlatform) {
+            return sprintf('(%s).%s', implode(', ', $arguments), $this->getFunctionName());
         }
 
         return sprintf('%s(%s)', $this->getFunctionName(), implode(', ', $arguments));

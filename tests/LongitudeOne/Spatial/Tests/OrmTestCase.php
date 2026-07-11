@@ -29,6 +29,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Exception\UnknownColumnType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -56,6 +57,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\SqlServer;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StArea;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsBinary;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsText;
@@ -339,6 +341,10 @@ abstract class OrmTestCase extends SpatialTestCase
             return $connection;
         }
 
+        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+            return $connection;
+        }
+
         throw new UnsupportedPlatformException(sprintf(
             'DBAL platform "%s" is not currently supported.',
             $connection->getDatabasePlatform()::class
@@ -449,6 +455,9 @@ abstract class OrmTestCase extends SpatialTestCase
         } elseif ($this->getPlatform() instanceof MySQLPlatform) {
             // Specific functions of MySQL 5.7 and 8.0 database engines
             $this->addSpecificMySqlFunctions($configuration);
+        } elseif ($this->getPlatform() instanceof SQLServerPlatform) {
+            // Specific functions of SQL Server database engines
+            $this->addSpecificSqlServerFunctions($configuration);
         }
     }
 
@@ -615,6 +624,16 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('PgSql_Summary', PostgreSql\SpSummary::class);
         $configuration->addCustomNumericFunction('PgSql_Transform', PostgreSql\SpTransform::class);
         $configuration->addCustomNumericFunction('PgSql_Translate', PostgreSql\SpTranslate::class);
+    }
+
+    /**
+     * Complete configuration with SQL Server spatial functions.
+     *
+     * @param Configuration $configuration the current configuration
+     */
+    private function addSpecificSqlServerFunctions(Configuration $configuration): void
+    {
+        $configuration->addCustomNumericFunction('SqlServer_SRID', SqlServer\SpSrid::class);
     }
 
     /**
