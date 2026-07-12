@@ -197,7 +197,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
         }
 
         throw new UnsupportedPlatformException(
-            sprintf('DBAL platform "%s" is not currently supported.', $platform::class)
+            sprintf('DBAL platform "%s" is not currently supported for %s function.', $platform::class, $this->getFunctionName())
         );
     }
 
