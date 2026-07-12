@@ -90,6 +90,6 @@ class SpSridTest extends PersistOrmTestCase
         static::assertCount(1, $result[0]);
 
         static::markTestSkipped('The Longitude One Spatial extension is not yet able to store the SRID in SQL Server. The test is skipped until the feature is implemented.');
-        static::assertSame('2154', $result[0][1]);
+        // static::assertSame('2154', $result[0][1]);
     }
 }
