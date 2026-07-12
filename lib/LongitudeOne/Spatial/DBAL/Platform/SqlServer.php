@@ -28,7 +28,6 @@ use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
  * SqlServer spatial platform.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://dlambert.mit-license.org MIT
  */
 class SqlServer extends AbstractPlatform
 {
