@@ -19,7 +19,7 @@
             <group>geography</group>
             <group>srid</group>
             <group>issue</group>
-            <group>mssql-only</group>
+            <group>sqlserver-only</group>
         </include>
         <exclude>
             <group>mysql-only</group>

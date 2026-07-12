@@ -20,7 +20,7 @@
             <group>srid</group>
             <group>pgsql-only</group>
             <group>issue</group>
-            <group>mssql-only</group>
+            <group>sqlserver-only</group>
         </include>
         <exclude>
             <group>mysql-only</group>
