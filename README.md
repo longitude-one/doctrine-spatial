@@ -46,37 +46,25 @@ This approach ensures clarity, stability, and maintainability for the project.
 
 ## Compatibility
 
-Version 5.0.x has entered maintenance mode and will only receive security patches going forward.
+**Version 5.0.x:** Version 5.0.x is the current stable version. It has entered maintenance mode and will only receive security patches going forward.
 
-Development efforts are now focused on version 5.1.x, which will introduce the new factories along with deprecation notices for constructors.
+**Version 5.1.x:** Development efforts are now focused on version 5.1.x, which introduces new factories alongside deprecation notices for constructors. Version 5.1 will require PHP 8.2 or above.
 
-Starting with version 6.x, compatibility will only be guaranteed with PHP 8.5 and above. Support for Doctrine 2.9 and MySQL 5.7 will be discontinued.
+**Version 5.2.x:** Version 5.2 will require PHP 8.3 or above.
+
+**Version 6.x:** Starting with version 6.x, compatibility will require PHP 8.5 or above. Support for Doctrine 2.9 and MySQL 5.7 will be dropped.
 
 ### PHP and Doctrine ORM
 
 This Doctrine extension is compatible with PHP 8.1+ and Doctrine ORM `^2.9`, `^3.1`, and aims to remain compatible with the upcoming major version `^4.x-dev`.
 Security fixes follow the [PHP support roadmap](https://www.php.net/supported-versions.php).
 
-### MySQL 5.7 and 8.0
+### Databases compatibility
 
-* MySQL 5.7 is supported but deprecated.
-* MySQL 8.0 is fully supported.
+| doctrine-spatial | MySQL.   | MariaDB | PostgreSQL | PostGIS | SQL Server | Statut                     |
+|------------------|----------|---------|------------|---------|------------|----------------------------|
+| **5.0**          | 5.7, 8.0 | 10.6    | 18.        | 3.6     | ❌          | Stable (security fixes).   |
+| **5.1**          | 8.4      | 10.11   | 18         | 3.6     | 2017       | Next version (development) |
+| **6.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       | in development.            |
 
-**Known limitation:** `longitude-one/doctrine-spatial` cannot store the SRID on MySQL. Internally, the extension uses Well-Known Text (WKT) to convert internal types to database types. Since `doctrine/orm` does not support a custom persister or collection persister, we cannot pass both parameters (WKT and SRID) at once. Extended Well-Known Text (EWKT) would solve this, but it is only supported by PostGIS. A possible solution under investigation is to build an external Well-Known Binary (WKB) converter, usable from the `convertToDatabaseValue` methods of both `doctrine/orm` and `longitude-one/doctrine-spatial`.
-
-### PostgreSQL
-
-This library is compatible with PostgreSQL and is tested against the latest versions of PostGIS and PostgreSQL.
-
-### MariaDB
-
-This library is compatible with MariaDB 10.6.
-
-### MariaDB
-This spatial library is compatible with MariaDB 10.6.
-
-## Help wanted
-
-**Microsoft SQL Server**
-
-We're looking for help setting up a Docker image providing a Microsoft SQL Server service, in order to implement compatibility with this database.
+**Known limitation:** `longitude-one/doctrine-spatial` cannot store the SRID on MySQL, nor SQL Server. Internally, the extension uses Well-Known Text (WKT) to convert internal types to database types. Since `doctrine/orm` does not support a custom persister or collection persister, we cannot pass both parameters (WKT and SRID) at once. Extended Well-Known Text (EWKT) solves this, but it is only supported by PostGIS. A possible solution under investigation is to build an external Well-Known Binary (WKB) converter, usable from the `convertToDatabaseValue` methods of both `doctrine/orm` and `longitude-one/doctrine-spatial`.
