@@ -68,6 +68,16 @@ interface PlatformInterface
     public function convertToPhpValueSql(AbstractSpatialType $type, $sqlExpr): string;
 
     /**
+     * Gets the SQL declaration snippet for a spatial function.
+     *
+     * @param string   $functionName the function name
+     * @param string[] $parameters   the function parameters
+     *
+     * @return string the SQL declaration snippet
+     */
+    public function getFunctionSqlDeclaration(string $functionName, array $parameters): string;
+
+    /**
      * Get an array of database types that map to this Doctrine type.
      *
      * @param AbstractSpatialType $type the spatial type

@@ -82,6 +82,26 @@ class SqlServer extends AbstractPlatform
     }
 
     /**
+     * Gets the SQL declaration snippet for a spatial function.
+     *
+     * @param string   $functionName the function name
+     * @param string[] $parameters   the function parameters
+     *
+     * @return string the SQL declaration snippet
+     */
+    public function getFunctionSqlDeclaration(string $functionName, array $parameters): string
+    {
+        $sqlServerFunctionName = str_replace('_', '', $functionName);
+
+        return match ($sqlServerFunctionName) {
+            // These are properties, not methods, so we don't add parentheses
+            'Lat', 'Long', 'STSrid', 'STX', 'STY' => sprintf('(%s).%s', implode(', ', $parameters), $sqlServerFunctionName),
+
+            default => sprintf('(%s).%s()', implode(', ', $parameters), $sqlServerFunctionName),
+        };
+    }
+
+    /**
      * Gets the SQL declaration snippet for a field of this type.
      *
      * @param array<string,mixed>  $column array SHOULD contain 'type' as key
