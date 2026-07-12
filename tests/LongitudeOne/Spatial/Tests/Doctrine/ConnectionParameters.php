@@ -60,6 +60,14 @@ class ConnectionParameters
             $connectionParams['driverOptions']['server_version'] = $GLOBALS['db_version'];
         }
 
+        if (isset($GLOBALS['db_driver_options'])) {
+            $options = explode(',', $GLOBALS['db_driver_options']);
+            foreach ($options as $option) {
+                [$key, $val] = explode('=', $option);
+                $connectionParams['driverOptions'][$key] = $val;
+            }
+        }
+
         return $connectionParams;
     }
 
