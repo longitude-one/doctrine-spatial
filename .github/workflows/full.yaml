@@ -30,7 +30,7 @@ jobs:
   stable-build:
     runs-on: ubuntu-latest
     environment: 'Test environment'
-    name: PHP 8.3 - doctrine/orm ^3.1
+    name: PHP 8.4 - doctrine/orm ^3.1
     env:
       HAS_CC_SECRET: ${{secrets.CODECOV_TOKEN != '' }}
     services:
@@ -109,13 +109,13 @@ jobs:
         uses: actions/cache@v6
         with:
           path: vendor/
-          key: ${{ format('{0}-composer-php83-orm31-{1}', runner.os, hashFiles('composer.lock')) }}
-          restore-keys: ${{ format('{0}-composer-php83-orm31-', runner.os, matrix.php, matrix.orm) }}
+          key: ${{ format('{0}-composer-php84-orm31-{1}', runner.os, hashFiles('composer.lock')) }}
+          restore-keys: ${{ format('{0}-composer-php84-orm31-', runner.os, matrix.php, matrix.orm) }}
 
-      - name: Setup PHP 8.3
+      - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           coverage: pcov
           tools: composer:v2
 
@@ -131,7 +131,7 @@ jobs:
       - name: Show libraries
         run: composer show
 
-      - name: Run test suite and with coverage for codeclimate for PHP 8.3 and doctrine/orm ^3.1 only
+      - name: Run test suite and with coverage for codeclimate for PHP 8.4 and doctrine/orm ^3.1 only
         if: ${{ env.HAS_CC_SECRET == 'true' }}
         run: composer run-script test-coverage
 
@@ -212,16 +212,16 @@ jobs:
   other-version-build:
     needs: stable-build
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.orm == '^3.2' || matrix.orm == '^4.0'}}
+    continue-on-error: ${{ matrix.orm == '^4.0'}}
     environment: 'Test environment'
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.1', '8.2', '8.3', '8.4' ]
-        orm: [ '^2.9', '^3.1', '^3.2', '^4.0' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        orm: [ '^2.9', '^3.6', '^4.0' ]
         exclude:
           # Already tested
-          -   php: '8.3'
+          -   php: '8.4'
               orm: '^3.1'
           # ORM 4.0 is not compatible with PHP 8.3 or lower
           -   php: '8.3'
