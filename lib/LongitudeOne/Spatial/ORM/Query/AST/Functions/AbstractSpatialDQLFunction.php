@@ -20,10 +20,6 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\ORM\Query\AST\ASTException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -32,11 +28,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
-use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
-use LongitudeOne\Spatial\DBAL\Platform\MySql;
-use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
-use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
-use LongitudeOne\Spatial\DBAL\Platform\SqlServer;
+use LongitudeOne\Spatial\DBAL\Helper\MatchPlatformHelper;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 
@@ -85,7 +77,8 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
             $arguments[] = $expression->dispatch($sqlWalker);
         }
 
-        $platformInterface = $this->getSpatialPlatform($sqlWalker->getConnection()->getDatabasePlatform());
+        $helper = new MatchPlatformHelper();
+        $platformInterface = $helper->getSpatialPlatform($sqlWalker->getConnection()->getDatabasePlatform());
 
         return $platformInterface->getFunctionSqlDeclaration($this->getFunctionName(), $arguments);
     }
@@ -203,35 +196,6 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
 
         throw new UnsupportedPlatformException(
             sprintf('The DBAL platform "%s" is not currently supported by %s function.', $platform::class, $this->getFunctionName())
-        );
-    }
-
-    /**
-     * Get the spatial corresponding platform of the given doctrine platform.
-     *
-     * @param AbstractPlatform $platform the doctrine platform
-     *
-     * @return PlatformInterface the corresponding platform
-     *
-     * @throws UnsupportedPlatformException when platform is unsupported
-     */
-    private function getSpatialPlatform(AbstractPlatform $platform): PlatformInterface
-    {
-        if ($platform instanceof PostgreSQLPlatform) {
-            return new PostgreSql();
-        }
-        if ($platform instanceof MySQLPlatform) {
-            return new MySql();
-        }
-        if ($platform instanceof MariaDBPlatform) {
-            return new MariaDB();
-        }
-        if ($platform instanceof SQLServerPlatform) {
-            return new SqlServer();
-        }
-
-        throw new UnsupportedPlatformException(
-            sprintf('The DBAL "%s" is not currently associated with one of our supported platforms.', $platform::class)
         );
     }
 
