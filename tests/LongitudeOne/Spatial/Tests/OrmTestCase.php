@@ -540,6 +540,7 @@ abstract class OrmTestCase extends SpatialTestCase
     private function addSpecificMariaDbFunctions(Configuration $configuration): void
     {
         $configuration->addCustomNumericFunction('MariaDB_Buffer', MariaDB\SpBuffer::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
         $configuration->addCustomNumericFunction('MariaDB_DistanceSphere', MariaDB\SpDistanceSphere::class);
         $configuration->addCustomNumericFunction('MariaDB_GeometryType', MariaDB\SpGeometryType::class);
@@ -565,6 +566,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
         $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
         $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
         $configuration->addCustomNumericFunction('Mysql_GeometryType', MySql\SpGeometryType::class);
@@ -588,6 +590,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $configuration->addCustomStringFunction('PgSql_AsGeoJson', PostgreSql\SpAsGeoJson::class);
         $configuration->addCustomStringFunction('PgSql_Azimuth', PostgreSql\SpAzimuth::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomStringFunction('PgSql_ClosestPoint', PostgreSql\SpClosestPoint::class);
         $configuration->addCustomStringFunction('PgSql_Collect', PostgreSql\SpCollect::class);
         $configuration->addCustomNumericFunction('PgSql_ContainsProperly', PostgreSql\SpContainsProperly::class);
@@ -627,6 +630,7 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     private function addSpecificSqlServerFunctions(Configuration $configuration): void
     {
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('SqlServer_SRID', SqlServer\SpSrid::class);
     }
 
