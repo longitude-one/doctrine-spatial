@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -38,6 +39,7 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 class SpBufferTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
+    use VerifyDeprecations;
 
     /**
      * Set up the function type test.
@@ -58,6 +60,7 @@ class SpBufferTest extends PersistOrmTestCase
     public function testSelectSpBuffer(): void
     {
         $this->skipIfMariaDbAndOrm29();
+        $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/152');
 
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();

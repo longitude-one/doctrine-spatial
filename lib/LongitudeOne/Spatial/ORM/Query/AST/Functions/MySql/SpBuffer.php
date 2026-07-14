@@ -34,6 +34,21 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 class SpBuffer extends AbstractSpatialDQLFunction
 {
     /**
+     * Get the deprecated platforms with this function.
+     *
+     * @return array<class-string<AbstractPlatform>, array{link: string, message: string}> a non-empty array of deprecated platforms
+     */
+    protected function getDeprecatedPlatforms(): array
+    {
+        return [
+            MySQLPlatform::class => [
+                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/152',
+                'message' => 'The "LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer" DQL function is deprecated since doctrine spatial 5.1 and will be removed in 6.0. Use "LongitudeOne\Spatial\ORM\Query\AST\Functions\Common\ScBuffer" instead.',
+            ],
+        ];
+    }
+
+    /**
      * Function SQL name getter.
      *
      * @since 2.0 This function replace the protected property functionName.
