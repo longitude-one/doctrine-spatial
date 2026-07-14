@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -50,6 +51,7 @@ class StDisjointTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -68,7 +70,7 @@ class StDisjointTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+            'SELECT p, ST_Disjoint(p.polygon, ST_GeomFromText(:p1, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
 
         $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
@@ -100,7 +102,7 @@ class StDisjointTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) = true'
+            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1, 0)) = true'
         );
 
         $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
@@ -113,7 +115,7 @@ class StDisjointTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1)) = true'
+            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Disjoint(p.polygon, ST_GeomFromText(:p1, 0)) = true'
         );
 
         $query->setParameter('p1', 'POLYGON((15 15,17 15,17 17,15 17,15 15))', 'string');
