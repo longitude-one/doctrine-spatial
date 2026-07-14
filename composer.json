@@ -61,6 +61,7 @@
             "phpunit --configuration phpunit.mysql5.7.xml --coverage-php .phpunit.cache/code-coverage/mysql5.7.cov",
             "phpunit --configuration phpunit.mysql8.0.xml --coverage-php .phpunit.cache/code-coverage/mysql8.0.cov",
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
+            "phpunit --configuration phpunit.sqlserver.xml --coverage-php .phpunit.cache/code-coverage/sqlserver.cov",
             "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
         ],
         "test-mariadb10.6": "phpunit --configuration phpunit.mariadb10.6.xml",

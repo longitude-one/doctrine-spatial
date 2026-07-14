@@ -112,12 +112,21 @@ jobs:
           key: ${{ format('{0}-composer-php84-orm31-{1}', runner.os, hashFiles('composer.lock')) }}
           restore-keys: ${{ format('{0}-composer-php84-orm31-', runner.os, matrix.php, matrix.orm) }}
 
+      - name: Install Microsoft ODBC Driver for SQL Server
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+
       - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
           coverage: pcov
           tools: composer:v2
+          extensions: mbstring, intl, pdo_mysql, pdo_pgsql, pdo_sqlsrv, sqlsrv, xdebug
 
       - name: Echo PHP version
         run: php -v
@@ -312,12 +321,20 @@ jobs:
             key: ${{ format('{0}-composer-php{1}-orm{2}-{3}', runner.os, matrix.php, matrix.orm, hashFiles('composer.lock')) }}
             restore-keys: ${{ format('{0}-composer-php{1}-orm{2}-', runner.os, matrix.php, matrix.orm) }}
 
+      - name: Install Microsoft ODBC Driver for SQL Server
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
       -   name: Setup PHP ${{ matrix.php }}
           uses: shivammathur/setup-php@v2
           with:
             php-version: ${{ matrix.php }}
             coverage: pcov
             tools: composer:v2
+            extensions: mbstring, intl, pdo_mysql, pdo_pgsql, pdo_sqlsrv, sqlsrv, xdebug
 
       -   name: Echo PHP version
           run: php -v
