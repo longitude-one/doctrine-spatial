@@ -71,11 +71,12 @@ class StGeomFromTextTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE ST_Equals(g.lineString, ST_GeomFromText(:geometry, :srid)) = 1'
+            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE ST_Equals(g.lineString, ST_GeomFromText(:geometry, :srid)) = :result'
         );
 
         $query->setParameter('geometry', 'LINESTRING(0 0,2 2,5 5)', 'string');
         $query->setParameter('srid', 0, 'integer');
+        $query->setParameter('result', true, 'boolean');
 
         $result = $query->getResult();
 
@@ -96,11 +97,12 @@ class StGeomFromTextTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g WHERE ST_Equals(ST_GeomFromText(:geometry, :srid), g.point) = 1'
+            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g WHERE ST_Equals(ST_GeomFromText(:geometry, :srid), g.point) = :result'
         );
 
         $query->setParameter('geometry', 'POINT(1 2)', 'string');
         $query->setParameter('srid', 0, 'integer');
+        $query->setParameter('result', true, 'boolean');
 
         $result = $query->getResult();
 
