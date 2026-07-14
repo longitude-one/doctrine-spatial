@@ -95,9 +95,9 @@ class SqlServer extends AbstractPlatform
 
         return match ($sqlServerFunctionName) {
             // These are properties, not methods, so we don't add parentheses
-            'Lat', 'Long', 'STSrid', 'STX', 'STY' => sprintf('(%s).%s', implode(', ', $parameters), $sqlServerFunctionName),
+            'Lat', 'Long', 'STSrid', 'STX', 'STY' => sprintf('(%s).%s', $parameters[0], $sqlServerFunctionName),
 
-            default => sprintf('(%s).%s()', implode(', ', $parameters), $sqlServerFunctionName),
+            default => sprintf('(%s).%s(%s)', $parameters[0], $sqlServerFunctionName, implode(', ', array_slice($parameters, 1))),
         };
     }
 
