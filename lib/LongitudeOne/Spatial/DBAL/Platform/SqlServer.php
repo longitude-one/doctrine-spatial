@@ -97,6 +97,10 @@ class SqlServer extends AbstractPlatform
             // These are properties, not methods, so we don't add parentheses
             'Lat', 'Long', 'STSrid', 'STX', 'STY' => sprintf('(%s).%s', $parameters[0], $sqlServerFunctionName),
 
+            // These are functions, so we add parentheses after the function name
+            'STGeomFromText' => sprintf('geometry::%s(%s)', $sqlServerFunctionName, implode(', ', $parameters)),
+
+            // These are methods, so we add parentheses
             default => sprintf('(%s).%s(%s)', $parameters[0], $sqlServerFunctionName, implode(', ', array_slice($parameters, 1))),
         };
     }

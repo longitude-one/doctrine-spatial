@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -53,6 +54,7 @@ class StGeomFromTextTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -69,10 +71,11 @@ class StGeomFromTextTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE g.lineString = ST_GeomFromText(:geometry)'
+            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity g WHERE ST_Equals(g.lineString, ST_GeomFromText(:geometry, :srid)) = 1'
         );
 
         $query->setParameter('geometry', 'LINESTRING(0 0,2 2,5 5)', 'string');
+        $query->setParameter('srid', 0, 'integer');
 
         $result = $query->getResult();
 
@@ -93,10 +96,11 @@ class StGeomFromTextTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g WHERE g.point = ST_GeomFromText(:geometry)'
+            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g WHERE ST_Equals(ST_GeomFromText(:geometry, :srid), g.point) = 1'
         );
 
         $query->setParameter('geometry', 'POINT(1 2)', 'string');
+        $query->setParameter('srid', 0, 'integer');
 
         $result = $query->getResult();
 
