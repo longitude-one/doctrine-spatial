@@ -64,7 +64,7 @@ class ScRelateTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\\Spatial\\Tests\\Fixtures\\LineStringEntity l WHERE Common_Relate(l.lineString, ST_GeomFromText(:p, 0), :relate) = true'
+            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE Common_Relate(l.lineString, ST_GeomFromText(:p, 0), :relate) = true'
         );
         $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
         $query->setParameter('relate', 'FF1FF0102', 'string');
