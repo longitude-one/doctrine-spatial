@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -75,6 +76,6 @@ class StPoint extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class];
+        return [PostgreSQLPlatform::class, SQLServerPlatform::class];
     }
 }

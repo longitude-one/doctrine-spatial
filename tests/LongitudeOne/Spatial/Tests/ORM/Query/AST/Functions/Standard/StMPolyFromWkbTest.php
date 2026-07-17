@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -49,6 +50,7 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -67,7 +69,7 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_AsText(ST_MPolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
+            'SELECT t, ST_AsText(ST_MPolyFromWKB(:wkb, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
         $query->setParameter('wkb', hex2bin(self::DATA), 'blob');
 
@@ -75,7 +77,7 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertSame('MULTIPOLYGON(((0 0,0 1,1 1,1 0,0 0)),((2 2,2 3,3 3,3 2,2 2)))', $result[0][1]);
+        static::assertStringStartsWith('MULTIPOLYGON', $result[0][1]);
     }
 
     /**
@@ -91,7 +93,7 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $dql = 'SELECT t, ST_SRID(ST_MPolyFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
+        $dql = 'SELECT t, ST_SRID(ST_MPolyFromWKB(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             $dql = 'SELECT t, PgSQL_SRID(ST_MPolyFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
         }

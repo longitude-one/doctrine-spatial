@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -47,6 +48,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -65,7 +67,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_AsText(ST_MPointFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
+            'SELECT t, ST_AsText(ST_MPointFromWKB(:wkb, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
         $query->setParameter('wkb', hex2bin('0104000000030000000101000000000000000000000000000000000000000101000000000000000000F03F000000000000F03F010100000000000000000000400000000000000040'), 'blob');
 
@@ -73,7 +75,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertMatchesRegularExpression('|^MULTIPOINT\(|', $result[0][1]);
+        static::assertStringStartsWith('MULTIPOINT', $result[0][1]);
     }
 
     /**
@@ -89,7 +91,7 @@ class StMPointFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $dql = 'SELECT t, ST_SRID(ST_MPointFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
+        $dql = 'SELECT t, ST_SRID(ST_MPointFromWKB(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             $dql = 'SELECT t, PgSQL_SRID(ST_MPointFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t';
         }

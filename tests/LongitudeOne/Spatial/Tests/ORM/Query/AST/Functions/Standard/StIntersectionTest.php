@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -50,6 +51,7 @@ class StIntersectionTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -68,7 +70,7 @@ class StIntersectionTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l, ST_AsText(ST_Intersection(l.lineString, ST_GeomFromText(:p))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+            'SELECT l, ST_AsText(ST_Intersection(l.lineString, ST_GeomFromText(:p, 0))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
         );
 
         $query->setParameter('p', 'POINT(0 0)', 'string');
@@ -78,7 +80,7 @@ class StIntersectionTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($lineStringA, $result[0][0]);
-        static::assertEquals('POINT(0 0)', $result[0][1]);
+        static::assertStringStartsWith('POINT', $result[0][1]);
         static::assertEquals($lineStringB, $result[1][0]);
         static::assertEmptyPoint($result[1][1], $this->getPlatform());
         static::assertEquals($lineStringC, $result[2][0]);
@@ -99,7 +101,7 @@ class StIntersectionTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_IsEmpty(ST_Intersection(l.lineString, ST_GeomFromText(:p1))) = false'
+            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_IsEmpty(ST_Intersection(l.lineString, ST_GeomFromText(:p1, 0))) = false'
         );
 
         $query->setParameter('p1', 'POINT(0 0)', 'string');

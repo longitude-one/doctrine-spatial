@@ -18,16 +18,17 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
- * ST_IsRing DQL function tests.
+ * ST_GeogFromText DQL function tests.
  *
+ * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://alexandre-tranchant.mit-license.org MIT
+ * @license https://dlambert.mit-license.org MIT
  *
  * @group dql
  *
@@ -35,48 +36,42 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversDefaultClass
  */
-class StIsRingTest extends PersistOrmTestCase
+class StGeographyFromTextTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
+    use PersistantPointHelperTrait;
 
     /**
      * Set up the function type test.
      */
     protected function setUp(): void
     {
-        $this->usesEntity(self::LINESTRING_ENTITY);
-        $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->usesEntity(self::GEOGRAPHY_ENTITY);
+        $this->usesEntity(self::GEO_POINT_SRID_ENTITY);
+
         $this->supportsPlatform(SQLServerPlatform::class);
-        // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL containing function to test in the predicate.
      *
      * @group geometry
      */
-    public function testFunction(): void
+    public function testPredicate(): void
     {
-        $straight = $this->persistStraightLineString();
-        $ring = $this->persistRingLineString();
-        $node = $this->persistNodeLineString();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
+        $newYork = $this->persistNewYorkGeography();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l, ST_IsRing(l.lineString) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+            'SELECT g FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g WHERE ST_Equals(ST_GeographyFromText(:g, 4326), ST_GeographyFromText(:g, 4326)) = true'
         );
+        $query->setParameter('g', 'POINT(-73.938611 40.664167)');
+
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertCount(3, $result);
-        static::assertEquals($straight, $result[0][0]);
-        static::assertEquals(0, $result[0][1]);
-        static::assertEquals($ring, $result[1][0]);
-        static::assertEquals(1, $result[1][1]);
-        static::assertEquals($node, $result[2][0]);
-        static::assertEquals(0, $result[2][1]);
+        static::assertCount(1, $result);
+        static::assertEquals($newYork, $result[0]);
     }
 }

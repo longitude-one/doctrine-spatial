@@ -16,17 +16,15 @@
 
 declare(strict_types=1);
 
-namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
+namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Common;
 
-use Doctrine\DBAL\Platforms\MariaDBPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
-use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
+use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
 /**
- * ST_Touches DQL function tests.
+ * ST_Relates DQL function tests.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -37,20 +35,19 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversDefaultClass
  */
-class StTouchesTest extends PersistOrmTestCase
+class ScRelateTest extends PersistOrmTestCase
 {
-    use PersistantPolygonHelperTrait;
+    use PersistantLineStringHelperTrait;
 
     /**
      * Set up the function type test.
      */
     protected function setUp(): void
     {
-        $this->usesEntity(self::POLYGON_ENTITY);
+        $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
-        $this->supportsPlatform(MariaDBPlatform::class);
-        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(SQLServerPlatform::class);
+        // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();
     }
@@ -62,20 +59,20 @@ class StTouchesTest extends PersistOrmTestCase
      */
     public function testFunctionInPredicate(): void
     {
-        $bigPolygon = $this->persistBigPolygon();
-        $this->persistSmallPolygon();
+        $linestring = $this->persistStraightLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Touches(p.polygon, ST_GeomFromText(:p, 0)) = true'
+            'SELECT l FROM LongitudeOne\\Spatial\\Tests\\Fixtures\\LineStringEntity l WHERE Common_Relate(l.lineString, ST_GeomFromText(:p, 0), :relate) = true'
         );
-        $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
+        $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
+        $query->setParameter('relate', 'FF1FF0102', 'string');
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertEquals($bigPolygon, $result[0]);
+        static::assertEquals($linestring, $result[0]);
     }
 
     /**
@@ -85,19 +82,24 @@ class StTouchesTest extends PersistOrmTestCase
      */
     public function testFunctionInSelect(): void
     {
-        $this->persistBigPolygon();
-        $this->persistSmallPolygon();
+        $straightLineString = $this->persistStraightLineString();
+        $angularLineString = $this->persistAngularLineString();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_Touches(p.polygon, ST_GeomFromText(:p, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+            'SELECT l, Common_Relate(l.lineString, ST_GeomFromText(:p, 0), :relate) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
         );
-        $query->setParameter('p', 'LINESTRING(0 0, 0 10)', 'string');
+        $query->setParameter('p', 'LINESTRING(6 6, 8 8, 11 11)', 'string');
+        $query->setParameter('relate', 'FF1FF0102', 'string');
+
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertEquals(1, $result[0][1]);
-        static::assertEquals(0, $result[1][1]);
+        static::assertCount(2, $result);
+        static::assertEquals($straightLineString, $result[0][0]);
+        static::assertEquals('1', $result[0][1]);
+        static::assertEquals($angularLineString, $result[1][0]);
+        static::assertEquals('1', $result[1][1]);
     }
 }

@@ -37,7 +37,7 @@ class SpSrid extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        return 'STSrid';
+        return 'ST_SRID';
     }
 
     /**

@@ -93,12 +93,30 @@ class SqlServer extends AbstractPlatform
     {
         $sqlServerFunctionName = str_replace('_', '', $functionName);
 
+        // SQL Server requires an SRID for geography constructors, so we add the default one when it is omitted.
+        if ('ST_GeographyFromText' === $functionName && 1 === count($parameters)) {
+            $parameters[] = self::DEFAULT_SRID;
+        }
+
+        // SQL Server also expects an explicit SRID for geometry constructors, so we provide zero when it is missing.
+        if ('ST_GeomFromText' === $functionName && 1 === count($parameters)) {
+            $parameters[] = 0;
+        }
+
         return match ($sqlServerFunctionName) {
             // These are properties, not methods, so we don't add parentheses
-            'Lat', 'Long', 'STSrid', 'STX', 'STY' => sprintf('(%s).%s', $parameters[0], $sqlServerFunctionName),
+            'Lat', 'Long', 'STX', 'STY' => sprintf('(%s).%s', $parameters[0], $sqlServerFunctionName),
 
             // These are functions, so we add parentheses after the function name
-            'STGeomFromText' => sprintf('geometry::%s(%s)', $sqlServerFunctionName, implode(', ', $parameters)),
+            'STGeomFromText', 'STGeomFromWKB', 'STMLineFromWKB', 'STMPointFromWKB',
+            'STMPolyFromWKB', 'STPointFromWKB',
+            'STPolyFromWKB' => sprintf('geometry::%s(%s)', $sqlServerFunctionName, implode(', ', $parameters)),
+            'STLineStringFromWKB' => sprintf('geometry::STLineFromWKB(%s)', implode(', ', $parameters)),
+            'STGeographyFromText' => sprintf('geography::STGeomFromText(%s)', implode(', ', $parameters)),
+
+            // STPerimeter doesn't exists on SQLServer, but you can use STLength
+            'STPerimeter' => sprintf('(%s).%s', $parameters[0], 'STLength()'),
+            'STSRID' => sprintf('(%s).STSrid', $parameters[0]),
 
             // These are methods, so we add parentheses
             default => sprintf('(%s).%s(%s)', $parameters[0], $sqlServerFunctionName, implode(', ', array_slice($parameters, 1))),

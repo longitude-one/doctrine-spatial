@@ -19,18 +19,20 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
- * LineStringFromWKB function.
+ * SC_GeogFromText DQL function.
  *
+ * The SQL ST_GeographyFromText is not issue from the OGC Standard, so we do not have to implement it in DQL
+ * But it is useful, so we call it with another prefix, because it is specific to some database server.
+ *
+ * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license https://alexandre-tranchant.mit-license.org
+ * @license https://dlambert.mit-license.org MIT
  */
-class StLineStringFromWkb extends AbstractSpatialDQLFunction
+class StGeographyFromText extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.
@@ -39,11 +41,11 @@ class StLineStringFromWkb extends AbstractSpatialDQLFunction
      */
     protected function getFunctionName(): string
     {
-        return 'ST_LineStringFromWKB';
+        return 'ST_GeographyFromText';
     }
 
     /**
-     * Maximum number of parameters for the spatial function.
+     * Maximum number of parameter for the spatial function.
      *
      * @since 2.0 This function replace the protected property maxGeomExpr.
      *
@@ -55,7 +57,7 @@ class StLineStringFromWkb extends AbstractSpatialDQLFunction
     }
 
     /**
-     * Minimum number of parameters for the spatial function.
+     * Minimum number of parameter for the spatial function.
      *
      * @since 2.0 This function replace the protected property minGeomExpr.
      *
@@ -63,7 +65,7 @@ class StLineStringFromWkb extends AbstractSpatialDQLFunction
      */
     protected function getMinParameter(): int
     {
-        return 1;
+        return 2;
     }
 
     /**
@@ -76,6 +78,6 @@ class StLineStringFromWkb extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class, MySQLPlatform::class, SQLServerPlatform::class];
+        return [SQLServerPlatform::class];
     }
 }

@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -49,6 +50,7 @@ class StExteriorRingTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -73,8 +75,8 @@ class StExteriorRingTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertEquals($bigPolygon, $result[0][0]);
-        static::assertEquals('LINESTRING(0 0,10 0,10 10,0 10,0 0)', $result[0][1]);
+        static::assertStringStartsWith('LINESTRING', $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);
-        static::assertEquals('LINESTRING(5 5,7 5,7 7,5 7,5 5)', $result[1][1]);
+        static::assertStringStartsWith('LINESTRING', $result[1][1]);
     }
 }

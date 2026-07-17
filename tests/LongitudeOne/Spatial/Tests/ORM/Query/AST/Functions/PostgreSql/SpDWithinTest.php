@@ -63,7 +63,7 @@ class SpDWithinTest extends PersistOrmTestCase
         $dallas = $this->persistDallasGeography();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT g, PgSql_DWithin(g.geography, PgSql_GeographyFromText(:p), :d, :spheroid) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
+            'SELECT g, PgSql_DWithin(g.geography, PgSQL_GeogFromText(:p), :d, :spheroid) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
 
         $query->setParameter('p', 'POINT(-89.4 43.066667)', 'string');

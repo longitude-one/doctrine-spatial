@@ -75,6 +75,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEndPoint;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEnvelope;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEquals;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StExteriorRing;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeographyFromText;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryN;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText;
@@ -665,6 +666,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('ST_EndPoint', StEndPoint::class);
         $configuration->addCustomStringFunction('ST_Envelope', StEnvelope::class);
         $configuration->addCustomStringFunction('ST_ExteriorRing', StExteriorRing::class);
+        $configuration->addCustomStringFunction('ST_GeographyFromText', StGeographyFromText::class);
         $configuration->addCustomStringFunction('ST_GeometryN', StGeometryN::class);
         $configuration->addCustomStringFunction('ST_GeometryType', StGeometryType::class);
         $configuration->addCustomStringFunction('ST_GeomFromWkb', StGeomFromWkb::class);
@@ -673,7 +675,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('ST_Length', StLength::class);
         $configuration->addCustomStringFunction('ST_LineStringFromWkb', StLineStringFromWkb::class);
         $configuration->addCustomStringFunction('ST_MPointFromWkb', StMPointFromWkb::class);
-        $configuration->addCustomStringFunction('ST_MLineFromWkb', StMLineFromWkb::class);
+        $configuration->addCustomStringFunction('ST_MLineFromWKB', StMLineFromWkb::class);
         $configuration->addCustomStringFunction('ST_MPolyFromWkb', StMPolyFromWkb::class);
         $configuration->addCustomStringFunction('ST_NumInteriorRing', StNumInteriorRing::class);
         $configuration->addCustomStringFunction('ST_NumGeometries', StNumGeometries::class);
@@ -686,9 +688,10 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('ST_PointOnSurface', StPointOnSurface::class);
         $configuration->addCustomStringFunction('ST_PolyFromWkb', StPolyFromWkb::class);
         $configuration->addCustomStringFunction('ST_Relate', StRelate::class);
+        $configuration->addCustomStringFunction('Common_Relate', Common\ScRelate::class);
         $configuration->addCustomStringFunction('ST_SymDifference', StSymDifference::class);
         $configuration->addCustomNumericFunction('ST_SetSRID', StSetSRID::class);
-        $configuration->addCustomNumericFunction('ST_SRID', StSrid::class);
+        $configuration->addCustomNumericFunction('ST_Srid', StSrid::class);
         $configuration->addCustomNumericFunction('ST_StartPoint', StStartPoint::class);
         $configuration->addCustomNumericFunction('ST_Touches', StTouches::class);
         $configuration->addCustomStringFunction('ST_Union', StUnion::class);
