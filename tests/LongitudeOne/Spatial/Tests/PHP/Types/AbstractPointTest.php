@@ -431,7 +431,7 @@ class AbstractPointTest extends TestCase
     }
 
     /**
-          * @return \Generator<string, array{0: class-string<AbstractPoint>}, null, void>
+     * @return \Generator<string, array{0: class-string<AbstractPoint>}, null, void>
      */
     public static function pointTypeProvider(): \Generator
     {
