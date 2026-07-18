@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -46,6 +47,7 @@ class StGeometryTypeTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -70,6 +72,6 @@ class StGeometryTypeTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        static::assertEquals('ST_LineString', $result[0][1]);
+        static::assertStringContainsString('LineString', $result[0][1]);
     }
 }

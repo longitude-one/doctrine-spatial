@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -49,6 +50,7 @@ class StEqualsTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -65,7 +67,7 @@ class StEqualsTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_Equals(l.lineString, ST_GeomFromText(:p)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+            'SELECT ST_Equals(l.lineString, ST_GeomFromText(:p, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
         );
         $query->setParameter('p', 'LINESTRING(0 0, 5 5)');
         $result = $query->getResult();

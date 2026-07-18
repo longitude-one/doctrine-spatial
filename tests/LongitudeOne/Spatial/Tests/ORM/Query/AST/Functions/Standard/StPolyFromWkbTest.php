@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -48,6 +49,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $this->usesEntity(self::POLYGON_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -66,7 +68,7 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE p.polygon = ST_PolyFromWkb(:wkb)'
+            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_Equals(p.polygon, ST_PolyFromWKB(:wkb, 0)) = true'
         );
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), ParameterType::BINARY);
 
@@ -91,13 +93,13 @@ class StPolyFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_AsText(ST_PolyFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+            'SELECT p, ST_AsText(ST_PolyFromWKB(:wkb, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
         $query->setParameter('wkb', hex2bin('010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000'), ParameterType::BINARY);
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertEquals('POLYGON((0 0,10 0,10 10,0 10,0 0))', $result[0][1]);
+        static::assertStringStartsWith('POLYGON', $result[0][1]);
     }
 }

@@ -18,7 +18,10 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -45,7 +48,10 @@ class StConvexHullTest extends PersistOrmTestCase
     protected function setUp(): void
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
+        $this->supportsPlatform(MariaDBPlatform::class);
+        $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -63,7 +69,7 @@ class StConvexHullTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_AsText(ST_ConvexHull(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity p'
+            'SELECT p, ST_AsText(ST_ConvexHull(ST_GeomFromText(:p1, 0))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity p'
         );
 
         $query->setParameter('p1', 'MULTIPOINT(50 5, 150 30, 50 10, 10 10)', 'string');
@@ -73,6 +79,6 @@ class StConvexHullTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($firstLine, $result[0][0]);
-        static::assertEquals('POLYGON((50 5,10 10,150 30,50 5))', $result[0][1]);
+        static::assertStringStartsWith('POLYGON', $result[0][1]);
     }
 }

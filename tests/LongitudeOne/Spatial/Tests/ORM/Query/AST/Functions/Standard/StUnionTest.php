@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -49,6 +50,7 @@ class StUnionTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -66,7 +68,7 @@ class StUnionTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_AsText(ST_Union(ST_GeomFromText(:p), p.polygon)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+            'SELECT p, ST_AsText(ST_Union(ST_GeomFromText(:p, 0), p.polygon)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
         );
 
         $query->setParameter('p', 'POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 'string');
@@ -94,7 +96,7 @@ class StUnionTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_IsEmpty(ST_Union(ST_GeomFromText(:p1), p.polygon)) = true'
+            'SELECT p FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p WHERE ST_IsEmpty(ST_Union(ST_GeomFromText(:p1, 0), p.polygon)) = true'
         );
 
         $query->setParameter('p1', 'POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 'string');

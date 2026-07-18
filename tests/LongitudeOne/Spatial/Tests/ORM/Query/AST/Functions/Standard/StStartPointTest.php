@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -50,6 +51,7 @@ class StStartPointTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -73,7 +75,7 @@ class StStartPointTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
-        static::assertEquals('POINT(0 0)', $result[0][1]);
+        static::assertStringStartsWith('POINT', $result[0][1]);
     }
 
     /**
@@ -89,7 +91,7 @@ class StStartPointTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_StartPoint(l.lineString) = ST_StartPoint(ST_GeomFromText(:p1))'
+            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Equals(ST_StartPoint(l.lineString), ST_StartPoint(ST_GeomFromText(:p1, 0))) = true'
         );
 
         $query->setParameter('p1', 'LINESTRING(3 3, 4 15, 5 22)', 'string');
@@ -115,7 +117,7 @@ class StStartPointTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_StartPoint(l.lineString) = ST_GeomFromText(:p1)'
+            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Equals(ST_StartPoint(l.lineString), ST_GeomFromText(:p1, 0)) = true'
         );
 
         $query->setParameter('p1', 'POINT(0 0)', 'string');

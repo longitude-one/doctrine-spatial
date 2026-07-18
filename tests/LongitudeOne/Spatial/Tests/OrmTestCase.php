@@ -29,6 +29,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Exception\UnknownColumnType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -56,6 +57,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\SqlServer;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StArea;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsBinary;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsText;
@@ -73,6 +75,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEndPoint;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEnvelope;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEquals;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StExteriorRing;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeographyFromText;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryN;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText;
@@ -339,6 +342,10 @@ abstract class OrmTestCase extends SpatialTestCase
             return $connection;
         }
 
+        if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
+            return $connection;
+        }
+
         throw new UnsupportedPlatformException(sprintf(
             'DBAL platform "%s" is not currently supported.',
             $connection->getDatabasePlatform()::class
@@ -440,16 +447,13 @@ abstract class OrmTestCase extends SpatialTestCase
 
         $this->addStandardFunctions($configuration);
 
-        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
-            // Specific functions of PostgreSQL database engine
-            $this->addSpecificPostgreSqlFunctions($configuration);
-        } elseif ($this->getPlatform() instanceof MariaDBPlatform) {
-            // Specific functions of MariaDB database engines
-            $this->addSpecificMariaDbFunctions($configuration);
-        } elseif ($this->getPlatform() instanceof MySQLPlatform) {
-            // Specific functions of MySQL 5.7 and 8.0 database engines
-            $this->addSpecificMySqlFunctions($configuration);
-        }
+        match (true) {
+            $this->getPlatform() instanceof PostgreSQLPlatform => $this->addSpecificPostgreSqlFunctions($configuration),
+            $this->getPlatform() instanceof MariaDBPlatform => $this->addSpecificMariaDbFunctions($configuration),
+            $this->getPlatform() instanceof MySQLPlatform => $this->addSpecificMySqlFunctions($configuration),
+            $this->getPlatform() instanceof SQLServerPlatform => $this->addSpecificSqlServerFunctions($configuration),
+            default => null,
+        };
     }
 
     /**
@@ -537,6 +541,7 @@ abstract class OrmTestCase extends SpatialTestCase
     private function addSpecificMariaDbFunctions(Configuration $configuration): void
     {
         $configuration->addCustomNumericFunction('MariaDB_Buffer', MariaDB\SpBuffer::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
         $configuration->addCustomNumericFunction('MariaDB_DistanceSphere', MariaDB\SpDistanceSphere::class);
         $configuration->addCustomNumericFunction('MariaDB_GeometryType', MariaDB\SpGeometryType::class);
@@ -562,6 +567,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
         $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
         $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
         $configuration->addCustomNumericFunction('Mysql_GeometryType', MySql\SpGeometryType::class);
@@ -585,6 +591,7 @@ abstract class OrmTestCase extends SpatialTestCase
     {
         $configuration->addCustomStringFunction('PgSql_AsGeoJson', PostgreSql\SpAsGeoJson::class);
         $configuration->addCustomStringFunction('PgSql_Azimuth', PostgreSql\SpAzimuth::class);
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomStringFunction('PgSql_ClosestPoint', PostgreSql\SpClosestPoint::class);
         $configuration->addCustomStringFunction('PgSql_Collect', PostgreSql\SpCollect::class);
         $configuration->addCustomNumericFunction('PgSql_ContainsProperly', PostgreSql\SpContainsProperly::class);
@@ -618,6 +625,17 @@ abstract class OrmTestCase extends SpatialTestCase
     }
 
     /**
+     * Complete configuration with SQL Server spatial functions.
+     *
+     * @param Configuration $configuration the current configuration
+     */
+    private function addSpecificSqlServerFunctions(Configuration $configuration): void
+    {
+        $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
+        $configuration->addCustomNumericFunction('SqlServer_SRID', SqlServer\SpSrid::class);
+    }
+
+    /**
      * Add all standard functions.
      *
      * @param Configuration $configuration the configuration to update
@@ -648,6 +666,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('ST_EndPoint', StEndPoint::class);
         $configuration->addCustomStringFunction('ST_Envelope', StEnvelope::class);
         $configuration->addCustomStringFunction('ST_ExteriorRing', StExteriorRing::class);
+        $configuration->addCustomStringFunction('ST_GeographyFromText', StGeographyFromText::class);
         $configuration->addCustomStringFunction('ST_GeometryN', StGeometryN::class);
         $configuration->addCustomStringFunction('ST_GeometryType', StGeometryType::class);
         $configuration->addCustomStringFunction('ST_GeomFromWkb', StGeomFromWkb::class);
@@ -656,7 +675,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('ST_Length', StLength::class);
         $configuration->addCustomStringFunction('ST_LineStringFromWkb', StLineStringFromWkb::class);
         $configuration->addCustomStringFunction('ST_MPointFromWkb', StMPointFromWkb::class);
-        $configuration->addCustomStringFunction('ST_MLineFromWkb', StMLineFromWkb::class);
+        $configuration->addCustomStringFunction('ST_MLineFromWKB', StMLineFromWkb::class);
         $configuration->addCustomStringFunction('ST_MPolyFromWkb', StMPolyFromWkb::class);
         $configuration->addCustomStringFunction('ST_NumInteriorRing', StNumInteriorRing::class);
         $configuration->addCustomStringFunction('ST_NumGeometries', StNumGeometries::class);
@@ -669,9 +688,10 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomStringFunction('ST_PointOnSurface', StPointOnSurface::class);
         $configuration->addCustomStringFunction('ST_PolyFromWkb', StPolyFromWkb::class);
         $configuration->addCustomStringFunction('ST_Relate', StRelate::class);
+        $configuration->addCustomStringFunction('Common_Relate', Common\ScRelate::class);
         $configuration->addCustomStringFunction('ST_SymDifference', StSymDifference::class);
         $configuration->addCustomNumericFunction('ST_SetSRID', StSetSRID::class);
-        $configuration->addCustomNumericFunction('ST_SRID', StSrid::class);
+        $configuration->addCustomNumericFunction('ST_Srid', StSrid::class);
         $configuration->addCustomNumericFunction('ST_StartPoint', StStartPoint::class);
         $configuration->addCustomNumericFunction('ST_Touches', StTouches::class);
         $configuration->addCustomStringFunction('ST_Union', StUnion::class);

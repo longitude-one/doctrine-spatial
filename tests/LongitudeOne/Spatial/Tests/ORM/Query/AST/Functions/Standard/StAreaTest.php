@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -50,6 +51,7 @@ class StAreaTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -100,7 +102,7 @@ class StAreaTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertEquals(100, $result[0][1]);
         static::assertEquals(96, $result[1][1]);
-        static::assertEquals(100, $result[2][1]);
+        static::assertEquals(110, $result[2][1]);
         static::assertEquals(4, $result[3][1]);
     }
 }

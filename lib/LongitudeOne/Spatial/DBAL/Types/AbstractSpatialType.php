@@ -22,12 +22,14 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Platform\MariaDB;
 use LongitudeOne\Spatial\DBAL\Platform\MySql;
 use LongitudeOne\Spatial\DBAL\Platform\PlatformInterface;
 use LongitudeOne\Spatial\DBAL\Platform\PostgreSql;
+use LongitudeOne\Spatial\DBAL\Platform\SqlServer;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
@@ -252,6 +254,10 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
 
         if ($platform instanceof MySQLPlatform) {
             return new MySql();
+        }
+
+        if ($platform instanceof SQLServerPlatform) {
+            return new SqlServer();
         }
 
         if ($platform instanceof PostgreSQLPlatform) {

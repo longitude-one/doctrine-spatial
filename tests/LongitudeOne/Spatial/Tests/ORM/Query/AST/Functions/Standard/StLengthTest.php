@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -52,6 +53,7 @@ class StLengthTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -90,7 +92,7 @@ class StLengthTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Length(ST_GeomFromText(:p1)) > ST_Length(l.lineString)'
+            'SELECT l FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l WHERE ST_Length(ST_GeomFromText(:p1, 0)) > ST_Length(l.lineString)'
         );
 
         $query->setParameter('p1', 'LINESTRING(0 0,21 21)', 'string');

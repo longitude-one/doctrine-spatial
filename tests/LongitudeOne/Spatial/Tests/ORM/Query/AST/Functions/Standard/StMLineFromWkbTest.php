@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -49,6 +50,7 @@ class StMLineFromWkbTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOMETRY_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -67,15 +69,14 @@ class StMLineFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_AsText(ST_MLineFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
+            'SELECT t, ST_AsText(ST_MLineFromWKB(:wkb, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity t'
         );
         $query->setParameter('wkb', hex2bin(self::DATA), 'blob');
-
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertMatchesRegularExpression('|^MULTILINESTRING\(|', $result[0][1]);
+        static::assertStringStartsWith('MULTILINESTRING', $result[0][1]);
     }
 
     /**

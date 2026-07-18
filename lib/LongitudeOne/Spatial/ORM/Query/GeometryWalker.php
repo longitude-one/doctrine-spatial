@@ -80,7 +80,7 @@ class GeometryWalker extends SqlWalker
             $alias = mb_strrchr($sql, ' ');
             // Theoretically, $alias cannot be false, but in this case it will be ignored
             if (false !== $alias) {
-                $alias = trim($alias);
+                $alias = mb_trim($alias);
                 $this->resultSetMapping->typeMappings[$alias] = 'geometry';
             }
         }

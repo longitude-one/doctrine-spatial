@@ -72,6 +72,25 @@ class MySql extends AbstractPlatform
     }
 
     /**
+     * Gets the SQL declaration snippet for a spatial function.
+     *
+     * @param string   $functionName the function name
+     * @param string[] $parameters   the function parameters
+     *
+     * @return string the SQL declaration snippet
+     */
+    public function getFunctionSqlDeclaration(string $functionName, array $parameters): string
+    {
+        return match ($functionName) {
+            // ST_SetSRID doesn't exists on MySQL, but you can use ST_SRID
+            'ST_SetSRID' => parent::getFunctionSqlDeclaration('ST_SRID', $parameters),
+
+            // These are methods, so we add parentheses
+            default => parent::getFunctionSqlDeclaration($functionName, $parameters),
+        };
+    }
+
+    /**
      * Gets the SQL declaration snippet for a field of this type.
      *
      * @param array<string, mixed> $column array SHOULD contain 'type' key

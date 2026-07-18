@@ -20,3 +20,4 @@ docker exec spatial-php8 composer test-mariadb
 docker exec spatial-php8 composer test-mysql5
 docker exec spatial-php8 composer test-mysql8
 docker exec spatial-php8 composer test-pgsql
+docker exec spatial-php8 composer test-sqlserver

@@ -182,7 +182,8 @@ trait PolygonHelperTrait
                     new Point(10, 0),
                     new Point(10, 20),
                     new Point(0, 20),
-                    new Point(10, 10),
+                    // new Point(10, 10), this is not a valid polygon, because of the intersection of the two lines (10, 0) - (10, 20) and (0, 10) - (10, 10)
+                    new Point(9, 9),
                     new Point(0, 0),
                 ]),
             ]);

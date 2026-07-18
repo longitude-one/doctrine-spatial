@@ -1,0 +1,86 @@
+<?php
+/**
+ * This file is part of the doctrine spatial extension.
+ *
+ * PHP 8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
+ *
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
+ * Copyright Longitude One 2020-2026
+ * Copyright 2015 Derek J. Lambert
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
+declare(strict_types=1);
+
+namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Common;
+
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
+
+/**
+ * ST_Relate DQL function.
+ *
+ * SQL Server requires all three parameters. It does not support two-parameter calls.
+ * Other database systems can use the third parameter as well.
+ * Therefore, this is a common function rather than a SQL Server-specific function.
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license https://alexandre-tranchant.mit-license.org
+ */
+class ScRelate extends AbstractSpatialDQLFunction
+{
+    /**
+     * Getter for the SQL function name.
+     *
+     * @since 2.0 This function replaces the protected property functionName.
+     */
+    protected function getFunctionName(): string
+    {
+        return 'ST_Relate';
+    }
+
+    /**
+     * Maximum number of parameters for the spatial function.
+     *
+     * @since 2.0 This function replaces the protected property maxGeomExpr.
+     *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     */
+    protected function getMaxParameter(): int
+    {
+        return 3;
+    }
+
+    /**
+     * Minimum number of parameters for the spatial function.
+     *
+     * @since 2.0 This function replaces the protected property minGeomExpr.
+     *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     */
+    protected function getMinParameter(): int
+    {
+        return 3;
+    }
+
+    /**
+     * Get the accepted platforms.
+     *
+     * @since 2.0 This function replaces the protected property platforms.
+     * @since 5.0 This function returns the class-string[] instead of string[]
+     *
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
+     */
+    protected function getPlatforms(): array
+    {
+        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class, SQLServerPlatform::class];
+    }
+}

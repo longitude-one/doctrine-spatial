@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -78,6 +79,6 @@ class StConvexHull extends AbstractSpatialDQLFunction
     protected function getPlatforms(): array
     {
         // This function didn't exist in MySQL until version 8.0.16
-        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class];
+        return [MariaDBPlatform::class, MySQLPlatform::class, PostgreSQLPlatform::class, SQLServerPlatform::class];
     }
 }

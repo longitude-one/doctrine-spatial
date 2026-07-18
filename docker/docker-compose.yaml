@@ -1,6 +1,7 @@
 services:
   php8:
     container_name: "spatial-php8"
+    platform: linux/amd64
     build:
       context: ./php8
     volumes:
@@ -62,3 +63,18 @@ services:
       MYSQL_PORT: 3306
     ports:
       - "3390:3306"
+  database-mssql-2017:
+    # Docker Hub image
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: "spatial-mssql-2017"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: mainExtendedToMoreThan8Chars
+    ports:
+      - 2017:1433
+    # Set health checks to wait until mssql-server has started
+#        options: >-
+#          --health-cmd="/opt/mssql-tools/bin/sqlcmd -S http://localhost:2017 -U sa -P mainExtendedToMoreThan8Chars -Q 'SELECT 1'"
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
