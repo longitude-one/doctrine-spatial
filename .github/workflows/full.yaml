@@ -140,11 +140,8 @@ jobs:
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ${{github.workspace}}/.phpunit.cache/code-coverage/clover*.xml
+          files: .phpunit.cache/code-coverage/clover.xml
           slug: longitude-one/doctrine-spatial
-          fail_ci_if_error: true
-          verbose: true
-
       - name: Run test suite for forks or version without code coverage
         if: ${{ env.HAS_CC_SECRET != 'true' }}
         run: composer run-script test
