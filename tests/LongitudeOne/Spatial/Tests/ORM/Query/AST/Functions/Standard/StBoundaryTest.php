@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -46,6 +47,7 @@ class StBoundaryTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
         // This function is not supported by mysql
         // TODO check if it's now supported by MySQL80
 
@@ -69,12 +71,24 @@ class StBoundaryTest extends PersistOrmTestCase
         );
         $result = $query->getResult();
 
+        $expected = [
+            'MULTIPOINT((0 0),(5 5))',
+            'MULTIPOINT((3 3),(5 22))',
+        ];
+
+        if ($this->getPlatform() instanceof SQLServerPlatform) {
+            $expected = [
+                'MULTIPOINT ((5 5), (0 0))',
+                'MULTIPOINT ((5 22), (3 3))',
+            ];
+        }
+
         static::assertIsArray($result);
         static::assertCount(2, $result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        static::assertSame('MULTIPOINT((0 0),(5 5))', $result[0][1]);
+        static::assertSame($expected[0], $result[0][1]);
         static::assertCount(1, $result[1]);
-        static::assertSame('MULTIPOINT((3 3),(5 22))', $result[1][1]);
+        static::assertSame($expected[1], $result[1][1]);
     }
 }

@@ -1,0 +1,75 @@
+<?php
+/**
+ * This file is part of the doctrine spatial extension.
+ *
+ * PHP 8.1 | 8.2 | 8.3
+ * Doctrine ORM 2.19 | 3.1
+ *
+ * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
+ * Copyright Longitude One 2020-2026
+ * Copyright 2015 Derek J. Lambert
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
+
+declare(strict_types=1);
+
+namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Common;
+
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
+
+/**
+ * Sc_Buffer DQL function.
+ * MariaDB, MySQL and SqlServer are not able to receive a CHARACTER VARYING as third parameter.
+ * So Sc_Buffer DQL function is specific to MariaDB, MySQL and SqlServer. It is compatible with PostgreSQL.
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license https://alexandre-tranchant.mit-license.org MIT
+ */
+class ScBuffer extends AbstractSpatialDQLFunction
+{
+    /**
+     * Function SQL name getter.
+     */
+    protected function getFunctionName(): string
+    {
+        return 'ST_Buffer';
+    }
+
+    /**
+     * Maximum number of parameters for the spatial function.
+     *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     */
+    protected function getMaxParameter(): int
+    {
+        return 2;
+    }
+
+    /**
+     * Minimum number of parameters for the spatial function.
+     *
+     * @return int the inherited methods shall NOT return null, but 0 when function has no parameter
+     */
+    protected function getMinParameter(): int
+    {
+        return 2;
+    }
+
+    /**
+     * Get the platforms accepted.
+     *
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
+     */
+    protected function getPlatforms(): array
+    {
+        return [MariaDBPlatform::class, MySQLPlatform::class, SQLServerPlatform::class, PostgreSQLPlatform::class];
+    }
+}

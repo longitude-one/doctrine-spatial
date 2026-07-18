@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -50,6 +51,7 @@ class StAsTextTest extends PersistOrmTestCase
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -72,7 +74,20 @@ class StAsTextTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertEquals('LINESTRING(0 0,2 2,5 5)', $result[0][1]);
-        static::assertEquals('LINESTRING(3 3,4 15,5 22)', $result[1][1]);
+
+        $expected = [
+            'LINESTRING(0 0,2 2,5 5)',
+            'LINESTRING(3 3,4 15,5 22)',
+        ];
+
+        if ($this->getPlatform() instanceof SQLServerPlatform) {
+            $expected = [
+                'LINESTRING (0 0, 2 2, 5 5)',
+                'LINESTRING (3 3, 4 15, 5 22)',
+            ];
+        }
+
+        static::assertSame($expected[0], $result[0][1]);
+        static::assertSame($expected[1], $result[1][1]);
     }
 }

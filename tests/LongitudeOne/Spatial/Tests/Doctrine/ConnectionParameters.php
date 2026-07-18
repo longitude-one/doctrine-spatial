@@ -60,6 +60,14 @@ class ConnectionParameters
             $connectionParams['driverOptions']['server_version'] = $GLOBALS['db_version'];
         }
 
+        if (isset($GLOBALS['db_driver_options'])) {
+            $options = explode(',', $GLOBALS['db_driver_options']);
+            foreach ($options as $option) {
+                [$key, $val] = explode('=', $option);
+                $connectionParams['driverOptions'][$key] = $val;
+            }
+        }
+
         return $connectionParams;
     }
 
@@ -78,7 +86,16 @@ class ConnectionParameters
         $connection = DriverManager::getConnection($parameters);
         $manager = $connection->createSchemaManager();
         $dbName = (string) $GLOBALS['db_name'];
-        $manager->dropDatabase($dbName);
+
+        // Drop the database if it exists and create a new one
+        foreach ($manager->listDatabases() as $database) {
+            if ($database === $dbName) {
+                $manager->dropDatabase($dbName);
+
+                break;
+            }
+        }
+
         $manager->createDatabase($dbName);
         $parameters['dbname'] = $dbName;
 

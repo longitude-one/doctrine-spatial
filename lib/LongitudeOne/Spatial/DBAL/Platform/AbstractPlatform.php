@@ -122,6 +122,22 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
+     * Gets the SQL declaration snippet for a spatial function.
+     *
+     * @param string   $functionName the function name
+     * @param string[] $parameters   the function parameters
+     *
+     * @return string the SQL declaration snippet
+     */
+    public function getFunctionSqlDeclaration(string $functionName, array $parameters): string
+    {
+        // This is a default implementation, but it can be overridden by specific platforms if needed.
+        // The default implementation assumes that the format is function_name(parameters).
+        // And the parameters are separated by commas.
+        return sprintf('%s(%s)', $functionName, implode(', ', $parameters));
+    }
+
+    /**
      * Get an array of database types that map to this Doctrine type.
      *
      * @param AbstractSpatialType $type the spatial type

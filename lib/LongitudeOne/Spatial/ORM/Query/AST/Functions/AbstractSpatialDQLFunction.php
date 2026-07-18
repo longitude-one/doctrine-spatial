@@ -28,6 +28,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
+use LongitudeOne\Spatial\DBAL\Helper\MatchPlatformHelper;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 
@@ -76,7 +77,10 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
             $arguments[] = $expression->dispatch($sqlWalker);
         }
 
-        return sprintf('%s(%s)', $this->getFunctionName(), implode(', ', $arguments));
+        $helper = new MatchPlatformHelper();
+        $platformInterface = $helper->getSpatialPlatform($sqlWalker->getConnection()->getDatabasePlatform());
+
+        return $platformInterface->getFunctionSqlDeclaration($this->getFunctionName(), $arguments);
     }
 
     /**
@@ -168,7 +172,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
      *
      * @param AbstractPlatform $platform database spatial
      *
-     * @return true if the current platform is supported
+     * @return bool true if the platform is supported, throw an exception otherwise
      *
      * @throws UnsupportedPlatformException when platform is unsupported
      */
@@ -191,7 +195,7 @@ abstract class AbstractSpatialDQLFunction extends FunctionNode
         }
 
         throw new UnsupportedPlatformException(
-            sprintf('DBAL platform "%s" is not currently supported.', $platform::class)
+            sprintf('The DBAL platform "%s" is not currently supported by %s function.', $platform::class, $this->getFunctionName())
         );
     }
 

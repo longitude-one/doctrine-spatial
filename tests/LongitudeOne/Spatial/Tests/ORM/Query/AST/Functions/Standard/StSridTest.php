@@ -22,6 +22,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
@@ -54,6 +55,7 @@ class StSridTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
         $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
@@ -72,7 +74,13 @@ class StSridTest extends PersistOrmTestCase
             'SELECT ST_SRID(g.geography, 2154) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
 
-        static::assertSame('SELECT ST_SRID(g0_.geography, 2154) AS sclr_0 FROM GeographyEntity g0_', $query->getSQL());
+        $sql = 'SELECT ST_SRID(g0_.geography, 2154) AS sclr_0 FROM GeographyEntity g0_';
+
+        if ($this->getPlatform() instanceof SQLServerPlatform) {
+            $sql = 'SELECT (g0_.geography).STSrid AS sclr_0 FROM GeographyEntity g0_';
+        }
+
+        static::assertSame($sql, $query->getSQL());
     }
 
     /**
@@ -89,7 +97,7 @@ class StSridTest extends PersistOrmTestCase
         $this->persistGeographyLosAngeles();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
+            'SELECT ST_Srid(g.geography) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
         );
         $result = $query->getResult();
 
@@ -100,7 +108,7 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
         }
 
-        static::assertSame(4326, $result[0][1]);
+        static::assertEquals(4326, $result[0][1]);
     }
 
     /**
@@ -113,16 +121,16 @@ class StSridTest extends PersistOrmTestCase
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
+            'SELECT ST_Srid(g.point) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
         );
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
+        if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform || $this->getPlatform() instanceof SQLServerPlatform) {
             // MySQL and MariaDB are returning 0 insteadof 2154
-            static::markTestSkipped('SRID not implemented in Abstraction of MySQL');
+            static::markTestSkipped('SRID autosave not implemented in Abstraction of MySQL');
         }
 
         static::assertSame(2154, $result[0][1]);
@@ -141,6 +149,10 @@ class StSridTest extends PersistOrmTestCase
             static::markTestSkipped('MariaDB does not support two parameters for ST_SRID function.');
         }
 
+        if ($this->getPlatform() instanceof SQLServerPlatform) {
+            static::markTestSkipped('SQL Server does not support two parameters for ST_SRID function.');
+        }
+
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
 
         if (static::platformIsMySql57($this->getPlatform())) {
@@ -148,13 +160,13 @@ class StSridTest extends PersistOrmTestCase
         }
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT ST_SRID(ST_SRID(g.point, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
+            'SELECT ST_Srid(ST_SetSrid(g.point, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity g'
         );
         $result = $query->getResult();
 
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
-        static::assertSame(4326, $result[0][1]);
+        static::assertEquals(4326, $result[0][1]);
     }
 }

@@ -45,6 +45,7 @@ class StRelateTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        // SQL Server does not support this function because it needs the three parameters
         // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();

@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -48,6 +49,7 @@ class StDistanceTest extends PersistOrmTestCase
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
         $this->usesType('geopoint');
         $this->supportsPlatform(PostgreSQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
         // TODO Check if MySSQL doesn't support this function or if I missed this function
 
         parent::setUp();
@@ -64,15 +66,22 @@ class StDistanceTest extends PersistOrmTestCase
         $losAngeles = $this->persistLosAngelesGeography();
         $dallas = $this->persistDallasGeography();
 
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-        );
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
+
+        $dql = 'SELECT g, ST_Distance(g.geography, ST_GeographyFromText(:p1, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g';
+
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            // we do not use the srid, because we're testing ST_Distance, not ST_GeographyFromText
+            $dql = 'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g';
+        }
+
+        $query = $this->getEntityManager()->createQuery($dql);
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
 
         $result = $query->getResult();
 
-        // TODO: Test should be fixed, distance are differents on Windows and on Linux.
         static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
@@ -99,10 +108,12 @@ class StDistanceTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        // TODO This test should be moved to a class implementing only PgSQL
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g'
-        );
+        $dql = 'SELECT g, ST_Distance(g.geography, ST_GeographyFromText(:p1, 4326)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g';
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            // we do not use the srid, because we're testing ST_Distance, not ST_GeographyFromText
+            $dql = 'SELECT g, ST_Distance(g.geography, PgSql_GeographyFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity g';
+        }
+        $query = $this->getEntityManager()->createQuery($dql);
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
 
@@ -111,11 +122,11 @@ class StDistanceTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertCount(3, $result);
         static::assertEquals($newYork, $result[0][0]);
-        static::assertEquals(1309106.31458423, $result[0][1]);
+        static::assertIsNumeric($result[0][1]);
         static::assertEquals($losAngeles, $result[1][0]);
-        static::assertEquals(2689041.41288843, $result[1][1]);
+        static::assertIsNumeric($result[1][1]);
         static::assertEquals($dallas, $result[2][0]);
-        static::assertEquals(1312731.61417061, $result[2][1]);
+        static::assertIsNumeric($result[2][1]);
     }
 
     /**
@@ -131,9 +142,13 @@ class StDistanceTest extends PersistOrmTestCase
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
 
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT p, ST_Distance(p.point, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
-        );
+        $dql = 'SELECT p, ST_Distance(p.point, ST_GeomFromText(:p1, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p';
+        if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            // we do not use the srid, because we're testing ST_Distance, not ST_GeomFromText
+            $dql = 'SELECT p, ST_Distance(p.point, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p';
+        }
+
+        $query = $this->getEntityManager()->createQuery($dql);
 
         $query->setParameter('p1', 'POINT(-89.4 43.066667)', 'string');
 

@@ -42,23 +42,33 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "scripts": {
+        "quality": [
+            "quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --allow-risky=yes",
+            "quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M",
+            "quality/php-mess-detector/vendor/bin/phpmd lib text quality/php-mess-detector/ruleset.xml",
+            "quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml",
+            "quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s"
+        ],
         "test": [
             "phpunit --configuration phpunit.mariadb10.6.xml",
             "phpunit --configuration phpunit.mysql5.7.xml",
             "phpunit --configuration phpunit.mysql8.0.xml",
-            "phpunit --configuration phpunit.pgsql.xml"
+            "phpunit --configuration phpunit.pgsql.xml",
+            "phpunit --configuration phpunit.sqlserver.xml"
         ],
         "test-coverage": [
             "phpunit --configuration phpunit.mariadb10.6.xml --coverage-php .phpunit.cache/code-coverage/mariadb10.6.cov",
             "phpunit --configuration phpunit.mysql5.7.xml --coverage-php .phpunit.cache/code-coverage/mysql5.7.cov",
             "phpunit --configuration phpunit.mysql8.0.xml --coverage-php .phpunit.cache/code-coverage/mysql8.0.cov",
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
+            "phpunit --configuration phpunit.sqlserver.xml --coverage-php .phpunit.cache/code-coverage/sqlserver.cov",
             "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
         ],
         "test-mariadb10.6": "phpunit --configuration phpunit.mariadb10.6.xml",
         "test-mysql5.7": "phpunit --configuration phpunit.mysql5.7.xml",
         "test-mysql8.0": "phpunit --configuration phpunit.mysql8.0.xml",
-        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml"
+        "test-pgsql": "phpunit --configuration phpunit.pgsql.xml",
+        "test-sqlserver": "phpunit --configuration phpunit.sqlserver.xml"
     },
     "autoload": {
         "psr-0": {

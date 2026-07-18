@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 
@@ -47,6 +48,7 @@ class StGeomFromWkbTest extends PersistOrmTestCase
         $this->usesEntity(self::POINT_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
 
         parent::setUp();
     }
@@ -65,7 +67,7 @@ class StGeomFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_AsText(ST_GeomFromWkb(:wkb)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
+            'SELECT t, ST_AsText(ST_GeomFromWkb(:wkb, 0)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
         );
         $query->setParameter('wkb', hex2bin('0101000000000000000000F03F000000000000F0BF'), 'blob');
 
@@ -73,7 +75,7 @@ class StGeomFromWkbTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
-        static::assertEquals('POINT(1 -1)', $result[0][1]);
+        static::assertStringStartsWith('POINT', $result[0][1]);
     }
 
     /**

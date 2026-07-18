@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,13 +43,12 @@ class SpatialTestCase extends TestCase
      */
     protected static function assertBigPolygon($value, AbstractPlatform $platform): void
     {
-        $expected = 'POLYGON((0 10,10 10,10 0,0 0,0 10))';
-        if ($platform instanceof MariaDBPlatform) {
-            $expected = 'POLYGON((0 0,0 10,10 10,10 0,0 0))';
-        } elseif ($platform instanceof MySQLPlatform) {
-            // MySQL does not respect creation order of points composing a Polygon.
-            $expected = 'POLYGON((0 10,0 0,10 0,10 10,0 10))';
-        }
+        $expected = match (true) {
+            $platform instanceof MariaDBPlatform => 'POLYGON((0 0,0 10,10 10,10 0,0 0))',
+            $platform instanceof MySQLPlatform => 'POLYGON((0 10,0 0,10 0,10 10,0 10))',
+            $platform instanceof SQLServerPlatform => 'POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))',
+            default => 'POLYGON((0 10,10 10,10 0,0 0,0 10))',
+        };
 
         static::assertSame($expected, $value);
     }
@@ -67,6 +67,7 @@ class SpatialTestCase extends TestCase
             self::platformIsMySql57($platform) => 'GEOMETRYCOLLECTION()',
             $platform instanceof MariaDBPlatform => 'GEOMETRYCOLLECTION EMPTY',
             $platform instanceof MySQLPlatform => 'GEOMETRYCOLLECTION EMPTY',
+            $platform instanceof SQLServerPlatform => 'GEOMETRYCOLLECTION EMPTY',
             default => 'POINT EMPTY',
         };
 

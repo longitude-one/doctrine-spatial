@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
@@ -76,6 +77,6 @@ class StIsClosed extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class];
+        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class, SQLServerPlatform::class];
     }
 }

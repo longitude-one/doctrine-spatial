@@ -22,6 +22,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use LongitudeOne\Spatial\Tests\OrmTestCase;
@@ -58,6 +59,7 @@ class SchemaTest extends OrmTestCase
         }
 
         $this->supportsPlatform(MariaDBPlatform::class);
+        $this->supportsPlatform(SQLServerPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         parent::setUp();
