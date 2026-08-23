@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * MBREquals DQL function tests.
@@ -28,13 +29,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- *
  * @internal
  *
  * @coversDefaultClass
  */
-#[\PHPUnit\Framework\Attributes\Group('dql')]
-#[\PHPUnit\Framework\Attributes\Group('mysql-only')]
+#[Group('dql')]
+#[Group('mysql-only')]
 class SpMbrEqualsTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -52,9 +52,8 @@ class SpMbrEqualsTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testMbrEqualsWhereParameter(): void
     {
         $this->persistBigPolygon();
@@ -91,9 +90,8 @@ class SpMbrEqualsTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testSelectMbrEquals(): void
     {
         $bigPolygon = $this->persistBigPolygon();

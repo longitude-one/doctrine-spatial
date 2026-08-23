@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -21,11 +21,11 @@ namespace LongitudeOne\Spatial\Tests;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests constructor deprecations.
- *
  *
  * @internal
  *
@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
  */
-#[\PHPUnit\Framework\Attributes\Group('php')]
+#[Group('php')]
 class DeprecationTest extends TestCase
 {
     use VerifyDeprecations;

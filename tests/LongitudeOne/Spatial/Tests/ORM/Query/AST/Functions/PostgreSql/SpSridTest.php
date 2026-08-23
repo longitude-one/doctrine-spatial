@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_SRID PostGreSQL function tests.
@@ -40,12 +41,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- *
  * @internal
  *
  * @coversDefaultClass
  */
-#[\PHPUnit\Framework\Attributes\Group('postgis-only')]
+#[Group('postgis-only')]
 class SpSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -65,9 +65,8 @@ class SpSridTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
@@ -89,9 +88,8 @@ class SpSridTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);

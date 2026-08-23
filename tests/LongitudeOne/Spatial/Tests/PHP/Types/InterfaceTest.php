@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -39,17 +39,17 @@ use LongitudeOne\Spatial\PHP\Types\MultiPolygonInterface;
 use LongitudeOne\Spatial\PHP\Types\PointInterface;
 use LongitudeOne\Spatial\PHP\Types\PolygonInterface;
 use LongitudeOne\Spatial\PHP\Types\SpatialInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * To avoid regression, this class tests the interfaces implemented by the classes.
  *
- *
  * @internal
  *
  * @coversNothing
  */
-#[\PHPUnit\Framework\Attributes\Group('php')]
+#[Group('php')]
 class InterfaceTest extends TestCase
 {
     /**

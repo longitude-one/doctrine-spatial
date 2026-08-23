@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -31,6 +31,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon as GeometryPolygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * SP_Summary DQL function tests.
@@ -39,13 +40,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- *
  * @internal
  *
  * @coversDefaultClass
  */
-#[\PHPUnit\Framework\Attributes\Group('dql')]
-#[\PHPUnit\Framework\Attributes\Group('pgsql-only')]
+#[Group('dql')]
+#[Group('pgsql-only')]
 class SpSummaryTest extends PersistOrmTestCase
 {
     /**
@@ -66,9 +66,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws ORMException            when cache is not set
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geography')]
+    #[Group('geography')]
     public function testSelectStSummaryGeography(): void
     {
         $point = new GeographyEntity();
@@ -116,9 +115,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws ORMException            when cache is not set
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testSelectStSummaryGeometry(): void
     {
         $point = new GeometryEntity();

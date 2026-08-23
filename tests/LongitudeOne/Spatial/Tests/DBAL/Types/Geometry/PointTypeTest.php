@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Doctrine PointType tests.
@@ -35,12 +36,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- *
  * @internal
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
  */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+#[Group('geometry')]
 class PointTypeTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;

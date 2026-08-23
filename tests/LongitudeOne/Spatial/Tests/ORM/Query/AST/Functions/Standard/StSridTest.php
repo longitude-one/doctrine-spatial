@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -27,6 +27,7 @@ use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_SRID DQL function tests.
@@ -34,12 +35,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- *
  * @internal
  *
  * @coversDefaultClass
  */
-#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[Group('dql')]
 class StSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -61,9 +61,7 @@ class StSridTest extends PersistOrmTestCase
         parent::setUp();
     }
 
-    /**
-     */
-#[\PHPUnit\Framework\Attributes\Group('srid-2-parameters')]
+    #[Group('srid-2-parameters')]
     public function testFunctionSqlGenerationWithTwoParameters(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
@@ -85,9 +83,8 @@ class StSridTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
@@ -113,9 +110,8 @@ class StSridTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
      */
-#[\PHPUnit\Framework\Attributes\Group('geometry')]
+    #[Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
@@ -136,9 +132,7 @@ class StSridTest extends PersistOrmTestCase
         static::assertSame(2154, $result[0][1]);
     }
 
-    /**
-     */
-#[\PHPUnit\Framework\Attributes\Group('srid-2-parameters')]
+    #[Group('srid-2-parameters')]
     public function testFunctionWithGeometryAndChangedSrid(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {

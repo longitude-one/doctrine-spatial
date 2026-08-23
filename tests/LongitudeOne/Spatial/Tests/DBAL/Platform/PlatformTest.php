@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -34,10 +34,11 @@ use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\OrmMockTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Spatial platform tests.
- *
  *
  * @internal
  *
@@ -45,8 +46,8 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
  * @covers \LongitudeOne\Spatial\DBAL\Platform\MySql
  * @covers \LongitudeOne\Spatial\DBAL\Platform\PostgreSql
  */
-#[\PHPUnit\Framework\Attributes\Group('php')]
-#[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
+#[Group('php')]
+#[AllowMockObjectsWithoutExpectations]
 class PlatformTest extends OrmMockTestCase
 {
     /**
