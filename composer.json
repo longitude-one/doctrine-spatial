@@ -25,19 +25,18 @@
     "require": {
         "php": "^8.4",
         "ext-mbstring": "*",
-        "longitude-one/geo-parser": "^3.0.1",
+        "longitude-one/geo-parser": "^3.0.4",
         "longitude-one/wkt-parser": "^3.0.1",
         "longitude-one/wkb-parser": "^3.0.1",
         "doctrine/orm": "^3.6"
     },
     "require-dev": {
-        "monolog/monolog": "^2.0|^3.0",
+        "monolog/monolog": "^3.0",
         "phpunit/phpunit": "^13.0",
         "phpunit/phpcov": "^13.0",
-        "cache/array-adapter": "^1.1",
         "dg/bypass-finals": "^1.11",
         "composer/semver": "^3.4",
-        "symfony/var-exporter": "^6.4"
+        "symfony/cache": "^7.4"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",

@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
 use Doctrine\DBAL\Connection;
@@ -126,6 +125,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
 // phpcs miss the Exception
@@ -370,7 +370,7 @@ abstract class OrmTestCase extends SpatialTestCase
             $realPaths = [$realPath];
             $config = new Configuration();
 
-            $config->setMetadataCache(new ArrayCachePool());
+            $config->setMetadataCache(new ArrayAdapter());
 
             // Preferred order for lazy loading:
             // 1. Native lazy objects when Doctrine supports them on PHP 8.4+

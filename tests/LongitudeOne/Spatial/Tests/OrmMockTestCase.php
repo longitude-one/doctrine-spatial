@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
@@ -28,6 +27,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * Common test code.
@@ -102,7 +102,7 @@ abstract class OrmMockTestCase extends SpatialTestCase
         }
         $config = new Configuration();
 
-        $config->setMetadataCache(new ArrayCachePool());
+        $config->setMetadataCache(new ArrayAdapter());
 
         // Preferred order for lazy loading:
         // 1. Native lazy objects when Doctrine supports them on PHP 8.4+
