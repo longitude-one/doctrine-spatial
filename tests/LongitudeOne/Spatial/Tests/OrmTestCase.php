@@ -364,8 +364,21 @@ abstract class OrmTestCase extends SpatialTestCase
             $config = new Configuration();
 
             $config->setMetadataCache(new ArrayCachePool());
-            $config->setProxyDir(__DIR__.'/Proxies');
-            $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
+
+            // Doctrine ORM ^2.19 && ^3.0
+            if (method_exists($config, 'setProxyDir')) {
+                $config->setProxyDir(__DIR__.'/Proxies');
+            }
+
+            if (method_exists($config, 'setProxyNamespace')) {
+                $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
+            }
+
+            // Doctrine ORM ^4.0
+            if (method_exists($config, 'enableNativeLazyObjects')) {
+                $config->enableNativeLazyObjects(true);
+            }
+
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
 
             return new EntityManager(static::getConnection(), $config);
