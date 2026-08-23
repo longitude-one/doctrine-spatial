@@ -365,18 +365,17 @@ abstract class OrmTestCase extends SpatialTestCase
 
             $config->setMetadataCache(new ArrayCachePool());
 
-            // Doctrine ORM ^2.19 && ^3.0
-            if (method_exists($config, 'setProxyDir')) {
-                $config->setProxyDir(__DIR__.'/Proxies');
-            }
-
-            if (method_exists($config, 'setProxyNamespace')) {
-                $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
-            }
-
-            // Doctrine ORM ^4.0
-            if (method_exists($config, 'enableNativeLazyObjects')) {
+            // Preferred order for lazy loading:
+            // 1. Native lazy objects when Doctrine supports them on PHP 8.4+
+            // 2. Legacy proxy configuration as a fallback for older Doctrine versions
+            // 3. Leave Doctrine defaults untouched if neither API is available
+            if (method_exists($config, 'enableNativeLazyObjects') && PHP_VERSION_ID >= 80400) {
+                // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
                 $config->enableNativeLazyObjects(true);
+            } elseif (method_exists($config, 'setProxyDir') && method_exists($config, 'setProxyNamespace')) {
+                // This is the legacy proxy-based fallback used when native lazy objects are not available.
+                $config->setProxyDir(__DIR__.'/Proxies');
+                $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
             }
 
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
