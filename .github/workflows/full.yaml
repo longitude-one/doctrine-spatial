@@ -2,6 +2,7 @@ name: Full tests
 on:
   schedule:
     - cron: '0 17 * * 4'
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -29,7 +30,6 @@ permissions:
 jobs:
   stable-build:
     runs-on: ubuntu-latest
-    environment: 'Test environment'
     name: PHP 8.4 - doctrine/orm ^3.1
     env:
       HAS_CC_SECRET: ${{secrets.CODECOV_TOKEN != '' }}
@@ -219,7 +219,7 @@ jobs:
     needs: stable-build
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.orm == '^4.0'}}
-    environment: 'Test environment'
+
     strategy:
       fail-fast: false
       matrix:
