@@ -1,6 +1,6 @@
 # Doctrine Spatial
 
-Doctrine Spatial is a Doctrine ORM/DBAL extension for working with spatial data in PHP applications.
+Doctrine Spatial is a Doctrine ORM and DBAL extension for working with spatial data in PHP applications.
 
 It provides support for spatial types and functions across multiple database engines, while keeping the integration close to Doctrine’s native entity and query model.
 
@@ -8,7 +8,7 @@ It provides support for spatial types and functions across multiple database eng
 
 - Map geometry and geography data with Doctrine entities.
 - Use spatial predicates and functions directly in DQL.
-- Support PostgreSQL/PostGIS, MySQL, MariaDB, and SQL Server.
+- Work with PostgreSQL/PostGIS, MySQL, MariaDB, and SQL Server.
 - Keep database-specific behavior explicit and well documented.
 
 ## Current status
@@ -31,48 +31,71 @@ The [documentation](https://doctrine-spatial.readthedocs.io) covers installation
 
 It also includes a glossary for the main spatial types and functions supported by the library.
 
-## Compatibility
+## Roadmap
 
-### PHP and Doctrine ORM
+> [!NOTE]
+> A major release may increase the minimum supported PHP version. Other breaking changes are documented in the changelog.
 
-| doctrine-spatial | PHP  | Doctrine ORM.      | Status                     | 
-|------------------|------|--------------------|----------------------------|
-| **5.0**          | 8.1+ | `^2.9`, `^3.1`     | Stable (security fixes).   |
-| **5.1**          | 8.2+ | `^2.19`, `^3.1`    | Next version (development) |
-| **5.2**          | 8.3+ | `^2.19`, `^3.1`    | Slated for Jan 1, 2027.    |
-| **6.0**          | 8.5+ | `^3.6`, `^4.x-dev` | In development.            |
+| Version | PHP compatibility           | Tested on       | Doctrine ORM             | Tested against Doctrine ORM | Released     | Active support   | Security fixes   |
+|---------|-----------------------------|-----------------|--------------------------|-----------------------------|--------------|------------------|------------------|
+| 5       | 8.1 - 8.2 - 8.3 - 8.4 - 8.5 | From 8.1 to 8.3 | ^2.1 - ^3.0 - ^4.0.x-dev | ^2.1 - ^3.0 - ^4.0.x-dev    | 04 May 2024  | 31 August 2026   | 31 December 2026 |
+| 6       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - 4.0.x-dev            | August 2026  | 31 December 2027 | 31 December 2028 |
+| 7       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - 4.0.x-dev            | Unknown      | Unknown          | Unknown          |
+| 8       | 8.5                         | 8.5             |                          | ^3.6 - 4.0.x-dev.           | January 2028 | 31 December 2028 | 31 December 2029 |
 
-Security fixes follow the [PHP support roadmap](https://www.php.net/supported-versions.php).
+> [!NOTE]
+> **Why does PHP support jump between versions 5 and 6?**
+> PHP 8.4 introduces lazy objects. Designed especially for Doctrine-created objects, this feature removes the need for proxies and dedicated proxy namespaces.
+> This is a major change that improves performance. Maintaining a library that supports both approaches complicates development and maintenance.
+> Version 5 of Doctrine Spatial provides a smooth transition: it is compatible with PHP 8.1 through 8.5 and with Doctrine ORM versions 2, 3, and even 4.
+> You are encouraged to upgrade to PHP 8.4 and Doctrine ORM 3.6, which introduces lazy objects, before upgrading to Doctrine Spatial version 6.
+> Version 6 contains no breaking changes other than higher minimum supported versions of PHP and Doctrine ORM.
 
-### Database compatibility
+Version 7 is planned as an intermediate release between versions 6 and 8, with the following new features:
 
-The versions below reflect the database stack used for the test matrix.
+- Support for Z (elevation) and M (measure) dimensions
+- SRID support for MySQL and SQL Server
+- A new library ecosystem, including doctrine-spatial-types, geo-parser version 4, and new writers
 
-| doctrine-spatial | MySQL.   | MariaDB | PostgreSQL | PostGIS | SQL Server | Status                     |
-|------------------|----------|---------|------------|---------|------------|----------------------------|
-| **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          | Stable (security fixes).   |
-| **5.1**          | 8.4      | 10.11   | 18         | 3.6     | 2017       | Next version (development) |
-| **5.2**          | 8.4      | 10.11   | 18         | 3.6     | 2017       | Next version (development) |
-| **6.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       | in development.            |
+The release date will depend on the availability of contributors and on my ability to fund subscriptions to AI development tools.
+Donations of coffee through [Ko-fi](https://ko-fi.com/longitudeone) will go either towards actual coffee or towards AI subscriptions.
+
+### Release
+
+| Status                      | Doctrine Spatial | PHP  | Doctrine ORM       |
+|-----------------------------|------------------|------|--------------------|
+| Stable (security fixes)     | **5.0**          | 8.1+ | `^2.9`, `^3.1`     |
+| Next release                | **6.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
+| Next major version          | **7.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
+| Planned for 1 January 2028  | **8.0**          | 8.5+ | `^3.6`, `^4.x-dev` |
+
+### Database testing
+
+The following versions reflect the database stack used in the test matrix.
+
+| Doctrine Spatial | MySQL    | MariaDB | PostgreSQL | PostGIS | SQL Server |
+|------------------|----------|---------|------------|---------|------------|
+| **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          |
+| **6.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
+| **7.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
+| **8.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
+
+These versions may change rapidly as the test matrix evolves.
 
 ## Known limitations
 
-`longitude-one/doctrine-spatial` cannot currently store the SRID on MySQL or SQL Server. Internally, the extension uses Well-Known Text (WKT) to bridge database values, but this does not allow both WKT and SRID to be passed together through Doctrine’s persistence model. Extended Well-Known Text (EWKT) solves this for PostGIS, but it is not supported by other database engines.
+`longitude-one/doctrine-spatial` cannot currently persist SRIDs in MySQL or SQL Server. Internally, the extension uses Well-Known Text (WKT) to translate values to and from the database, but Doctrine’s persistence layer cannot pass a WKT value and an SRID together. Extended Well-Known Text (EWKT) addresses this limitation in PostGIS, but other database engines do not support it.
 
-This limitation can be worked around in practice by using the spatial functions `ST_SetSRID` and `ST_SRID` when needed, so the SRID can still be handled at the query level even if it is not persisted directly with the value.
-
-## Project origins
-
-This library was originally created by Derek J. Lambert. Alexandre Tranchant later forked it from [creof/doctrine-spatial](https://github.com/creof/doctrine2-spatial) after the original project appeared to be inactive since 2017.
+You can work around this limitation by using the `ST_SetSRID` and `ST_SRID` spatial functions when needed. This allows SRIDs to be handled at the query level, even though they are not stored directly with the value.
 
 ## Branch strategy
 
 The repository follows a structured release model:
 
-- **main** — Stable 5.0 releases with bug fixes and security updates.
-- **5.1.x-dev** — Controlled deprecations to ease the transition toward 6.0.
-- **5.2.x-dev** — This branch will drop compatibility with PHP 8.2 and the dedicated code path for it.
-- **6.0.x-dev** — Major changes and new features, potentially including breaking changes.
+- **main** — No breaking changes; only the minimum supported versions of PHP and Doctrine ORM may change.
+- **5.0.x-dev** — Security updates for 5.0.x only.
+- **6.1.x-dev** — New features without breaking changes.
+- **7.0.x-dev** — New features with breaking changes.
 
 ## Contributing
 

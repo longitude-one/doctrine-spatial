@@ -1,23 +1,51 @@
 # Change Log
+
 All notable changes to this project will be documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 This project adheres to [Semantic Versioning](https://semver.org/).
+
+## 5.0.4
+
+Version 5.0.4 improved contributor and CI tooling rather than changing the public spatial API. It added explicit container platforms for PostGIS and MySQL, corrected Docker and installation instructions, added repository attributes, removed the redundant `ext-json` requirement, and updated PHP CodeSniffer, PHP CS Fixer, PHP Mess Detector, PHPStan, and their dependencies. The release also incorporated MariaDB support work from the main branch.
+
+## 5.0.3
+
+Version 5.0.3 extended `ST_SRID()` support to accept two parameters. It added a PostgreSQL-specific SRID function, deprecated use of the standard SRID function on PostgreSQL, and included tests for the new behaviour and the emitted deprecations.
+
+## 5.0.2
+
+Version 5.0.2 addressed a false positive that reported the SQL Server platform as unavailable. The surrounding maintenance work also covered an edge case in `isClosed` for empty line strings, documentation adjustments, and quality-tool baseline updates, keeping the patch focused on reliable platform detection and regression coverage.
+
+## 5.0.1
+
+Version 5.0.1 corrected an unexpected conversion of coordinate values while storing points. It also separated geodetic and Cartesian coordinates through new interfaces, introduced an internal `RangeException`, resolved the related issues, and refined CI so that duplicate checks are avoided across pushes and pull requests.
+
+## 5.0.0
+
+Version 5.0.0 focused on compatibility with modern Doctrine ORM versions: it added support for Doctrine ORM 2.19 and 3.1, with testing also performed against the 3.2 and 4.0 development lines. The release upgraded Composer, PHPUnit, parsers, GitHub Actions, and the quality-tool suite; removed deprecated APIs; strengthened the test harness and coverage workflow; and introduced interfaces and return types that prepared the library for later releases.
+
+## 4.0.0
+
+Version 4.0.0 modernized the parsing layer by adopting `longitude-one/wkt-parser` and subsequently pinning it to the 1.0 release. It removed support for PHP 7.4 and PHP 8.0, migrated test fixtures from annotations to attributes, improved cross-platform floating-point tests, and refreshed the CI and code-quality configuration. These changes established the technical baseline for the 4.x series.
 
 ## LongitudeOne/doctrine-spatial [4.0.0-dev]
 
 ### Changed
+
 - longitude-one/wkt-parser replaces creof/wkt-parser
 
 ### Removed
+
 - Removing support of PHP7.4, PHP8.0
 
 ### TODO
+
 - Support of CircleCI on Github actions (help is welcomed)
 - Support for code coverage on Github Actions (help is welcomed)
-
 
 ## LongitudeOne/doctrine-spatial [3.0.2] - 2022-02-16
 
 ### Added
+
 - longitude-one/doctrine-spatial replaces CrEOF/doctrine2-spatial
 - Support of PHP8.0
 - Support for Postgis2.1, PostGis3.0, PostGis3.1
@@ -25,8 +53,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Github actions added for our internal test
 
 ### Removed
+
 - Removing support of PHP7.2, PHP7.3
-- Removing compatibility with Postgis 2.0. Some spatial functions have been renamed to their 
+- Removing compatibility with Postgis 2.0. Some spatial functions have been renamed to their
 new names (example: ST_Line_Interpolate_Point has been renamed to ST_Line_Interpolate_Point).
 - Removing test on Travis
 
@@ -35,11 +64,13 @@ new names (example: ST_Line_Interpolate_Point has been renamed to ST_Line_Interp
 ## CrEOF/doctrine2-spatial [2.0.0-RC1] Release candidat - 2020-03-26
 
 ### Added
+
 - Geometric and geographic entities implements JsonSerialization.
 
 ## CrEOF/doctrine2-spatial[2.0.0-RC0] Release candidat - 2020-03-18
 
 ### Added
+
 - A new documentation hosted on ReadTheDocs.
 - Adding support of PHP7.2, PHP7.3, PHP7.4,
 - Needed PHP extension added in composer.json,
@@ -51,26 +82,37 @@ new names (example: ST_Line_Interpolate_Point has been renamed to ST_Line_Interp
 - AST Functions updated to detect which function was not tested,
 - A lot of spatial functions,
 - A lot of PostgreSql functions,
-- Deprecated MySql functions replaced by their new names, 
+- Deprecated MySql functions replaced by their new names,
 - Removing deprecations of doctrine2,
 - Project forked from creof/doctrine-spatial2.
+
 ### Removed
+
 - Removing support of PHP5.*, PHP7.0, PHP7.1
 
-## CrEOF/doctrine2-spatial [1.1.1] - 2020-02-21 
+## CrEOF/doctrine2-spatial [1.1.1] - 2020-02-21
+
 Nota: This version was never published by creof. But the fork begins at this date.
+
 ### Added
+
 - Added support for PostgreSql ST_MakeEnvelope function.
+
 ### Changed
+
 - Added implementation of getTypeFamily() and getSQLType() to AbstractGeometryType.
 - Rename AbstractGeometryType class to AbstractSpatialType.
 - Simplify logic in isClosed() method of AbstractLineString.
 - Updated copyright year in LICENSE.
+
 ### Removed
+
 - Unused imports from a number of classes.
 
 ## CrEOF/doctrine2-spatial [1.1] - 2015-12-20
+
 ### Added
+
 - Local phpdocs to database platform classes.
 - getMappedDatabaseTypes() method to PlatformInterface returning a unique type name used in type mapping.
 - Entity and test for setting default SRID in column definition on PostgreSQL/PostGIS.
@@ -80,6 +122,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - Test for unsupported platforms.
 
 ### Changed
+
 - Moved database platform classes to namespace LongitudeOne\Spatial\DBAL\Platform.
 - Define exception messages where thrown in classes.
 - Pass entity class names to usesEntity() in tests instead of looking them up in an array.
@@ -91,30 +134,37 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - Changed test class names to match filenames.
 
 ### Removed
+
 - Static exception messages from package exception classes.
 - getTypeFamily() method from PlatformInterface.
 - Dependency on ramsey/array_column package.
 - Empty test classes.
 
 ## CrEOF/doctrine2-spatial [1.0.1] - 2015-12-18
+
 ### Added
+
 - Dependency on creof/geo-parser.
 - Dependency on creof/wkt-parser.
 - Dependency on creof/wkb-parser.
 - Additional spatial functions support for PostgreSQL/PostGIS.
 
 ### Changed
+
 - Replace regex in AbstractPoint with parser from creof/geo-parser.
 - Use parser from creof/wkt-parser in AbstractPlatform class.
 - Use parser from creof/wkb-parser in AbstractPlatform class.
 
 ### Removed
+
 - StringLexer and StringParser classes no longer needed.
 - BinaryReader, BinaryParser, and Utils classes no longer needed.
 - Unused expection methods from InvalidValueException.
 
 ## CrEOF/doctrine2-spatial [1.0.0] - 2015-11-09
+
 ### Added
+
 - Change log file to chronicle changes.
 - Stub TODO.md file.
 - CONTRIBUTING.md file with guidelines.
@@ -128,6 +178,7 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - MultiPolygon geometry DBAL type.
 
 ### Changed
+
 - Minimum doctrine/orm version now 2.3.
 - All ORM tests now extend CrEOF\Spatial\Tests\OrmTest.
 - Specifying test platform through @group annotation has been deprecated. Tests now configure supported platforms in setUp(), unsupported tests are skipped.
@@ -138,4 +189,5 @@ Nota: This version was never published by creof. But the fork begins at this dat
 - StringLexer and StringParser now correctly handle values with exponent/scientific notation.
 
 ### Removed
+
 - AbstractDualGeometryDQLFunction, AbstractDualGeometryOptionalParameterDQLFunction, AbstractGeometryDQLFunction, AbstractSingleGeometryDQLFunction, AbstractTripleGeometryDQLFunction, and AbstractVariableGeometryDQLFunction classes.
