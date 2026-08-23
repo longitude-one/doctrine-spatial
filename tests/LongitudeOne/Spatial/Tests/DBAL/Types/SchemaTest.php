@@ -30,7 +30,7 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 /**
  * Doctrine schema related tests.
  *
- * @group php
+ * @group dql
  *
  * @internal
  *

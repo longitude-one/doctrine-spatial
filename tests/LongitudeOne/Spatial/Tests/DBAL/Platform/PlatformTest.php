@@ -38,7 +38,7 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 /**
  * Spatial platform tests.
  *
- * @group pgsql-only
+ * @group php
  *
  * @internal
  *

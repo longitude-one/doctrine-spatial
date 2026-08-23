@@ -17,7 +17,7 @@
             <group>dql</group>
             <group>geometry</group>
             <group>srid</group>
-            <group>mysql-only</group>
+            <group>mariadb-only</group>
             <group>issue</group>
         </include>
         <exclude>
@@ -40,7 +40,7 @@
         <!-- Select the directory to store the log files -->
         <var name="opt_log_dir" value=".phpunit.cache/logs"/>
         <!-- Select the log file name -->
-        <var name="opt_log_file" value="mariadb.log"/>
+        <var name="opt_log_file" value="mariadb1011.log"/>
     </php>
     <source>
         <include>

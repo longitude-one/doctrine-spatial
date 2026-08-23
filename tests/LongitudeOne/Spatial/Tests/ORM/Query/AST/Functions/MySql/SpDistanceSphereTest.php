@@ -40,7 +40,7 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
- * @group dql
+ * @group mysql-only
  *
  * @internal
  *

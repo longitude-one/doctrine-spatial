@@ -33,7 +33,7 @@
         <var name="db_username" value="sa"/>
         <var name="db_password" value="mainExtendedToMoreThan8Chars"/>
         <var name="db_name" value="main"/>
-        <var name="db_port" value="2017"/>
+        <var name="db_port" value="1433"/>
         <var name="db_driver_options" value="TrustServerCertificate=1"/>
         <!-- mssql cannot drop current database, -->
         <!-- Also, we connect on the alternate database, then we drop the main database -->

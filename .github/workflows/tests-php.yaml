@@ -1,0 +1,121 @@
+name: PHP Tests
+
+on:
+  schedule:
+    - cron: '0 17 * * 4'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 5.0.x-dev
+      - 7.x-dev
+    paths-ignore:
+      - '**.md'
+      - '**.rst'
+      - '.readthedocs.yaml'
+      - 'LICENSE'
+  pull_request:
+    branches:
+      - main
+      - 5.0.x-dev
+      - 7.x-dev
+    paths-ignore:
+      - '**.md'
+      - '**.rst'
+      - '.readthedocs.yaml'
+      - 'LICENSE'
+
+permissions:
+  contents: read
+
+jobs:
+  tests-php:
+    name: PHP 8.4
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+          extensions: mbstring, intl
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Create the composer.lock for the cache key
+        run: composer update --no-install
+
+      - name: Restore cache Composer dependencies
+        uses: actions/cache@v6
+        with:
+          path: vendor/
+          key: ${{ format('{0}-composer-php84-{1}', runner.os, hashFiles('composer.lock')) }}
+          restore-keys: ${{ format('{0}-composer-php84-', runner.os) }}
+
+      - name: Install libraries
+        run: composer install -vvv
+
+      - name: Copy test suites
+        run: cp .github/phpunit.no-database-server.xml .
+
+      - name: Run PHP test group
+        run: composer run-script test-php-only
+
+      - name: Cache Composer PHP-CS-Fixer packages
+        uses: actions/cache@v6
+        with:
+          path: quality/php-cs-fixer/vendor/
+          key: ${{ format('{0}-phpcsfixer-{1}', runner.os, hashFiles('quality/php-cs-fixer/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpcsfixer-', runner.os) }}
+
+      - name: Install PHP-CS-Fixer
+        run: composer install --working-dir=quality/php-cs-fixer
+
+      - name: Run PHP-CS-Fixer
+        run: ./quality/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=quality/php-cs-fixer/.php-cs-fixer.php --dry-run --allow-risky=yes --diff
+
+      - name: Cache Composer PHP-MESS-DETECTOR packages
+        uses: actions/cache@v6
+        with:
+          path: quality/php-mess-detector/vendor/
+          key: ${{ format('{0}-phpmd-{1}', runner.os, hashFiles('quality/php-mess-detector/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpmd-', runner.os) }}
+
+      - name: Install PHP-MESS-DETECTOR
+        run: composer install --working-dir=quality/php-mess-detector
+
+      - name: Run PHP-MESS-DETECTOR on lib directory
+        run: ./quality/php-mess-detector/vendor/bin/phpmd lib text quality/php-mess-detector/ruleset.xml
+
+      - name: Run PHP-MESS-DETECTOR on tests directory
+        run: ./quality/php-mess-detector/vendor/bin/phpmd tests text quality/php-mess-detector/test-ruleset.xml
+
+      - name: Cache Composer PHP-CS packages
+        uses: actions/cache@v6
+        with:
+          path: quality/php-code-sniffer/vendor/
+          key: ${{ format('{0}-phpcs-{1}', runner.os, hashFiles('quality/php-code-sniffer/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpcs-', runner.os) }}
+
+      - name: Install PHP-CS
+        run: composer install --working-dir=quality/php-code-sniffer
+
+      - name: Run PHP-CS
+        run: ./quality/php-code-sniffer/vendor/bin/phpcs --standard=quality/php-code-sniffer/phpcs.xml -s
+
+      - name: Cache Composer PHP-STAN packages
+        uses: actions/cache@v6
+        with:
+          path: quality/php-stan/vendor/
+          key: ${{ format('{0}-phpstan-{1}', runner.os, hashFiles('quality/php-stan/vendor/composer.lock')) }}
+          restore-keys: ${{ format('{0}-phpstan-', runner.os) }}
+
+      - name: Install PHP-STAN
+        run: composer install --working-dir=quality/php-stan
+
+      - name: Run PHP-STAN
+        run: ./quality/php-stan/vendor/bin/phpstan analyse --configuration=quality/php-stan/php-stan.neon lib tests --error-format=table --no-progress --no-interaction --no-ansi --level=9 --memory-limit=256M -v

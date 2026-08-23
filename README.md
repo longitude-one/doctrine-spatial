@@ -71,14 +71,23 @@ Donations of coffee through [Ko-fi](https://ko-fi.com/longitudeone) will go eith
 
 ### Database testing
 
-The following versions reflect the database stack used in the test matrix.
+The following versions reflect the database stack used in [the minimal database server test matrix](./.github/workflows/tests-minimum-database-versions.yaml).
 
 | Doctrine Spatial | MySQL    | MariaDB | PostgreSQL | PostGIS | SQL Server |
 |------------------|----------|---------|------------|---------|------------|
 | **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          |
-| **6.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
-| **7.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
-| **8.0**          | 8.4      | 10.11   | 18         | 3.6     | 2017       |
+| **6.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
+| **7.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
+| **8.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
+
+When successful, the following versions are tested using [the maximum database server test matrix](./.github/workflows/tests-maximum-database-versions.yaml).
+
+| Doctrine Spatial | MySQL    | MariaDB | PostgreSQL | PostGIS | SQL Server |
+|------------------|----------|---------|------------|---------|------------|
+| **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          |
+| **6.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
+| **7.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
+| **8.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
 
 These versions may change rapidly as the test matrix evolves.
 
