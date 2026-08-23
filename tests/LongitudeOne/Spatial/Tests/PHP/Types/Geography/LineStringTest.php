@@ -24,12 +24,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * LineString geographic object tests.
  *
- * @group php
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class LineStringTest extends TestCase
 {
     /**

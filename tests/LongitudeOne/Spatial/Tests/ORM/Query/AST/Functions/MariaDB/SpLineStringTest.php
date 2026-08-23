@@ -28,13 +28,13 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group mariadb-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('mariadb-only')]
 class SpLineStringTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -53,8 +53,8 @@ class SpLineStringTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testPredicate(): void
     {
         $lineStringA = $this->persistLineStringA();
@@ -78,8 +78,8 @@ class SpLineStringTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelect(): void
     {
         $this->persistLineStringA();

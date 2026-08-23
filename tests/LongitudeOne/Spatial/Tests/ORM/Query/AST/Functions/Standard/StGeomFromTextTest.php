@@ -33,12 +33,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StGeomFromTextTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -62,8 +62,8 @@ class StGeomFromTextTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select with a linestring.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testLineString(): void
     {
         $lineString = $this->persistStraightLineString();
@@ -88,8 +88,8 @@ class StGeomFromTextTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select with a point.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testPoint(): void
     {
         $pointA = $this->persistPointA();

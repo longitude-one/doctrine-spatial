@@ -40,12 +40,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
- * @group mysql-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('mysql-only')]
 class SpDistanceSphereTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -64,8 +64,8 @@ class SpDistanceSphereTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStDistanceSphereGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();

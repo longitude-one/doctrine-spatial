@@ -35,12 +35,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group geometry
  *
  * @internal
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
  */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
 class PointTypeTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;

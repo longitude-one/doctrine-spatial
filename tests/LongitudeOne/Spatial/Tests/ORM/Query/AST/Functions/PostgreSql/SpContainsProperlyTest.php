@@ -29,13 +29,13 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('pgsql-only')]
 class SpContainsProperlyTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -54,8 +54,8 @@ class SpContainsProperlyTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -79,8 +79,8 @@ class SpContainsProperlyTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();

@@ -31,10 +31,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @group php
  *
  * @covers \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class GeographyTypeTest extends TestCase
 {
     /**

@@ -30,12 +30,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StDistanceTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -58,8 +58,8 @@ class StDistanceTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geography
      */
+#[\PHPUnit\Framework\Attributes\Group('geography')]
     public function testSelectStDistanceGeographyCartesian(): void
     {
         $newYork = $this->persistNewYorkGeography();
@@ -98,8 +98,8 @@ class StDistanceTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geography
      */
+#[\PHPUnit\Framework\Attributes\Group('geography')]
     public function testSelectStDistanceGeographySpheroid(): void
     {
         $newYork = $this->persistNewYorkGeography();
@@ -132,8 +132,8 @@ class StDistanceTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStDistanceGeometryCartesian(): void
     {
         $newYork = $this->persistNewYorkGeometry();

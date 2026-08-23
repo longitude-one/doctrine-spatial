@@ -31,7 +31,6 @@ use PHPUnit\Framework\TestCase;
  * Geometric and geographic points tests.
  * These methods involve tests launched on both Geometric and Geographic points.
  *
- * @group php
  *
  * @internal
  *
@@ -39,6 +38,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class AbstractPointTest extends TestCase
 {
     // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectTypeHint

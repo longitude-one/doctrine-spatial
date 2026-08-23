@@ -26,7 +26,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * MultiPoint object tests.
  *
- * @group php
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -35,6 +34,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class MultiPointTest extends TestCase
 {
     /**

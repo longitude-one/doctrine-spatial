@@ -43,12 +43,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group geometry
  *
  * @internal
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
 class GeometryTypeTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
@@ -131,8 +131,8 @@ class GeometryTypeTest extends PersistOrmTestCase
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
      *
-     * @group srid
      */
+#[\PHPUnit\Framework\Attributes\Group('srid')]
     public function testPointGeometryWithSrid(): void
     {
         $entity = $this->persistGeometryA(200);
@@ -142,8 +142,8 @@ class GeometryTypeTest extends PersistOrmTestCase
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
      *
-     * @group srid
      */
+#[\PHPUnit\Framework\Attributes\Group('srid')]
     public function testPointGeometryWithZeroSrid(): void
     {
         $entity = $this->persistGeometryA(0);
@@ -176,8 +176,8 @@ class GeometryTypeTest extends PersistOrmTestCase
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
      *
-     * @group srid
      */
+#[\PHPUnit\Framework\Attributes\Group('srid')]
     public function testPolygonGeometryWithSrid(): void
     {
         $entity = new GeometryEntity();

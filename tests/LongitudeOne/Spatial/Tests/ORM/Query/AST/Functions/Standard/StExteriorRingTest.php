@@ -31,12 +31,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre-tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StExteriorRingTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -58,8 +58,8 @@ class StExteriorRingTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStExteriorRing(): void
     {
         $bigPolygon = $this->persistBigPolygon();

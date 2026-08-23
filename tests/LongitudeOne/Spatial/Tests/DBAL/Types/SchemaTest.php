@@ -30,12 +30,12 @@ use LongitudeOne\Spatial\Tests\OrmTestCase;
 /**
  * Doctrine schema related tests.
  *
- * @group dql
  *
  * @internal
  *
  * @covers \LongitudeOne\Spatial\DBAL\Types\AbstractSpatialType
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class SchemaTest extends OrmTestCase
 {
     /**

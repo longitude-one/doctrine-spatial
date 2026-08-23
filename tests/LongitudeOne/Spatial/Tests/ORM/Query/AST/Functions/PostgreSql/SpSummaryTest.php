@@ -39,13 +39,13 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('pgsql-only')]
 class SpSummaryTest extends PersistOrmTestCase
 {
     /**
@@ -67,8 +67,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
-     * @group geography
      */
+#[\PHPUnit\Framework\Attributes\Group('geography')]
     public function testSelectStSummaryGeography(): void
     {
         $point = new GeographyEntity();
@@ -117,8 +117,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStSummaryGeometry(): void
     {
         $point = new GeometryEntity();

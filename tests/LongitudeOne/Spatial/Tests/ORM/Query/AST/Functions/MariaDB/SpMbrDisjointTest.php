@@ -29,13 +29,13 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- * @group mariadb-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('mariadb-only')]
 class SpMbrDisjointTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -54,8 +54,8 @@ class SpMbrDisjointTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testMbrDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -94,8 +94,8 @@ class SpMbrDisjointTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectMbrDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();

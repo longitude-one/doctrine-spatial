@@ -31,12 +31,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StUnionTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -58,8 +58,8 @@ class StUnionTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStUnion(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -86,8 +86,8 @@ class StUnionTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testStUnionWhereParameter(): void
     {
         $this->persistBigPolygon();

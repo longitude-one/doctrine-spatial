@@ -32,12 +32,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StDisjointTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -59,8 +59,8 @@ class StDisjointTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectStDisjoint(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -90,8 +90,8 @@ class StDisjointTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testStDisjointWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();

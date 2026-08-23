@@ -8,44 +8,41 @@
   <groups>
     <include>
       <group>php</group>
-      <group>dql</group>
-      <group>geometry</group>
-      <group>geography</group>
-      <group>srid</group>
-      <group>pgsql-only</group>
-      <group>issue</group>
     </include>
     <exclude>
+      <group>dql</group>
+      <group>geometry</group>
       <group>mysql-only</group>
+      <group>issue</group>
+      <group>pgsql-only</group>
+      <group>srid</group>
+      <group>deprecation</group>
     </exclude>
   </groups>
   <php>
-    <var name="db_type" value="pdo_pgsql"/>
+    <var name="db_type" value="pdo_mysql"/>
     <var name="db_host" value="127.0.0.1"/>
     <var name="db_username" value="main"/>
     <var name="db_password" value="main"/>
     <var name="db_name" value="main"/>
-    <var name="db_port" value="5432"/>
-    <!-- PostgreSQL cannot drop current database, -->
-    <!-- Also, we connect on the alternate database, then we drop the main database -->
-    <var name="db_alternate" value="postgres"/>
+    <var name="db_port" value="3306"/>
     <!-- Select timezone for log -->
     <var name="opt_log_timezone" value="Europe/Paris"/>
-    <!-- Select the log level -->
-    <var name="opt_log_level" value="debug"/>
+    <!-- Select the log level : debug to get each request, info to get each starting test and disconnection -->
+    <var name="opt_log_level" value="critical"/>
     <!-- Select the directory to store the log files -->
     <var name="opt_log_dir" value=".phpunit.cache/logs"/>
     <!-- Select the log file name -->
-    <var name="opt_log_file" value="pgsql.log"/>
+    <var name="opt_log_file" value="mysql80.log"/>
   </php>
   <source>
     <include>
-      <directory suffix=".php">lib/</directory>
+      <directory suffix=".php">lib</directory>
     </include>
   </source>
   <coverage includeUncoveredFiles="true">
     <report>
-      <clover outputFile=".phpunit.cache/code-coverage/clover-pgsql.xml"/>
+      <clover outputFile=".phpunit.cache/code-coverage/clover-mysql80.xml"/>
     </report>
   </coverage>
 </phpunit>

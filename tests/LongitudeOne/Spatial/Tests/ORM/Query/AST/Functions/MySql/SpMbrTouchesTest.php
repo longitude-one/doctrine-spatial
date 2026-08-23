@@ -28,13 +28,13 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group mysql-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('mysql-only')]
 class SpMbrTouchesTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -53,8 +53,8 @@ class SpMbrTouchesTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -76,8 +76,8 @@ class SpMbrTouchesTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();

@@ -38,7 +38,6 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
 /**
  * Spatial platform tests.
  *
- * @group php
  *
  * @internal
  *
@@ -46,6 +45,8 @@ use LongitudeOne\Spatial\Tests\OrmMockTestCase;
  * @covers \LongitudeOne\Spatial\DBAL\Platform\MySql
  * @covers \LongitudeOne\Spatial\DBAL\Platform\PostgreSql
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
+#[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
 class PlatformTest extends OrmMockTestCase
 {
     /**

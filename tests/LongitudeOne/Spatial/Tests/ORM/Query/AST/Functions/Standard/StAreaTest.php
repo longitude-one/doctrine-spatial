@@ -32,12 +32,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StAreaTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -59,8 +59,8 @@ class StAreaTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $this->persistBigPolygon();
@@ -83,8 +83,8 @@ class StAreaTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $this->persistBigPolygon();

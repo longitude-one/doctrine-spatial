@@ -31,10 +31,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @group php
  *
  * @covers \LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class PolygonTypeTest extends TestCase
 {
     /**

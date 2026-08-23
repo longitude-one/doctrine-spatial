@@ -41,12 +41,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class ScSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -68,8 +68,8 @@ class ScSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
@@ -97,8 +97,8 @@ class ScSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $actual = $expected = 2154;

@@ -27,12 +27,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * MultiLineString object tests.
  *
- * @group php
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class MultiLineStringTest extends TestCase
 {
     /**

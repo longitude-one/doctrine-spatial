@@ -34,12 +34,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class GeometryWalkerTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -105,8 +105,8 @@ class GeometryWalkerTest extends PersistOrmTestCase
     /**
      * Test the geometry walker binary.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testGeometryWalkerBinary(): void
     {
         $this->persistStraightLineString();
@@ -118,8 +118,8 @@ class GeometryWalkerTest extends PersistOrmTestCase
     /**
      * Test the geometry walker.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testGeometryWalkerText(): void
     {
         $this->persistStraightLineString();

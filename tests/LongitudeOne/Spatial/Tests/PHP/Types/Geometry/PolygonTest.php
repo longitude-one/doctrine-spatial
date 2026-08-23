@@ -29,12 +29,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * Polygon object tests.
  *
- * @group php
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class PolygonTest extends TestCase
 {
     use LineStringHelperTrait;

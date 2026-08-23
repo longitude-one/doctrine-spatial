@@ -31,12 +31,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StEqualsTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -58,8 +58,8 @@ class StEqualsTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunction(): void
     {
         $this->persistStraightLineString(); // Linestring has three points (0 0, 2 2, 5 5)

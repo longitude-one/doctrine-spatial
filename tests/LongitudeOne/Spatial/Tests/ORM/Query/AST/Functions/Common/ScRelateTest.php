@@ -29,12 +29,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class ScRelateTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -55,8 +55,8 @@ class ScRelateTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $linestring = $this->persistStraightLineString();
@@ -78,8 +78,8 @@ class ScRelateTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $straightLineString = $this->persistStraightLineString();

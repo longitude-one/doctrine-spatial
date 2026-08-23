@@ -34,12 +34,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -62,8 +62,8 @@ class StSridTest extends PersistOrmTestCase
     }
 
     /**
-     * @group srid-2-parameters
      */
+#[\PHPUnit\Framework\Attributes\Group('srid-2-parameters')]
     public function testFunctionSqlGenerationWithTwoParameters(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
@@ -86,8 +86,8 @@ class StSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
@@ -114,8 +114,8 @@ class StSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);
@@ -137,8 +137,8 @@ class StSridTest extends PersistOrmTestCase
     }
 
     /**
-     * @group srid-2-parameters
      */
+#[\PHPUnit\Framework\Attributes\Group('srid-2-parameters')]
     public function testFunctionWithGeometryAndChangedSrid(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {

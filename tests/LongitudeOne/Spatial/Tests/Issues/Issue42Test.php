@@ -36,10 +36,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @internal
  *
- * @group php
  *
  * @coversNothing
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class Issue42Test extends TestCase
 {
     /**

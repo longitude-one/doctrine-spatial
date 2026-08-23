@@ -28,7 +28,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * Polygon object tests.
  *
- * @group php
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -37,6 +36,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class MultiPolygonTest extends TestCase
 {
     /**

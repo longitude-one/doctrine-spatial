@@ -28,8 +28,6 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
  *
  * @internal
  *
@@ -37,6 +35,8 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversNothing
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('pgsql-only')]
 class SpTranslateTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -55,8 +55,8 @@ class SpTranslateTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -80,8 +80,8 @@ class SpTranslateTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();

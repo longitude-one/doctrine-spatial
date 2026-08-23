@@ -33,12 +33,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
 /**
  * Doctrine GeographyType tests.
  *
- * @group geography
  *
  * @internal
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
+#[\PHPUnit\Framework\Attributes\Group('geography')]
 class GeographyTypeTest extends PersistOrmTestCase
 {
     /**

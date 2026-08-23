@@ -26,7 +26,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests constructor deprecations.
  *
- * @group php
  *
  * @internal
  *
@@ -34,6 +33,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class DeprecationTest extends TestCase
 {
     use VerifyDeprecations;

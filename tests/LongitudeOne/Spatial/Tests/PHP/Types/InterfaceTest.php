@@ -44,12 +44,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * To avoid regression, this class tests the interfaces implemented by the classes.
  *
- * @group php
  *
  * @internal
  *
  * @coversNothing
  */
+#[\PHPUnit\Framework\Attributes\Group('php')]
 class InterfaceTest extends TestCase
 {
     /**

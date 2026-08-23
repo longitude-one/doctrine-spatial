@@ -35,12 +35,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group srid
  *
  * @internal
  *
  * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PointType
  */
+#[\PHPUnit\Framework\Attributes\Group('srid')]
 class GeoPointSridTest extends PersistOrmTestCase
 {
     /**

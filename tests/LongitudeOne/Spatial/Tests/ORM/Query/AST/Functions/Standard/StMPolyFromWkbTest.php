@@ -30,12 +30,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StMPolyFromWkbTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
@@ -58,8 +58,8 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelect(): void
     {
         $this->skipIfMariaDbAndOrm29();
@@ -83,8 +83,8 @@ class StMPolyFromWkbTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testSelectWithSrid(): void
     {
         $this->skipIfMariaDbAndOrm29();

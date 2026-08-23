@@ -29,12 +29,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group sqlserver-only
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('sqlserver-only')]
 class SpSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -55,8 +55,8 @@ class SpSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
@@ -74,8 +74,8 @@ class SpSridTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);

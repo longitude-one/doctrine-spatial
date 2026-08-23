@@ -30,12 +30,12 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
  *
  * @internal
  *
  * @coversDefaultClass
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
 class StGeographyFromTextTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -57,8 +57,8 @@ class StGeographyFromTextTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the predicate.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testPredicate(): void
     {
         $newYork = $this->persistNewYorkGeography();

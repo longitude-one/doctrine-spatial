@@ -29,8 +29,6 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
  *
  * @internal
  *
@@ -38,6 +36,8 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  *
  * @coversNothing
  */
+#[\PHPUnit\Framework\Attributes\Group('dql')]
+#[\PHPUnit\Framework\Attributes\Group('pgsql-only')]
 class SpTransformTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -56,8 +56,8 @@ class SpTransformTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $massachusetts = $this->persistMassachusettsState();
@@ -80,8 +80,8 @@ class SpTransformTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelectWith3Parameters(): void
     {
         $massachusetts = $this->persistMassachusettsState(false);
@@ -103,8 +103,8 @@ class SpTransformTest extends PersistOrmTestCase
     /**
      * Test a DQL containing function to test in the select.
      *
-     * @group geometry
      */
+#[\PHPUnit\Framework\Attributes\Group('geometry')]
     public function testFunctionInSelectWithSrid(): void
     {
         $massachusetts = $this->persistMassachusettsState();
