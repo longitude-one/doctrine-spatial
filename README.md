@@ -25,6 +25,8 @@ It provides support for spatial types and functions across multiple database eng
 [![Badge showing last month package downloads on Packagist](https://img.shields.io/packagist/dm/longitude-one/doctrine-spatial.svg)](https://packagist.org/packages/longitude-one/doctrine-spatial)
 ![Badge showing project star count on Packagist](https://img.shields.io/packagist/stars/longitude-one/doctrine-spatial)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4X125LWHT)
+
 ## Documentation
 
 The [documentation](https://doctrine-spatial.readthedocs.io) covers installation, configuration, entity mapping, spatial queries, and contribution guidelines.
