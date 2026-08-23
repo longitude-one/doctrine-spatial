@@ -7,6 +7,7 @@ Please read the Docker [documentation](../docker/README.md) for more information
 ```bash
 docker exec spatial-php8 COMMAND
 ```
+
 Example:
 
 ```bash
