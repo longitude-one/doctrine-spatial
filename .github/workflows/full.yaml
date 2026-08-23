@@ -6,8 +6,8 @@ on:
   push:
     branches:
       - main
-      - 5.1.x-dev
-      - 6.x-dev
+      - 5.0.x-dev
+      - 7.x-dev
     paths-ignore:
       - '**.md'
       - '**.rst'
@@ -16,8 +16,8 @@ on:
   pull_request:
     branches:
       - main
-      - 5.1.x-dev
-      - 6.x-dev
+      - 5.0.x-dev
+      - 7.x-dev
     paths-ignore:
       - '**.md'
       - '**.rst'
