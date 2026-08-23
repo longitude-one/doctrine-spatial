@@ -27,8 +27,6 @@ use Doctrine\ORM\Query\AST\SelectExpression;
 use Doctrine\ORM\Query\ParserResult;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\Query\SqlOutputWalker;
-use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
 
@@ -40,112 +38,55 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\ReturnsGeometryInterface;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  */
-// phpcs:disable Generic.Classes.DuplicateClassName,PSR1.Classes.ClassDeclaration.MultipleClasses
-if (class_exists('\Doctrine\ORM\Query\SqlOutputWalker')) {
-    class GeometryWalker extends SqlOutputWalker
+class GeometryWalker extends SqlWalkerChild
+{
+    /**
+     * Result set mapping.
+     */
+    protected ResultSetMapping $resultSetMapping;
+
+    /**
+     * Initializes the walker with the SQL AST and query metadata.
+     *
+     * Doctrine 3.2+ requires the output-walker API (`OutputWalker` / `getFinalizer()`),
+     * while Doctrine 2.19 still uses the legacy `SqlWalker` contract.
+     *
+     * @param Query                                                                                                                                                                                                                  $query           the parsed query
+     * @param ParserResult                                                                                                                                                                                                           $parserResult    the parser result containing the RSM
+     * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
+     */
+    public function __construct($query, $parserResult, array $queryComponents)
     {
-        /**
-         * Result set mapping.
-         */
-        protected ResultSetMapping $resultSetMapping;
+        $this->resultSetMapping = $parserResult->getResultSetMapping();
 
-        /**
-         * Initializes the walker with the SQL AST and query metadata.
-         *
-         * Doctrine 3.2+ requires the output-walker API (`OutputWalker` / `getFinalizer()`),
-         * while Doctrine 2.19 still uses the legacy `SqlWalker` contract.
-         *
-         * @param Query                                                                                                                                                                                                                  $query           the parsed query
-         * @param ParserResult                                                                                                                                                                                                           $parserResult    the parser result containing the RSM
-         * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
-         */
-        public function __construct($query, $parserResult, array $queryComponents)
-        {
-            $this->resultSetMapping = $parserResult->getResultSetMapping();
-
-            parent::__construct($query, $parserResult, $queryComponents);
-        }
-
-        /**
-         * Walk down a SelectExpression AST node and generate the corresponding SQL.
-         *
-         * @param SelectExpression $selectExpression Select expression AST node
-         *
-         * @return string the SQL
-         *
-         * @throws QueryException when an error occurs during walking into the select expression
-         *
-         * DO NOT ADD a SelectExpression typehint here, because this must stay compatible with ORM ^2.19.
-         */
-        public function walkSelectExpression($selectExpression): string
-        {
-            $expr = $selectExpression->expression;
-            $sql = parent::walkSelectExpression($selectExpression);
-
-            if ($expr instanceof ReturnsGeometryInterface && !$selectExpression->hiddenAliasResultVariable) {
-                $alias = mb_strrchr($sql, ' ');
-                // Theoretically, $alias cannot be false, but in this case it will be ignored.
-                if (false !== $alias) {
-                    $alias = trim($alias);
-                    $this->resultSetMapping->typeMappings[$alias] = 'geometry';
-                }
-            }
-
-            return $sql;
-        }
+        parent::__construct($query, $parserResult, $queryComponents);
     }
-} else {
-    class GeometryWalker extends SqlWalker
+
+    /**
+     * Walk down a SelectExpression AST node and generate the corresponding SQL.
+     *
+     * @param SelectExpression $selectExpression Select expression AST node
+     *
+     * @return string the SQL
+     *
+     * @throws QueryException when an error occurs during walking into the select expression
+     *
+     * DO NOT ADD a SelectExpression typehint here, because this must stay compatible with ORM ^2.19.
+     */
+    public function walkSelectExpression($selectExpression): string
     {
-        /**
-         * Result set mapping.
-         */
-        protected ResultSetMapping $resultSetMapping;
+        $expr = $selectExpression->expression;
+        $sql = parent::walkSelectExpression($selectExpression);
 
-        /**
-         * Initializes the walker with the SQL AST and query metadata.
-         *
-         * Doctrine 2.19 still relies on the legacy tree-walker API, so we keep the
-         * old parent class for backward compatibility.
-         *
-         * @param Query                                                                                                                                                                                                                  $query           the parsed query
-         * @param ParserResult                                                                                                                                                                                                           $parserResult    the parser result containing the RSM
-         * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
-         */
-        public function __construct($query, $parserResult, array $queryComponents)
-        {
-            $this->resultSetMapping = $parserResult->getResultSetMapping();
-
-            parent::__construct($query, $parserResult, $queryComponents);
-        }
-
-        /**
-         * Walk down a SelectExpression AST node and generate the corresponding SQL.
-         *
-         * @param SelectExpression $selectExpression Select expression AST node
-         *
-         * @return string the SQL
-         *
-         * @throws QueryException when an error occurs during walking into the select expression
-         *
-         * DO NOT ADD a SelectExpression typehint here, because this must stay compatible with ORM ^2.19.
-         */
-        public function walkSelectExpression($selectExpression): string
-        {
-            $expr = $selectExpression->expression;
-            $sql = parent::walkSelectExpression($selectExpression);
-
-            if ($expr instanceof ReturnsGeometryInterface && !$selectExpression->hiddenAliasResultVariable) {
-                $alias = mb_strrchr($sql, ' ');
-                // Theoretically, $alias cannot be false, but in this case it will be ignored.
-                if (false !== $alias) {
-                    $alias = trim($alias);
-                    $this->resultSetMapping->typeMappings[$alias] = 'geometry';
-                }
+        if ($expr instanceof ReturnsGeometryInterface && !$selectExpression->hiddenAliasResultVariable) {
+            $alias = mb_strrchr($sql, ' ');
+            // Theoretically, $alias cannot be false, but in this case it will be ignored.
+            if (false !== $alias) {
+                $alias = trim($alias);
+                $this->resultSetMapping->typeMappings[$alias] = 'geometry';
             }
-
-            return $sql;
         }
+
+        return $sql;
     }
 }
-// phpcs:enable Generic.Classes.DuplicateClassName,PSR1.Classes.ClassDeclaration.MultipleClasses
