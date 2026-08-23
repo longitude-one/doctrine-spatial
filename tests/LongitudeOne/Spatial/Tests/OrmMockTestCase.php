@@ -104,18 +104,8 @@ abstract class OrmMockTestCase extends SpatialTestCase
 
         $config->setMetadataCache(new ArrayAdapter());
 
-        // Preferred order for lazy loading:
-        // 1. Native lazy objects when Doctrine supports them on PHP 8.4+
-        // 2. Legacy proxy configuration as a fallback for older Doctrine versions
-        // 3. Leave Doctrine defaults untouched if neither API is available
-        if (method_exists($config, 'enableNativeLazyObjects') && PHP_VERSION_ID >= 80400) {
-            // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
-            $config->enableNativeLazyObjects(true);
-        } elseif (method_exists($config, 'setProxyDir') && method_exists($config, 'setProxyNamespace')) {
-            // This is the legacy proxy-based fallback used when native lazy objects are not available.
-            $config->setProxyDir(__DIR__.'/Proxies');
-            $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
-        }
+        // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
+        $config->enableNativeLazyObjects(true);
 
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 
