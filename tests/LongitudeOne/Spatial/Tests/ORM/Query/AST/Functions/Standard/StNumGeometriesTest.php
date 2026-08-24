@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StNumGeometries;
 use LongitudeOne\Spatial\Tests\Helper\PersistantMultiPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StNumGeometries::class)]
 #[Group('dql')]
 class StNumGeometriesTest extends PersistOrmTestCase
 {
@@ -71,6 +72,8 @@ class StNumGeometriesTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($four, $result[0][0]);
         static::assertEquals(4, $result[0][1]);
         static::assertEquals($single, $result[1][0]);

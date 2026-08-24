@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineSubstring;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpLineSubstring::class)]
 #[Group('dql')]
 #[Group('pgsql-only')]
 class SpLineSubstringTest extends PersistOrmTestCase
@@ -96,6 +97,9 @@ class SpLineSubstringTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals('LINESTRING(2 2,4 4)', $result[0][1]);
         static::assertEquals('LINESTRING(4 4,8 8)', $result[1][1]);
         static::assertEquals('LINESTRING(6 6,12 2)', $result[2][1]);

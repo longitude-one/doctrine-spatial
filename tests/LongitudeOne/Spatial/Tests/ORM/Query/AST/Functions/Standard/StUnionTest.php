@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StUnion;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StUnion::class)]
 #[Group('dql')]
 class StUnionTest extends PersistOrmTestCase
 {
@@ -76,6 +77,8 @@ class StUnionTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($bigPolygon, $result[0][0]);
         self::assertBigPolygon($result[0][1], $this->getPlatform());
         static::assertEquals($holeyPolygon, $result[1][0]);

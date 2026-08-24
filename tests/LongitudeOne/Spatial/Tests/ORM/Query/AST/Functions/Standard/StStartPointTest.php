@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StStartPoint;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -34,9 +36,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StStartPoint::class)]
 #[Group('dql')]
 class StStartPointTest extends PersistOrmTestCase
 {
@@ -74,6 +75,7 @@ class StStartPointTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('POINT', $result[0][1]);
     }
 

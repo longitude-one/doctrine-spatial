@@ -20,8 +20,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StDistance;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -32,9 +34,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StDistance::class)]
 #[Group('dql')]
 class StDistanceTest extends PersistOrmTestCase
 {
@@ -83,6 +84,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
         static::assertLessThan(1310000, $result[0][1]);
@@ -119,6 +123,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertIsNumeric($result[0][1]);
         static::assertEquals($losAngeles, $result[1][0]);
@@ -153,6 +160,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);
         static::assertEquals($losAngeles, $result[1][0]);

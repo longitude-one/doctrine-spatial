@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSummary;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon as GeographyPolygon;
@@ -31,6 +32,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon as GeometryPolygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -41,9 +43,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpSummary::class)]
 #[Group('dql')]
 #[Group('pgsql-only')]
 class SpSummaryTest extends PersistOrmTestCase
@@ -101,11 +102,17 @@ class SpSummaryTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($point, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertMatchesRegularExpression('/^Point\[.*G.*]/', $result[0][1]);
         static::assertEquals($linestring, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertMatchesRegularExpression('/^LineString\[.*G.*]/', $result[1][1]);
         static::assertEquals($polygon, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertMatchesRegularExpression('/^Polygon\[.*G.*]/', $result[2][1]);
     }
 
@@ -150,11 +157,17 @@ class SpSummaryTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($point, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertMatchesRegularExpression('/^Point\[[^G]*]/', $result[0][1]);
         static::assertEquals($linestring, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertMatchesRegularExpression('/^LineString\[[^G]*]/', $result[1][1]);
         static::assertEquals($polygon, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertMatchesRegularExpression('/^Polygon\[[^G]*]/', $result[2][1]);
     }
 }

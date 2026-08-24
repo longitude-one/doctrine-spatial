@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrContains;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license http://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpMbrContains::class)]
 #[Group('dql')]
 #[Group('mysql-only')]
 class SpMbrContainsTest extends PersistOrmTestCase
@@ -111,6 +112,9 @@ class SpMbrContainsTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals(1, $result[0][2]);

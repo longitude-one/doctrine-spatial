@@ -24,9 +24,11 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StSrid;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -36,9 +38,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StSrid::class)]
 #[Group('dql')]
 class StSridTest extends PersistOrmTestCase
 {
@@ -100,6 +101,7 @@ class StSridTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform) {
             // TODO MySQL and MariaDB are returning 0 insteadof 4326
             static::markTestSkipped('SRID not implemented in Abstraction of MySQL');

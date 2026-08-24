@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpLineLocatePoint;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpLineLocatePoint::class)]
 #[Group('dql')]
 #[Group('pgsql-only')]
 class SpLineLocatePointTest extends PersistOrmTestCase
@@ -97,6 +98,9 @@ class SpLineLocatePointTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals(0.7, $result[0][1]);
         static::assertEquals(0.35, $result[1][1]);
         static::assertEqualsWithDelta(0.4, $result[2][1], 0.000000000001);

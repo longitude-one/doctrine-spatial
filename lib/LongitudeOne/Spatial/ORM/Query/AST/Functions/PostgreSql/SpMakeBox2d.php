@@ -29,7 +29,7 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org
  */
-class SpMakeBox2D extends AbstractSpatialDQLFunction
+class SpMakeBox2d extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.

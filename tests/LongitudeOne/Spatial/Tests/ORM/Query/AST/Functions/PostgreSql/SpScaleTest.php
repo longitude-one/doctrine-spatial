@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpScale;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpScale::class)]
 #[Group('dql')]
 #[Group('pgsql-only')]
 class SpScaleTest extends PersistOrmTestCase
@@ -75,6 +76,8 @@ class SpScaleTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($straightLineString, $result[0][0]);
         static::assertSame('LINESTRING(0 0,4 8,10 20)', $result[0][1]);
         static::assertEquals($angularLineString, $result[1][0]);

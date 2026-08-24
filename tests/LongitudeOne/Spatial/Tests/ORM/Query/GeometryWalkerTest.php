@@ -23,9 +23,11 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use LongitudeOne\Spatial\ORM\Query\GeometryWalker;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -36,9 +38,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(GeometryWalker::class)]
 #[Group('dql')]
 class GeometryWalkerTest extends PersistOrmTestCase
 {
@@ -85,6 +86,8 @@ class GeometryWalkerTest extends PersistOrmTestCase
 
         $result = $query->getResult();
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals(static::createPointOrigin(), $result[0][1]);
         static::assertEquals(static::createPointC(), $result[1][1]);
 
@@ -98,6 +101,8 @@ class GeometryWalkerTest extends PersistOrmTestCase
 
         $result = $query->getResult();
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
         static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
     }

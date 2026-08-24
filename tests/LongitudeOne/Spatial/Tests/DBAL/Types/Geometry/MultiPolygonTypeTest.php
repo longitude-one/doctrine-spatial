@@ -32,6 +32,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -41,9 +42,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType
  */
+#[CoversClass(MultiPolygonType::class)]
 #[Group('geometry')]
 class MultiPolygonTypeTest extends PersistOrmTestCase
 {
@@ -119,7 +119,6 @@ class MultiPolygonTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new MultiPolygonType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('multipolygon', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('MultiPolygon', $spatialInstance->getSQLType());

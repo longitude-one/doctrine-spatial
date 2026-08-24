@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPoint;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -31,9 +32,8 @@ use PHPUnit\Framework\TestCase;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(MultiPoint::class)]
 #[Group('php')]
 class MultiPointTest extends TestCase
 {

@@ -27,6 +27,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPointSridEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -37,9 +38,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PointType
  */
+#[CoversClass(PointType::class)]
 #[Group('srid')]
 class GeoPointSridTest extends PersistOrmTestCase
 {
@@ -84,7 +84,6 @@ class GeoPointSridTest extends PersistOrmTestCase
 
         static::assertTrue(Type::hasType('geopoint'));
         $spatialInstance = new PointType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geopoint', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Point', $spatialInstance->getSQLType());

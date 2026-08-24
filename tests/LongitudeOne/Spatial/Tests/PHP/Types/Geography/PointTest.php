@@ -21,6 +21,7 @@ namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\Tests\DataProvider as LoDataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -29,9 +30,8 @@ use PHPUnit\Framework\TestCase;
  * Point geographic object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(Point::class)]
 #[Group('php')]
 class PointTest extends TestCase
 {

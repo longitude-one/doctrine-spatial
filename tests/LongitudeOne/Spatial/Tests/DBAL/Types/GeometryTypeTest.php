@@ -27,7 +27,6 @@ use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
@@ -36,6 +35,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -45,9 +45,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
+#[CoversClass(GeometryType::class)]
 #[Group('geometry')]
 class GeometryTypeTest extends PersistOrmTestCase
 {
@@ -89,7 +88,6 @@ class GeometryTypeTest extends PersistOrmTestCase
     {
         $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
-        static::assertInstanceOf(GeometryInterface::class, $entity->getGeometry());
     }
 
     /**
@@ -104,7 +102,6 @@ class GeometryTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new GeometryType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geometry', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Geometry', $spatialInstance->getSQLType());

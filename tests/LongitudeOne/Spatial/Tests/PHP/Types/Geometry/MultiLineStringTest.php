@@ -22,6 +22,7 @@ use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiLineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -29,9 +30,8 @@ use PHPUnit\Framework\TestCase;
  * MultiLineString object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(MultiLineString::class)]
 #[Group('php')]
 class MultiLineStringTest extends TestCase
 {

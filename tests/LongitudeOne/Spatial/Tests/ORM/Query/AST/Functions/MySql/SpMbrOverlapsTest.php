@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpMbrOverlaps;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpMbrOverlaps::class)]
 #[Group('dql')]
 #[Group('mysql-only')]
 class SpMbrOverlapsTest extends PersistOrmTestCase
@@ -96,6 +97,10 @@ class SpMbrOverlapsTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(4, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+        static::assertIsArray($result[3]);
         static::assertEquals($bigPolyon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);

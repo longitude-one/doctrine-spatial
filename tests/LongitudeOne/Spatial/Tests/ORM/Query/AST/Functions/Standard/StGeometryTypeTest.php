@@ -20,8 +20,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryType;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -32,9 +34,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StGeometryType::class)]
 #[Group('dql')]
 class StGeometryTypeTest extends PersistOrmTestCase
 {
@@ -69,8 +70,9 @@ class StGeometryTypeTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
+        static::assertCount(2, $result);
         static::assertIsArray($result[0]);
-        static::assertCount(1, $result[0]);
+        static::assertIsString($result[0][1]);
         static::assertStringContainsString('LineString', $result[0][1]);
     }
 }

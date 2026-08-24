@@ -20,8 +20,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Common;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Common\ScRelate;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -31,9 +33,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(ScRelate::class)]
 #[Group('dql')]
 class ScRelateTest extends PersistOrmTestCase
 {
@@ -95,6 +96,8 @@ class ScRelateTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($straightLineString, $result[0][0]);
         static::assertEquals('1', $result[0][1]);
         static::assertEquals($angularLineString, $result[1][0]);

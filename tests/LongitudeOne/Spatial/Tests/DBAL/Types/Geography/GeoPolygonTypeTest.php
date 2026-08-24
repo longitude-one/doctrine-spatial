@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeoPolygonEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -38,9 +39,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geography\PolygonType
  */
+#[CoversClass(PolygonType::class)]
 #[Group('geography')]
 class GeoPolygonTypeTest extends PersistOrmTestCase
 {
@@ -98,7 +98,6 @@ class GeoPolygonTypeTest extends PersistOrmTestCase
 
         static::assertTrue(Type::hasType('geopolygon'));
         $spatialInstance = new PolygonType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geopolygon', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Polygon', $spatialInstance->getSQLType());

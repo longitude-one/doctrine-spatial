@@ -20,8 +20,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpBuffer::class)]
 #[Group('dql')]
 #[Group('mysql-only')]
 class SpBufferTest extends PersistOrmTestCase
@@ -74,6 +75,7 @@ class SpBufferTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals('POLYGON((-4 -4,4 -4,4 4,-4 4,-4 -4))', $result[0][1]);
     }

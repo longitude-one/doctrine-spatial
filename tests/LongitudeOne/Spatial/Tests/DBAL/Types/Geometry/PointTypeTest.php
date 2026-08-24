@@ -28,6 +28,7 @@ use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -37,9 +38,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
  */
+#[CoversClass(PointType::class)]
 #[Group('geometry')]
 class PointTypeTest extends PersistOrmTestCase
 {
@@ -67,19 +67,10 @@ class PointTypeTest extends PersistOrmTestCase
         $this->usesEntity(self::POINT_ENTITY);
         $metadata = $this->getEntityManager()->getClassMetadata(PointEntity::class);
 
-        // Set the type
-        $type = null;
-        if (is_array($metadata->getFieldMapping('point'))) {
-            // doctrine/orm:2.9
-            $type = $metadata->getFieldMapping('point')['type'];
-        }
-        if (is_object($metadata->getFieldMapping('point'))) {
-            // doctrine/orm:3.1, doctrine/orm:4.0
-            $type = $metadata->getFieldMapping('point')->type;
-        }
+        // doctrine/orm:3.1, doctrine/orm:4.0
+        $type = $metadata->getFieldMapping('point')->type;
 
         // Check the type
-        static::assertNotNull($type, 'This test is not compatible with this version of doctrine/orm');
         static::assertEquals('point', $type);
     }
 
@@ -112,7 +103,6 @@ class PointTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new PointType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('point', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Point', $spatialInstance->getSQLType());

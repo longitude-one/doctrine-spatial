@@ -51,7 +51,7 @@ class GeometryWalker extends SqlWalkerChild
      * Doctrine 3.2+ requires the output-walker API (`OutputWalker` / `getFinalizer()`),
      * while Doctrine 2.19 still uses the legacy `SqlWalker` contract.
      *
-     * @param Query                                                                                                                                                                                                                  $query           the parsed query
+     * @param Query<mixed, mixed>                                                                                                                                                                                                    $query           the parsed query
      * @param ParserResult                                                                                                                                                                                                           $parserResult    the parser result containing the RSM
      * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
      */

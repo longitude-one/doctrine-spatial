@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StExteriorRing;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StExteriorRing::class)]
 #[Group('dql')]
 class StExteriorRingTest extends PersistOrmTestCase
 {
@@ -73,9 +74,13 @@ class StExteriorRingTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($bigPolygon, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('LINESTRING', $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertStringStartsWith('LINESTRING', $result[1][1]);
     }
 }

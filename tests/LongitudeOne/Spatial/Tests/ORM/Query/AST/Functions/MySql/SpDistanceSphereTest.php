@@ -32,8 +32,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpDistanceSphere;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -42,9 +44,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpDistanceSphere::class)]
 #[Group('mysql-only')]
 class SpDistanceSphereTest extends PersistOrmTestCase
 {
@@ -83,6 +84,9 @@ class SpDistanceSphereTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         // These numeric results are different from PostGis result
         static::assertEqualsWithDelta(1305891.280669479, $result[0][1], 0.0000001);

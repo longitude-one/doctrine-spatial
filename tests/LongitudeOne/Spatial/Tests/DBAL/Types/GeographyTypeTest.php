@@ -29,15 +29,15 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Doctrine GeographyType tests.
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
+#[CoversClass(GeographyType::class)]
 #[Group('geography')]
 class GeographyTypeTest extends PersistOrmTestCase
 {
@@ -80,7 +80,6 @@ class GeographyTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new GeographyType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geography', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Geography', $spatialInstance->getSQLType());

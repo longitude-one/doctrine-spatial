@@ -20,8 +20,10 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StPointOnSurface;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -31,9 +33,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StPointOnSurface::class)]
 #[Group('dql')]
 class StPointOnSurfaceTest extends PersistOrmTestCase
 {
@@ -71,11 +72,18 @@ class StPointOnSurfaceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+
         static::assertEquals($straightLineString, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('POINT', $result[0][1]);
         static::assertEquals($angularLineString, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertStringStartsWith('POINT', $result[1][1]);
         static::assertEquals($ringLineString, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertStringStartsWith('POINT', $result[2][1]);
     }
 

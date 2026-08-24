@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StIsSimple;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -34,9 +36,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StIsSimple::class)]
 #[Group('dql')]
 class StIsSimpleTest extends PersistOrmTestCase
 {
@@ -73,7 +74,7 @@ class StIsSimpleTest extends PersistOrmTestCase
         $result = $query->getResult();
 
         static::assertIsArray($result);
-        static::assertIsArray($result);
+        static::assertCount(2, $result);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
         static::assertEquals(1, $result[0][1]);

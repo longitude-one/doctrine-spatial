@@ -29,6 +29,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -38,9 +39,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
  */
+#[CoversClass(PolygonType::class)]
 #[Group('geometry')]
 class PolygonTypeTest extends PersistOrmTestCase
 {
@@ -84,7 +84,6 @@ class PolygonTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new PolygonType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('polygon', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Polygon', $spatialInstance->getSQLType());

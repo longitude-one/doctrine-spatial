@@ -96,6 +96,8 @@ class SpTranslateTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertSame('POLYGON((4 -4.5,14 -4.5,14 5.5,4 5.5,4 -4.5))', $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);

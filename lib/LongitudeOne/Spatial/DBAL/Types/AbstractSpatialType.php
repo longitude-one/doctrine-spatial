@@ -223,8 +223,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
-        // TODO onSchemaColumnDefinition event listener?
-        return $platform instanceof AbstractPlatform;
+        return match ($platform::class) {
+            default => true,
+        };
     }
 
     /**

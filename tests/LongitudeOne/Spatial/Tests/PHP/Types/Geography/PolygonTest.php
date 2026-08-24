@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -26,9 +27,8 @@ use PHPUnit\Framework\TestCase;
  * Polygon geographic object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(Polygon::class)]
 #[Group('php')]
 class PolygonTest extends TestCase
 {

@@ -30,6 +30,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -39,9 +40,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://dlambert.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType
  */
+#[CoversClass(LineStringType::class)]
 #[Group('geometry')]
 class LineStringTypeTest extends PersistOrmTestCase
 {
@@ -109,7 +109,6 @@ class LineStringTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new LineStringType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('linestring', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('LineString', $spatialInstance->getSQLType());

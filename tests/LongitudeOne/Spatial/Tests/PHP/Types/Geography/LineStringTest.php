@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geography;
 
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -26,9 +27,8 @@ use PHPUnit\Framework\TestCase;
  * LineString geographic object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(LineString::class)]
 #[Group('php')]
 class LineStringTest extends TestCase
 {

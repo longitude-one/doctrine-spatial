@@ -120,7 +120,7 @@ class SchemaTest extends OrmTestCase
     /**
      * All class metadata getter.
      *
-     * @return ClassMetadata[]
+     * @return list<ClassMetadata<object>>
      */
     private function getAllClassMetadata(): array
     {

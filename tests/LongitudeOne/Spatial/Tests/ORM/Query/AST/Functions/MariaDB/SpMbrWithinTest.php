@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB\SpMbrWithin;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpMbrWithin::class)]
 #[Group('dql')]
 #[Group('mariadb-only')]
 class SpMbrWithinTest extends PersistOrmTestCase
@@ -95,6 +96,10 @@ class SpMbrWithinTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(4, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+        static::assertIsArray($result[3]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);

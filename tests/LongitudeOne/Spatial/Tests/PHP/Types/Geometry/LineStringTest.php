@@ -23,6 +23,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -30,9 +31,8 @@ use PHPUnit\Framework\TestCase;
  * LineString object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(LineString::class)]
 #[Group('php')]
 class LineStringTest extends TestCase
 {

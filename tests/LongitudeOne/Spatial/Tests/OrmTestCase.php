@@ -607,7 +607,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('PgSql_LineLocatePoint', PostgreSql\SpLineLocatePoint::class);
         $configuration->addCustomStringFunction('PgSql_LineInterpolatePoint', PostgreSql\SpLineInterpolatePoint::class);
         $configuration->addCustomStringFunction('PgSql_MakeEnvelope', PostgreSql\SpMakeEnvelope::class);
-        $configuration->addCustomStringFunction('PgSql_MakeBox2D', PostgreSql\SpMakeBox2D::class);
+        $configuration->addCustomStringFunction('PgSql_MakeBox2d', PostgreSql\SpMakeBox2d::class);
         $configuration->addCustomStringFunction('PgSql_MakeLine', PostgreSql\SpMakeLine::class);
         $configuration->addCustomStringFunction('PgSql_MakePoint', PostgreSql\SpMakePoint::class);
         $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);

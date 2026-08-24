@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StDifference;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StDifference::class)]
 #[Group('dql')]
 class StDifferenceTest extends PersistOrmTestCase
 {
@@ -77,11 +78,17 @@ class StDifferenceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($lineStringA, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertStringContainsString('LINESTRING', $result[0][1]);
         static::assertEquals($lineStringB, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertStringContainsString('LINESTRING', $result[1][1]);
         static::assertEquals($lineStringC, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertStringContainsString('LINESTRING', $result[2][1]);
     }
 

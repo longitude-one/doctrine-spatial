@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StBuffer;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StBuffer::class)]
 #[Group('dql')]
 class StBufferTest extends PersistOrmTestCase
 {
@@ -69,9 +70,11 @@ class StBufferTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
         // too many error between OS, this test doesn't have to check the result (double float, etc.),
         // but it has to check that point becomes a polygon.
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('POLYGON((4 0', $result[0][1]);
     }
 }

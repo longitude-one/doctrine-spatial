@@ -19,9 +19,11 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometricPoint;
 use LongitudeOne\Spatial\Tests\DataProvider as LoDataProvider;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -30,9 +32,8 @@ use PHPUnit\Framework\TestCase;
  * Point object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(Point::class)]
 #[Group('php')]
 class PointTest extends TestCase
 {
@@ -126,7 +127,6 @@ class PointTest extends TestCase
     public function testOutOfRangeLatitudeConstructor(float|int|string $latitude): void
     {
         $geometricPoint = new GeometricPoint(0, $latitude);
-        static::assertIsNumeric($geometricPoint->getLatitude());
         static::assertNotEmpty($geometricPoint->getLatitude());
     }
 
@@ -141,7 +141,6 @@ class PointTest extends TestCase
     public function testOutOfRangeLongitudeConstructor(float|int|string $longitude): void
     {
         $geometricPoint = new GeometricPoint($longitude, 0);
-        static::assertIsNumeric($geometricPoint->getLongitude());
         static::assertNotEmpty($geometricPoint->getLongitude());
     }
 

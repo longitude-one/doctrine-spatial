@@ -22,8 +22,10 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StOverlaps;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -33,9 +35,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StOverlaps::class)]
 #[Group('dql')]
 class StOverlapsTest extends PersistOrmTestCase
 {
@@ -85,7 +86,6 @@ class StOverlapsTest extends PersistOrmTestCase
             );
         }
 
-        static::assertIsArray($result);
         static::assertEquals($holeyPolygon, $result[1]);
     }
 
@@ -110,6 +110,10 @@ class StOverlapsTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(4, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+        static::assertIsArray($result[3]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(0, $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);

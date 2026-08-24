@@ -153,10 +153,6 @@ class PersistOrmTestCase extends OrmTestCase
     protected function persistPolygon(Polygon $polygon): PolygonEntity
     {
         try {
-            if (!$this->getEntityManager() instanceof EntityManagerInterface) {
-                static::fail('The entity manager is unavailable. Did you miss to create when setting up your test?');
-            }
-
             $polygonEntity = new PolygonEntity();
             $polygonEntity->setPolygon($polygon);
 

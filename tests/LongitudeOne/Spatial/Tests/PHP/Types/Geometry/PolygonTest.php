@@ -24,6 +24,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Helper\LineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PolygonHelperTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -31,10 +32,9 @@ use PHPUnit\Framework\TestCase;
  * Polygon object tests.
  *
  * @internal
- *
- * @coversDefaultClass
  */
 #[Group('php')]
+#[CoversClass(Polygon::class)]
 class PolygonTest extends TestCase
 {
     use LineStringHelperTrait;

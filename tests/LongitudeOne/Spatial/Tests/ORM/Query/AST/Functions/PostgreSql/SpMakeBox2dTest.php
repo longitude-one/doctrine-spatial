@@ -19,8 +19,10 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpMakeBox2d;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -30,9 +32,8 @@ use PHPUnit\Framework\Attributes\Group;
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpMakeBox2d::class)]
 #[Group('dql')]
 #[Group('pgsql-only')]
 class SpMakeBox2dTest extends PersistOrmTestCase
@@ -61,7 +62,7 @@ class SpMakeBox2dTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT t, ST_AsText(PgSql_MakeBox2D(ST_Point(:x1, :y1), ST_Point(:x2, :y2))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
+            'SELECT t, ST_AsText(PgSql_MakeBox2d(ST_Point(:x1, :y1), ST_Point(:x2, :y2))) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t'
         );
         $query->setParameter('x1', 0);
         $query->setParameter('y1', 0);
@@ -72,6 +73,7 @@ class SpMakeBox2dTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals('POLYGON((0 0,0 8,4 8,4 0,0 0))', $result[0][1]);
     }
 }
