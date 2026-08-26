@@ -17,6 +17,7 @@
     </include>
     <exclude>
       <group>mysql-only</group>
+      <group>mariadb-only</group>
     </exclude>
   </groups>
   <php>

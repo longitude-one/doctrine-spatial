@@ -16,6 +16,7 @@
       <group>issue</group>
       <group>pgsql-only</group>
       <group>srid</group>
+      <group>mariadb-only</group>
       <group>deprecation</group>
     </exclude>
   </groups>

@@ -12,13 +12,13 @@
       <group>geometry</group>
       <group>geography</group>
       <group>srid</group>
-      <group>pgsql-only</group>
       <group>issue</group>
       <group>sqlserver-only</group>
     </include>
     <exclude>
       <group>mysql-only</group>
       <group>pgsql-only</group>
+      <group>mariadb-only</group>
     </exclude>
   </groups>
   <php>
