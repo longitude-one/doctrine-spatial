@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
 use Doctrine\DBAL\Connection;
@@ -126,6 +125,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\MultiPolygonEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 // phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber
 // phpcs miss the Exception
@@ -370,19 +370,12 @@ abstract class OrmTestCase extends SpatialTestCase
             $realPaths = [$realPath];
             $config = new Configuration();
 
-            $config->setMetadataCache(new ArrayCachePool());
+            $config->setMetadataCache(new ArrayAdapter());
 
-            // Preferred order for lazy loading:
-            // 1. Native lazy objects when Doctrine supports them on PHP 8.4+
-            // 2. Legacy proxy configuration as a fallback for older Doctrine versions
-            // 3. Leave Doctrine defaults untouched if neither API is available
-            if (method_exists($config, 'enableNativeLazyObjects') && PHP_VERSION_ID >= 80400) {
-                // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
+            if (method_exists($config, 'enableNativeLazyObjects')) {
+                // Doctrine 3.5+ added native lazy objects.
                 $config->enableNativeLazyObjects(true);
-            } elseif (method_exists($config, 'setProxyDir') && method_exists($config, 'setProxyNamespace')) {
-                // This is the legacy proxy-based fallback used when native lazy objects are not available.
-                $config->setProxyDir(__DIR__.'/Proxies');
-                $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
+                // This method no longer exists in Doctrine 4.0, so we need to check if it exists before calling it.
             }
 
             $config->setMetadataDriverImpl(new AttributeDriver($realPaths));
@@ -617,7 +610,7 @@ abstract class OrmTestCase extends SpatialTestCase
         $configuration->addCustomNumericFunction('PgSql_LineLocatePoint', PostgreSql\SpLineLocatePoint::class);
         $configuration->addCustomStringFunction('PgSql_LineInterpolatePoint', PostgreSql\SpLineInterpolatePoint::class);
         $configuration->addCustomStringFunction('PgSql_MakeEnvelope', PostgreSql\SpMakeEnvelope::class);
-        $configuration->addCustomStringFunction('PgSql_MakeBox2D', PostgreSql\SpMakeBox2D::class);
+        $configuration->addCustomStringFunction('PgSql_MakeBox2d', PostgreSql\SpMakeBox2d::class);
         $configuration->addCustomStringFunction('PgSql_MakeLine', PostgreSql\SpMakeLine::class);
         $configuration->addCustomStringFunction('PgSql_MakePoint', PostgreSql\SpMakePoint::class);
         $configuration->addCustomNumericFunction('PgSql_NPoints', PostgreSql\SpNPoints::class);

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -25,13 +25,12 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometricPoint;
 use LongitudeOne\Spatial\Tests\DataProvider as LoDataProvider;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Geometric and geographic points tests.
  * These methods involve tests launched on both Geometric and Geographic points.
- *
- * @group php
  *
  * @internal
  *
@@ -39,6 +38,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \LongitudeOne\Spatial\PHP\Types\Geography\Point
  * @covers \LongitudeOne\Spatial\PHP\Types\Geometry\Point
  */
+#[Group('php')]
 class AbstractPointTest extends TestCase
 {
     // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectTypeHint

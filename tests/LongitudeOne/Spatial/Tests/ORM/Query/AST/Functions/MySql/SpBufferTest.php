@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -20,8 +20,11 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MySql;
 
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MySql\SpBuffer;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * SP_Buffer and SP_BufferStrategy DQL functions tests.
@@ -31,13 +34,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group mysql-only
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpBuffer::class)]
+#[Group('dql')]
+#[Group('mysql-only')]
 class SpBufferTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -56,9 +57,8 @@ class SpBufferTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectSpBuffer(): void
     {
         $this->expectDeprecationWithIdentifier('https://github.com/longitude-one/doctrine-spatial/issues/152');
@@ -75,6 +75,7 @@ class SpBufferTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
         static::assertEquals('POLYGON((-4 -4,4 -4,4 4,-4 4,-4 -4))', $result[0][1]);
     }

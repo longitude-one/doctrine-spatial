@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -21,10 +21,6 @@ use Composer\Autoload\ClassLoader;
 require __DIR__.'/../../../../vendor/autoload.php';
 
 error_reporting(E_ALL);
-
-if (PHP_VERSION_ID < 80400) {
-    error_reporting(E_ALL | E_STRICT);
-}
 
 $loader = new ClassLoader();
 $loader->add('LongitudeOne\Spatial\Tests', __DIR__.'/../../..');

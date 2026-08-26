@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -20,8 +20,11 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StPointOnSurface;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_PointOnSurface DQL function tests.
@@ -29,12 +32,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StPointOnSurface::class)]
+#[Group('dql')]
 class StPointOnSurfaceTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -54,9 +55,8 @@ class StPointOnSurfaceTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunction(): void
     {
         $straightLineString = $this->persistStraightLineString();
@@ -72,19 +72,25 @@ class StPointOnSurfaceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+
         static::assertEquals($straightLineString, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('POINT', $result[0][1]);
         static::assertEquals($angularLineString, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertStringStartsWith('POINT', $result[1][1]);
         static::assertEquals($ringLineString, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertStringStartsWith('POINT', $result[2][1]);
     }
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionInPredicate(): void
     {
         $straightLineString = $this->persistStraightLineString();

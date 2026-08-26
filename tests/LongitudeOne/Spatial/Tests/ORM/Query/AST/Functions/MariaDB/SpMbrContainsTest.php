@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -19,8 +19,11 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB\SpMbrContains;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Contains DQL function tests.
@@ -28,13 +31,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre-tranchant@gmail.com>
  * @license http://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group mariadb-only
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpMbrContains::class)]
+#[Group('dql')]
+#[Group('mariadb-only')]
 class SpMbrContainsTest extends PersistOrmTestCase
 {
     use PersistantPolygonHelperTrait;
@@ -52,9 +53,8 @@ class SpMbrContainsTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testContainsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -91,9 +91,8 @@ class SpMbrContainsTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectContains(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -113,6 +112,9 @@ class SpMbrContainsTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals(1, $result[0][1]);
         static::assertEquals(1, $result[0][2]);

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -19,9 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\SqlServer;
 
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\SqlServer\SpSrid;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_SRID SQL Server function tests.
@@ -29,12 +32,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpSrid::class)]
+#[Group('sqlserver-only')]
 class SpSridTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -54,9 +55,8 @@ class SpSridTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionWithGeography(): void
     {
         $this->persistGeographyLosAngeles();
@@ -68,14 +68,14 @@ class SpSridTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertSame('4326', $result[0][1]);
     }
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionWithGeometry(): void
     {
         $this->createAndPersistGeometricPoint('A', '1', '1', 2154);

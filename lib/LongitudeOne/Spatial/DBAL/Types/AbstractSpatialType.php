@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -223,8 +223,9 @@ abstract class AbstractSpatialType extends Type implements DoctrineSpatialTypeIn
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
-        // TODO onSchemaColumnDefinition event listener?
-        return $platform instanceof AbstractPlatform;
+        return match ($platform::class) {
+            default => true,
+        };
     }
 
     /**

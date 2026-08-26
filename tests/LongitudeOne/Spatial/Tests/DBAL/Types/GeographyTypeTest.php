@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -29,16 +29,16 @@ use LongitudeOne\Spatial\PHP\Types\Geography\Point;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Doctrine GeographyType tests.
  *
- * @group geography
- *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeographyType
  */
+#[CoversClass(GeographyType::class)]
+#[Group('geography')]
 class GeographyTypeTest extends PersistOrmTestCase
 {
     /**
@@ -80,7 +80,6 @@ class GeographyTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new GeographyType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geography', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Geography', $spatialInstance->getSQLType());

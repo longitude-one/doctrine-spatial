@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -19,8 +19,11 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StBuffer;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_Buffer DQL function tests.
@@ -28,12 +31,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StBuffer::class)]
+#[Group('dql')]
 class StBufferTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -51,9 +52,8 @@ class StBufferTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectStBuffer(): void
     {
         $pointO = $this->persistPointO();
@@ -70,9 +70,11 @@ class StBufferTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
         // too many error between OS, this test doesn't have to check the result (double float, etc.),
         // but it has to check that point becomes a polygon.
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('POLYGON((4 0', $result[0][1]);
     }
 }

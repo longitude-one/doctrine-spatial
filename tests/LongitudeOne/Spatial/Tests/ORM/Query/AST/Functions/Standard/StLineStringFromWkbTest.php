@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -21,8 +21,11 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StLineStringFromWkb;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_LineStringFromWKB DQL function tests.
@@ -30,12 +33,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StLineStringFromWkb::class)]
+#[Group('dql')]
 class StLineStringFromWkbTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
@@ -55,9 +56,8 @@ class StLineStringFromWkbTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelect(): void
     {
         $this->persistGeometryStraightLine();
@@ -72,14 +72,15 @@ class StLineStringFromWkbTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsString($result[0][1]);
         static::assertStringStartsWith('LINESTRING', $result[0][1]);
     }
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectWithSrid(): void
     {
         $this->skipIfMariaDbAndOrm29();
@@ -101,6 +102,7 @@ class StLineStringFromWkbTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
         static::assertEquals(2154, $result[0][1]);
     }
 }

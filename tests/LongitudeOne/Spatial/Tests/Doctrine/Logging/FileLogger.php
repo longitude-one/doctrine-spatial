@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -56,18 +56,51 @@ class FileLogger extends MonologLogger implements LoggerInterface
         ];
 
         if (isset($GLOBALS['opt_log_file'])) {
+            if (!is_string($GLOBALS['opt_log_file'])) {
+                throw new \InvalidArgumentException('The opt_log_file parameter must be a string.');
+            }
+
             $logParams['filename'] = self::removeFirstAndLastSlash($GLOBALS['opt_log_file']);
         }
 
         if (isset($GLOBALS['opt_log_level'])) {
-            $logParams['level'] = $GLOBALS['opt_log_level'];
+            if (!is_string($GLOBALS['opt_log_level'])) {
+                throw new \InvalidArgumentException('The opt_log_level parameter must be a string.');
+            }
+
+            $logParams['level'] = match (mb_trim(mb_strtolower($GLOBALS['opt_log_level']))) {
+                'debug' => 'debug',
+                'info' => 'info',
+                'notice' => 'notice',
+                'warning' => 'warning',
+                'error' => 'error',
+                'critical' => 'critical',
+                'alert' => 'alert',
+                'emergency' => 'emergency',
+                '100' => 100,
+                '200' => 200,
+                '250' => 250,
+                '300' => 300,
+                '400' => 400,
+                '500' => 500,
+                '550' => 550,
+                '600' => 600,
+                default => throw new \InvalidArgumentException('The opt_log_level parameter must be one of the following values: debug, info, notice, warning, error, critical, alert, emergency.'),
+            };
         }
 
         if (isset($GLOBALS['opt_log_dir'])) {
+            if (!is_string($GLOBALS['opt_log_dir'])) {
+                throw new \InvalidArgumentException('The opt_log_dir parameter must be a string.');
+            }
             $logParams['directory'] = $GLOBALS['opt_log_dir'];
         }
 
         if (isset($GLOBALS['opt_log_timezone'])) {
+            if (!is_string($GLOBALS['opt_log_timezone'])) {
+                throw new \InvalidArgumentException('The opt_log_timezone parameter must be a string.');
+            }
+
             try {
                 $logParams['timezone'] = new \DateTimeZone($GLOBALS['opt_log_timezone']);
             } catch (\Exception $e) {

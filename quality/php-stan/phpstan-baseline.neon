@@ -1,66 +1,127 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$input of class LongitudeOne\\\\Geo\\\\WKB\\\\Parser constructor expects string\\|null, resource\\|string given\\.$#"
+			message: '#^Parameter \#1 \$input of class LongitudeOne\\Geo\\WKB\\Parser constructor expects string\|null, resource\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/DBAL/Platform/AbstractPlatform.php
 
 		-
-			message: "#^Cannot access offset 0 on resource\\|string\\.$#"
+			message: '#^Cannot access offset 0 on resource\|string\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
 
 		-
-			message: "#^Parameter \\#2 \\$sqlExpr of method LongitudeOne\\\\Spatial\\\\DBAL\\\\Platform\\\\PlatformInterface\\:\\:convertStringToPhpValue\\(\\) expects string, resource\\|string given\\.$#"
+			message: '#^PHPDoc tag @SuppressWarnings has invalid value \(\(PHPMD\.CouplingBetweenObjects\)\)\: Unexpected token "\.CouplingBetweenObjects\)", expected ''\)'' at offset 69 on line 4$#'
+			identifier: phpDoc.parseError
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
 
 		-
-			message: "#^Call to function is_object\\(\\) with array\\<float\\|int\\> will always evaluate to false\\.$#"
+			message: '#^Parameter \#2 \$sqlExpr of method LongitudeOne\\Spatial\\DBAL\\Platform\\PlatformInterface\:\:convertStringToPhpValue\(\) expects string, resource\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/DBAL/Types/AbstractSpatialType.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between Doctrine\\ORM\\Query\\TokenType\:\:T_COMMA and Doctrine\\ORM\\Query\\TokenType\:\:T_COMMA will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql/SpSnapToGrid.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<array\<float\|int\>\|LongitudeOne\\Spatial\\PHP\\Types\\PointInterface\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			message: '#^Call to function is_array\(\) with array\<float\|int\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with Doctrine\\\\ORM\\\\Mapping\\\\FieldMapping will always evaluate to false\\.$#"
-			count: 1
-			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/PointTypeTest.php
+			message: '#^Call to function is_numeric\(\) with float\|int will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
 
 		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^Call to function is_object\(\) with \*NEVER\* will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
-			path: ../../tests/LongitudeOne/Spatial/Tests/DBAL/Types/Geometry/PointTypeTest.php
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
 
 		-
-			message: "#^Class LongitudeOne\\\\Spatial\\\\Tests\\\\Doctrine\\\\Logging\\\\FileLogger extends @final class Monolog\\\\Logger\\.$#"
+			message: '#^Call to function is_object\(\) with array\<float\|int\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array, list\<string\>\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
+
+		-
+			message: '#^Method LongitudeOne\\Spatial\\PHP\\Types\\AbstractPoint\:\:validateArguments\(\) should return array\<float\|int\|string\> but returns array\<mixed, mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractPoint.php
+
+		-
+			message: '#^Method LongitudeOne\\Spatial\\PHP\\Types\\AbstractPoint\:\:validateArguments\(\) should return array\<float\|int\|string\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 2
+			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractPoint.php
+
+		-
+			message: '#^Class LongitudeOne\\Spatial\\Tests\\Doctrine\\Logging\\FileLogger extends @final class Monolog\\Logger\.$#'
+			identifier: class.extendsFinalByPhpDoc
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/Doctrine/Logging/FileLogger.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpScaleTest.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpTransformTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$points of class LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\Geometry\\\\LineString constructor expects array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>, array\\<int, int\\> given\\.$#"
+			message: '#^Call to function method_exists\(\) with Doctrine\\ORM\\Configuration and ''enableNativeLazyObj…'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmTestCase.php
+
+		-
+			message: '#^PHPDoc tag @SuppressWarnings has invalid value \(\(PHPMD\.ExcessiveClassComplexity\)\)\: Unexpected token "\.ExcessiveClassComplexity\)", expected ''\)'' at offset 61 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$points of class LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\LineString constructor expects array\<array\<float\|int\>\|LongitudeOne\\Spatial\\PHP\\Types\\PointInterface\>, array\<int, int\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/LineStringTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$points of class LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\Geometry\\\\MultiPoint constructor expects array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>, array\\<int, int\\> given\\.$#"
+			message: '#^Parameter \#1 \$points of class LongitudeOne\\Spatial\\PHP\\Types\\Geometry\\MultiPoint constructor expects array\<array\<float\|int\>\|LongitudeOne\\Spatial\\PHP\\Types\\PointInterface\>, array\<int, int\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/MultiPointTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$polygon of method LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\AbstractMultiPolygon\\:\\:addPolygon\\(\\) expects array\\<array\\<array\\<float\\|int\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\LineStringInterface\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\MultiPointInterface\\>\\|LongitudeOne\\\\Spatial\\\\PHP\\\\Types\\\\PolygonInterface, string given\\.$#"
+			message: '#^Parameter \#1 \$polygon of method LongitudeOne\\Spatial\\PHP\\Types\\AbstractMultiPolygon\:\:addPolygon\(\) expects array\<array\<array\<float\|int\>\|LongitudeOne\\Spatial\\PHP\\Types\\PointInterface\>\|LongitudeOne\\Spatial\\PHP\\Types\\LineStringInterface\|LongitudeOne\\Spatial\\PHP\\Types\\MultiPointInterface\>\|LongitudeOne\\Spatial\\PHP\\Types\\PolygonInterface, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../tests/LongitudeOne/Spatial/Tests/PHP/Types/Geometry/MultiPolygonTest.php

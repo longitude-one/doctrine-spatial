@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -20,8 +20,11 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StDistance;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_Distance DQL function tests.
@@ -30,12 +33,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StDistance::class)]
+#[Group('dql')]
 class StDistanceTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -57,9 +58,8 @@ class StDistanceTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geography
      */
+    #[Group('geography')]
     public function testSelectStDistanceGeographyCartesian(): void
     {
         $newYork = $this->persistNewYorkGeography();
@@ -84,6 +84,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertGreaterThan(1309000, $result[0][1]);
         static::assertLessThan(1310000, $result[0][1]);
@@ -97,9 +100,8 @@ class StDistanceTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geography
      */
+    #[Group('geography')]
     public function testSelectStDistanceGeographySpheroid(): void
     {
         $newYork = $this->persistNewYorkGeography();
@@ -121,6 +123,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertIsNumeric($result[0][1]);
         static::assertEquals($losAngeles, $result[1][0]);
@@ -131,9 +136,8 @@ class StDistanceTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectStDistanceGeometryCartesian(): void
     {
         $newYork = $this->persistNewYorkGeometry();
@@ -156,6 +160,9 @@ class StDistanceTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         static::assertEqualsWithDelta(15.646934398128, $result[0][1], 0.000000000001);
         static::assertEquals($losAngeles, $result[1][0]);

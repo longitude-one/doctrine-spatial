@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -19,21 +19,22 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\PHP\Types\Geometry;
 
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point as GeometricPoint;
 use LongitudeOne\Spatial\Tests\DataProvider as LoDataProvider;
 use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Point object tests.
  *
- * @group php
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(Point::class)]
+#[Group('php')]
 class PointTest extends TestCase
 {
     use PointHelperTrait;
@@ -126,7 +127,6 @@ class PointTest extends TestCase
     public function testOutOfRangeLatitudeConstructor(float|int|string $latitude): void
     {
         $geometricPoint = new GeometricPoint(0, $latitude);
-        static::assertIsNumeric($geometricPoint->getLatitude());
         static::assertNotEmpty($geometricPoint->getLatitude());
     }
 
@@ -141,7 +141,6 @@ class PointTest extends TestCase
     public function testOutOfRangeLongitudeConstructor(float|int|string $longitude): void
     {
         $geometricPoint = new GeometricPoint($longitude, 0);
-        static::assertIsNumeric($geometricPoint->getLongitude());
         static::assertNotEmpty($geometricPoint->getLongitude());
     }
 

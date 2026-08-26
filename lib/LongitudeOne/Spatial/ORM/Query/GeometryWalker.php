@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -51,7 +51,7 @@ class GeometryWalker extends SqlWalkerChild
      * Doctrine 3.2+ requires the output-walker API (`OutputWalker` / `getFinalizer()`),
      * while Doctrine 2.19 still uses the legacy `SqlWalker` contract.
      *
-     * @param Query                                                                                                                                                                                                                  $query           the parsed query
+     * @param Query<mixed, mixed>                                                                                                                                                                                                    $query           the parsed query
      * @param ParserResult                                                                                                                                                                                                           $parserResult    the parser result containing the RSM
      * @param array<string, array{metadata?: ClassMetadata<object>, parent?: null|string, relation?: null|AssociationMapping, map?: null|string, resultVariable?: Node|string, nestingLevel: int, token: Token<TokenType, string> }> $queryComponents the query components (symbol table)
      */
