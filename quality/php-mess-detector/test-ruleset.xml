@@ -15,9 +15,15 @@
     </rule>
     <!-- Import some rules of code size rule set -->
     <rule ref="rulesets/codesize.xml">
+        <exclude name="CyclomaticComplexity"/>
         <!-- There are never too many tests -->
         <exclude name="TooManyPublicMethods"/>
         <exclude name="TooManyMethods"/>
+    </rule>
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="11"/>
+        </properties>
     </rule>
     <!-- Import the entire controversial code rule set, but SuperGlobals -->
     <rule ref="rulesets/controversial.xml">
