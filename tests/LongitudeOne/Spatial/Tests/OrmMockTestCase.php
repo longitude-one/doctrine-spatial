@@ -104,8 +104,11 @@ abstract class OrmMockTestCase extends SpatialTestCase
 
         $config->setMetadataCache(new ArrayAdapter());
 
-        // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
-        $config->enableNativeLazyObjects(true);
+        if (method_exists($config, 'enableNativeLazyObjects')) {
+            // Doctrine 3.5+ added native lazy objects.
+            $config->enableNativeLazyObjects(true);
+            // This method no longer exists in Doctrine 4.0, so we need to check if it exists before calling it.
+        }
 
         $config->setMetadataDriverImpl(new AttributeDriver($path));
 

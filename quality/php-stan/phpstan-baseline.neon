@@ -97,6 +97,12 @@ parameters:
 			path: ../../tests/LongitudeOne/Spatial/Tests/ORM/Query/AST/Functions/PostgreSql/SpTransformTest.php
 
 		-
+			message: '#^Call to function method_exists\(\) with Doctrine\\ORM\\Configuration and ''enableNativeLazyObj…'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../tests/LongitudeOne/Spatial/Tests/OrmTestCase.php
+
+		-
 			message: '#^PHPDoc tag @SuppressWarnings has invalid value \(\(PHPMD\.ExcessiveClassComplexity\)\)\: Unexpected token "\.ExcessiveClassComplexity\)", expected ''\)'' at offset 61 on line 4$#'
 			identifier: phpDoc.parseError
 			count: 1

@@ -294,6 +294,9 @@ jobs:
       - name: Force doctrine/orm library to 4.0.x-dev
         run: composer --prefer-stable require "doctrine/orm:^4.0" --with-all-dependencies
 
+      - name: Composer dependencies list
+        run: composer show
+
       - name: Copy test suites
         run: cp .github/phpunit.*.xml .
 
