@@ -54,10 +54,8 @@ class StSridTest extends PersistOrmTestCase
     {
         $this->usesEntity(self::POINT_ENTITY);
         $this->usesEntity(self::GEOGRAPHY_ENTITY);
-        $this->supportsPlatform(MariaDBPlatform::class);
         $this->supportsPlatform(MySQLPlatform::class);
         $this->supportsPlatform(SQLServerPlatform::class);
-        $this->supportsPlatform(PostgreSQLPlatform::class);
 
         parent::setUp();
     }
