@@ -62,6 +62,9 @@ class StSridTest extends PersistOrmTestCase
         parent::setUp();
     }
 
+    /**
+     * Test a DQL containing function to test in the select.
+     */
     #[Group('srid-2-parameters')]
     public function testFunctionSqlGenerationWithTwoParameters(): void
     {
@@ -135,6 +138,9 @@ class StSridTest extends PersistOrmTestCase
     }
 
     #[Group('srid-2-parameters')]
+    /**
+     * Summary of testFunctionWithGeometryAndChangedSrid.
+     */
     public function testFunctionWithGeometryAndChangedSrid(): void
     {
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {

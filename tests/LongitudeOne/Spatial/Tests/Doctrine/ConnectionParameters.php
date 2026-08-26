@@ -132,6 +132,8 @@ class ConnectionParameters
 
     /**
      * Return an optional string global parameter.
+     *
+     * @param string $name the parameter name
      */
     private static function getOptionalStringParameter(string $name): ?string
     {
@@ -161,6 +163,8 @@ class ConnectionParameters
 
     /**
      * Return a required string global parameter.
+     *
+     * @param string $name the parameter name
      */
     private static function getRequiredStringParameter(string $name): string
     {

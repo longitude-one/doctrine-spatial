@@ -92,6 +92,9 @@ class WrappingTest extends PersistOrmTestCase
         static::assertMatchesRegularExpression($regex, $result);
     }
 
+    /**
+     * Test a DQL containing function to test in the where clause.
+     */
     #[Group('geometry')]
     public function testTypeWrappingWhere(): void
     {
