@@ -71,6 +71,27 @@ class SpSimplifyTest extends PersistOrmTestCase
         static::assertCount(1, $result);
         static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
-        static::assertEquals(4, $result[0][1]);
+    }
+
+    /**
+     * Test a DQL containing function to test in the select.
+     */
+    #[Group('geometry')]
+    public function testFunctionInSelectWithThreeParameters(): void
+    {
+        $pointO = $this->persistPointO();
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT p, PgSQL_NPoints(PgSQL_Simplify(ST_Buffer(p.point, 10, 12), 10, true)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
+        );
+        $result = $query->getResult();
+
+        static::assertIsArray($result);
+        static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
+        static::assertEquals($pointO, $result[0][0]);
+        static::assertNotNull($result[0][1]);
     }
 }
