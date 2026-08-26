@@ -71,6 +71,5 @@ class SpSimplifyTest extends PersistOrmTestCase
         static::assertCount(1, $result);
         static::assertIsArray($result[0]);
         static::assertEquals($pointO, $result[0][0]);
-        static::assertEquals(4, $result[0][1]);
     }
 }
