@@ -541,7 +541,6 @@ abstract class OrmTestCase extends SpatialTestCase
      */
     private function addSpecificMariaDbFunctions(Configuration $configuration): void
     {
-        $configuration->addCustomNumericFunction('MariaDB_Buffer', MariaDB\SpBuffer::class);
         $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('MariaDB_Distance', MariaDB\SpDistance::class);
         $configuration->addCustomNumericFunction('MariaDB_DistanceSphere', MariaDB\SpDistanceSphere::class);
@@ -567,7 +566,6 @@ abstract class OrmTestCase extends SpatialTestCase
     private function addSpecificMySqlFunctions(Configuration $configuration): void
     {
         $configuration->addCustomNumericFunction('Mysql_Distance', MySql\SpDistance::class);
-        $configuration->addCustomNumericFunction('Mysql_Buffer', MySql\SpBuffer::class);
         $configuration->addCustomStringFunction('Common_Buffer', Common\ScBuffer::class);
         $configuration->addCustomNumericFunction('Mysql_BufferStrategy', MySql\SpBufferStrategy::class);
         $configuration->addCustomNumericFunction('Mysql_DistanceSphere', MySql\SpDistanceSphere::class);
