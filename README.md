@@ -18,7 +18,7 @@ It provides support for spatial types and functions across multiple database eng
 ![Badge indicating minimum supported PHP version required](https://img.shields.io/packagist/php-v/longitude-one/doctrine-spatial.svg?maxAge=3600)
 [![Badge showing project license on Packagist](https://img.shields.io/packagist/l/longitude-one/doctrine-spatial)](https://github.com/longitude-one/doctrine-spatial/blob/main/LICENSE)
 
-![Badge showing GitHub Actions full test workflow status](https://img.shields.io/github/actions/workflow/status/longitude-one/doctrine-spatial/.github%2Fworkflows%2Ffull.yaml?label=Full%20test)
+![Badge showing GitHub Actions full test workflow status](https://img.shields.io/github/actions/workflow/status/longitude-one/doctrine-spatial/.github%2Fworkflows%2Ftests-php.yaml?label=Full%20test)
 ![Badge showing code coverage status from Codecov](https://img.shields.io/codecov/c/github/longitude-one/doctrine-spatial)
 [![Badge showing documentation build status on ReadTheDocs](https://readthedocs.org/projects/lo-doctrine-spatial/badge/?version=main)](https://lo-doctrine-spatial.readthedocs.io/en/main/?badge=main)
 
@@ -41,12 +41,13 @@ It also includes a glossary for the main spatial types and functions supported b
 | Version | PHP compatibility           | Tested on       | Doctrine ORM             | Tested against Doctrine ORM | Released     | Active support   | Security fixes   |
 |---------|-----------------------------|-----------------|--------------------------|-----------------------------|--------------|------------------|------------------|
 | 5       | 8.1 - 8.2 - 8.3 - 8.4 - 8.5 | From 8.1 to 8.3 | ^2.1 - ^3.0 - ^4.0.x-dev | ^2.1 - ^3.0 - ^4.0.x-dev    | 04 May 2024  | 31 August 2026   | 31 December 2026 |
-| 6       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - 4.0.x-dev            | August 2026  | 31 December 2027 | 31 December 2028 |
-| 7       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - 4.0.x-dev            | Unknown      | Unknown          | Unknown          |
-| 8       | 8.5                         | 8.5             |                          | ^3.6 - 4.0.x-dev.           | January 2028 | 31 December 2028 | 31 December 2029 |
+| 6       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | August 2026  | 31 December 2027 | 31 December 2028 |
+| 7       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | Unknown      | Unknown          | Unknown          |
+| 8       | 8.5                         | 8.5             |                          | ^3.6 - ^4.0.x-dev           | January 2028 | 31 December 2028 | 31 December 2029 |
 
 > [!NOTE]
 > **Why does PHP support jump between versions 5 and 6?**
+> 
 > PHP 8.4 introduces lazy objects. Designed especially for Doctrine-created objects, this feature removes the need for proxies and dedicated proxy namespaces.
 > This is a major change that improves performance. Maintaining a library that supports both approaches complicates development and maintenance.
 > Version 5 of Doctrine Spatial provides a smooth transition: it is compatible with PHP 8.1 through 8.5 and with Doctrine ORM versions 2, 3, and even 4.

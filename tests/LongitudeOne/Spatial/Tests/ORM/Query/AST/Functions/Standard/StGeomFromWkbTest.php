@@ -93,7 +93,7 @@ class StGeomFromWkbTest extends PersistOrmTestCase
         $this->getEntityManager()->clear();
 
         $dql = 'SELECT t, ST_SRID(ST_GeomFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t';
-        // PostGreSQL SRID function doesn't respect standard. We use its internal function.
+        // PostgreSQL's ST_SRID does not comply with the standard, so use its platform-specific function.
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
             $dql = 'SELECT t, PgSql_SRID(ST_GeomFromWkb(:wkb, :srid)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity t';
         }

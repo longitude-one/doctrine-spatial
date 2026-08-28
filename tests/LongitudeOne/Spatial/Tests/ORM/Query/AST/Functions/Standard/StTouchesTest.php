@@ -57,7 +57,7 @@ class StTouchesTest extends PersistOrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL function in the predicate.
      */
     #[Group('geometry')]
     public function testFunctionInPredicate(): void

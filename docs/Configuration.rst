@@ -72,9 +72,9 @@ Declare a new function
                 st_area: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StArea
             string_functions:
                 #Declare functions returning a string
-                st_envelope: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\STEnvelope
+                st_envelope: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEnvelope
                 #Prefix functions with SP when they are not issue from the Standard directory is a good practice
-                sp_asgeojson: LongitudeOne\Spatial\ORM\Query\AST\Functions\Postgresql\SpAsGeoJson
+                sp_asgeojson: LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpAsGeoJson
                 #You can use the DQL function name you want and then use it in your DQL
                 myDQLFunctionAlias: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StCentroid
                 #SELECT myDQLFunctionAlias(POLYGON(...
@@ -82,7 +82,7 @@ Declare a new function
 Add only the functions you want to use. The list of available function can be found in these sections:
 
 1. list of :ref:`Standard functions` declared in the `Open Geospatial Consortium standard`_,
-2. list of :ref:`Specific PostGreSQL functions` which are not already declared in the OGC Standard,
+2. list of :ref:`Specific PostgreSQL functions` which are not already declared in the OGC Standard,
 3. list of :ref:`Specific MySQL functions` which are not already declared in the OGC Standard,
 
 Nota: By default, function declared by the `Open Geospatial Consortium`_ in the `standards of SQL Options`_ are prefixed
@@ -113,7 +113,7 @@ For example, the code below demonstrates declaring a geometric "point" type with
 
     // ...
 
-    // Register types implemented by the doctrine2 spatial extension
+    // Register types implemented by the Doctrine Spatial extension
     Type::addType('point', 'LongitudeOne\Spatial\DBAL\Types\Geometry\PointType');
 
 Declare a new function
@@ -130,7 +130,7 @@ You can register functions provided by the Doctrine spatial extension by adding 
     // ...
 
     // This class is implemented by the Doctrine library
-    use Doctrine\ORM\Configuration\Doctrine\ORM\Configuration;
+    use Doctrine\ORM\Configuration;
 
     // ...
 
@@ -139,8 +139,8 @@ You can register functions provided by the Doctrine spatial extension by adding 
     $config->addCustomStringFunction('ST_Envelope', 'LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StEnvelope');
     // This is another example to declare a standard spatial function which is returning a numeric
     $config->addCustomNumericFunction('ST_Area', 'LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StArea');
-    // This is another example to declare a Postgresql specific function which is returning a string
-    $config->addCustomNumericFunction('SP_GeoJson', 'LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpGeoJson');
+    // This is another example to declare a PostgreSQL-specific function which returns a string
+    $config->addCustomStringFunction('SP_AsGeoJson', 'LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpAsGeoJson');
 
 Coordinates order
 -----------------
@@ -154,4 +154,4 @@ It means:
 .. _Open Geospatial Consortium: https://www.ogc.org/
 .. _Open Geospatial Consortium (OGC) standard: https://www.ogc.org/standards/sfs
 .. _standards of SQL Options: https://www.ogc.org/standards/sfs
-.. _DBAL/Types: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/DBAL/Types
+.. _DBAL/Types: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/DBAL/Types

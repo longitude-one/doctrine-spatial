@@ -52,43 +52,10 @@ class SpMbrIntersectsTest extends PersistOrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the select.
-     */
-    #[Group('geometry')]
-    public function testSelectStDisjoint(): void
-    {
-        $bigPolygon = $this->persistBigPolygon();
-        $smallPolygon = $this->persistSmallPolygon();
-        $outerPolygon = $this->persistOuterPolygon();
-        $this->getEntityManager()->flush();
-        $this->getEntityManager()->clear();
-
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT p, MySQL_MbrIntersects(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
-        );
-
-        $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
-
-        $result = $query->getResult();
-
-        static::assertIsArray($result);
-        static::assertCount(3, $result);
-        static::assertIsArray($result[0]);
-        static::assertIsArray($result[1]);
-        static::assertIsArray($result[2]);
-        static::assertEquals($bigPolygon, $result[0][0]);
-        static::assertEquals(1, $result[0][1]);
-        static::assertEquals($smallPolygon, $result[1][0]);
-        static::assertEquals(1, $result[1][1]);
-        static::assertEquals($outerPolygon, $result[2][0]);
-        static::assertEquals(0, $result[2][1]);
-    }
-
-    /**
      * Test a DQL containing function to test in the predicate.
      */
     #[Group('geometry')]
-    public function testStDisjointWhereParameter(): void
+    public function testMbrIntersectsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -122,5 +89,38 @@ class SpMbrIntersectsTest extends PersistOrmTestCase
         static::assertIsArray($result);
         static::assertCount(1, $result);
         static::assertEquals($outerPolygon, $result[0]);
+    }
+
+    /**
+     * Test a DQL containing function to test in the select.
+     */
+    #[Group('geometry')]
+    public function testSelectMbrIntersects(): void
+    {
+        $bigPolygon = $this->persistBigPolygon();
+        $smallPolygon = $this->persistSmallPolygon();
+        $outerPolygon = $this->persistOuterPolygon();
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT p, MySQL_MbrIntersects(p.polygon, ST_GeomFromText(:p1)) FROM LongitudeOne\Spatial\Tests\Fixtures\PolygonEntity p'
+        );
+
+        $query->setParameter('p1', 'POLYGON((5 5,7 5,7 7,5 7,5 5))', 'string');
+
+        $result = $query->getResult();
+
+        static::assertIsArray($result);
+        static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
+        static::assertEquals($bigPolygon, $result[0][0]);
+        static::assertEquals(1, $result[0][1]);
+        static::assertEquals($smallPolygon, $result[1][0]);
+        static::assertEquals(1, $result[1][1]);
+        static::assertEquals($outerPolygon, $result[2][0]);
+        static::assertEquals(0, $result[2][1]);
     }
 }

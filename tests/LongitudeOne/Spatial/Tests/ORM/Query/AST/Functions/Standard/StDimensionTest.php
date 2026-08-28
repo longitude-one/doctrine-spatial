@@ -29,7 +29,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * ST_AsText DQL function tests.
+ * ST_Dimension DQL function tests.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -61,7 +61,7 @@ class StDimensionTest extends PersistOrmTestCase
      * Test a DQL containing function to test in the select.
      */
     #[Group('geometry')]
-    public function testStAsText(): void
+    public function testStDimension(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

@@ -1,0 +1,17 @@
+{
+  "releaseCommitMessageFormat": "chore(release): v{{currentTag}} 🎉",
+  "packageFiles": [],
+  "types": [
+    {"type": "feat", "section": "✨ New Features"},
+    {"type": "fix", "section": "🐛 Bug Fixes"},
+    {"type": "perf", "section": "⚡ Performance Improvements"},
+    {"type": "refactor", "section": "♻️ Refactoring"},
+    {"type": "docs", "section": "📚 Documentation"},
+    {"type": "eco", "section": "🌳 Environmental Impact"},
+    {"type": "ci", "section": "👷 CI/CD"},
+    {"type": "chore", "section": "🔧 Maintenance"},
+    {"type": "quality", "section": "📊​ Quality tools"},
+    {"type": "test", "section": "📗​ PHPUnit tests"}
+  ],
+  "tagPrefix": ""
+}

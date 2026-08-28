@@ -31,7 +31,7 @@ use LongitudeOne\Spatial\DBAL\Platform\SqlServer;
 use LongitudeOne\Spatial\Exception\UnsupportedPlatformException;
 
 /**
- * Abstract spatial DQL function.
+ * Doctrine platform matcher.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *

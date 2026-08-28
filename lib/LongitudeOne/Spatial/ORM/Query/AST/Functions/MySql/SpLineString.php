@@ -23,7 +23,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
- * GLength DQL function.
+ * MySql_LineString DQL function.
  *
  * @author  Damiano Ciarla <damiano.ciarla@gmail.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>

@@ -48,7 +48,7 @@ class StPointTest extends PersistOrmTestCase
         $this->usesEntity(self::POINT_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         // SQL Server doesn't support this function
-        // TODO Check if MySSQL doesn't support this function or if I missed this function
+        // TODO Check whether MySQL supports this function or whether it is missing from the registration.
 
         parent::setUp();
     }
