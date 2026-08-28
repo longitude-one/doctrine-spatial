@@ -19,9 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
@@ -33,25 +31,6 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  */
 class StSrid extends AbstractSpatialDQLFunction
 {
-    /**
-     * Get the deprecated platforms with this function.
-     *
-     * @return array<class-string<AbstractPlatform>, array{link: string, message: string}> a non-empty array of deprecated platforms
-     */
-    protected function getDeprecatedPlatforms(): array
-    {
-        return [
-            PostgreSQLPlatform::class => [
-                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/100',
-                'message' => 'The function Standard/ST_SRID is deprecated with PostGreSQL since longitude-one/doctrine-spatial because internal SRID PostGreSql function should accept two parameters and it doesn\'t. Use Standard/StSetSrid or Common/ScSrid instead.',
-            ],
-            MariaDBPlatform::class => [
-                'link' => 'https://github.com/longitude-one/doctrine-spatial/issues/100',
-                'message' => 'The function Standard/ST_SRID is deprecated with MariaDB since longitude-one/doctrine-spatial because internal SRID MariaDB function should accept two parameters and it doesn\'t. Use Standard/StSetSrid or Common/ScSrid instead.',
-            ],
-        ];
-    }
-
     /**
      * Function SQL name getter.
      *
@@ -96,6 +75,6 @@ class StSrid extends AbstractSpatialDQLFunction
      */
     protected function getPlatforms(): array
     {
-        return [PostgreSQLPlatform::class, MySQLPlatform::class, MariaDBPlatform::class, SQLServerPlatform::class];
+        return [MySQLPlatform::class, SQLServerPlatform::class];
     }
 }
