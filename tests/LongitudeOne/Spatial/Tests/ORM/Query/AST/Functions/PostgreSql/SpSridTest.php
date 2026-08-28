@@ -28,10 +28,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * ST_SRID PostGreSQL function tests.
+ * ST_SRID PostgreSQL function tests.
  *
- * Be warned that PostGreSQL is not respecting the ISO/IEC 13249-3 standard.
- * PostGreSQL only accepts one parameter with ST_SRID function.
+ * PostgreSQL does not comply with the ISO/IEC 13249-3 standard here.
+ * PostgreSQL accepts only one parameter for the ST_SRID function.
  *
  * ```sql
  * SELECT ST_SRID(g.point, 4326) FROM PointEntity g

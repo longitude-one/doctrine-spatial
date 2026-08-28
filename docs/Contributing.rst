@@ -82,16 +82,18 @@ As example, if the new spatial function exists in PostgreSQL and in MySQL, ``get
 
     <?php
 
-    // ...
+    use Doctrine\DBAL\Platforms\AbstractPlatform;
+    use Doctrine\DBAL\Platforms\MySQLPlatform;
+    use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 
     /**
      * Get the platforms accepted.
      *
-     * @return string[] a non-empty array of accepted platforms
+     * @return class-string<AbstractPlatform>[] a non-empty array of accepted platforms
      */
     protected function getPlatforms(): array
     {
-        return ['postgresql', 'mysql'];
+        return [PostgreSQLPlatform::class, MySQLPlatform::class];
     }
 
 Do not hesitate to copy and paste the implementing code of an existing spatial function.
@@ -105,7 +107,7 @@ Don't forget to check your code respect our standard of quality:
 
 .. code-block:: bash
 
-    docker exec spatial-php8 composer check-quality-code
+    docker exec spatial-php8 composer quality
 
 How to test your new function?
 ------------------------------
@@ -204,7 +206,7 @@ Please do not forgot to update documentation by adding your function in one of t
 
 * :ref:`Standard functions`
 * :ref:`Specific MySql functions`
-* :ref:`Specific PostGreSQL functions`
+* :ref:`Specific PostgreSQL functions`
 
 Quality of your code
 ====================
@@ -237,13 +239,13 @@ You can launch PHPCS-FIXER to fix errors with:
 
 Fix all errors, then commit your code.
 
-.. _Common directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Common
-.. _MySql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql
-.. _PostgreSql directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql
-.. _Standard directory: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard
+.. _Common directory: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Common
+.. _MySql directory: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/MySql
+.. _PostgreSql directory: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql
+.. _Standard directory: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/Standard
 .. _ISO/IEC 13249-3: https://www.iso.org/standard/60343.html
 .. _OGC standards: https://www.ogc.org/standards/sfs
 .. _ST_Polygonize: https://postgis.net/docs/manual-2.5/ST_Polygonize.html
-.. _SnapToGrid: https://github.com/longitude-one/doctrine-spatial/tree/master/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql/SpSnapToGrid.php
-.. _functions test directory: https://github.com/longitude-one/doctrine-spatial/tree/master/tests/LongitudeOne/Spatial/ORM/Query/AST/Functions/
-.. _OrmTestCase.php file: https://github.com/longitude-one/doctrine-spatial/blob/master/tests/LongitudeOne/Spatial/Tests/OrmTestCase.php
+.. _SnapToGrid: https://github.com/longitude-one/doctrine-spatial/tree/main/lib/LongitudeOne/Spatial/ORM/Query/AST/Functions/PostgreSql/SpSnapToGrid.php
+.. _functions test directory: https://github.com/longitude-one/doctrine-spatial/tree/main/tests/LongitudeOne/Spatial/ORM/Query/AST/Functions/
+.. _OrmTestCase.php file: https://github.com/longitude-one/doctrine-spatial/blob/main/tests/LongitudeOne/Spatial/Tests/OrmTestCase.php

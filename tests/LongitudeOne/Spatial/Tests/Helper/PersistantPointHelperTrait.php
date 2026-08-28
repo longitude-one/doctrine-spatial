@@ -24,7 +24,7 @@ use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity as GeometryPointEntity;
 
 /**
- * PolygonHelperTrait Trait.
+ * PersistantPointHelperTrait Trait.
  *
  * This helper provides some methods to persist geometric and geographic points.
  *

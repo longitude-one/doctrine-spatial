@@ -26,7 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * ST_Distance MyQL function tests.
+ * ST_Distance MySQL function tests.
  * Be careful, MySQL implements ST_Distance, but this function does not respect the OGC Standard.
  * So you should use this specific function.
  *

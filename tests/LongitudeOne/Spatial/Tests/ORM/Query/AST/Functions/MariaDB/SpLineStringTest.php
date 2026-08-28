@@ -26,7 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * SP_MakePoint DQL function tests.
+ * MariaDB_LineString DQL function tests.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -52,7 +52,7 @@ class SpLineStringTest extends PersistOrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL function in the predicate.
      */
     #[Group('geometry')]
     public function testPredicate(): void

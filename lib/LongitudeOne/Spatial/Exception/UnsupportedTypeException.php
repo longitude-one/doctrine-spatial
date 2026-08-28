@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Exception;
 
 /**
- * UnsupportedPlatformException class.
+ * UnsupportedTypeException class.
  */
 class UnsupportedTypeException extends \Exception implements ExceptionInterface
 {

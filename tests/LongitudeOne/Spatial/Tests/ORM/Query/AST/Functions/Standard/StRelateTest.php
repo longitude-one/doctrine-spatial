@@ -26,7 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * ST_Relates DQL function tests.
+ * ST_Relate DQL function tests.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
@@ -47,13 +47,13 @@ class StRelateTest extends PersistOrmTestCase
         $this->usesEntity(self::LINESTRING_ENTITY);
         $this->supportsPlatform(PostgreSQLPlatform::class);
         // SQL Server does not support this function because it needs the three parameters
-        // TODO Check if MySSQL doesn't support this function or if I missed this function
+        // TODO Check whether MySQL supports this function or whether it is missing from the registration.
 
         parent::setUp();
     }
 
     /**
-     * Test a DQL containing function to test in the select.
+     * Test a DQL function in the predicate.
      */
     #[Group('geometry')]
     public function testFunctionInPredicate(): void

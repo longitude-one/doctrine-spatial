@@ -60,7 +60,7 @@ class StIntersectsTest extends PersistOrmTestCase
      * Test a DQL containing function to test in the select.
      */
     #[Group('geometry')]
-    public function testSelectStDisjoint(): void
+    public function testSelectStIntersects(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();
@@ -92,7 +92,7 @@ class StIntersectsTest extends PersistOrmTestCase
      * Test a DQL containing function to test in the predicate.
      */
     #[Group('geometry')]
-    public function testStDisjointWhereParameter(): void
+    public function testStIntersectsWhereParameter(): void
     {
         $bigPolygon = $this->persistBigPolygon();
         $smallPolygon = $this->persistSmallPolygon();

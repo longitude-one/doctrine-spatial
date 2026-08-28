@@ -1,4 +1,4 @@
-.. Doctrine spatial extension documentation master file, created by Alexandre Tranchant
+.. Doctrine Spatial extension documentation main file, created by Alexandre Tranchant
 
 Welcome to Doctrine-Spatial extension's documentation!
 ######################################################
@@ -33,4 +33,3 @@ Contents
    Glossary
    Contributing
    Test
-

@@ -27,8 +27,8 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  *
  * Be careful, this function is not described in the ISO/IEC 13249.
  * So this class is not in the Standard directory.
- * With MariaDB, its name's ST_Distance_Sphere.
- * With PostGreSQL, its name's ST_DistanceSphere since PostGis 2.1.
+ * In MariaDB, the function is named ST_Distance_Sphere.
+ * In PostgreSQL, the function has been named ST_DistanceSphere since PostGIS 2.1.
  * So these two functions cannot be merged in a class stored in the Common directory.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>

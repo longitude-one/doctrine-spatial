@@ -23,7 +23,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
- * ST_MakeBox2D DQL function.
+ * ST_MakeBox2d DQL function.
  *
  * @author  Tom Vogt <tom@lemuria.org>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -35,6 +35,8 @@ class SpMakeBox2d extends AbstractSpatialDQLFunction
      * Function SQL name getter.
      *
      * @since 2.0 This function replace the protected property functionName.
+     *
+     * @return string the function name
      */
     protected function getFunctionName(): string
     {

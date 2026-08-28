@@ -53,7 +53,7 @@ class SpMbrDisjointTest extends PersistOrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the predicate.
+     * Test a DQL function in the predicate.
      */
     #[Group('geometry')]
     public function testMbrDisjointWhereParameter(): void
@@ -92,7 +92,7 @@ class SpMbrDisjointTest extends PersistOrmTestCase
     }
 
     /**
-     * Test a DQL containing function to test in the predicate.
+     * Test a DQL function in the select.
      */
     #[Group('geometry')]
     public function testSelectMbrDisjoint(): void

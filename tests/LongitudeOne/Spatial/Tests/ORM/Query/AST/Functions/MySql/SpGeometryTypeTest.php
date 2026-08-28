@@ -26,7 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * SC_GeometryType DQL function tests.
+ * Sp_GeometryType DQL function tests.
  * The SQL ST_GeometryType function does not respect the OGC.
  * It should return the SQL MM Type ('ST_Linestring', 'ST_Polygon'),
  * But MySQL returns the type of the geometry as a string. Eg: 'LINESTRING', 'POLYGON', 'MULTIPOINT'.
@@ -58,7 +58,7 @@ class SpGeometryTypeTest extends PersistOrmTestCase
      * Test a DQL containing function to test in the select.
      */
     #[Group('geometry')]
-    public function testStAsText(): void
+    public function testGeometryType(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();
