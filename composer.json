@@ -49,17 +49,25 @@
             "phpunit --configuration phpunit.no-database-server.xml"
         ],
         "test": [
-            "phpunit --configuration phpunit.mariadb.xml",
-            "phpunit --configuration phpunit.mysql.xml",
-            "phpunit --configuration phpunit.pgsql.xml",
-            "phpunit --configuration phpunit.sqlserver.xml"
+            "@test-php-only",
+            "@test-mariadb",
+            "@test-mysql",
+            "@test-pgsql",
+            "@test-sqlserver"
         ],
         "test-coverage": [
+            "phpunit --configuration phpunit.no-database-server.xml --coverage-php .phpunit.cache/code-coverage/no-database-server.cov",
             "phpunit --configuration phpunit.mariadb.xml --coverage-php .phpunit.cache/code-coverage/mariadb.cov",
             "phpunit --configuration phpunit.mysql.xml --coverage-php .phpunit.cache/code-coverage/mysql.cov",
             "phpunit --configuration phpunit.pgsql.xml --coverage-php .phpunit.cache/code-coverage/pgsql.cov",
             "phpunit --configuration phpunit.sqlserver.xml --coverage-php .phpunit.cache/code-coverage/sqlserver.cov",
-            "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml .phpunit.cache/code-coverage/"
+            "phpcov merge --clover .phpunit.cache/code-coverage/clover.xml --html .phpunit.cache/code-coverage/html --html-views file,class .phpunit.cache/code-coverage/"
+        ],
+        "test-local": [
+            "@test-coverage",
+            "cp .phpunit.cache/code-coverage/clover.xml .phpunit.cache/coverage.xml",
+            "sed -i.bak 's|/var/www/|./|g' .phpunit.cache/coverage.xml",
+            "rm .phpunit.cache/coverage.xml.bak"
         ],
         "test-mariadb": "phpunit --configuration phpunit.mariadb.xml",
         "test-mysql": "phpunit --configuration phpunit.mysql.xml",

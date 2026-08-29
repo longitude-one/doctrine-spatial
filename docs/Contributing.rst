@@ -129,6 +129,7 @@ Here is an example of setup, each line is commented to help you to understand ho
     use LongitudeOne\Spatial\Tests\OrmTestCase;
     use Doctrine\DBAL\Exception;
     use Doctrine\ORM\Exception\ORMException;
+    use PHPUnit\Framework\Attributes\CoversClass;
 
     /**
      * Foo DQL functions tests.
@@ -141,13 +142,13 @@ Here is an example of setup, each line is commented to help you to understand ho
      *
      * Group is used to exclude some tests on some environment.
      * Internal is to avoid the use of the test outer of this library
-     * CoversDefaultClass is to avoid that your test covers other class than your new class
+     * CoversClass documents the production class exercised by this test.
      *
      * @group dql
      *
      * @internal
-     * @coversDefaultClass
      */
+    #[CoversClass(SpFoo::class)]
     class SpFooTest extends OrmTestCase
     {
         // To help you to create some geometry, I created some Trait.
