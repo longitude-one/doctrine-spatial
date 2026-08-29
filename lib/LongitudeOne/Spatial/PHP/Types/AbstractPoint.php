@@ -337,7 +337,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
                 GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $coordinate),
                 GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $coordinate),
                 // Unreachable because all current cases are covered
-                default => $e->getMessage(), // @codeCoverageIgnore 
+                default => $e->getMessage(), // @codeCoverageIgnore
             };
 
             throw new InvalidValueException($message, $e->getCode(), $e);
