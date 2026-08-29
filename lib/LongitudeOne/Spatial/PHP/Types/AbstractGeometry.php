@@ -89,7 +89,7 @@ abstract class AbstractGeometry implements \JsonSerializable, SpatialInterface
 
         if (false === $json) {
             // IMO, it could only happen if someone sends a resource as coordinates
-            throw new InvalidValueException('Cannot convert geometry to JSON string');
+            throw new InvalidValueException('Cannot convert geometry to JSON string'); // @codeCoverageIgnore
         }
 
         return $json;

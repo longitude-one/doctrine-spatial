@@ -70,6 +70,9 @@ return $config->setRules([
     'is_null' => true, // Remove when @PHPCsFixerRisky is added
     'mb_str_functions' => true, // Set to false if we only use multibyte string functions for ClassName
     'modernize_types_casting' => true, // Remove when @PHPCsFixerRisky is added
+    'new_expression_parentheses' => [
+        'use_parentheses' => true,
+    ],
     'no_unneeded_final_method' => true, // Remove when @PHPCsFixerRisky is added
     'ordered_interfaces' => [
         'direction' => 'ascend',

@@ -60,7 +60,8 @@ abstract class AbstractMultiPolygon extends AbstractGeometry
         }
 
         if (!is_array($polygon)) {
-            throw new InvalidValueException('AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter');
+            // IMO this code is unreachable because of the type hinting, but we keep it for safety.
+            throw new InvalidValueException('AbstractMultiPolygon::addPolygon only accepts AbstractPolygon or an array as parameter'); // @codeCoverageIgnore
         }
 
         $this->polygons[] = $this->validatePolygonValue($polygon);
