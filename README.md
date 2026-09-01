@@ -38,12 +38,12 @@ It also includes a glossary for the main spatial types and functions supported b
 > [!NOTE]
 > A major release may increase the minimum supported PHP version. Other breaking changes are documented in the changelog.
 
-| Version | PHP compatibility           | Tested on       | Doctrine ORM             | Tested against Doctrine ORM | Released     | Active support   | Security fixes   |
-|---------|-----------------------------|-----------------|--------------------------|-----------------------------|--------------|------------------|------------------|
-| 5       | 8.1 - 8.2 - 8.3 - 8.4 - 8.5 | From 8.1 to 8.3 | ^2.1 - ^3.0 - ^4.0.x-dev | ^2.1 - ^3.0 - ^4.0.x-dev    | 04 May 2024  | 31 August 2026   | 31 December 2026 |
-| 6       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | August 2026  | 31 December 2027 | 31 December 2028 |
-| 7       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | Unknown      | Unknown          | Unknown          |
-| 8       | 8.5                         | 8.5             |                          | ^3.6 - ^4.0.x-dev           | January 2028 | 31 December 2028 | 31 December 2029 |
+| Version | PHP compatibility           | Tested on       | Doctrine ORM             | Tested against Doctrine ORM | Released       | Active support   | Security fixes   |
+|---------|-----------------------------|-----------------|--------------------------|-----------------------------|----------------|------------------|------------------|
+| 5       | 8.1 - 8.2 - 8.3 - 8.4 - 8.5 | From 8.1 to 8.3 | ^2.1 - ^3.0 - ^4.0.x-dev | ^2.1 - ^3.0 - ^4.0.x-dev    | 04 May 2024    | 31 August 2026   | 31 December 2026 |
+| 6       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | September 2026 | 31 December 2027 | 31 December 2028 |
+| 7       | 8.4 - 8.5                   | 8.4 - 8.5       | ^3.6 - ^4.0.x-dev        | ^3.6 - ^4.0.x-dev           | Unknown        | Unknown          | Unknown          |
+| 8       | 8.5                         | 8.5             |                          | ^3.6 - ^4.0.x-dev           | January 2028   | 31 December 2028 | 31 December 2029 |
 
 > [!NOTE]
 > **Why does PHP support jump between versions 5 and 6?**
@@ -65,34 +65,23 @@ Donations of coffee through [Ko-fi](https://ko-fi.com/longitudeone) will go eith
 
 ### Release
 
-| Status                      | Doctrine Spatial | PHP  | Doctrine ORM       |
-|-----------------------------|------------------|------|--------------------|
-| Stable (security fixes)     | **5.0**          | 8.1+ | `^2.9`, `^3.1`     |
-| Next release                | **6.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
-| Next major version          | **7.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
-| Planned for 1 January 2028  | **8.0**          | 8.5+ | `^3.6`, `^4.x-dev` |
+| Status                        | Doctrine Spatial | PHP  | Doctrine ORM       |
+|-------------------------------|------------------|------|--------------------|
+| Old-Stable (security fixes)   | **5.0**          | 8.1+ | `^2.9`, `^3.1`     |
+| Stable (bug and security fix) | **6.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
+| Next major version            | **7.0**          | 8.4+ | `^3.6`, `^4.x-dev` |
+| Planned for 1 January 2028    | **8.0**          | 8.5+ | `^3.6`, `^4.x-dev` |
 
 ### Database testing
 
-The following versions reflect the database stack used in [the minimal database server test matrix](./.github/workflows/tests-minimum-database-versions.yaml).
+The [CI workflow](./.github/workflows/tests-php.yaml) tests the current development branch against the following database server versions.
 
-| Doctrine Spatial | MySQL    | MariaDB | PostgreSQL | PostGIS | SQL Server |
-|------------------|----------|---------|------------|---------|------------|
-| **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          |
-| **6.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
-| **7.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
-| **8.0**          | 8.4      | 10.22   | 16         | 3.5     | 2023       |
+| Test job                  | PHP | MySQL | MariaDB | PostgreSQL | PostGIS | SQL Server |
+|---------------------------|-----|-------|---------|------------|---------|------------|
+| Minimum database versions | 8.4 | 8.4.  | 10.11   | 15         | 3.5     | 2022.      |
+| Maximum database versions | 8.5 | 9.6   | 12.3.   | 18         | 3.6     | 2025       |
 
-When successful, the following versions are tested using [the maximum database server test matrix](./.github/workflows/tests-maximum-database-versions.yaml).
-
-| Doctrine Spatial | MySQL    | MariaDB | PostgreSQL | PostGIS | SQL Server |
-|------------------|----------|---------|------------|---------|------------|
-| **5.0**          | 5.7, 8.0 | 10.6    | 18         | 3.6     | ❌          |
-| **6.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
-| **7.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
-| **8.0**          | 9.7      | 12.3    | 18         | 3.6     | 2025       |
-
-These versions may change rapidly as the test matrix evolves.
+These versions may change as the CI test matrix evolves.
 
 ## Known limitations
 
@@ -100,15 +89,15 @@ These versions may change rapidly as the test matrix evolves.
 
 You can work around this limitation by using the `ST_SetSRID` and `ST_SRID` spatial functions when needed. This allows SRIDs to be handled at the query level, even though they are not stored directly with the value.
 
+## Contributing
+
+Contributions, bug reports, and documentation improvements are welcome. Please refer to the documentation for the development workflow and test commands.
+
 ## Branch strategy
 
 The repository follows a structured release model:
 
-- **main** — No breaking changes; only the minimum supported versions of PHP and Doctrine ORM may change.
 - **5.0.x-dev** — Security updates for 5.0.x only.
+- **main**      — No breaking changes; only the minimum supported versions of PHP and Doctrine ORM may change.
 - **6.1.x-dev** — New features without breaking changes.
 - **7.0.x-dev** — New features with breaking changes.
-
-## Contributing
-
-Contributions, bug reports, and documentation improvements are welcome. Please refer to the documentation for the development workflow and test commands.
