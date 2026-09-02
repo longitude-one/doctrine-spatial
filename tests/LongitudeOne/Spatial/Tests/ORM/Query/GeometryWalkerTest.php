@@ -24,6 +24,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use LongitudeOne\Spatial\ORM\Query\GeometryWalker;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
@@ -74,9 +75,10 @@ class GeometryWalkerTest extends PersistOrmTestCase
         string $envelope
     ): void {
         $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
+            'SELECT %s(%s(l.lineString)) FROM %s l',
             $convert,
-            $startPoint
+            $startPoint,
+            self::LINESTRING_ENTITY
         );
         $query = $entityManager->createQuery($queryString);
         $query->setHint(
@@ -92,19 +94,20 @@ class GeometryWalkerTest extends PersistOrmTestCase
         static::assertEquals(static::createPointC(), $result[1][1]);
 
         $queryString = sprintf(
-            'SELECT %s(%s(l.lineString)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l',
+            'SELECT %s(%s(l.lineString)) FROM %s l',
             $convert,
-            $envelope
+            $envelope,
+            self::LINESTRING_ENTITY
         );
         $query = $entityManager->createQuery($queryString);
-        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'LongitudeOne\Spatial\ORM\Query\GeometryWalker');
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, GeometryWalker::class);
 
         $result = $query->getResult();
         static::assertIsArray($result);
         static::assertIsArray($result[0]);
         static::assertIsArray($result[1]);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[0][1]);
-        static::assertInstanceOf('LongitudeOne\Spatial\PHP\Types\Geometry\Polygon', $result[1][1]);
+        static::assertInstanceOf(Polygon::class, $result[0][1]);
+        static::assertInstanceOf(Polygon::class, $result[1][1]);
     }
 
     /**
