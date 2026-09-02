@@ -20,6 +20,7 @@ namespace LongitudeOne\Spatial\Tests\Unit\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpScale;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSnapToGrid;
@@ -100,6 +101,27 @@ class PostgreSqlFunctionCompilationTest extends OrmMockTestCase
                 $function
             )));
         }
+    }
+
+    /**
+     * Test ST_Transform parameter compilation for the ambiguous SRID/PROJ overload.
+     */
+    public function testTransformSridParameterCompilation(): void
+    {
+        $query = $this->getMockEntityManager()->createQuery(
+            'SELECT PgSql_Transform(l.id, :srid) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+        );
+        $query->setParameter('srid', 4326, ParameterType::INTEGER);
+        $sql = $query->getSQL();
+
+        if (!is_string($sql)) {
+            throw new \LogicException('A single DQL select query must compile to a string.');
+        }
+
+        static::assertStringContainsString(
+            "CASE WHEN CAST(? AS text) ~ '^[0-9]+$' THEN 'EPSG:' || CAST(? AS text) ELSE CAST(? AS text) END",
+            $sql,
+        );
     }
 
     /**
