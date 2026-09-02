@@ -32,7 +32,6 @@
         "phpunit/phpunit": "^13.0",
         "phpunit/phpcov": "^13.0",
         "dg/bypass-finals": "^1.11",
-        "composer/semver": "^3.4",
         "symfony/cache": "^7.4"
     },
     "prefer-stable": true,

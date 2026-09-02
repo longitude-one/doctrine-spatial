@@ -88,8 +88,6 @@ class StEnvelopeTest extends PersistOrmTestCase
     #[Group('geometry')]
     public function testStEnvelopeWhereParameter(): void
     {
-        $this->skipIfMariaDbAndOrm29();
-
         $holeyPolygon = $this->persistHoleyPolygon();
         $this->persistSmallPolygon();
         $this->getEntityManager()->flush();

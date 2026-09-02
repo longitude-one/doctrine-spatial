@@ -63,8 +63,6 @@ class ScBufferTest extends PersistOrmTestCase
     #[Group('geometry')]
     public function testSelectSpBuffer(): void
     {
-        $this->skipIfMariaDbAndOrm29();
-
         $pointO = $this->persistPointO();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
