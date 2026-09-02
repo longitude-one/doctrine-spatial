@@ -61,8 +61,6 @@ class StPolyFromWkbTest extends PersistOrmTestCase
     #[Group('geometry')]
     public function testPredicate(): void
     {
-        $this->skipIfMariaDbAndOrm29();
-
         $bigPolygon = $this->persistBigPolygon();
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
@@ -85,8 +83,6 @@ class StPolyFromWkbTest extends PersistOrmTestCase
     #[Group('geometry')]
     public function testSelect(): void
     {
-        $this->skipIfMariaDbAndOrm29();
-
         $this->persistBigPolygon(); // Unused fake polygon
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();

@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Composer\InstalledVersions;
-use Composer\Semver\VersionParser;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
@@ -471,7 +469,7 @@ abstract class OrmTestCase extends SpatialTestCase
                 }
 
                 try {
-                    $message = sprintf('The type "%s" doesn\t implement DoctrineSpatialTypeInteface', $typeName);
+                    $message = sprintf('The type "%s" does not implement DoctrineSpatialTypeInterface', $typeName);
                     static::assertInstanceOf(
                         DoctrineSpatialTypeInterface::class,
                         Type::getType($typeName),
@@ -487,16 +485,6 @@ abstract class OrmTestCase extends SpatialTestCase
 
                 static::$addedTypes[$typeName] = true;
             }
-        }
-    }
-
-    /**
-     * Skip the entire test if we are running against MariaDB and Doctrine ORM 2.9.
-     */
-    protected function skipIfMariaDbAndOrm29(): void
-    {
-        if ($this->getPlatform() instanceof MariaDBPlatform && InstalledVersions::satisfies(new VersionParser(), 'doctrine/orm', '^2.9')) {
-            static::markTestSkipped('*FromWkb functions cannot work implemented on MariaDB with ORM 2.9');
         }
     }
 
