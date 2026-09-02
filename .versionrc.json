@@ -1,6 +1,16 @@
 {
   "releaseCommitMessageFormat": "chore(release): v{{currentTag}} 🎉",
   "packageFiles": [],
+  "bumpFiles": [
+    {
+      "filename": "docs/Installation.rst",
+      "updater": "quality/commit-and-tag-version/installation-version-updater.cjs"
+    },
+    {
+      "filename": "docs/conf.py",
+      "updater": "quality/commit-and-tag-version/sphinx-release-updater.cjs"
+    }
+  ],
   "types": [
     {"type": "feat", "section": "✨ New Features"},
     {"type": "fix", "section": "🐛 Bug Fixes"},
