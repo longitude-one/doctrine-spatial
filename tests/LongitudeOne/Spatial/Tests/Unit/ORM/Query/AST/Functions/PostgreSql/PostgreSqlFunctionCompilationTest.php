@@ -70,6 +70,25 @@ class PostgreSqlFunctionCompilationTest extends OrmMockTestCase
     }
 
     /**
+     * Test ST_Scale parameter compilation for the numeric overload.
+     */
+    public function testScaleParameterCompilation(): void
+    {
+        $query = $this->getMockEntityManager()->createQuery(
+            'SELECT PgSql_Scale(l.id, :x, :y) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+        );
+        $query->setParameter('x', 2, ParameterType::INTEGER);
+        $query->setParameter('y', 4, ParameterType::INTEGER);
+        $sql = $query->getSQL();
+
+        if (!is_string($sql)) {
+            throw new \LogicException('A single DQL select query must compile to a string.');
+        }
+
+        static::assertSame(2, mb_substr_count($sql, 'CAST(? AS double precision)'));
+    }
+
+    /**
      * Test ST_SnapToGrid DQL compilation for every supported arity.
      */
     public function testSnapToGridCompilation(): void

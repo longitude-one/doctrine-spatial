@@ -55,10 +55,76 @@ class SpScaleTest extends PersistOrmTestCase
     }
 
     /**
+     * Test a DQL containing ST_Scale with a geometry scale factor.
+     */
+    #[Group('geometry')]
+    public function testFunctionInSelectWithGeometryScaleFactor(): void
+    {
+        $straightLineString = $this->persistStraightLineString();
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT l, ST_AsText(PgSQL_Scale(l.lineString, ST_GeomFromText(:factor))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+        );
+        $query->setParameter('factor', 'POINT(2 4)');
+        $result = $query->getResult();
+
+        static::assertIsArray($result);
+        static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
+        static::assertEquals($straightLineString, $result[0][0]);
+        static::assertSame('LINESTRING(0 0,4 8,10 20)', $result[0][1]);
+    }
+
+    /**
+     * Test a DQL containing ST_Scale with a geometry scale factor and origin.
+     */
+    #[Group('geometry')]
+    public function testFunctionInSelectWithGeometryScaleFactorAndOrigin(): void
+    {
+        $straightLineString = $this->persistStraightLineString();
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT l, ST_AsText(PgSQL_Scale(l.lineString, ST_GeomFromText(:factor), ST_GeomFromText(:origin))) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+        );
+        $query->setParameter('factor', 'POINT(2 4)');
+        $query->setParameter('origin', 'POINT(1 2)');
+        $result = $query->getResult();
+
+        static::assertIsArray($result);
+        static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
+        static::assertEquals($straightLineString, $result[0][0]);
+        static::assertSame('LINESTRING(-1 -6,3 2,9 14)', $result[0][1]);
+    }
+
+    /**
+     * Test a DQL containing ST_Scale with X, Y and Z scale factors.
+     */
+    #[Group('geometry')]
+    public function testFunctionInSelectWithThreeScaleFactors(): void
+    {
+        $straightLineString = $this->persistStraightLineString();
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT l, ST_AsText(PgSQL_Scale(l.lineString, :x, :y, :z)) FROM LongitudeOne\Spatial\Tests\Fixtures\LineStringEntity l'
+        );
+        $query->setParameter('x', 2);
+        $query->setParameter('y', 4);
+        $query->setParameter('z', 8);
+        $result = $query->getResult();
+
+        static::assertIsArray($result);
+        static::assertCount(1, $result);
+        static::assertIsArray($result[0]);
+        static::assertEquals($straightLineString, $result[0][0]);
+        static::assertSame('LINESTRING(0 0,4 8,10 20)', $result[0][1]);
+    }
+
+    /**
      * Test a DQL containing function to test in the select.
      */
     #[Group('geometry')]
-    public function testFunctionInSelect(): void
+    public function testFunctionInSelectWithTwoScaleFactors(): void
     {
         $straightLineString = $this->persistStraightLineString();
         $angularLineString = $this->persistAngularLineString();
@@ -68,10 +134,6 @@ class SpScaleTest extends PersistOrmTestCase
         );
         $query->setParameter('x', 2);
         $query->setParameter('y', 4);
-        // TODO Try to solve this issue on Travis Linux
-        // SQLSTATE[XX000]: Internal error: 7 ERROR:  parse error - invalid geometry
-        // HINT:  "2" <-- parse error at position 2 within geometry
-        static::markTestSkipped('On Linux env only, Postgis throw an internal error');
         $result = $query->getResult();
 
         static::assertIsArray($result);
