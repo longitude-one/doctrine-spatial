@@ -24,8 +24,16 @@ Declare your geometric types
                 point:      LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
                 polygon:    LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
                 linestring: LongitudeOne\Spatial\DBAL\Types\Geometry\LineStringType
+            mapping_types:
+                geometry: geometry
+                point: point
+                polygon: polygon
+                linestring: linestring
 
 Now, you can :doc:`create an entity <./Entity>` with a ``geometry``, ``point``, ``polygon`` and a ``linestring`` type.
+
+The ``mapping_types`` entries let Doctrine introspect existing spatial columns. Each database type must map to one
+registered Doctrine type, so adapt these entries when using different type aliases.
 
 Here is a complete example showcasing all available spatial types supported by the Doctrine spatial extension.
 Notably, the names of these Doctrine types are not hardcoded. This means you have flexibility.
@@ -49,6 +57,18 @@ This customization allows you to tailor the extension's functionality to your sp
                 geometry_multilinestring: LongitudeOne\Spatial\DBAL\Types\Geometry\MultiLineStringType
                 geometry_multipoint:      LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPointType
                 geometry_multipolygon:    LongitudeOne\Spatial\DBAL\Types\Geometry\MultiPolygonType
+            mapping_types:
+                geometry: geometry
+                geography: geography
+                point: geometry_point
+                linestring: geometry_linestring
+                polygon: geometry_polygon
+                multipoint: geometry_multipoint
+                multilinestring: geometry_multilinestring
+                multipolygon: geometry_multipolygon
+
+The subtype mappings use the geometric aliases because Doctrine can associate each native database type with only one
+Doctrine type. Platforms that expose only generic ``geometry`` or ``geography`` columns use the corresponding generic alias.
 
 I strive to keep this documentation up-to-date. However, if you ever encounter any discrepancies,
 you can refer directly to the source code. The `DBAL/Types`_ directory within the project repository contains all
@@ -81,7 +101,7 @@ Declare a new function
 
 Add only the functions you want to use. The list of available function can be found in these sections:
 
-1. list of :ref:`Standard functions` declared in the `Open Geospatial Consortium standard`_,
+1. list of :ref:`Standard functions` declared in the `Open Geospatial Consortium (OGC) standard`_,
 2. list of :ref:`Specific PostgreSQL functions` which are not already declared in the OGC Standard,
 3. list of :ref:`Specific MySQL functions` which are not already declared in the OGC Standard,
 
@@ -146,9 +166,10 @@ Coordinates order
 -----------------
 
 In point constructor, the order is the same as the spatial database.
-It means:
- * longitude shall be set before latitude in point constructor,
- * X shall be set before Y.
+This means:
+
+* longitude shall be set before latitude in the point constructor;
+* X shall be set before Y.
 
 .. _ISO/IEC 13249-3:2016: https://www.iso.org/standard/60343.html
 .. _Open Geospatial Consortium: https://www.ogc.org/
