@@ -1,48 +1,46 @@
 Test environment
 ================
 
-If you want to contribute to this library, you're welcome. This section will help you to prepare your development
-environment.
+Doctrine Spatial is tested against MySQL, MariaDB, PostgreSQL/PostGIS, and SQL Server. The local development environment uses Docker Compose.
 
-How to prepare environment?
----------------------------
+Prepare the environment
+-----------------------
 
-Doctrine Spatial is tested against MySQL, MariaDB, PostgreSQL/PostGIS, and SQL Server.
-
-1. [Install docker](https://docs.docker.com/engine/install/),
-2. Go to the docker directory and start docker
+1. `Install Docker <https://docs.docker.com/engine/install/>`_.
+2. From the project root, set ``APP_FOLDER`` to the absolute path of the checkout and start the services:
 
 .. code-block:: bash
 
-    cd <project_directory>
+    export APP_FOLDER="$(pwd)"
     cd docker
     docker-compose up -d
     cd ..
 
-Done! Your environment is ready with six services:
+The Compose stack starts six services:
 
-1. A PostgreSQL/PostGIS service, available at ``postgresql://main:main@127.0.0.1:5432/main``.
-2. A MySQL 8.4 service, available at ``mysql://main:main@127.0.0.1:3306/main``.
-3. A MariaDB service, available at ``mysql://main:main@127.0.0.1:3310/main``.
-4. A SQL Server 2017 service, available at ``127.0.0.1:1433``.
-5. A PHP 8.4 service; check it with ``docker exec spatial-php8 php -v``.
-6. A documentation service, available at ``http://127.0.0.1:8800``.
+1. PostgreSQL/PostGIS, available at ``postgresql://main:main@127.0.0.1:5432/main``;
+2. MySQL 8.4, available at ``mysql://main:main@127.0.0.1:3306/main``;
+3. MariaDB (the current ``latest`` image), available at ``mysql://main:main@127.0.0.1:3310/main``;
+4. SQL Server 2017, available at ``127.0.0.1:1433``;
+5. PHP 8.4, available through the ``spatial-php8`` container;
+6. the Sphinx documentation server, available at ``http://127.0.0.1:8800``.
 
-Composer is installed on spatial-php8.
+Install dependencies and prepare PHPUnit
+----------------------------------------
 
-.. code-block:: bash
-
-    docker exec spatial-php8 composer -v
-
-How to start test?
---------------------------
-Copy docker/phpunit.*.xml to the project directory
+Composer is available in the PHP container. Install the project dependencies and copy the Docker PHPUnit configurations to the project root:
 
 .. code-block:: bash
 
+    docker exec spatial-php8 composer install
     cp docker/phpunit.*.xml .
 
-Then, you can run the test suites in the PHP container:
+The copied configurations use Docker service host names and must be run from the PHP container.
+
+Run tests
+---------
+
+Run an individual database suite, the PHP-only suite, or the complete test suite:
 
 .. code-block:: bash
 
@@ -50,9 +48,22 @@ Then, you can run the test suites in the PHP container:
     docker exec spatial-php8 composer test-mysql
     docker exec spatial-php8 composer test-pgsql
     docker exec spatial-php8 composer test-sqlserver
+    docker exec spatial-php8 composer test-php-only
+    docker exec spatial-php8 composer test
 
-After any update, before any commit, simply check your code with this composer command:
+To generate and merge coverage reports, run:
+
+.. code-block:: bash
+
+    docker exec spatial-php8 composer test-coverage
+
+Check code quality
+------------------
+
+Before committing, run the configured quality checks:
 
 .. code-block:: bash
 
     docker exec spatial-php8 composer quality
+
+This command runs PHP-CS-Fixer, PHPStan, PHPMD, and PHP_CodeSniffer. PHP-CS-Fixer may modify files.

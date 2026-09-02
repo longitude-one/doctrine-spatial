@@ -4,8 +4,8 @@
 /.github export-ignore
 /.gitignore export-ignore
 /.gitattributes export-ignore
-/.codeclimate.yml export-ignore
 /.readthedocs.yaml export-ignore
+/.versionrc.json export-ignore
 
 # Ignore documentation and quality tools
 /docs export-ignore

@@ -15,12 +15,16 @@ The Doctrine Spatial project welcomes contributions in two primary areas:
 Documentation
 =============
 
-This documentation is done with sphinx. All documentation are stored in the ``docs`` directory. To contribute to this
-documentation (and fix the lot of typo), you could install docker and start the docker service named ``spatial_doc``.
-It's included in the repository. It will self-compile the documentation. After you start this service, you can now
-access the documentation at http://localhost:8100. If you try changing any ``rst`` file, after some seconds the browser
-auto refresh to show the updated documentation. Following the Sphinx documentation site you can now document this
-project using Sphinx.
+The documentation is built with Sphinx and its sources are stored in the ``docs`` directory. To preview changes locally,
+set ``APP_FOLDER`` as described in :doc:`the test environment guide <./Test>` and start the ``service_doc`` Compose service:
+
+.. code-block:: bash
+
+    cd docker
+    docker-compose up -d service_doc
+
+Open http://localhost:8800. The ``spatial-doc`` container runs ``sphinx-autobuild`` and reloads the site after changes to
+``.rst`` files.
 
 
 1. Edit files in the ``docs`` directory,
@@ -128,6 +132,8 @@ Here is an example of setup, each line is commented to help you to understand ho
     use LongitudeOne\Spatial\Tests\Helper\PointHelperTrait;
     use LongitudeOne\Spatial\Tests\OrmTestCase;
     use Doctrine\DBAL\Exception;
+    use Doctrine\DBAL\Platforms\MySQLPlatform;
+    use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
     use Doctrine\ORM\Exception\ORMException;
     use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -163,10 +169,10 @@ Here is an example of setup, each line is commented to help you to understand ho
         {
             //If you create point entity in your test, you shall add the line above or the **next** test will failed
             $this->usesEntity(self::POINT_ENTITY);
-            //If the method exists in mysql, You shall test it. Comment this line if function does not exists on MySQL
-            $this->supportsPlatform('mysql');
-            //If the method exists in postgresql, You shall test it. Comment this line if function does not exists on PostgreSql
-            $this->supportsPlatform('postgresql');
+            // If the function is available on MySQL, test it there.
+            $this->supportsPlatform(MySQLPlatform::class);
+            // If the function is available on PostgreSQL, test it there.
+            $this->supportsPlatform(PostgreSQLPlatform::class);
 
             parent::setUp();
         }
@@ -182,7 +188,7 @@ Here is an example of setup, each line is commented to help you to understand ho
 
             //We create a query using your new DQL function SpFoo
             $query = $this->getEntityManager()->createQuery(
-                'SELECT p, ST_AsText(SpFoo(p.point, :p) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
+                'SELECT p, ST_AsText(SpFoo(p.point, :p)) FROM LongitudeOne\Spatial\Tests\Fixtures\PointEntity p'
             );
             //Optionnaly, you can use parameter
             $query->setParameter('p', 'bar', 'string');
@@ -195,32 +201,32 @@ Here is an example of setup, each line is commented to help you to understand ho
             static::assertSame('POLYGON((-4 -4,4 -4,4 4,-4 4,-4 -4))', $result[0][1]);
         }
 
-Now, open the `OrmTestCase.php file`_] and declare your function in one of this three methods:
+Now, open the `OrmTestCase.php file`_ and declare your function in the appropriate registration method:
 
 * ``addStandardFunctions``
-* ``addMySqlFunctions``
-* ``addPostgreSqlFunctions``
+* ``addSpecificMariaDbFunctions``
+* ``addSpecificMySqlFunctions``
+* ``addSpecificPostgreSqlFunctions``
+* ``addSpecificSqlServerFunctions``
 
 
 You can launch the test. This :doc:`document <./Test>` helps you how to config your dev environment.
-Please do not forgot to update documentation by adding your function in one of these three tables:
-
-* :ref:`Standard functions`
-* :ref:`Specific MySql functions`
-* :ref:`Specific PostgreSQL functions`
+Update the relevant table in :doc:`the glossary <./Glossary>`. If the function is specific to a platform not yet covered
+there, add a platform-specific section.
 
 Quality of your code
 ====================
 
-Quality of code is auto-verified by php-cs-fixer, php code sniffer and php mess detector.
+Code quality is checked by PHP-CS-Fixer, PHPStan, PHPMD, and PHP_CodeSniffer.
 
 Before a commit, install the quality scripts:
 
 .. code-block:: bash
-    docker exec spatial-php8 composer update --working-dir=quality/php-cs-fixer
-    docker exec spatial-php8 composer update --working-dir=quality/php-code-sniffer
-    docker exec spatial-php8 composer update --working-dir=quality/php-mess-detector
-    docker exec spatial-php8 composer update --working-dir=quality/php-stan
+
+    docker exec spatial-php8 composer install --working-dir=quality/php-cs-fixer
+    docker exec spatial-php8 composer install --working-dir=quality/php-code-sniffer
+    docker exec spatial-php8 composer install --working-dir=quality/php-mess-detector
+    docker exec spatial-php8 composer install --working-dir=quality/php-stan
 
 Then, you can check the quality of your code with:
 
