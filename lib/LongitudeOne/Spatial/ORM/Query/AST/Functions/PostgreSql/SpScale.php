@@ -20,10 +20,22 @@ namespace LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\ORM\Query\AST\ASTException;
+use Doctrine\ORM\Query\AST\InputParameter;
+use Doctrine\ORM\Query\SqlWalker;
+use LongitudeOne\Spatial\DBAL\Helper\MatchPlatformHelper;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
  * SP_Scale DQL function.
+ *
+ * Possible PostGIS signatures:
+ *  geometry ST_Scale(geometry geom, float xFactor, float yFactor, float zFactor);
+ *  geometry ST_Scale(geometry geom, float xFactor, float yFactor);
+ *  geometry ST_Scale(geometry geom, geometry factor);
+ *  geometry ST_Scale(geometry geom, geometry factor, geometry origin);
+ *
+ * @see https://postgis.net/docs/ST_Scale.html PostGIS ST_Scale documentation
  *
  * @author  Tom Vogt <tom@lemuria.org>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -31,6 +43,40 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  */
 class SpScale extends AbstractSpatialDQLFunction
 {
+    /**
+     * Get the SQL.
+     *
+     * PostgreSQL cannot choose the numeric ST_Scale overload when scale factors
+     * are prepared parameters. Explicitly cast these values to float8.
+     * The explicit cast removes this ambiguity and forces the expected
+     * ST_Scale(geometry, float, float) signature.
+     *
+     * @param SqlWalker $sqlWalker the SQL walker
+     *
+     * @return string SQL declaration of the ST_Scale call
+     *
+     * @throws ASTException when node cannot dispatch SqlWalker
+     */
+    public function getSql(SqlWalker $sqlWalker): string
+    {
+        $this->validatePlatform($sqlWalker->getConnection()->getDatabasePlatform());
+
+        $arguments = [];
+        foreach ($this->getGeometryExpressions() as $position => $expression) {
+            $argument = $expression->dispatch($sqlWalker);
+            if (0 !== $position && $expression instanceof InputParameter) {
+                $argument = sprintf('CAST(%s AS double precision)', $argument);
+            }
+
+            $arguments[] = $argument;
+        }
+
+        $helper = new MatchPlatformHelper();
+        $platform = $helper->getSpatialPlatform($sqlWalker->getConnection()->getDatabasePlatform());
+
+        return $platform->getFunctionSqlDeclaration($this->getFunctionName(), $arguments);
+    }
+
     /**
      * Function SQL name getter.
      *
@@ -50,9 +96,7 @@ class SpScale extends AbstractSpatialDQLFunction
      */
     protected function getMaxParameter(): int
     {
-        // TODO When third dimension will be implemented, this function will be able to accept 4 parameters
-        // TODO When fourth dimension will be implemented, this function will be able to accept 5 parameters
-        return 3;
+        return 4;
     }
 
     /**
@@ -64,7 +108,7 @@ class SpScale extends AbstractSpatialDQLFunction
      */
     protected function getMinParameter(): int
     {
-        return 3;
+        return 2;
     }
 
     /**
