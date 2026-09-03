@@ -22,7 +22,7 @@
     "require": {
         "php": "^8.4",
         "ext-mbstring": "*",
-        "longitude-one/geo-parser": "^3.0.4",
+        "longitude-one/geo-parser": "^4.0.0",
         "longitude-one/wkt-parser": "^3.0.1",
         "longitude-one/wkb-parser": "^3.0.1",
         "doctrine/orm": "^3.6"

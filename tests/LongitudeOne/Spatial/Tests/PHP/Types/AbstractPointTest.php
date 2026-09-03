@@ -456,7 +456,7 @@ class AbstractPointTest extends TestCase
             'int(20)' => ['actual' => 20, 'expected' => 20],
             'float(20.0)' => ['actual' => 20.0, 'expected' => 20.0],
             'string(20)' => ['actual' => '20', 'expected' => 20],
-            'string(20.0)' => ['actual' => '20.0', 'expected' => 20],
+            'string(20.0)' => ['actual' => '20.0', 'expected' => 20.0],
         ];
 
         foreach ($points as $className => $class) {
