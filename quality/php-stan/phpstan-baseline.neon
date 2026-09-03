@@ -67,18 +67,6 @@ parameters:
 			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractGeometry.php
 
 		-
-			message: '#^Method LongitudeOne\\Spatial\\PHP\\Types\\AbstractPoint\:\:validateArguments\(\) should return array\<float\|int\|string\> but returns array\<mixed, mixed\>\.$#'
-			identifier: return.type
-			count: 2
-			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractPoint.php
-
-		-
-			message: '#^Method LongitudeOne\\Spatial\\PHP\\Types\\AbstractPoint\:\:validateArguments\(\) should return array\<float\|int\|string\> but returns array\<mixed\>\.$#'
-			identifier: return.type
-			count: 2
-			path: ../../lib/LongitudeOne/Spatial/PHP/Types/AbstractPoint.php
-
-		-
 			message: '#^Class LongitudeOne\\Spatial\\Tests\\Doctrine\\Logging\\FileLogger extends @final class Monolog\\Logger\.$#'
 			identifier: class.extendsFinalByPhpDoc
 			count: 1

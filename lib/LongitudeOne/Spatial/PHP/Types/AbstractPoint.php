@@ -54,7 +54,23 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     {
         $argv = $this->validateArguments(func_get_args(), '__construct');
 
-        call_user_func_array([$this, 'construct'], $argv);
+        $this->construct($argv[0], $argv[1], $argv[2]);
+    }
+
+    /**
+     * Format untrusted input for use in an exception message.
+     *
+     * @param string $input input to format
+     */
+    private static function formatInput(string $input): string
+    {
+        $input = preg_replace('/[\x00-\x1F\x7F]/', ' ', $input) ?? '';
+
+        if (mb_strlen($input) > 256) {
+            return mb_substr($input, 0, 256).'...';
+        }
+
+        return $input;
     }
 
     /**
@@ -216,7 +232,7 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      * @param mixed[] $argv   list of arguments
      * @param string  $caller the calling method
      *
-     * @return (float|int|string)[]
+     * @return array{0: float|int|string, 1: float|int|string, 2: ?int}
      *
      * @throws InvalidValueException when an argument is not valid
      */
@@ -226,41 +242,28 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
 
         $argc = count($argv);
 
-        if (1 == $argc && is_array($argv[0])) {
-            $count = count($argv[0]);
-            if ($count < 2 || $count > 3) {
-                throw $this->createException($argv[0], $caller, true);
-            }
-
-            foreach ($argv[0] as $value) {
-                if (is_numeric($value) || is_string($value)) {
-                    continue;
-                }
-
-                throw $this->createException($argv[0], $caller, true);
-            }
-
-            return $argv[0];
+        if (1 === $argc && is_array($argv[0])) {
+            return $this->validateLegacyArray($argv[0], $caller);
         }
 
-        if (2 == $argc) {
-            if (is_array($argv[0]) && (is_numeric($argv[1]) || null === $argv[1] || is_string($argv[1]))) {
-                $argv[0][] = $argv[1];
-
-                return $argv[0];
+        if (2 === $argc) {
+            if (is_array($argv[0])) {
+                return $this->validateLegacyArray($argv[0], $caller, true, $argv[1]);
             }
 
-            if ((is_numeric($argv[0]) || is_string($argv[0])) && (is_numeric($argv[1]) || is_string($argv[1]))) {
-                return $argv;
-            }
-        }
-
-        if (3 == $argc) {
-            if ((is_numeric($argv[0]) || is_string($argv[0]))
-                && (is_numeric($argv[1]) || is_string($argv[1]))
-                && (is_numeric($argv[2]) || null === $argv[2] || is_string($argv[2]))
+            if ((is_float($argv[0]) || is_int($argv[0]) || is_string($argv[0]))
+                && (is_float($argv[1]) || is_int($argv[1]) || is_string($argv[1]))
             ) {
-                return $argv;
+                return [$argv[0], $argv[1], null];
+            }
+        }
+
+        if (3 === $argc) {
+            if ((is_float($argv[0]) || is_int($argv[0]) || is_string($argv[0]))
+                && (is_float($argv[1]) || is_int($argv[1]) || is_string($argv[1]))
+                && (is_int($argv[2]) || null === $argv[2])
+            ) {
+                return [$argv[0], $argv[1], $argv[2]];
             }
         }
 
@@ -296,8 +299,14 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      */
     private function createException(array $argv, string $caller, bool $subArray = false): InvalidValueException
     {
-        array_walk($argv, function (&$value) {
-            if (is_numeric($value) || is_string($value)) {
+        array_walk($argv, static function (&$value) {
+            if (is_string($value)) {
+                $value = self::formatInput($value);
+
+                return;
+            }
+
+            if (is_float($value) || is_int($value)) {
                 return;
             }
 
@@ -326,23 +335,25 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
      */
     private function geoParse(string $coordinate): float|int
     {
+        $formattedCoordinate = self::formatInput($coordinate);
+
         try {
             $parser = new Parser($coordinate);
 
             $parsedCoordinate = $parser->parse();
         } catch (GeoParserRangeException $e) {
             $message = match ($e->getCode()) {
-                GeoParserRangeException::LATITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LATITUDE, $coordinate),
-                GeoParserRangeException::LONGITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LONGITUDE, $coordinate),
-                GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $coordinate),
-                GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $coordinate),
+                GeoParserRangeException::LATITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LATITUDE, $formattedCoordinate),
+                GeoParserRangeException::LONGITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LONGITUDE, $formattedCoordinate),
+                GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $formattedCoordinate),
+                GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $formattedCoordinate),
                 // Unreachable because all current cases are covered
                 default => $e->getMessage(), // @codeCoverageIgnore
             };
 
             throw new InvalidValueException($message, $e->getCode(), $e);
         } catch (UnexpectedValueException $e) {
-            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $coordinate), $e->getCode(), $e);
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $formattedCoordinate), $e->getCode(), $e);
         }
 
         if (is_array($parsedCoordinate)) {
@@ -399,13 +410,60 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     }
 
     /**
+     * Validate a deprecated array-based constructor argument.
+     *
+     * @param mixed[] $coordinates     the coordinates passed in an array
+     * @param string  $caller          the calling method
+     * @param bool    $hasSeparateSrid whether the SRID was passed separately from the coordinates
+     * @param mixed   $srid            the SRID passed separately from the coordinates
+     *
+     * @return array{0: float|int|string, 1: float|int|string, 2: ?int}
+     *
+     * @throws InvalidValueException when an argument is not valid
+     */
+    private function validateLegacyArray(array $coordinates, string $caller, bool $hasSeparateSrid = false, mixed $srid = null): array
+    {
+        if (!array_is_list($coordinates)
+            || ($hasSeparateSrid && 2 !== count($coordinates))
+            || (!$hasSeparateSrid && (count($coordinates) < 2 || count($coordinates) > 3))
+        ) {
+            throw $this->createException($coordinates, $caller, true);
+        }
+
+        if (!isset($coordinates[0], $coordinates[1])
+            || (!is_float($coordinates[0]) && !is_int($coordinates[0]) && !is_string($coordinates[0]))
+            || (!is_float($coordinates[1]) && !is_int($coordinates[1]) && !is_string($coordinates[1]))
+        ) {
+            throw $this->createException($coordinates, $caller, true);
+        }
+
+        if ($hasSeparateSrid) {
+            if (!is_int($srid) && null !== $srid) {
+                throw $this->createException($coordinates, $caller, true);
+            }
+
+            return [$coordinates[0], $coordinates[1], $srid];
+        }
+
+        if (3 === count($coordinates)) {
+            if (!is_int($coordinates[2]) && null !== $coordinates[2]) {
+                throw $this->createException($coordinates, $caller, true);
+            }
+
+            return [$coordinates[0], $coordinates[1], $coordinates[2]];
+        }
+
+        return [$coordinates[0], $coordinates[1], null];
+    }
+
+    /**
      * Abstract point internal constructor.
      *
-     * @param string   $x    X, longitude
-     * @param string   $y    Y, latitude
-     * @param null|int $srid Spatial Reference System Identifier
+     * @param float|int|string $x    X, longitude
+     * @param float|int|string $y    Y, latitude
+     * @param null|int         $srid Spatial Reference System Identifier
      *
      * @throws InvalidValueException if x or y are invalid
      */
-    abstract protected function construct(string $x, string $y, ?int $srid = null): void;
+    abstract protected function construct(float|int|string $x, float|int|string $y, ?int $srid = null): void;
 }

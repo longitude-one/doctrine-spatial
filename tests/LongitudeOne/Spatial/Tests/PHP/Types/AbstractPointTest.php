@@ -73,6 +73,37 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * SRID values passed to constructors must be integers or null.
+     *
+     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
+     * @param mixed                       $srid      invalid SRID value
+     */
+    #[DataProvider('invalidSridProvider')]
+    public function testConstructorRejectsNonIntegerSrid(string $pointType, mixed $srid): void
+    {
+        self::expectException(InvalidValueException::class);
+
+        new $pointType('1', '2', $srid);
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: mixed}, null, void>
+     */
+    public static function invalidSridProvider(): \Generator
+    {
+        $invalidSrids = [
+            'numeric string' => '4326',
+            'float' => 4326.9,
+        ];
+
+        foreach (self::pointTypeProvider() as $pointName => [$pointType]) {
+            foreach ($invalidSrids as $sridName => $srid) {
+                yield sprintf('%s with %s SRID', $pointName, $sridName) => [$pointType, $srid];
+            }
+        }
+    }
+
+    /**
      * Test getType method.
      *
      * @param class-string<AbstractPoint> $class the classname to test, Geometric point and geographic point
@@ -203,6 +234,42 @@ class AbstractPointTest extends TestCase
     }
 
     /**
+     * Coordinate values in exceptions must be bounded and free of control characters.
+     *
+     * @param class-string<AbstractPoint> $pointType  Geometric point and geographic point
+     * @param string                      $coordinate invalid coordinate value
+     */
+    #[DataProvider('unsafeCoordinateProvider')]
+    public function testInvalidCoordinateExceptionDoesNotExposeUnsafeInput(string $pointType, string $coordinate): void
+    {
+        try {
+            new $pointType($coordinate, '2');
+            static::fail('An invalid coordinate must throw an exception.');
+        } catch (InvalidValueException $exception) {
+            static::assertLessThan(1024, mb_strlen($exception->getMessage()));
+            static::assertStringNotContainsString("\r", $exception->getMessage());
+            static::assertStringNotContainsString("\n", $exception->getMessage());
+        }
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: string}, null, void>
+     */
+    public static function unsafeCoordinateProvider(): \Generator
+    {
+        $coordinates = [
+            'long value' => str_repeat('invalid-coordinate-', 1000),
+            'control characters' => "invalid\r\ncoordinate",
+        ];
+
+        foreach (self::pointTypeProvider() as $pointName => [$pointType]) {
+            foreach ($coordinates as $coordinateName => $coordinate) {
+                yield sprintf('%s with %s', $pointName, $coordinateName) => [$pointType, $coordinate];
+            }
+        }
+    }
+
+    /**
      * Test to convert point to json.
      *
      * @param class-string<AbstractPoint> $abstractPoint Geometric point and geographic point
@@ -220,6 +287,108 @@ class AbstractPointTest extends TestCase
         $expected = '{"type":"Point","coordinates":[5,5],"srid":4326}';
         static::assertEquals($expected, $point->toJson());
         static::assertEquals($expected, json_encode($point));
+    }
+
+    /**
+     * Deprecated array-based constructors must reject associative arrays rather than passing named arguments.
+     *
+     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testLegacyArrayWithAssociativeKeys(string $pointType): void
+    {
+        self::expectException(InvalidValueException::class);
+
+        new $pointType(['unexpected' => '1', 'other' => '2']);
+    }
+
+    /**
+     * Deprecated array-based constructors must validate every coordinate before invoking construct().
+     *
+     * @param class-string<AbstractPoint> $pointType         Geometric point and geographic point
+     * @param mixed                       $invalidCoordinate invalid coordinate value
+     */
+    #[DataProvider('invalidLegacyArrayCoordinateProvider')]
+    public function testLegacyArrayWithInvalidCoordinate(string $pointType, mixed $invalidCoordinate): void
+    {
+        self::expectException(InvalidValueException::class);
+
+        new $pointType([$invalidCoordinate, '2'], 4326);
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: mixed}, null, void>
+     */
+    public static function invalidLegacyArrayCoordinateProvider(): \Generator
+    {
+        $invalidCoordinates = [
+            'nested array' => ['1'],
+            'object' => new \stdClass(),
+            'closure' => static function (): void {
+            },
+            'boolean' => true,
+        ];
+
+        foreach (self::pointTypeProvider() as $pointName => [$pointType]) {
+            foreach ($invalidCoordinates as $coordinateName => $invalidCoordinate) {
+                yield sprintf('%s with %s', $pointName, $coordinateName) => [$pointType, $invalidCoordinate];
+            }
+        }
+    }
+
+    /**
+     * Deprecated array-based constructors must reject resources before invoking construct().
+     *
+     * @param class-string<AbstractPoint> $pointType Geometric point and geographic point
+     */
+    #[DataProvider('pointTypeProvider')]
+    public function testLegacyArrayWithResource(string $pointType): void
+    {
+        $resource = fopen('php://memory', 'r');
+        if (false === $resource) {
+            static::fail('Unable to open the in-memory resource.');
+        }
+
+        try {
+            self::expectException(InvalidValueException::class);
+
+            new $pointType([$resource, '2'], 4326);
+        } finally {
+            fclose($resource);
+        }
+    }
+
+    /**
+     * Deprecated array-based constructors with a separate SRID must not reinterpret malformed arrays.
+     *
+     * @param class-string<AbstractPoint> $pointType   Geometric point and geographic point
+     * @param mixed[]                     $coordinates malformed coordinate array
+     */
+    #[DataProvider('invalidLegacyArrayWithSridProvider')]
+    public function testLegacyArrayWithSridHasExactlyTwoCoordinates(string $pointType, array $coordinates): void
+    {
+        self::expectException(InvalidValueException::class);
+
+        new $pointType($coordinates, 4326);
+    }
+
+    /**
+     * @return \Generator<string, array{0: class-string<AbstractPoint>, 1: mixed[]}, null, void>
+     */
+    public static function invalidLegacyArrayWithSridProvider(): \Generator
+    {
+        $invalidCoordinates = [
+            'no coordinate' => [],
+            'one coordinate' => ['1'],
+            'three coordinates' => ['1', '2', 3857],
+            'four coordinates' => ['1', '2', 3857, 9999],
+        ];
+
+        foreach (self::pointTypeProvider() as $pointName => [$pointType]) {
+            foreach ($invalidCoordinates as $coordinatesName => $coordinates) {
+                yield sprintf('%s with %s', $pointName, $coordinatesName) => [$pointType, $coordinates];
+            }
+        }
     }
 
     /**
