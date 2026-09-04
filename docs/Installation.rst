@@ -8,14 +8,14 @@ Add the `longitude-one/doctrine-spatial` package in your composer.json.
 
 .. code-block:: bash
 
-    $ composer require longitude-one/doctrine-spatial:^6.0.0
+    $ composer require longitude-one/doctrine-spatial:^6.0.0-RC.1
 
 Or you can edit directly `composer.json` file by adding this line on your requirements:
 
 .. code-block:: json
 
     "require": {
-        "longitude-one/doctrine-spatial": "^6.0.0"
+        "longitude-one/doctrine-spatial": "^6.0.0-RC.1"
 
 
 Installation without composer

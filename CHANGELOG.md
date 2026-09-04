@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-## [6.0.0-RC.0](https://github.com/longitude-one/doctrine-spatial/compare/5.0.5...6.0.0-RC.0) (2026-09-02)
+## [6.0.0-RC.1](https://github.com/longitude-one/doctrine-spatial/compare/5.0.5...6.0.0-RC.1) (2026-09-04)
 
 ### ⚠ BREAKING CHANGES
 
@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file. See [commit
 * add SQLServerPlatform support to StBoundary function and its tests ([11f0eb6](https://github.com/longitude-one/doctrine-spatial/commit/11f0eb62833a4e7ecf70a6dc04bdb42516396368))
 * add support for custom driver options in connection parameters ([499f4d5](https://github.com/longitude-one/doctrine-spatial/commit/499f4d567362b18f141f75c7b1f7f5ff834fefac))
 * add support for SQL Server 2017 in doctrine spatial extension ([3b8b61e](https://github.com/longitude-one/doctrine-spatial/commit/3b8b61e78b8a7ca8e2439e16d9eb0e2329e3458e))
+* Fix issue [#62](https://github.com/longitude-one/doctrine-spatial/issues/62) : SpTransform function: Optional SRID is no longer detected as a string ([7646119](https://github.com/longitude-one/doctrine-spatial/commit/7646119a0531d593fdfa80ddabe44a31dcc24954))
 * implement MatchPlatformHelper for spatial platform resolution in AbstractSpatialDQLFunction ([382ecd1](https://github.com/longitude-one/doctrine-spatial/commit/382ecd1253ab28702a14ca29e54e600ca6da316a))
 * Update SpSimplify to support three parameters and add corresponding test ([e74db22](https://github.com/longitude-one/doctrine-spatial/commit/e74db22ef5754ec150d803de9fdd10cdf195695b))
 
@@ -38,6 +39,9 @@ All notable changes to this project will be documented in this file. See [commit
 * add mssql-2017 service configuration GitHub Actions workflow ([ab5d35d](https://github.com/longitude-one/doctrine-spatial/commit/ab5d35dca51f8d54368d2383d75726e7bc450401))
 * correct namespace separator in query string for ST_Relates function test ([fea55b9](https://github.com/longitude-one/doctrine-spatial/commit/fea55b9727d051ae0f1326277daa1a7cf02e0e61))
 * correct SQL Server function parameter handling in getFunctionSqlDeclaration ([7635daf](https://github.com/longitude-one/doctrine-spatial/commit/7635dafd16eabe558e013ae891494ba796f1ec7c))
+* Fix issue [#11](https://github.com/longitude-one/doctrine-spatial/issues/11) ([7d5eb42](https://github.com/longitude-one/doctrine-spatial/commit/7d5eb4200b3f338309841b1c43bf7baaeaf801a4))
+* Fix issue [#11](https://github.com/longitude-one/doctrine-spatial/issues/11) ([9e1c329](https://github.com/longitude-one/doctrine-spatial/commit/9e1c329c924b99626848d7a42946c9b45197b2fa))
+* Fix issue [#62](https://github.com/longitude-one/doctrine-spatial/issues/62) : SpTransform function: Optional SRID is no longer detected as a string ([7d6e36b](https://github.com/longitude-one/doctrine-spatial/commit/7d6e36be4d102d853971e32d06bd57d62ed0ef40))
 * improve error message for unsupported DBAL platforms in AbstractSpatialDQLFunction ([7153db0](https://github.com/longitude-one/doctrine-spatial/commit/7153db06ae92e08639cfbdf901c49b03f350bcbc))
 * improve query string formatting and use class constants in GeometryWalkerTest ([d0727e5](https://github.com/longitude-one/doctrine-spatial/commit/d0727e54322ba15c453a7fe5e7f3636369968a53)), closes [#135](https://github.com/longitude-one/doctrine-spatial/issues/135)
 * improve README clarity and structure for better understanding ([fff7bd4](https://github.com/longitude-one/doctrine-spatial/commit/fff7bd4cdd4bdd2c7113458cac9a8a412ae1215d))
@@ -57,6 +61,7 @@ All notable changes to this project will be documented in this file. See [commit
 
 ### ♻️ Refactoring
 
+* Refactor AbstractPoint to utilize new InputValueFormatter and PointConstructorArguments internal classes. ([c8e7578](https://github.com/longitude-one/doctrine-spatial/commit/c8e757836ac643e1cb063da2fc5c1cee31494ec5))
 * Remove deprecated platforms from StSrid function and its tests ([bc66d0f](https://github.com/longitude-one/doctrine-spatial/commit/bc66d0f6eda6c6a24ccc4a217a45ef540100c981))
 * Remove deprecated SpBuffer DQL functions and related tests ([e17acd5](https://github.com/longitude-one/doctrine-spatial/commit/e17acd500fb0a3c40399a35fad951b259dc95d22))
 * replace conditional statements with match expression for platform-specific function additions ([79457fd](https://github.com/longitude-one/doctrine-spatial/commit/79457fdc062306207b55b8a1ca7c55077056963f))
@@ -81,9 +86,15 @@ All notable changes to this project will be documented in this file. See [commit
 * add custom updaters for Installation.rst and conf.py to manage versioning ([4b8fdde](https://github.com/longitude-one/doctrine-spatial/commit/4b8fdde04391200d5d4ca60d7d89a590d1067a1a))
 * Add Ko-fi funding link and update FUNDING.yml ([aa44e1f](https://github.com/longitude-one/doctrine-spatial/commit/aa44e1fccd67a12ee26f8fd879dc8a842b812f0f))
 * PhpUnit upgraded ([651615a](https://github.com/longitude-one/doctrine-spatial/commit/651615ae3cecb203ef124ed49522753e4c708b6e))
+* Refactor AbstractPoint and related classes to improve argument validation and exception handling ([cca6fc6](https://github.com/longitude-one/doctrine-spatial/commit/cca6fc6ae579541f1fb46e8c04db480863550e2a))
+* **release:** v6.0.0.RC.0 🎉 ([c534192](https://github.com/longitude-one/doctrine-spatial/commit/c534192eac6e7aedc2b1e5e09f58ff4c8acbf612))
+* Remove useless skipIfMariaDbAndOrm29 method and related calls ([3cf45c1](https://github.com/longitude-one/doctrine-spatial/commit/3cf45c11ff05324f2f703783e92453b2309ac62c))
+* Remove useless skipIfMariaDbAndOrm29 method and related calls from tests ([3738aa3](https://github.com/longitude-one/doctrine-spatial/commit/3738aa34f86a6c1c80d9db204029231c72c7a47f))
 * Update authors and adjust autoloading to PSR-4 standards ([d930b34](https://github.com/longitude-one/doctrine-spatial/commit/d930b34a5e9ed872bf5c8eacf1c24fddcc8ddf96))
 * Update dependencies and replace ArrayCachePool with ArrayAdapter ([8c49f7b](https://github.com/longitude-one/doctrine-spatial/commit/8c49f7be42c9ff020535e3ce339572aeeda1767e))
 * Update Docker environment and enhance test scripts for PHP 8.4 compatibility ([3e31b07](https://github.com/longitude-one/doctrine-spatial/commit/3e31b07f35a05924886f4d1d043b09b4cb14fbcc))
+* Upgrade geo-parser dependency to version 4.0.0 and correct tes… ([1624521](https://github.com/longitude-one/doctrine-spatial/commit/1624521b7b54dd6e534c36a9b59f8422d7352f8d))
+* Upgrade geo-parser dependency to version 4.0.0 and correct test case for string conversion. ([0b6da85](https://github.com/longitude-one/doctrine-spatial/commit/0b6da854a85602fdf96b4025e3db6986c867e6e0))
 
 ### 📊​ Quality tools
 
@@ -98,6 +109,7 @@ All notable changes to this project will be documented in this file. See [commit
 ### 📗​ PHPUnit tests
 
 * Add 'mariadb-only' group to PHPUnit XML configurations ([c4e3e7a](https://github.com/longitude-one/doctrine-spatial/commit/c4e3e7a6973a6ac215a05a3bb945553ebc8a42bd))
+* **refactor:** Refactor point representation tests ([d5aafcd](https://github.com/longitude-one/doctrine-spatial/commit/d5aafcdd33171770de5171425bbb004a339f7222))
 * test coverage upgraded ([#166](https://github.com/longitude-one/doctrine-spatial/issues/166)) ([a9deb8d](https://github.com/longitude-one/doctrine-spatial/commit/a9deb8de0b2ed1ef62f45ed4a564df732190f62f))
 
 ## 5.0.5 (2026-08-23)
