@@ -33,6 +33,12 @@ The [documentation](https://doctrine-spatial.readthedocs.io) covers installation
 
 It also includes a glossary for the main spatial types and functions supported by the library.
 
+## Examples
+
+> [!NOTE]
+> The [Doctrine-Spatial demo](https://github.com/longitude-one/doctrine-spatial-demo) is a complete web application built with Symfony, Doctrine, and Doctrine-Spatial.
+> It illustrates a concrete use case for spatial queries: are our superheroes really in Gotham City?
+
 ## Roadmap
 
 > [!NOTE]

@@ -13,12 +13,14 @@ These include points, linestrings, polygons, and their multi-dimensional counter
 This project was initially created by Derek J. Lambert in 2015. In March 2020, Alexandre Tranchant forked the originally
 project due to inactivity for two years. We welcome contribution (see the contribution :doc:`guide <./Contributing>`.
 
-Here are some areas where your help would be appreciated:
+Full example
+------------
 
-* Implementing support for third and fourth dimensions in spatial data,
-* Implementing new spatial functions,
-* Improving documentation by completing it and fixing typos *(even if your English isn't perfect, we can still use your help!)*
-* Improving support and test coverage across the supported database platforms.
+.. note::
+
+   The `Doctrine-Spatial demo <https://github.com/longitude-one/doctrine-spatial-demo>`_ is a complete web application
+   built with Symfony, Doctrine, and Doctrine-Spatial. It illustrates a concrete use case for spatial queries:
+   are our superheroes really in Gotham City?
 
 Contents
 ********
