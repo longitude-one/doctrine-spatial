@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-## [6.0.0-RC.1](https://github.com/longitude-one/doctrine-spatial/compare/5.0.5...6.0.0-RC.1) (2026-09-04)
+## [6.0.0](https://github.com/longitude-one/doctrine-spatial/compare/5.0.5...6.0.0) (2026-09-12)
 
 ### ⚠ BREAKING CHANGES
 
@@ -68,6 +68,7 @@ All notable changes to this project will be documented in this file. See [commit
 
 ### 📚 Documentation
 
+* Add examples section with demo application link in README and index.rst ([2596260](https://github.com/longitude-one/doctrine-spatial/commit/259626009327e8c961b939ec482176d5519090b2))
 * Refresh setup and Symfony configuration ([6f36bc5](https://github.com/longitude-one/doctrine-spatial/commit/6f36bc52926c4da2e6de952b08657ace848cab22)), references [#141](https://github.com/longitude-one/doctrine-spatial/issues/141)
 * update installation and contribution instructions, improve test environment setup, and bump version to 6.0.0 ([b2114b7](https://github.com/longitude-one/doctrine-spatial/commit/b2114b7f0018f2313a81b446bf70e96b975283f1))
 
@@ -87,7 +88,6 @@ All notable changes to this project will be documented in this file. See [commit
 * Add Ko-fi funding link and update FUNDING.yml ([aa44e1f](https://github.com/longitude-one/doctrine-spatial/commit/aa44e1fccd67a12ee26f8fd879dc8a842b812f0f))
 * PhpUnit upgraded ([651615a](https://github.com/longitude-one/doctrine-spatial/commit/651615ae3cecb203ef124ed49522753e4c708b6e))
 * Refactor AbstractPoint and related classes to improve argument validation and exception handling ([cca6fc6](https://github.com/longitude-one/doctrine-spatial/commit/cca6fc6ae579541f1fb46e8c04db480863550e2a))
-* **release:** v6.0.0.RC.0 🎉 ([c534192](https://github.com/longitude-one/doctrine-spatial/commit/c534192eac6e7aedc2b1e5e09f58ff4c8acbf612))
 * Remove useless skipIfMariaDbAndOrm29 method and related calls ([3cf45c1](https://github.com/longitude-one/doctrine-spatial/commit/3cf45c11ff05324f2f703783e92453b2309ac62c))
 * Remove useless skipIfMariaDbAndOrm29 method and related calls from tests ([3738aa3](https://github.com/longitude-one/doctrine-spatial/commit/3738aa34f86a6c1c80d9db204029231c72c7a47f))
 * Update authors and adjust autoloading to PSR-4 standards ([d930b34](https://github.com/longitude-one/doctrine-spatial/commit/d930b34a5e9ed872bf5c8eacf1c24fddcc8ddf96))
