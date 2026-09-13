@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -19,9 +19,12 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\PostgreSql;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpClosestPoint;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * SP_ClosestPoint DQL function tests.
@@ -30,13 +33,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpClosestPoint::class)]
+#[Group('dql')]
+#[Group('pgsql-only')]
 class SpClosestPointTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -56,9 +57,8 @@ class SpClosestPointTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionInSelect(): void
     {
         $straight = $this->persistStraightLineString();
@@ -75,6 +75,9 @@ class SpClosestPointTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($straight, $result[0][0]);
         static::assertSame('POINT(3.5 3.5)', $result[0][1]);
         static::assertEquals($lineC, $result[1][0]);
@@ -85,9 +88,8 @@ class SpClosestPointTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionWithPolygonInSelect(): void
     {
         $bigPolygon = $this->persistBigPolygon();
@@ -105,6 +107,8 @@ class SpClosestPointTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
         static::assertEquals($bigPolygon, $result[0][0]);
         static::assertEquals('POINT(2 2)', $result[0][1]);
         static::assertEquals($smallPolygon, $result[1][0]);

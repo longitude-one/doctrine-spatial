@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -20,8 +20,11 @@ namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\Standard;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StBoundary;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_Boundary DQL function tests.
@@ -30,12 +33,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StBoundary::class)]
+#[Group('dql')]
 class StBoundaryTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -56,9 +57,8 @@ class StBoundaryTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunction(): void
     {
         $this->persistStraightLineString();
@@ -85,6 +85,7 @@ class StBoundaryTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(2, $result);
+        static::assertIsArray($result[1]);
         static::assertIsArray($result[0]);
         static::assertCount(1, $result[0]);
         static::assertSame($expected[0], $result[0][1]);

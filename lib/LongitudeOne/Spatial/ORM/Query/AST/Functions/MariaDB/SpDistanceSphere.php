@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -27,8 +27,8 @@ use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
  *
  * Be careful, this function is not described in the ISO/IEC 13249.
  * So this class is not in the Standard directory.
- * With MariaDB, its name's ST_Distance_Sphere.
- * With PostGreSQL, its name's ST_DistanceSphere since PostGis 2.1.
+ * In MariaDB, the function is named ST_Distance_Sphere.
+ * In PostgreSQL, the function has been named ST_DistanceSphere since PostGIS 2.1.
  * So these two functions cannot be merged in a class stored in the Common directory.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>

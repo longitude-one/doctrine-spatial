@@ -17,21 +17,8 @@ services:
       PGDATA: /var/lib/postgresql/data-postgis/pgdata
     ports:
       - "5432:5432"
-  database-mysql5:
-    image: mysql:5.7
-    platform: linux/amd64 # Force amd64 for Apple M1/M2 and ARM environments    
-    container_name: "spatial-mysql5"
-    restart: always
-    environment:
-      MYSQL_DATABASE: main
-      MYSQL_USER: main
-      MYSQL_PASSWORD: main
-      MYSQL_ROOT_PASSWORD: main
-      MYSQL_PORT: 3306
-    ports:
-      - "3357:3306"
   database-mysql8:
-    image: mysql:8
+    image: mysql:8.4
     container_name: "spatial-mysql8"
     restart: always
     environment:
@@ -41,7 +28,7 @@ services:
       MYSQL_ROOT_PASSWORD: main
       MYSQL_PORT: 3306
     ports:
-      - "3380:3306"
+      - "3306:3306"
   service_doc:
     container_name: "spatial-doc"
     build:
@@ -62,7 +49,7 @@ services:
       MYSQL_ROOT_PASSWORD: main
       MYSQL_PORT: 3306
     ports:
-      - "3390:3306"
+      - "3310:3306"
   database-mssql-2017:
     # Docker Hub image
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -71,7 +58,7 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: mainExtendedToMoreThan8Chars
     ports:
-      - 2017:1433
+      - 1433:1433
     # Set health checks to wait until mssql-server has started
 #        options: >-
 #          --health-cmd="/opt/mssql-tools/bin/sqlcmd -S http://localhost:2017 -U sa -P mainExtendedToMoreThan8Chars -Q 'SELECT 1'"

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpSummary;
 use LongitudeOne\Spatial\PHP\Types\Geography\LineString as GeographyLineString;
 use LongitudeOne\Spatial\PHP\Types\Geography\Point as GeographyPoint;
 use LongitudeOne\Spatial\PHP\Types\Geography\Polygon as GeographyPolygon;
@@ -31,6 +32,8 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon as GeometryPolygon;
 use LongitudeOne\Spatial\Tests\Fixtures\GeographyEntity;
 use LongitudeOne\Spatial\Tests\Fixtures\GeometryEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * SP_Summary DQL function tests.
@@ -39,13 +42,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpSummary::class)]
+#[Group('dql')]
+#[Group('pgsql-only')]
 class SpSummaryTest extends PersistOrmTestCase
 {
     /**
@@ -66,9 +67,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws ORMException            when cache is not set
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
-     *
-     * @group geography
      */
+    #[Group('geography')]
     public function testSelectStSummaryGeography(): void
     {
         $point = new GeographyEntity();
@@ -102,11 +102,17 @@ class SpSummaryTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($point, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertMatchesRegularExpression('/^Point\[.*G.*]/', $result[0][1]);
         static::assertEquals($linestring, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertMatchesRegularExpression('/^LineString\[.*G.*]/', $result[1][1]);
         static::assertEquals($polygon, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertMatchesRegularExpression('/^Polygon\[.*G.*]/', $result[2][1]);
     }
 
@@ -116,9 +122,8 @@ class SpSummaryTest extends PersistOrmTestCase
      * @throws ORMException            when cache is not set
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectStSummaryGeometry(): void
     {
         $point = new GeometryEntity();
@@ -152,11 +157,17 @@ class SpSummaryTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($point, $result[0][0]);
+        static::assertIsString($result[0][1]);
         static::assertMatchesRegularExpression('/^Point\[[^G]*]/', $result[0][1]);
         static::assertEquals($linestring, $result[1][0]);
+        static::assertIsString($result[1][1]);
         static::assertMatchesRegularExpression('/^LineString\[[^G]*]/', $result[1][1]);
         static::assertEquals($polygon, $result[2][0]);
+        static::assertIsString($result[2][1]);
         static::assertMatchesRegularExpression('/^Polygon\[[^G]*]/', $result[2][1]);
     }
 }

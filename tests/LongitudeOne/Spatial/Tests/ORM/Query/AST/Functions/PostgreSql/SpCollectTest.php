@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -22,9 +22,12 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\PostgreSql\SpCollect;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\Tests\Fixtures\PointEntity;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_Collect DQL function tests.
@@ -33,13 +36,11 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- * @group pgsql-only
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpCollect::class)]
+#[Group('dql')]
+#[Group('pgsql-only')]
 class SpCollectTest extends PersistOrmTestCase
 {
     /**
@@ -59,9 +60,8 @@ class SpCollectTest extends PersistOrmTestCase
      * @throws ORMException            when cache is not set
      * @throws OptimisticLockException when clear fails
      * @throws InvalidValueException   when geometries are not valid
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testFunctionSelect(): void
     {
         $entity = new PointEntity();

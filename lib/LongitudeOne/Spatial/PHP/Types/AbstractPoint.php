@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -18,11 +18,12 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\PHP\Types;
 
-use LongitudeOne\Geo\String\Exception\RangeException as GeoParserRangeException;
-use LongitudeOne\Geo\String\Exception\UnexpectedValueException;
-use LongitudeOne\Geo\String\Parser;
+use LongitudeOne\GeoParser\Exception\RangeException as GeoParserRangeException;
+use LongitudeOne\GeoParser\Exception\UnexpectedValueException;
+use LongitudeOne\GeoParser\Parser;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
 use LongitudeOne\Spatial\Exception\RangeException;
+use LongitudeOne\Spatial\PHP\Types\Internal\InputValueFormatter;
 
 /**
  * Abstract point object for POINT spatial types.
@@ -184,28 +185,35 @@ abstract class AbstractPoint extends AbstractGeometry implements PointInterface
     /**
      * Use the longitude-one/geo-parser to parse a coordinate.
      *
+     * InputValueFormatter is a stateless internal formatting utility.
+     *
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     *
      * @param string $coordinate the coordinate to parse
      *
      * @throws InvalidValueException when coordinate is invalid
      */
     private function geoParse(string $coordinate): float|int
     {
+        $formattedCoordinate = InputValueFormatter::format($coordinate);
+
         try {
             $parser = new Parser($coordinate);
 
             $parsedCoordinate = $parser->parse();
         } catch (GeoParserRangeException $e) {
             $message = match ($e->getCode()) {
-                GeoParserRangeException::LATITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LATITUDE, $coordinate),
-                GeoParserRangeException::LONGITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LONGITUDE, $coordinate),
-                GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $coordinate),
-                GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $coordinate),
-                default => $e->getMessage(),
+                GeoParserRangeException::LATITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LATITUDE, $formattedCoordinate),
+                GeoParserRangeException::LONGITUDE_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_LONGITUDE, $formattedCoordinate),
+                GeoParserRangeException::MINUTES_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_MINUTE, $formattedCoordinate),
+                GeoParserRangeException::SECONDS_OUT_OF_RANGE => sprintf(InvalidValueException::OUT_OF_RANGE_SECOND, $formattedCoordinate),
+                // Unreachable because all current cases are covered
+                default => $e->getMessage(), // @codeCoverageIgnore
             };
 
             throw new InvalidValueException($message, $e->getCode(), $e);
         } catch (UnexpectedValueException $e) {
-            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $coordinate), $e->getCode(), $e);
+            throw new InvalidValueException(sprintf('Invalid coordinate value, got "%s".', $formattedCoordinate), $e->getCode(), $e);
         }
 
         if (is_array($parsedCoordinate)) {

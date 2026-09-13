@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -32,20 +32,21 @@ declare(strict_types=1);
 namespace LongitudeOne\Spatial\Tests\ORM\Query\AST\Functions\MariaDB;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\MariaDB\SpDistanceSphere;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPointHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_Distance_Sphere DQL function tests.
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(SpDistanceSphere::class)]
+#[Group('mariadb-only')]
 class SpDistanceSphereTest extends PersistOrmTestCase
 {
     use PersistantPointHelperTrait;
@@ -63,9 +64,8 @@ class SpDistanceSphereTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testSelectStDistanceSphereGeometry(): void
     {
         $newYork = $this->persistNewYorkGeometry();
@@ -84,6 +84,9 @@ class SpDistanceSphereTest extends PersistOrmTestCase
 
         static::assertIsArray($result);
         static::assertCount(3, $result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
+        static::assertIsArray($result[2]);
         static::assertEquals($newYork, $result[0][0]);
         // These numeric results are different from PostGis result
         static::assertEqualsWithDelta(1305891.280669479, $result[0][1], 0.0000001);

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -23,18 +23,20 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use LongitudeOne\Spatial\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
- * ST_MakeBox2D DQL function.
+ * ST_MakeBox2d DQL function.
  *
  * @author  Tom Vogt <tom@lemuria.org>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://alexandre-tranchant.mit-license.org
  */
-class SpMakeBox2D extends AbstractSpatialDQLFunction
+class SpMakeBox2d extends AbstractSpatialDQLFunction
 {
     /**
      * Function SQL name getter.
      *
      * @since 2.0 This function replace the protected property functionName.
+     *
+     * @return string the function name
      */
     protected function getFunctionName(): string
     {

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -22,8 +22,11 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsBinary;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * ST_AsBinary DQL function tests.
@@ -32,12 +35,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StAsBinary::class)]
+#[Group('dql')]
 class StAsBinaryTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -58,9 +59,8 @@ class StAsBinaryTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testStAsBinary(): void
     {
         $this->persistStraightLineString();
@@ -77,6 +77,8 @@ class StAsBinaryTest extends PersistOrmTestCase
         $expectedB = '0102000000030000000000000000000840000000000000084000000000000010400000000000002e4000000000000014400000000000003640';
 
         static::assertIsArray($result);
+        static::assertIsArray($result[0]);
+        static::assertIsArray($result[1]);
 
         if ($this->getPlatform() instanceof MySQLPlatform || $this->getPlatform() instanceof MariaDBPlatform || $this->getPlatform() instanceof SQLServerPlatform) {
             static::assertEquals(pack('H*', $expectedA), $result[0][1]);
@@ -84,10 +86,12 @@ class StAsBinaryTest extends PersistOrmTestCase
         }
 
         if ($this->getPlatform() instanceof PostgreSQLPlatform) {
+            static::assertIsResource($result[0][1]);
             $actual = stream_get_contents($result[0][1]);
             static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
             static::assertEquals($expectedA, bin2hex($actual));
 
+            static::assertIsResource($result[1][1]);
             $actual = stream_get_contents($result[1][1]);
             static::assertNotFalse($actual, 'An error happen with the first parameter of stream_get_contents function');
             static::assertEquals($expectedB, bin2hex($actual));

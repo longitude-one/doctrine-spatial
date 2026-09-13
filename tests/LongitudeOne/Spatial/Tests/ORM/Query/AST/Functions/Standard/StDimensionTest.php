@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -22,22 +22,23 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StDimension;
 use LongitudeOne\Spatial\Tests\Helper\PersistantLineStringHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * ST_AsText DQL function tests.
+ * ST_Dimension DQL function tests.
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group dql
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(StDimension::class)]
+#[Group('dql')]
 class StDimensionTest extends PersistOrmTestCase
 {
     use PersistantLineStringHelperTrait;
@@ -58,10 +59,9 @@ class StDimensionTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the select.
-     *
-     * @group geometry
      */
-    public function testStAsText(): void
+    #[Group('geometry')]
+    public function testStDimension(): void
     {
         $this->persistStraightLineString();
         $this->persistAngularLineString();

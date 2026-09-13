@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace LongitudeOne\Spatial\Tests;
 
-use Cache\Adapter\PHPArray\ArrayCachePool;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Exception;
@@ -28,6 +27,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * Common test code.
@@ -102,19 +102,12 @@ abstract class OrmMockTestCase extends SpatialTestCase
         }
         $config = new Configuration();
 
-        $config->setMetadataCache(new ArrayCachePool());
+        $config->setMetadataCache(new ArrayAdapter());
 
-        // Preferred order for lazy loading:
-        // 1. Native lazy objects when Doctrine supports them on PHP 8.4+
-        // 2. Legacy proxy configuration as a fallback for older Doctrine versions
-        // 3. Leave Doctrine defaults untouched if neither API is available
-        if (method_exists($config, 'enableNativeLazyObjects') && PHP_VERSION_ID >= 80400) {
-            // Doctrine 3.5+ added native lazy objects, and they are only supported on PHP 8.4+.
+        if (method_exists($config, 'enableNativeLazyObjects')) {
+            // Doctrine 3.5+ added native lazy objects.
             $config->enableNativeLazyObjects(true);
-        } elseif (method_exists($config, 'setProxyDir') && method_exists($config, 'setProxyNamespace')) {
-            // This is the legacy proxy-based fallback used when native lazy objects are not available.
-            $config->setProxyDir(__DIR__.'/Proxies');
-            $config->setProxyNamespace('LongitudeOne\Spatial\Tests\Proxies');
+            // This method no longer exists in Doctrine 4.0, so we need to check if it exists before calling it.
         }
 
         $config->setMetadataDriverImpl(new AttributeDriver($path));

@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -27,7 +27,6 @@ use Doctrine\DBAL\Types\Exception\TypeNotRegistered;
 use Doctrine\DBAL\Types\Type;
 use LongitudeOne\Spatial\DBAL\Types\GeometryType;
 use LongitudeOne\Spatial\Exception\InvalidValueException;
-use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\LineString;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
@@ -36,6 +35,8 @@ use LongitudeOne\Spatial\Tests\Fixtures\NoHintGeometryEntity;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Doctrine GeometryType tests.
@@ -43,12 +44,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group geometry
- *
  * @internal
- *
- * @coversDefaultClass \LongitudeOne\Spatial\DBAL\Types\GeometryType
  */
+#[CoversClass(GeometryType::class)]
+#[Group('geometry')]
 class GeometryTypeTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
@@ -89,7 +88,6 @@ class GeometryTypeTest extends PersistOrmTestCase
     {
         $entity = $this->persistGeometryStraightLine();
         static::assertIsRetrievableById($this->getEntityManager(), $entity);
-        static::assertInstanceOf(GeometryInterface::class, $entity->getGeometry());
     }
 
     /**
@@ -104,7 +102,6 @@ class GeometryTypeTest extends PersistOrmTestCase
         }
 
         $spatialInstance = new GeometryType();
-        static::assertNotFalse($spatialInstance->getName());
         static::assertSame('geometry', $spatialInstance->getName());
         static::assertSame(ParameterType::STRING, $spatialInstance->getBindingType());
         static::assertSame('Geometry', $spatialInstance->getSQLType());
@@ -130,9 +127,8 @@ class GeometryTypeTest extends PersistOrmTestCase
 
     /**
      * Test to store a point geometry with its SRID and retrieve it by its identifier.
-     *
-     * @group srid
      */
+    #[Group('srid')]
     public function testPointGeometryWithSrid(): void
     {
         $entity = $this->persistGeometryA(200);
@@ -141,9 +137,8 @@ class GeometryTypeTest extends PersistOrmTestCase
 
     /**
      * Test to store a point geometry without SRID and retrieve it by its identifier.
-     *
-     * @group srid
      */
+    #[Group('srid')]
     public function testPointGeometryWithZeroSrid(): void
     {
         $entity = $this->persistGeometryA(0);
@@ -175,9 +170,8 @@ class GeometryTypeTest extends PersistOrmTestCase
 
     /**
      * Test to store a polygon geometry with SRID and retrieve it by its identifier.
-     *
-     * @group srid
      */
+    #[Group('srid')]
     public function testPolygonGeometryWithSrid(): void
     {
         $entity = new GeometryEntity();

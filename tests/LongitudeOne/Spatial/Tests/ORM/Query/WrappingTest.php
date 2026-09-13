@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the doctrine spatial extension.
+ * This file is part of the Doctrine Spatial extension.
  *
- * PHP 8.1 | 8.2 | 8.3
- * Doctrine ORM 2.19 | 3.1
+ * PHP 8.4 | 8.5
+ * Doctrine ORM ^3.6
  *
  * Copyright Alexandre Tranchant <alexandre.tranchant@gmail.com> 2017-2026
  * Copyright Longitude One 2020-2026
@@ -23,9 +23,12 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
+use LongitudeOne\Spatial\DBAL\Types\Geometry\PointType;
 use LongitudeOne\Spatial\Tests\Helper\PersistantGeometryHelperTrait;
 use LongitudeOne\Spatial\Tests\Helper\PersistantPolygonHelperTrait;
 use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * DQL type wrapping tests.
@@ -34,12 +37,10 @@ use LongitudeOne\Spatial\Tests\PersistOrmTestCase;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license https://dlambert.mit-license.org MIT
  *
- * @group php
- *
  * @internal
- *
- * @coversDefaultClass
  */
+#[CoversClass(PointType::class)]
+#[Group('dql')]
 class WrappingTest extends PersistOrmTestCase
 {
     use PersistantGeometryHelperTrait;
@@ -61,9 +62,8 @@ class WrappingTest extends PersistOrmTestCase
 
     /**
      * Test a DQL containing function to test in the predicate.
-     *
-     * @group geometry
      */
+    #[Group('geometry')]
     public function testTypeWrappingSelect(): void
     {
         $this->persistBigPolygon();
@@ -93,8 +93,9 @@ class WrappingTest extends PersistOrmTestCase
     }
 
     /**
-     * @group geometry
+     * Test a DQL containing function to test in the where clause.
      */
+    #[Group('geometry')]
     public function testTypeWrappingWhere(): void
     {
         $this->persistGeometryE();

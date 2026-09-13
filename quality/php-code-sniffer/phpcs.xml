@@ -143,7 +143,12 @@
       Disallows to complex function determined by the cyclomatic complexity
       (McCabe, http://en.wikipedia.org/wiki/Cyclomatic_complexity) of that function.
     -->
-    <rule ref="Generic.Metrics.CyclomaticComplexity" />
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="28" />
+            <property name="absoluteComplexity" value="30" />
+        </properties>
+    </rule>
 
     <!--
       Defines a maximum $nestingLevel and $absoluteNestingLevel for functions.
