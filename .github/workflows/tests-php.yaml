@@ -123,7 +123,8 @@ jobs:
   tests-minimum-database-versions:
     needs: tests-php
     name: PHP 8.4 — Tests with Minimum DBMS Versions
-    runs-on: ubuntu-latest
+    # ODBC Driver 18.7 supports Ubuntu 26.04; keep the runner and Microsoft repository aligned.
+    runs-on: ubuntu-26.04
     env:
       HAS_CC_SECRET: ${{secrets.CODECOV_TOKEN != '' }}
     services:
@@ -173,10 +174,11 @@ jobs:
 
       - name: Install Microsoft ODBC Driver for SQL Server
         run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/26.04/packages-microsoft-prod.deb -o "$RUNNER_TEMP/packages-microsoft-prod.deb"
+          sudo dpkg -i "$RUNNER_TEMP/packages-microsoft-prod.deb"
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+          odbcinst -q -d -n "ODBC Driver 18 for SQL Server"
 
       - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
@@ -184,6 +186,11 @@ jobs:
           php-version: 8.4
           tools: composer:v2
           extensions: mbstring, intl, pdo_mysql, pdo_pgsql, pdo_sqlsrv, sqlsrv, xdebug
+
+      - name: Verify SQL Server PHP extensions
+        run: |
+          php --ri pdo_sqlsrv
+          php --ri sqlsrv
 
       - name: Validate composer.json
         run: composer validate --strict
@@ -218,7 +225,8 @@ jobs:
   tests-maximum-database-versions:
     needs: tests-minimum-database-versions
     name: PHP 8.5 — Tests with Maximum DBMS Versions
-    runs-on: ubuntu-latest
+    # ODBC Driver 18.7 supports Ubuntu 26.04; keep the runner and Microsoft repository aligned.
+    runs-on: ubuntu-26.04
     services:
       mysql:
         image: mysql:9.6
@@ -266,10 +274,11 @@ jobs:
 
       - name: Install Microsoft ODBC Driver for SQL Server
         run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/26.04/packages-microsoft-prod.deb -o "$RUNNER_TEMP/packages-microsoft-prod.deb"
+          sudo dpkg -i "$RUNNER_TEMP/packages-microsoft-prod.deb"
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+          odbcinst -q -d -n "ODBC Driver 18 for SQL Server"
 
       - name: Setup PHP 8.5
         uses: shivammathur/setup-php@v2
@@ -277,6 +286,11 @@ jobs:
           php-version: 8.5
           tools: composer:v2
           extensions: mbstring, intl, pdo_mysql, pdo_pgsql, pdo_sqlsrv, sqlsrv
+
+      - name: Verify SQL Server PHP extensions
+        run: |
+          php --ri pdo_sqlsrv
+          php --ri sqlsrv
 
       - name: Validate composer.json
         run: composer validate --strict
